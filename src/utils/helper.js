@@ -1,18 +1,3 @@
-export const getFileKey = pageUrl => {
-  if (!/^https:\/\/(www.)?figma.com\/file\//.test(pageUrl)) {
-    return ''
-  }
-  const parser = document.createElement('a');
-  parser.href = pageUrl;
-  return parser.pathname.replace('/file/', '').replace(/\/.*/,'');
-}
-
-export const urlWithParams = (url, data) => {
-  const urlObj = new URL(url)
-  Object.keys(data).forEach(key => urlObj.searchParams.append(key, data[key]))
-  return urlObj
-}
-
 export const generateRects = (nodes, docRect, rate) => {
   const rects = []
   const step = (nodes) => {

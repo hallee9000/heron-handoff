@@ -1,0 +1,10 @@
+.main-left-sider{
+  flex-shrink: 0;
+  width: 160px;
+  padding: 12px;
+  background: #222;
+  .left-sider-frames{
+    list-style: none;
+    color: #FFF;
+  }
+}

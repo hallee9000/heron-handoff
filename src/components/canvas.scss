@@ -1,64 +1,73 @@
-.app-canvas{
-  .detail-mark{
+.main-canvas{
+  width: calc(100% - 160px);
+  .canvas-container{
     position: relative;
-    display: inline-block;
-    margin: 0 auto;
-    overflow: hidden;
-    .mark-ruler{
+    width: 100%;
+    height: 100%;
+    .container-mark{
       position: absolute;
-      &-top,
-      &-bottom{
-        left: 0;
-        width: 100%;
-        height: 0;
-        border-top: 1px dashed #2ca7fb;
-      }
-      &-left,
-      &-right{
-        top: 0;
-        width: 0;
-        height: 100%;
-        border-left: 1px dashed #2ca7fb;
-      }
-    }
-    img{
-      display: block;
-    }
-    .layer{
-      position: absolute;
-      border: 1px solid #FF3366;
-      opacity: 0;
-      transition: 0.2s opacity;
-      &:hover{
-        opacity: 1;
-      }
-      &.component{
-        border-color: #8d77fc;
-      }
-      &.selected{
-        border: 1px solid #2ca7fb;
-        opacity: 1;
-        .layer-sizing{
-          display: block;
+      top: 10px;
+      left: 10px;
+      width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+      .mark-ruler{
+        position: absolute;
+        &-top,
+        &-bottom{
+          left: 0;
+          width: 100%;
+          height: 0;
+          border-top: 1px dashed #2ca7fb;
+        }
+        &-left,
+        &-right{
+          top: 0;
+          width: 0;
+          height: 100%;
+          border-left: 1px dashed #2ca7fb;
         }
       }
-      &-sizing{
-        display: none;
+      img{
+        display: block;
+        width: 100%;
+      }
+      .layer{
         position: absolute;
-        padding: 0 6px;
-        border-radius: 2px;
-        color: #FFF;
-        background: #2ca7fb;
-        font-size: 12px;
-      }
-      &-width{
-        top: -22px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      &-height{
-        left: calc(100% + 3px);
-        top: calc(50% - 10px);
+        border: 1px solid #FF3366;
+        opacity: 0;
+        transition: 0.2s opacity;
+        &:hover{
+          opacity: 1;
+        }
+        &.component{
+          border-color: #8d77fc;
+        }
+        &.selected{
+          border: 1px solid #2ca7fb;
+          opacity: 1;
+          .layer-sizing{
+            display: block;
+          }
+        }
+        &-sizing{
+          display: none;
+          position: absolute;
+          padding: 0 6px;
+          border-radius: 2px;
+          color: #FFF;
+          background: #2ca7fb;
+          font-size: 12px;
+        }
+        &-width{
+          top: -22px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        &-height{
+          left: calc(100% + 3px);
+          top: calc(50% - 10px);
+        }
       }
     }
   }

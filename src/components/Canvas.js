@@ -9,6 +9,7 @@ class Canvas extends React.Component {
     isLoading: false,
     imgUrl: '',
     rects: [],
+    rate: 1,
     selectedRect: null,
     selected: null
   }
@@ -21,11 +22,13 @@ class Canvas extends React.Component {
     const frameData = pageData.children[pageIndex].children[frameIndex]
     const docRect = frameData.absoluteBoundingBox
     const nodes = frameData.children
-    const rate = this.img.current.width/this.img.current.naturalWidth
+    const rate = this.img.current.width/(this.img.current.naturalWidth/2)
     const rects = generateRects(nodes, docRect, rate)
-    this.setState({ rects })
+    this.setState({ rects, rate })
   }
   onSelect = (rect, index) => {
+    const { rate } = this.state
+    console.log(rect, rate)
     this.setState({ selectedRect: rect, selected: index})
   }
   componentDidMount () {
@@ -34,20 +37,32 @@ class Canvas extends React.Component {
 	render () {
     const { isLoading, rects, selected, selectedRect } = this.state
 		return (
-        <div className="app-canvas">
+        <div className="main-canvas">
           {
             isLoading &&
             <Loader className="motion-loading" size={36} color="#FFF"/>
           }
-          <div className="container">
-            <div className="detail-mark">
+          <div className="canvas-container">
+            <div className="container-mark">
               {
                 selectedRect &&
                 <Fragment>
-                  <div className="mark-ruler mark-ruler-top" style={{top: selectedRect.box.top}}/>
-                  <div className="mark-ruler mark-ruler-bottom" style={{top: selectedRect.box.top+selectedRect.box.height-1}}/>
-                  <div className="mark-ruler mark-ruler-left" style={{left: selectedRect.box.left}}/>
-                  <div className="mark-ruler mark-ruler-right" style={{left: selectedRect.box.left+selectedRect.box.width-1}}/>
+                  <div
+                    className="mark-ruler mark-ruler-top"
+                    style={{top: selectedRect.box.top}}
+                  />
+                  <div
+                    className="mark-ruler mark-ruler-bottom"
+                    style={{top: selectedRect.box.top+selectedRect.box.height-1}}
+                  />
+                  <div
+                    className="mark-ruler mark-ruler-left"
+                    style={{left: selectedRect.box.left}}
+                  />
+                  <div
+                    className="mark-ruler mark-ruler-right"
+                    style={{left: selectedRect.box.left+selectedRect.box.width-1}}
+                  />
                 </Fragment>
               }
               {
