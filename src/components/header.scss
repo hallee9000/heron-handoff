@@ -1,5 +1,14 @@
 .app-header{
-  padding: 10px;
+  display: flex;
+  padding: 5px 12px;
   color: #FFF;
-  background: #333;
+  background: #0F0F12;
+  .header-logo{
+    height: 30px;
+  }
+  .header-name{
+    flex: 1;
+    line-height: 30px;
+    text-align: center;
+  }
 }

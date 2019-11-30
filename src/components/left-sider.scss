@@ -1,10 +1,37 @@
 .main-left-sider{
   flex-shrink: 0;
-  width: 160px;
-  padding: 12px;
-  background: #222;
-  .left-sider-frames{
-    list-style: none;
+  width: 200px;
+  background: #262936;
+  .left-sider-tabs{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 12px;
     color: #FFF;
+    border-bottom: 1px solid #383941;
+    li{
+      padding: 8px 0;
+      font-size: 12px;
+    }
+  }
+  .left-sider-pages{
+    height: calc(100% - 34px);
+    .pages-selector{
+      padding: 12px;
+    }
+    .pages-frames{
+      height: calc(100% - 50px);
+      color: #FFF;
+      overflow: auto;
+      li{
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        img{
+          width: 40px;
+          height: 40px;
+          margin-right: 8px;
+        }
+      }
+    }
   }
 }
