@@ -7,7 +7,6 @@ import 'assets/base.scss'
 import 'assets/input.scss'
 import './app.scss'
 
-
 class App extends React.Component {
   state = {
     pageData: data.document,
