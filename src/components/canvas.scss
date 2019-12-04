@@ -1,12 +1,13 @@
 .main-canvas{
+  position: relative;
   width: calc(100% - 160px);
-  overflow: auto;
+  overflow: hidden;
   .canvas-container{
-    position: relative;
+    position: absolute;
     width: 400%;
     height: 400%;
     background: #111421;
-    transition: all 0.2s;
+    transition: none;
     .container-mark{
       position: absolute;
       top: 50%;

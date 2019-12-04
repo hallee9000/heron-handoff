@@ -1,5 +1,11 @@
 import React, { createRef }  from 'react'
 
+const animateStep = callback => {
+  window.requestAnimationFrame(() => {
+    callback && callback()
+  })
+}
+
 export default function (Canvas) {
   let gestureStartRotation = 0;
   let gestureStartScale = 0;
@@ -7,6 +13,8 @@ export default function (Canvas) {
   let startY;
   let initialWidth;
   let initialHeight;
+  let mouseX;
+  let mouseY;
   class ZoomWrapper extends React.Component {
     constructor (props) {
       super(props)
@@ -18,20 +26,30 @@ export default function (Canvas) {
         scale: 1
       }
     }
+    handleMove = () => {
+      this.canvas.current.addEventListener('mousemove', e => {
+        mouseX = e.clientX - 200
+        mouseY = e.clientY - 40
+      })
+    }
     handleWheel = e => {
       this.canvas.current.addEventListener('wheel', (e) => {
+        e.preventDefault();
         const { posX, posY, scale } = this.state
         if (e.ctrlKey) {
           // zoom
-          e.preventDefault();
           this.setState({
             scale: Math.min(4, Math.max(0.25, scale - e.deltaY * 0.01)), 
           })
         } else {
-          // move
+          // scroll
+          const { scale } = this.state
+          console.log(scale, initialWidth, initialHeight)
           this.setState({
-            posX: posX - e.deltaX * 2,
-            posY: posY - e.deltaY * 2
+            // 最小=画布宽-容器宽，最大=0
+            posX: Math.min(0, Math.max(initialWidth*(0.25-scale), posX - e.deltaX)),
+            // 最小=画布高-容器高，最大=0
+            posY: Math.min(0, Math.max(initialHeight*(0.25-scale), posY - e.deltaY))
           })
         }
       });
@@ -48,7 +66,7 @@ export default function (Canvas) {
     }
     handleGestureChange = e => {
       this.canvas.current.addEventListener("gesturechange", function (e) {
-        e.preventDefault();
+        e.preventDefault()
         this.setState({
           rotation: gestureStartRotation + e.rotation,
           scale: gestureStartScale * e.scale,
@@ -66,14 +84,17 @@ export default function (Canvas) {
       initialWidth = this.canvas.current.clientWidth
       initialHeight = this.canvas.current.clientHeight
       this.handleWheel()
+      this.handleMove()
       this.handleGestureStart()
       this.handleGestureChange()
       this.handleGestureEnd()
     }
     render () {
-      const { posX, posY, rotation, scale } = this.state
-      // console.log(initialWidth, initialHeight)
+      const { posX, posY, scale } = this.state
+      // console.log(posX, posY)
       const style = {
+        top: posY,
+        left: posX,
         width: initialWidth ? scale*initialWidth : initialWidth,
         height: initialHeight ? scale*initialHeight : initialHeight
       }
