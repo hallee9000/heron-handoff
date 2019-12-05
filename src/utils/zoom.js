@@ -39,7 +39,11 @@ export default function (Canvas) {
         if (e.ctrlKey) {
           // zoom
           this.setState({
-            scale: Math.min(4, Math.max(0.25, scale - e.deltaY * 0.01)), 
+            scale: Math.min(4, Math.max(0.25, scale - e.deltaY * 0.01)),
+            // 最小=画布宽-容器宽，最大=0
+            posX: Math.min(0, Math.max(initialWidth*(0.25-scale), posX - e.deltaX)),
+            // 最小=画布高-容器高，最大=0
+            posY: Math.min(0, Math.max(initialHeight*(0.25-scale), posY - e.deltaY))
           })
         } else {
           // scroll
