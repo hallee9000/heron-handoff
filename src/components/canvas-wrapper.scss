@@ -1,0 +1,36 @@
+.main-canvas{
+  position: relative;
+  width: calc(100% - 160px);
+  overflow: hidden;
+  .canvas-steper{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    height: 26px;
+    border-radius: 13px;
+    color: #FFF;
+    background: #64697B;
+    z-index: 1;
+    overflow: hidden;
+    .steper-minus, .steper-plus{
+      padding: 6px;
+      cursor: pointer;
+      svg{
+        display: block;
+      }
+      &:hover{
+        background: #4D5367;
+      }
+    }
+    .steper-percentage{
+      padding: 6px;
+    }
+  }
+  .canvas-container{
+    position: absolute;
+    background: #111421;
+    transition: none;
+  }
+}

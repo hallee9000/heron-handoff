@@ -1,15 +1,13 @@
 import React, { Fragment, createRef } from 'react'
 import cn from 'classnames'
 import { generateRects } from 'utils/helper'
-import zoom from 'utils/zoom'
+import canvasWrapper from 'components/canvasWrapper'
 import './canvas.scss'
 
 class Canvas extends React.Component {
   state = {
     isLoading: false,
-    imgUrl: '',
     rects: [],
-    rate: 1,
     selectedRect: null,
     selected: null
   }
@@ -17,24 +15,34 @@ class Canvas extends React.Component {
     super(props)
     this.img = createRef()
   }
-  generateMark = (pageIndex, frameIndex) => {
-    const { pageData } = this.props
-    const frameData = pageData.children[pageIndex].children[frameIndex]
+  resetMark = () => {
+    this.setState({
+      selectedRect: null,
+      selected: null
+    })
+  }
+  generateMark = () => {
+    const { frameData } = this.props
     const docRect = frameData.absoluteBoundingBox
     const nodes = frameData.children
-    const rate = this.img.current.width/(this.img.current.naturalWidth/2)
-    const rects = generateRects(nodes, docRect, rate)
-    this.setState({ rects, rate })
+    const rects = generateRects(nodes, docRect)
+    this.setState({ rects })
   }
   onSelect = (rect, index) => {
-    const { rate } = this.state
-    console.log(rect, rate)
+    console.log(rect)
     this.setState({ selectedRect: rect, selected: index})
   }
   componentDidMount () {
-    this.generateMark(0, 0)
+    this.generateMark()
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.frameId !== prevProps.frameId) {
+      this.resetMark()
+      this.generateMark()
+    }
   }
 	render () {
+    const { frameId } = this.props
     const { rects, selected, selectedRect } = this.state
 		return (
       <div className="container-mark">
@@ -73,10 +81,10 @@ class Canvas extends React.Component {
             </div>
           )
         }
-        <img src="/home.jpg" ref={this.img}/>
+        <img src={`/mock/${frameId.replace(':', '-')}.jpg`} ref={this.img} alt="frame"/>
       </div>
     )
 	}
 }
 
-export default zoom(Canvas)
+export default canvasWrapper(Canvas)
