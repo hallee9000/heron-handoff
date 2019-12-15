@@ -1,0 +1,11 @@
+.mark-ruler{
+  position: absolute;
+  &-v{
+    width: 0;
+    border-left: 1px dashed #FF3366;
+  }
+  &-h{
+    height: 0;
+    border-top: 1px dashed #FF3366;
+  }
+}

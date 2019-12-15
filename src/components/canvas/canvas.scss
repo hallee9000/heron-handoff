@@ -6,23 +6,6 @@
   margin: 0 auto;
   transform: translate(-50%, -50%);
   overflow: hidden;
-  .mark-ruler{
-    position: absolute;
-    &-top,
-    &-bottom{
-      left: 0;
-      width: 100%;
-      height: 0;
-      border-top: 1px dashed #2ca7fb;
-    }
-    &-left,
-    &-right{
-      top: 0;
-      width: 0;
-      height: 100%;
-      border-left: 1px dashed #2ca7fb;
-    }
-  }
   img{
     display: block;
     width: 100%;
@@ -32,7 +15,7 @@
     border: 1px solid #FF3366;
     opacity: 0;
     transition: 0.2s opacity;
-    &:hover{
+    &.hovered{
       opacity: 1;
     }
     &.component{
@@ -41,6 +24,8 @@
     &.selected{
       border: 1px solid #2ca7fb;
       opacity: 1;
+    }
+    &.selected.hovered{
       .layer-sizing{
         display: block;
       }

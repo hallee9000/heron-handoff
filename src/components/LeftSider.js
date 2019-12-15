@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'classnames'
 import './left-sider.scss'
 
-class LeftSider extends React.Component {
+export default class LeftSider extends React.Component {
   state = {
     selectedIndex: 0,
     frames: [],
@@ -85,5 +85,3 @@ class LeftSider extends React.Component {
     )
   }
 }
-
-export default LeftSider

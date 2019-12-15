@@ -1,7 +1,8 @@
 import React from 'react'
 import Header from 'components/Header'
 import LeftSider from 'components/LeftSider'
-import Canvas from 'components/Canvas'
+import RightSider from 'components/RightSider'
+import Canvas from 'components/canvas'
 import data from 'mock/file'
 import 'assets/base.scss'
 import 'assets/utils.scss'
@@ -13,9 +14,14 @@ class App extends React.Component {
     pageData: data.document,
     frameData: data.document.children[0].children[0],
     name: data.document.children[0].children[0].name,
-    frameId: ''
+    frameId: '',
+    elementData: null,
+    rightVisible: false
   }
-  handleSelect = (frameId) => {
+  onRightSiderMount = () => {
+    this.setState({ rightVisible: true })
+  }
+  handleSelectPage = frameId => {
     const { pageData } = this.state
     const frameData = pageData.children[0].children
       .find(frame => frame.id===frameId)
@@ -25,10 +31,11 @@ class App extends React.Component {
       name: frameData.name
     })
   }
-  componentDidMount () {
+  handleSelectElement = elementData => {
+    this.setState({ elementData })
   }
   render () {
-    const { pageData, name, frameId, frameData } = this.state
+    const { pageData, name, frameId, frameData, elementData, rightVisible } = this.state
     return (
       <div className="app-container">
         <Header
@@ -37,12 +44,21 @@ class App extends React.Component {
         <div className="app-main">
           <LeftSider
             pageData={pageData}
-            onSelect={this.handleSelect}
+            onSelect={this.handleSelectPage}
           />
           <Canvas
+            rightVisible={rightVisible}
             frameData={frameData}
             frameId={frameId}
+            onSelect={this.handleSelectElement}
           />
+          {
+            elementData &&
+            <RightSider
+              data={elementData}
+              onMount={this.onRightSiderMount}
+            />
+          }
         </div>
       </div>
     )

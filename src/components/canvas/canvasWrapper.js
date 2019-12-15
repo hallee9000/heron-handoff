@@ -1,9 +1,11 @@
 import React, { createRef }  from 'react'
 import { Plus, Minus } from 'react-feather'
+import { throttle, px2number } from 'utils/helper'
 
 import './canvas-wrapper.scss'
 
 export default function (Canvas) {
+  let constainerSize
   class CanvasWrapper extends React.Component {
     constructor (props) {
       super(props)
@@ -23,6 +25,7 @@ export default function (Canvas) {
     initializeCanvas = () => {
       const initialWidth = this.container.current.clientWidth*4
       const initialHeight = this.container.current.clientHeight*4
+      constainerSize = { width: initialWidth/4, height: initialHeight/4 }
       this.setState({initialWidth, initialHeight})
     }
     getSize = (scale, initialSize) => initialSize ? scale*initialSize : initialSize
@@ -55,7 +58,7 @@ export default function (Canvas) {
         })
       })
     }
-    handleWheel = e => {
+    handleWheel = () => {
       const canvas = this.canvas.current
       canvas.addEventListener('wheel', (e) => {
         e.preventDefault()
@@ -91,10 +94,28 @@ export default function (Canvas) {
         }
       });
     }
+    handleResize = () => {
+      const container = this.container.current
+      const canvas = this.canvas.current
+      const width = container.clientWidth
+      const height = container.clientHeight
+      if (width === constainerSize.width && height === constainerSize.height) return
+      this.initializeCanvas()
+      this.setState({
+        posX: Math.min(0, Math.max(px2number(canvas.style.left), width - canvas.clientWidth)),
+        posY: Math.min(0, Math.max(px2number(canvas.style.top), height - canvas.clientHeight))
+      })
+    }
     componentDidMount () {
       this.initializeCanvas()
       this.handleWheel()
       this.handleMove()
+      window.onresize = throttle(this.handleResize, 200)
+    }
+    componentDidUpdate(prevProps) {
+      if (this.props.rightVisible !== prevProps.rightVisible) {
+        this.handleResize()
+      }
     }
     render () {
       const { initialWidth, initialHeight, posX, posY, scale } = this.state
