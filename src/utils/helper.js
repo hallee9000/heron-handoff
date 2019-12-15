@@ -9,7 +9,7 @@ export const toFixed = num => Math.floor(num)===num ? num : num.toFixed(2)
 
 // get sorted four numbers
 export const getSortedNumbers = (numbers) =>
-  numbers.length!==4 ? [] : numbers.sort((a,b) => a - b)
+  numbers.length!==4 ? [] : [...numbers].sort((a,b) => a - b)
 
 // get middle two from four numbers
 export const getEverage = (numbers) =>
@@ -114,54 +114,6 @@ export const getSpacing = (selected, target) => {
   }
 }
 
-export const mark = (selected, target, pw, ph) => {
-  const { spacingV, spacingH, l, r, t, b } = getSpacing(selected, target)
-  const verticalNums = [selected.top, selected.bottom, target.top, target.bottom]
-  const horizontalNums = [selected.left, selected.right, target.left, target.right]
-  const nums = spacingV>0 ? [verticalNums, horizontalNums] : [horizontalNums, verticalNums]
-  // [ordered numbers, intersectedNumbers]
-  const orderedNums = spacingV>0 ?
-    [ getSortedNumbers(verticalNums), getSortedNumbers(horizontalNums)] :
-    [ getSortedNumbers()(horizontalNums), getSortedNumbers()(verticalNums) ]
-  const mids =[getEverage(orderedNums[0].slice(0, 2)), getEverage(orderedNums[0].slice(2))]
-  console.log(nums[1], orderedNums[1])
-  if (spacingV>0) {
-    return [{
-      x: getEverage(orderedNums[1].slice(1,3))/pw,
-      y: orderedNums[0][1]/ph,
-      h: spacingV/ph,
-      distance: toFixed(spacingV)
-    }, {
-      x: orderedNums[1][0]/pw,
-      y: mids[0]/ph,
-      w: (orderedNums[1][1]-orderedNums[1][0])/pw,
-      distance: toFixed(orderedNums[1][1]-orderedNums[1][0])
-    }, {
-      x: orderedNums[1][2]/pw,
-      y: mids[1]/ph,
-      w: (orderedNums[1][3]-orderedNums[1][2])/pw,
-      distance: toFixed(orderedNums[1][3]-orderedNums[1][2])
-    }]
-  } else {
-    return [{
-      x: orderedNums[0][1]/pw,
-      y: getEverage(orderedNums[1].slice(1,3))/ph,
-      w: spacingH/pw,
-      distance: toFixed(spacingH)
-    }, {
-      x: mids[0]/pw,
-      y: orderedNums[1][0]/ph,
-      h: (orderedNums[1][1]-orderedNums[1][0])/ph,
-      distance: toFixed(orderedNums[1][1]-orderedNums[1][0])
-    }, {
-      x: mids[1]/pw,
-      y: orderedNums[1][2]/ph,
-      h: (orderedNums[1][3]-orderedNums[1][2])/ph,
-      distance: toFixed(orderedNums[1][3]-orderedNums[1][2])
-    }]
-  }
-}
-
 // calculate distance data
 export const calculateMarkData = (selected, target, pageRect) => {
   // has selected and not the the same
@@ -175,7 +127,7 @@ export const calculateMarkData = (selected, target, pageRect) => {
     const distanceData = [], rulerData = []
     // not intersect
     if (!isIntersect(selected, target)) {
-      const { spacingV, spacingH, l, r, t, b } = getSpacing(selected, target)
+      const { spacingV, spacingH, l, t, b } = getSpacing(selected, target)
       if (spacingV>0 && spacingH>0) {
         // not intersect in any direction
         distanceData.push({
@@ -203,55 +155,126 @@ export const calculateMarkData = (selected, target, pageRect) => {
           distance: toFixed(selected.height/2 + spacingV)
         })
       } else {
-        distanceData.push(...mark(selected, target, pw, ph))
-        return {
-          distanceData,
-          rulerData
-        }
         // intersect vertically or horizontally
-        if (spacingV>0) {
-          const sortedHNumbers = getSortedNumbers([selected.left, selected.right, target.left, target.right])
+        const { top, bottom, left, right } = getOffset(selected, target)
+        if (spacingV>=0) {
+          const sortedNumbers = getSortedNumbers([selected.left, selected.right, target.left, target.right])
           const midNumbers = getMidNumbers([selected.left, selected.right, target.left, target.right])
-          const { top, left, right } = getOffset(selected, target)
-          distanceData.push({
-            x: (midNumbers[0]+midNumbers[1])/(2*pw),
-            y: (top>0 ? selected.bottom : target.bottom)/ph,
-            h: spacingV/ph,
-            distance: toFixed(spacingV)
-          })
+          if (spacingV!==0) {
+            distanceData.push({
+              x: (midNumbers[0]+midNumbers[1])/(2*pw),
+              y: (top>0 ? selected.bottom : target.bottom)/ph,
+              h: spacingV/ph,
+              distance: toFixed(spacingV)
+            })
+          }
           if (left!==0) {
             distanceData.push({
-              x: sortedHNumbers[0]/pw,
+              x: sortedNumbers[0]/pw,
               y: (left>0 ? targetMidY : selectedMidY)/ph,
               w: Math.abs(left)/pw,
               distance: toFixed(Math.abs(left))
             })
             rulerData.push({
-              x: sortedHNumbers[0]/pw,
-              y: (left>0 ? (t ? selected.bottom : targetMidY) : (t ? selectedMidY : target.bottom))/ph,
+              x: sortedNumbers[0]/pw,
+              y: ((left>0 && spacingV>0) ? (t ? selected.bottom : targetMidY) : (t ? selectedMidY : target.bottom))/ph,
               h: ((left>0 ? target.height : selected.height)/2 + spacingV)/ph,
               distance: toFixed((left>0 ? target.height : selected.height)/2 + spacingV)
             })
           }
           if (right!==0) {
             distanceData.push({
-              x: sortedHNumbers[2]/pw,
+              x: sortedNumbers[2]/pw,
               y: (right>0 ? targetMidY : selectedMidY)/ph,
               w: Math.abs(right)/pw,
               distance: toFixed(Math.abs(right))
             })
             rulerData.push({
-              x: sortedHNumbers[3]/pw,
-              y: (right>0 ? (t ? selected.bottom : targetMidY) : (t ? selectedMidY : target.bottom))/ph,
+              x: sortedNumbers[3]/pw,
+              y: ((right>0 && spacingV>0) ? (t ? selected.bottom : targetMidY) : (t ? selectedMidY : target.bottom))/ph,
               h: ((right>0 ? target.height : selected.height)/2 + spacingV)/ph,
               distance: toFixed((right>0 ? target.height : selected.height)/2 + spacingV)
             })
           }
-        } else {
-
+        }
+        if (spacingH>=0) {
+          const sortedNumbers = getSortedNumbers([selected.top, selected.bottom, target.top, target.bottom])
+          const midNumbers = getMidNumbers([selected.top, selected.bottom, target.top, target.bottom])
+          if (spacingH!==0) {
+            distanceData.push({
+              x: (left>0 ? selected.right : target.right)/pw,
+              y: (midNumbers[0]+midNumbers[1])/(2*ph),
+              w: spacingH/pw,
+              distance: toFixed(spacingH)
+            })
+          }
+          if (top!==0) {
+            distanceData.push({
+              x: (top>0 ? targetMidX : selectedMidX)/pw,
+              y: sortedNumbers[0]/ph,
+              h: Math.abs(top)/ph,
+              distance: toFixed(Math.abs(top))
+            })
+            rulerData.push({
+              x: (top>0 ? (l ? selected.right : targetMidX) : (l ? selectedMidX : target.right))/pw,
+              y: sortedNumbers[0]/ph,
+              w: ((top>0 ? target.width : selected.width)/2 + spacingH)/pw,
+              distance: toFixed((top>0 ? target.width : selected.width)/2 + spacingH)
+            })
+          }
+          if (bottom!==0) {
+            distanceData.push({
+              x: (bottom>0 ? targetMidX : selectedMidX)/pw,
+              y: sortedNumbers[2]/ph,
+              h: Math.abs(bottom)/ph,
+              distance: toFixed(Math.abs(bottom))
+            })
+            rulerData.push({
+              x: (bottom>0 ? (l ? selected.right : targetMidX) : (l ? selectedMidX : target.right))/pw,
+              y: sortedNumbers[3]/ph,
+              w: ((bottom>0 ? target.width : selected.width)/2 + spacingH)/pw,
+              distance: toFixed((bottom>0 ? target.width : selected.width)/2 + spacingH)
+            })
+          }
         }
       }
     } else {
+      const sortedVNumbers = getSortedNumbers([selected.top, selected.bottom, target.top, target.bottom])
+      const sortedHNumbers = getSortedNumbers([selected.left, selected.right, target.left, target.right])
+      const x = getEverage(getMidNumbers(sortedHNumbers))
+      const y = getEverage(getMidNumbers(sortedVNumbers))
+      if (sortedVNumbers[3] - sortedVNumbers[2]!==0) {
+        distanceData.push({
+          x: x/pw,
+          y: sortedVNumbers[0]/ph,
+          h: (sortedVNumbers[1] - sortedVNumbers[0])/ph,
+          distance: toFixed(sortedVNumbers[1] - sortedVNumbers[0])
+        })
+      }
+      if (sortedVNumbers[3] - sortedVNumbers[2]!==0) {
+        distanceData.push({
+          x: x/pw,
+          y: sortedVNumbers[2]/ph,
+          h: (sortedVNumbers[3] - sortedVNumbers[2])/ph,
+          distance: toFixed(sortedVNumbers[3] - sortedVNumbers[2])
+        })
+      }
+      if (sortedHNumbers[1] - sortedHNumbers[0]!==0) {
+        distanceData.push({
+          x: sortedHNumbers[0]/pw,
+          y: y/ph,
+          w: (sortedHNumbers[1] - sortedHNumbers[0])/pw,
+          distance: toFixed(sortedHNumbers[1] - sortedHNumbers[0])
+        })
+      }
+      if (sortedHNumbers[3] - sortedHNumbers[2]!==0) {
+        distanceData.push({
+          x: sortedHNumbers[2]/pw,
+          y: y/ph,
+          w: (sortedHNumbers[3] - sortedHNumbers[2])/pw,
+          distance: toFixed(sortedHNumbers[3] - sortedHNumbers[2])
+        })
+      }
     }
     return {
       distanceData,

@@ -18,6 +18,8 @@ export default function (Canvas) {
         posY: 0,
         scale: 0.25,
         isZoomimg: false,
+        isDragging: false,
+        spacePressed: false,
         originX: 0,
         originY: 0
       }
@@ -50,12 +52,50 @@ export default function (Canvas) {
         })
       }
     }
-    handleMove = () => {
+    handleKeyboard = () => {
+      window.onkeydown = e => {
+        // space key pressed
+        if(e.keyCode === 32) {
+          e.preventDefault()
+          this.setState({ spacePressed: true })
+        }
+      }
+      window.onkeyup = e => {
+        // space key unpressed
+        if(e.keyCode === 32) {
+          e.preventDefault()
+          this.setState({ spacePressed: false })
+        }
+      }
+    }
+    handleDrag = () => {
       const canvas = this.canvas.current
+      canvas.addEventListener('mousedown', e => {
+        const { spacePressed } = this.state
+        if (e.which===2 || spacePressed) {
+          this.setState({ isDragging: true })
+        }
+      })
       canvas.addEventListener('mousemove', e => {
+        const { isDragging, spacePressed } = this.state
+        if (isDragging && (e.which===2 || spacePressed)) {
+          const { initialWidth, initialHeight, posX, posY, scale } = this.state
+          this.setState({
+            // 最小=画布宽-容器宽，最大=0
+            posX: Math.min(0, Math.max(initialWidth*(0.25-scale), posX + e.movementX)),
+            // 最小=画布高-容器高，最大=0
+            posY: Math.min(0, Math.max(initialHeight*(0.25-scale), posY + e.movementY))
+          })
+        }
         this.setState({
           isZoomimg: false
         })
+      })
+      canvas.addEventListener('mouseup', e => {
+        const { spacePressed } = this.state
+        if (e.which===2 || spacePressed) {
+          this.setState({ isDragging: false })
+        }
       })
     }
     handleWheel = () => {
@@ -109,7 +149,8 @@ export default function (Canvas) {
     componentDidMount () {
       this.initializeCanvas()
       this.handleWheel()
-      this.handleMove()
+      this.handleKeyboard()
+      this.handleDrag()
       window.onresize = throttle(this.handleResize, 200)
     }
     componentDidUpdate(prevProps) {
@@ -118,7 +159,7 @@ export default function (Canvas) {
       }
     }
     render () {
-      const { initialWidth, initialHeight, posX, posY, scale } = this.state
+      const { initialWidth, initialHeight, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
         top: posY,
         left: posX,
@@ -132,9 +173,14 @@ export default function (Canvas) {
             <span className="steper-percentage">{ (scale*100).toFixed() }%</span>
             <span className="steper-plus" onClick={() => this.onStep(1)}><Plus size={14}/></span>
           </div>
-          <div ref={this.canvas} className="canvas-container" style={style}>
+          <div
+            ref={this.canvas}
+            className="canvas-container"
+            style={{...style, cursor: (spacePressed || isDragging) ? 'grab' : 'default' }}
+          >
             <Canvas
               {...this.props}
+              spacePressed={spacePressed}
             />
           </div>
         </div>

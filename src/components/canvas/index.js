@@ -2,8 +2,8 @@ import React, { createRef } from 'react'
 import cn from 'classnames'
 import { generateRects, calculateDistance, calculateMarkData } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
-import Distance from './DistanceX'
-import Ruler from './RulerX'
+import Distance from './Distance'
+import Ruler from './Ruler'
 import './canvas.scss'
 
 class Canvas extends React.Component {
@@ -38,6 +38,8 @@ class Canvas extends React.Component {
     this.setState({ rects, pageRect })
   }
   onSelect = (rect, index) => {
+    const { spacePressed } =this.props
+    if (spacePressed) return
     const { onSelect } = this.props
     onSelect && onSelect(rect.node)
     this.setState({ selectedRect: rect, selectedIndex: index})
@@ -67,7 +69,7 @@ class Canvas extends React.Component {
 		return (
       <div className="container-mark">
         {
-          selectedIndex && (selectedIndex!==hoveredIndex) &&
+          !!selectedIndex && (selectedIndex!==hoveredIndex) &&
           <Ruler rulerData={markData.rulerData}/>
         }
         {
