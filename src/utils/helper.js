@@ -116,25 +116,49 @@ export const getSpacing = (selected, target) => {
 
 export const mark = (selected, target, pw, ph) => {
   const { spacingV, spacingH, l, r, t, b } = getSpacing(selected, target)
-  const verticalNums = getSortedNumbers([selected.top, selected.bottom, target.top, target.bottom])
-  const horizontalNums = getSortedNumbers([selected.left, selected.right, target.left, target.right])
+  const verticalNums = [selected.top, selected.bottom, target.top, target.bottom]
+  const horizontalNums = [selected.left, selected.right, target.left, target.right]
+  const nums = spacingV>0 ? [verticalNums, horizontalNums] : [horizontalNums, verticalNums]
   // [ordered numbers, intersectedNumbers]
-  const nums = spacingV>0 ? [ verticalNums, horizontalNums] :  [ horizontalNums, verticalNums ]
-  const mids =[getEverage(nums[0].slice(0, 2)), getEverage(nums[0].slice(2))]
+  const orderedNums = spacingV>0 ?
+    [ getSortedNumbers(verticalNums), getSortedNumbers(horizontalNums)] :
+    [ getSortedNumbers()(horizontalNums), getSortedNumbers()(verticalNums) ]
+  const mids =[getEverage(orderedNums[0].slice(0, 2)), getEverage(orderedNums[0].slice(2))]
+  console.log(nums[1], orderedNums[1])
   if (spacingV>0) {
-    return {
-      x: getEverage(nums[1].slice(1,3))/pw,
-      y: nums[0][1]/ph,
+    return [{
+      x: getEverage(orderedNums[1].slice(1,3))/pw,
+      y: orderedNums[0][1]/ph,
       h: spacingV/ph,
       distance: toFixed(spacingV)
-    }
+    }, {
+      x: orderedNums[1][0]/pw,
+      y: mids[0]/ph,
+      w: (orderedNums[1][1]-orderedNums[1][0])/pw,
+      distance: toFixed(orderedNums[1][1]-orderedNums[1][0])
+    }, {
+      x: orderedNums[1][2]/pw,
+      y: mids[1]/ph,
+      w: (orderedNums[1][3]-orderedNums[1][2])/pw,
+      distance: toFixed(orderedNums[1][3]-orderedNums[1][2])
+    }]
   } else {
-    return {
-      x: nums[0][1]/pw,
-      y: getEverage(nums[1].slice(1,3))/ph,
+    return [{
+      x: orderedNums[0][1]/pw,
+      y: getEverage(orderedNums[1].slice(1,3))/ph,
       w: spacingH/pw,
       distance: toFixed(spacingH)
-    }
+    }, {
+      x: mids[0]/pw,
+      y: orderedNums[1][0]/ph,
+      h: (orderedNums[1][1]-orderedNums[1][0])/ph,
+      distance: toFixed(orderedNums[1][1]-orderedNums[1][0])
+    }, {
+      x: mids[1]/pw,
+      y: orderedNums[1][2]/ph,
+      h: (orderedNums[1][3]-orderedNums[1][2])/ph,
+      distance: toFixed(orderedNums[1][3]-orderedNums[1][2])
+    }]
   }
 }
 
@@ -179,7 +203,7 @@ export const calculateMarkData = (selected, target, pageRect) => {
           distance: toFixed(selected.height/2 + spacingV)
         })
       } else {
-        distanceData.push(mark(selected, target, pw, ph))
+        distanceData.push(...mark(selected, target, pw, ph))
         return {
           distanceData,
           rulerData
