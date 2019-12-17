@@ -1,45 +1,71 @@
-export const getMidPoint = (numbers) => {
-  // calculate average value of two middle numbers of four numbers
-  const midPoints = numbers.sort().slice(1, 3)
-  return (midPoints[0]+midPoints[1])/2
+import { getSpacing, getSortedNumbers, getEverage, toFixed } from './helper'
+
+function getPosition(selected, target) {
+  if (selected.top>target.bottom) {
+    return [1, 'v']
+  }
+  if (target.top>selected.bottom) {
+    return [0, 'v']
+  }
+  if (selected.left>target.right) {
+    return [1, 'h']
+  }
+  if (target.left>selected.right) {
+    return [0, 'h']
+  }
 }
 
-// calculate distance data
-export const calculateDistance = (selected, target) => {
-  const selectedMidX = selected.left + selected.width / 2
-  const selectedMidY = selected.top + selected.height / 2
-  const targetMidX = target.left + target.width / 2
-  const targetMidY = target.top + target.height / 2
-  let topDistance, rightDistance, bottomDistance, leftDistance
-  let topRuler, rightRuler, bottomRuler, leftRuler
-  if (selected.top > target.bottom) {
-    const distance = selected.top - target.bottom
-    topDistance = {
-      x: (target.right>selected.left && target.left<selected.right) ? getMidPoint([target.left, target.right, selected.left, selected.left]) : selectedMidX,
-      y: target.bottom,
-      h: distance
+function getNums(direction, verticalNums, horizontalNums) {
+  return direction==='v' ?
+    {
+      'parallel': verticalNums,
+      'intersect': horizontalNums
+    } :
+    {
+      'parallel': horizontalNums,
+      'intersect': verticalNums
     }
-    bottomRuler = {
-      x: topDistance.x,
-      y: topDistance.y + distance,
-      w: 
-    }
-  } else {
-    
-  }
-  if (target.top - selected.bottom) {
+}
 
-  } else {
+function getOrderedNums(nums) {
+  const orderedNums = {}
+  Object
+    .keys(nums)
+    .map(key => {
+      orderedNums[key] = getSortedNumbers(nums[key])
+    })
+  return orderedNums
+}
 
-  }
-  if (selected.left - target.right) {
+function getMidIndex(intersectNums, closerIndex) {
+  const flag = closerIndex===0 ? 1 : -1
+  return [
+    (intersectNums[2]-intersectNums[0])*flag>0 ? 1 : 0,
+    (intersectNums[1]-intersectNums[3])*flag>0 ? 1 : 0
+  ]
+}
 
-  } else {
-    
+export const mark = (selected, target, pageRect) => {
+  if (!selected) return {}
+  const position = getPosition(selected, target)
+  if (!position) return {}
+  const pw = pageRect.width
+  const ph = pageRect.height
+  const verticalNums = [selected.top, selected.bottom, target.top, target.bottom]
+  const horizontalNums = [selected.left, selected.right, target.left, target.right]
+  const nums = getNums(position[0], verticalNums, horizontalNums)
+  const orderedNums = getOrderedNums(nums)
+  const mids =[getEverage(orderedNums['parallel'].slice(0, 2)), getEverage(orderedNums['parallel'].slice(2))]
+  const midIndex = getMidIndex(nums['intersect'], position[0])
+  console.log(mids, midIndex)
+  return {
+    distanceData: [{
+      x: position[1]==='v' ? orderedNums['intersect'][0]/pw : mids[midIndex[0]]/pw,
+      y: position[1]==='v' ? mids[midIndex[0]]/ph : orderedNums['intersect'][0]/ph,
+      [position[1]==='v' ? 'w' : 'h']: (orderedNums['intersect'][1]-orderedNums['intersect'][0])/(position[1]==='v' ? pw : ph),
+      distance: toFixed(orderedNums['intersect'][1]-orderedNums['intersect'][0])
+    }],
+    rulerData: []
   }
-  if (target.left - selected.right) {
-
-  } else {
-    
-  }
+  // console.log(mids[midIndex[0]], mids[midIndex[1]])
 }
