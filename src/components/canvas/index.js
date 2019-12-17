@@ -49,7 +49,6 @@ class Canvas extends React.Component {
     const { pageRect, selectedRect } = this.state
     // const markData = calculateMarkData(selectedRect, rect, pageRect)
     const markData = mark(selectedRect, rect, pageRect)
-    console.log(markData.distanceData)
     this.setState({
       hoveredRect: rect,
       hoveredIndex: index,
