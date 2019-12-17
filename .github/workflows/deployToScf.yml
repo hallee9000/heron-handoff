@@ -1,0 +1,24 @@
+name: deploy-to-tencent-scf
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - run: yarn
+    - run: yarn build
+    - name: serverless deploy
+      uses: serverless/github-action@master
+      with:
+        args: deploy
+      env:
+        TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+        TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
