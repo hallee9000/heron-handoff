@@ -1,0 +1,11 @@
+# serverless.yml
+
+figmaHandoff:
+  component: '@serverless/tencent-website'
+  inputs:
+    code:
+      src: ./build
+      index: index.html
+      error: index.html
+    region: ap-guangzhou
+    bucketName: guangzhou-1255718578
