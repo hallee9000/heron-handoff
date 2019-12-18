@@ -16,9 +16,9 @@ jobs:
     - run: yarn
     - run: yarn build
     - name: serverless deploy
-      uses: serverless/github-action@master
+      uses: tegud/serverless-github-action@1.56.1
       with:
-        args: deploy
+        command: deploy
       env:
         TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
         TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
