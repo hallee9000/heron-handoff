@@ -13,8 +13,10 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
+    - run: echo "TENCENT_SECRET_ID=${{ secrets.TENCENT_SECRET_ID }}\nTENCENT_SECRET_KEY=${{ secrets.TENCENT_SECRET_KEY }}" > ./.env
     - run: npm install -g serverless
     - run: npm install
     - run: npm run build
-    - run: echo "TENCENT_SECRET_ID=${{ secrets.TENCENT_SECRET_ID }}\nTENCENT_SECRET_KEY=${{ secrets.TENCENT_SECRET_KEY }}" > ./.env
+    - run: ls
+    - run: cat .env
     - run: sls --debug
