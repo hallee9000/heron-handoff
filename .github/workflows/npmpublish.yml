@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - run: echo hero \n hore > ./a.yml
+    - run: cat>a.yml<<EOF
+        aa
+        bb
     - run: ls -a
     - run: nl a.yml
