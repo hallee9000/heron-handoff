@@ -1,0 +1,14 @@
+name: test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "hero\nhore" > ./a.yml
+    - run: ls -a
+    - run: nl serverless.yml
