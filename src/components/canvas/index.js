@@ -1,6 +1,5 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
-import { mark } from 'utils/distance'
 import { generateRects, calculateMarkData } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
@@ -47,8 +46,7 @@ class Canvas extends React.Component {
   }
   onHover = (rect, index) => {
     const { pageRect, selectedRect } = this.state
-    // const markData = calculateMarkData(selectedRect, rect, pageRect)
-    const markData = mark(selectedRect, rect, pageRect)
+    const markData = calculateMarkData(selectedRect, rect, pageRect)
     this.setState({
       hoveredRect: rect,
       hoveredIndex: index,
@@ -85,7 +83,6 @@ class Canvas extends React.Component {
                   {selected: selectedIndex===index, hovered: hoveredIndex===index}
                 )}
                 style={{top, left, width, height}}
-                title={rect.title}
                 onClick={() => this.onSelect(rect, index)}
                 onMouseOver={() => this.onHover(rect, index)}
               >
