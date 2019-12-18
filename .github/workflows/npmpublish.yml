@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v1
     - run: echo "hero\nhore" > ./a.yml
     - run: ls -a
     - run: nl serverless.yml
