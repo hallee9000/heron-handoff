@@ -17,6 +17,8 @@ jobs:
     - run: yarn build
     - name: serverless deploy
       uses: serverless/github-action@master
-    - run: echo "TENCENT_SECRET_ID=${{ secrets.TENCENT_SECRET_ID }}\nTENCENT_SECRET_KEY=${{ secrets.TENCENT_SECRET_KEY }}" > ./.env
-    - run: cat .env
-    - run: sls --debug
+      with:
+        args: deploy
+      env:
+        TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+        TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
