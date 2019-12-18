@@ -13,12 +13,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
+    - run: yarn global add serverless
     - run: yarn
     - run: yarn build
-    - name: serverless deploy
-      uses: tegud/serverless-github-action@1.56.1
-      with:
-        command: deploy
-      env:
-        TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
-        TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+    - run: echo "TENCENT_SECRET_ID=${{ secrets.TENCENT_SECRET_ID }}\nTENCENT_SECRET_KEY=${{ secrets.TENCENT_SECRET_KEY }}" > ./.env
+    - run: sls --debug
