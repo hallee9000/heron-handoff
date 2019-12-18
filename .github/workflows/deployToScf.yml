@@ -13,8 +13,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
-    - run: yarn global add serverless
     - run: yarn
     - run: yarn build
+    - run: yarn global add serverless
     - run: echo "TENCENT_SECRET_ID=${{ secrets.TENCENT_SECRET_ID }}\nTENCENT_SECRET_KEY=${{ secrets.TENCENT_SECRET_KEY }}" > ./.env
     - run: sls --debug
