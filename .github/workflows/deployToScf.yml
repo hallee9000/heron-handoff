@@ -17,6 +17,6 @@ jobs:
     - run: npm install -g serverless
     - run: npm install
     - run: npm run build
-    - run: ls
+    - run: ls -a
     - run: cat .env
     - run: sls --debug
