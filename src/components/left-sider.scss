@@ -1,12 +1,11 @@
 .main-left-sider{
   flex-shrink: 0;
-  width: 200px;
+  width: 240px;
   background: #222531;
   .left-sider-tabs{
     display: flex;
     justify-content: space-around;
     padding: 0 12px;
-    color: #FFF;
     border-bottom: 1px solid #383941;
     li{
       padding: 8px 0;
@@ -27,7 +26,6 @@
     }
     .pages-frames{
       height: calc(100% - 50px);
-      color: #FFF;
       overflow: auto;
       li{
         display: flex;
@@ -37,20 +35,21 @@
         font-weight: 500;
         cursor: pointer;
         &:hover, &.selected{
-          background: #1C1F2A;
+          background: #141723;
         }
         .frame-thumbnail{
-          width: 40px;
-          height: 40px;
+          width: 46px;
+          height: 46px;
           margin-right: 8px;
           background-position: center;
-          background-size: cover;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-color: #111421;
         }
       }
     }
     .pages-components{
       height: calc(100% - 50px);
-      color: #FFF;
       overflow: auto;
       li{
         display: flex;
@@ -60,14 +59,16 @@
         font-weight: 500;
         cursor: pointer;
         &:hover, &.selected{
-          background: #1C1F2A;
+          background: #141723;
         }
         .component-thumbnail{
-          width: 40px;
-          height: 40px;
+          width: 46px;
+          height: 46px;
           margin-right: 8px;
           background-position: center;
-          background-size: cover;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-color: #111421;
         }
       }
     }

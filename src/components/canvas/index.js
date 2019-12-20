@@ -1,6 +1,6 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
-import { generateRects, calculateMarkData } from 'utils/helper'
+import { toPercentage, generateRects, calculateMarkData } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
 import Ruler from './Ruler'
@@ -41,7 +41,7 @@ class Canvas extends React.Component {
     const { spacePressed } =this.props
     if (spacePressed) return
     const { onSelect } = this.props
-    onSelect && onSelect(rect.node)
+    onSelect && onSelect(rect)
     this.setState({ selectedRect: rect, selectedIndex: index})
   }
   onHover = (rect, index) => {
@@ -51,6 +51,13 @@ class Canvas extends React.Component {
       hoveredRect: rect,
       hoveredIndex: index,
       markData
+    })
+  }
+  onLeave = () => {
+    this.setState({
+      hoveredRect: null,
+      hoveredIndex: null,
+      markData: {}
     })
   }
   componentDidMount () {
@@ -64,16 +71,16 @@ class Canvas extends React.Component {
   }
 	render () {
     const { frameId } = this.props
-    const { rects, selectedIndex, hoveredRect, hoveredIndex, markData } = this.state
+    const { rects, pageRect, selectedIndex, hoveredIndex, markData } = this.state
 		return (
-      <div className="container-mark">
+      <div className="container-mark" onMouseLeave={this.onLeave}>
         {
           !!selectedIndex && (selectedIndex!==hoveredIndex) &&
           <Ruler rulerData={markData.rulerData}/>
         }
         {
           rects.map((rect, index) => {
-            const { top, left, width, height } = rect.box
+            const { top, left, width, height } = rect
             return (
               <div
                 key={index}
@@ -82,7 +89,12 @@ class Canvas extends React.Component {
                   ...rect.clazz,
                   {selected: selectedIndex===index, hovered: hoveredIndex===index}
                 )}
-                style={{top, left, width, height}}
+                style={{
+                  top: toPercentage(top/pageRect.height),
+                  left: toPercentage(left/pageRect.width),
+                  width: toPercentage(width/pageRect.width),
+                  height: toPercentage(height/pageRect.height)
+                }}
                 onClick={() => this.onSelect(rect, index)}
                 onMouseOver={() => this.onHover(rect, index)}
               >

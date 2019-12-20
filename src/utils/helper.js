@@ -42,14 +42,6 @@ export const generateRects = (nodes, docRect) => {
             right: left+width,
             width: width,
             height: height,
-            box: {
-              top: toPercentage(top/docRect.height),
-              left: toPercentage(left/docRect.width),
-              bottom: toPercentage((top+height)/docRect.height),
-              right: toPercentage((left+width)/docRect.width),
-              width: toPercentage(width/docRect.width),
-              height: toPercentage(height/docRect.height)
-            },
             actualWidth: toFixed(nbb.width),
             actualHeight: toFixed(nbb.height),
             title: node.name,

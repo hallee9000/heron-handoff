@@ -68,6 +68,13 @@ export default function (Canvas) {
         }
       }
     }
+    onContainerClick = e => {
+      const { onDeselect } = this.props
+      const { isDragging } = this.state
+      if (!isDragging && e.target.className==='canvas-container') {
+        onDeselect && onDeselect()
+      }
+    }
     handleDrag = () => {
       const canvas = this.canvas.current
       canvas.addEventListener('mousedown', e => {
@@ -93,6 +100,7 @@ export default function (Canvas) {
       })
       canvas.addEventListener('mouseup', e => {
         const { spacePressed } = this.state
+        this.onContainerClick(e)
         if (e.which===2 || spacePressed) {
           this.setState({ isDragging: false })
         }
@@ -152,11 +160,6 @@ export default function (Canvas) {
       this.handleKeyboard()
       this.handleDrag()
       window.onresize = throttle(this.handleResize, 200)
-    }
-    componentDidUpdate(prevProps) {
-      if (this.props.rightVisible !== prevProps.rightVisible) {
-        this.handleResize()
-      }
     }
     render () {
       const { initialWidth, initialHeight, posX, posY, scale, spacePressed, isDragging } = this.state
