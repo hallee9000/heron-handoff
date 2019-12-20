@@ -1,18 +1,3 @@
-export const getSpacing = (selected, target) => {
-  const spacingV = Math.max(selected.top - target.bottom, target.top - selected.bottom)
-  const spacingH = Math.max(selected.left - target.right, target.left - selected.right)
-  return {
-    // spacing between selected and target in both direction
-    spacingV,
-    spacingH,
-    // selected position(relative to target)
-    l: target.left - selected.right>0,
-    r: selected.left - target.right>0,
-    t: target.top - selected.bottom>0,
-    b: selected.top - target.bottom>0
-  }
-}
-
 // return: selected position, not intersect direction
 export const getPosition = (selected, target) => {
   const position = {}

@@ -1,15 +1,28 @@
 .app-header{
   display: flex;
   align-items: center;
-  padding: 5px 12px;
-  color: #FFF;
+  height: 40px;
   background: #191C28;
   .header-logo{
+    margin: 5px 0;
+    margin-left: 12px;
     height: 30px;
   }
   .header-name{
     flex: 1;
     line-height: 30px;
     text-align: center;
+  }
+  .header-operates{
+    span{
+      padding: 13px;
+      cursor: pointer;
+      &:last-child{
+        margin-right: 0;
+      }
+      &:hover{
+        background: rgb(13, 15, 22);
+      }
+    }
   }
 }

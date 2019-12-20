@@ -1,0 +1,290 @@
+{
+  "TEXT": 
+  {
+    "id": "1479:132",
+    "name": "// 公有云 COS 示例 const config = { appId: '您的 Appid', secretId: '您的 SecretId', secretKey: '您的 SecretKey', }",
+    "type": "TEXT",
+    "blendMode": "PASS_THROUGH",
+    "absoluteBoundingBox": {
+      "x": 1105,
+      "y": 3389,
+      "width": 212,
+      "height": 113
+    },
+    "constraints": {
+      "vertical": "TOP",
+      "horizontal": "LEFT"
+    },
+    "fills": [
+      {
+        "blendMode": "NORMAL",
+        "type": "SOLID",
+        "color": {
+          "r": 0.1921568661928177,
+          "g": 0.3607843220233917,
+          "b": 0.48235294222831726,
+          "a": 1
+        }
+      }
+    ],
+    "strokes": [],
+    "strokeWeight": 1,
+    "strokeAlign": "OUTSIDE",
+    "styles": {
+      "fill": "839:362"
+    },
+    "effects": [],
+    "characters": "// 公有云 COS 示例\n\nconst config = {\n  appId: '您的 Appid',\n  secretId: '您的 SecretId',\n  secretKey: '您的 SecretKey',\n}",
+    "style": {
+      "fontFamily": "Monaco",
+      "fontPostScriptName": "Monaco",
+      "fontWeight": 400,
+      "fontSize": 12,
+      "textAlignHorizontal": "LEFT",
+      "textAlignVertical": "TOP",
+      "letterSpacing": 0,
+      "lineHeightPx": 14.0625,
+      "lineHeightPercent": 100,
+      "lineHeightUnit": "INTRINSIC_%"
+    },
+    "layoutVersion": 0,
+    "characterStyleOverrides": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      3,
+      3,
+      3,
+      3,
+      3,
+      5,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      5,
+      5,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      5,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      8,
+      8,
+      5,
+      5,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      5,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      8,
+      8,
+      5,
+      5,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      5,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      8,
+      8,
+      8
+    ],
+    "styleOverrideTable": {
+      "3": {
+        "fills": [
+          {
+            "blendMode": "NORMAL",
+            "type": "SOLID",
+            "color": {
+              "r": 0.04313725605607033,
+              "g": 0.1411764770746231,
+              "b": 0.9843137264251709,
+              "a": 1
+            }
+          }
+        ]
+      },
+      "5": {
+        "fills": [
+          {
+            "blendMode": "NORMAL",
+            "type": "SOLID",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            }
+          }
+        ]
+      },
+      "6": {
+        "fills": [
+          {
+            "blendMode": "NORMAL",
+            "type": "SOLID",
+            "color": {
+              "r": 0.05882352963089943,
+              "g": 0.49803921580314636,
+              "b": 0.07058823853731155,
+              "a": 1
+            }
+          }
+        ]
+      },
+      "7": {
+        "fills": [
+          {
+            "blendMode": "NORMAL",
+            "type": "SOLID",
+            "color": {
+              "r": 0.6313725709915161,
+              "g": 0.09019608050584793,
+              "b": 0.10980392247438431,
+              "a": 1
+            }
+          }
+        ]
+      },
+      "8": {
+        "fills": [
+          {
+            "blendMode": "NORMAL",
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "RECTANGLE": {
+    "id": "I1537:0;1401:357",
+    "name": "bg",
+    "type": "RECTANGLE",
+    "blendMode": "PASS_THROUGH",
+    "absoluteBoundingBox": {
+      "x": -3555,
+      "y": 685,
+      "width": 168,
+      "height": 26
+    },
+    "constraints": {
+      "vertical": "SCALE",
+      "horizontal": "SCALE"
+    },
+    "fills": [
+      {
+        "blendMode": "NORMAL",
+        "type": "SOLID",
+        "color": {
+          "r": 0.1411764770746231,
+          "g": 0.1411764770746231,
+          "b": 0.1411764770746231,
+          "a": 1
+        }
+      }
+    ],
+    "strokes": [
+      {
+        "blendMode": "NORMAL",
+        "type": "SOLID",
+        "color": {
+          "r": 0,
+          "g": 0.4000000059604645,
+          "b": 1,
+          "a": 1
+        }
+      }
+    ],
+    "strokeWeight": 1,
+    "strokeAlign": "INSIDE",
+    "styles": {
+      "fill": "1464:7",
+      "stroke": "940:367"
+    },
+    "effects": [],
+    "cornerRadius": 2,
+    "rectangleCornerRadii": [
+      2,
+      2,
+      2,
+      2
+    ]
+  }
+}
