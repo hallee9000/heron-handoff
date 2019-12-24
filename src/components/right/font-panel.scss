@@ -1,0 +1,31 @@
+.props-text{
+  .text-content{
+    margin-bottom: 10px;
+    .content-box{
+      font-size: 12px;
+      max-height: 70px;
+      padding: 10px;
+      border-radius: 2px;
+      background: #1C1F2A;
+      white-space: pre-wrap;
+      overflow: auto;
+      >span{
+        margin: 0;
+        padding: 0 3px;
+        border-radius: 2px;
+        &.selected{
+          background: rgba($color: #FFF, $alpha: 0.2);
+        }
+        &:hover{
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+    .section-helper{
+      display: inline-block;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+  }
+}

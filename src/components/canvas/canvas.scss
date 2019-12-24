@@ -1,11 +1,5 @@
 .container-mark{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 25%;
-  margin: 0 auto;
-  transform: translate(-50%, -50%);
-  overflow: hidden;
+  position: relative;
   img{
     display: block;
     width: 100%;

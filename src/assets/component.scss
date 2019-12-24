@@ -1,0 +1,16 @@
+.rc-tooltip{
+  opacity: 1;
+  .rc-tooltip-inner{
+    background-color: rgba(8, 11, 25, 0.98);
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
+    img{
+      width: 100%;
+    }
+  }
+  &-placement-top,
+  &-placement-topLeft{
+    .rc-tooltip-arrow{
+      border-top-color: rgba(8, 11, 25, 0.98);
+    }
+  }
+}
