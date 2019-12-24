@@ -57,7 +57,7 @@ export default class FontPanel extends React.Component {
               overlay={
                 () =>
                   <Fragment>
-                    <img src="/tutorial/multi-styles.gif"/>
+                    <img src={`${process.env.PUBLIC_URL}/tutorial/multi-styles.gif`}/>
                     <p>这段文本里面有多种样式，点击对应文字片段来查看不同的样式属性。</p>
                   </Fragment>
               }
