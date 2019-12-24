@@ -17,7 +17,7 @@ export const toPercentage = num => `${num*100}%`
 export const px2number = str => str.replace('px', '') - 0
 
 // 0.2637378 -> 0.26, 8 -> 8
-export const toFixed = num => Math.floor(num)===num ? num : num.toFixed(2)
+export const toFixed = num => Math.floor(num)===num ? num : (num.toFixed(2) - 0)
 
 // generate box data
 export const generateRects = (nodes, docRect) => {

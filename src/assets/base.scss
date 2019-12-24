@@ -1,3 +1,9 @@
+@import 'assets/utils.scss';
+@import 'assets/component.scss';
+@import 'assets/input.scss';
+
+@import '~rc-tooltip/assets/bootstrap.css';
+
 body {
   margin: 0;
   font-size: 14px;
@@ -21,4 +27,9 @@ ul{
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+p{
+  margin: 0;
+  padding: 0;
 }

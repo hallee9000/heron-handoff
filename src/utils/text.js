@@ -1,20 +1,23 @@
-export const formatCharacters = (text, overrides, styles) => {
+export const getTextTable = ({ characters, characterStyleOverrides, styleOverrideTable }) => {
+  const text = characters
+  const overrides = characterStyleOverrides
+  const styles = styleOverrideTable
   const textTable = []
   if (overrides.length===0) return textTable
   overrides.map((styleKey, index) => {
-    console.log(text[index]==='\t')
+    const key = styleKey - 0
     if (index===0) {
       textTable.push({
         text: text[0],
-        ...styles[styleKey]
+        ...styles[key]
       })
     } else {
-      if (styleKey===overrides[index-1]) {
+      if (key===overrides[index-1]) {
         textTable[textTable.length-1].text += text[index]
       } else {
         textTable.push({
           text: text[index],
-          ...styles[styleKey]
+          ...styles[key]
         })
       }
     }

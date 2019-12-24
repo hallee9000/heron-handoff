@@ -28,7 +28,11 @@
     }
   }
   .canvas-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
+    padding: 60px;
     background: #111421;
     transition: none;
   }

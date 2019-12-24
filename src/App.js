@@ -6,8 +6,6 @@ import RightProps from 'components/RightProps'
 import Canvas from 'components/canvas'
 import data from 'mock/file'
 import 'assets/base.scss'
-import 'assets/utils.scss'
-import 'assets/input.scss'
 import './app.scss'
 
 class App extends React.Component {
