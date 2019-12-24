@@ -75,7 +75,10 @@ export default class LeftSider extends React.Component {
                     className={cn({selected: selectedIndex===index})}
                     onClick={() => this.handleSelect(index, component.id)}
                   >
-                    <div className="component-thumbnail" style={{backgroundImage: `url(/mock/${component.id.replace(':', '-')}.jpg)`}}/> {component.name}
+                    <div
+                      className="component-thumbnail"
+                      style={{backgroundImage: `url(${process.env.PUBLIC_URL}/mock/${component.id.replace(':', '-')}.jpg)`}}
+                    /> {component.name}
                   </li>
               )
             }

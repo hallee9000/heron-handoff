@@ -142,6 +142,7 @@ export const calculateMarkData = (selected, target, pageRect) => {
               [index<2 ? 'w' : 'h']: d/(index<2 ? pw : ph),
               distance: toFixed(d)
             })
+            return edge
           })
         } else {
           const direction = position.v[0]!==0 ? 'v' : 'h'
@@ -189,6 +190,7 @@ export const calculateMarkData = (selected, target, pageRect) => {
               distance: toFixed(rulerDistance/(direction==='v' ? ph : pw))
             })
           }
+          return margin
         })
       }
     } else {

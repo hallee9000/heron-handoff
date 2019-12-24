@@ -20,7 +20,7 @@ class Header extends React.Component {
     const { name } = this.props
     return (
       <header className="app-header">
-        <img className="header-logo" src="/logo.png" alt="logo"/>
+        <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/>
         <span className="header-name">{name}</span>
         <div className="header-operates">
           <span title="设置">

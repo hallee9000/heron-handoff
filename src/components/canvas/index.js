@@ -108,7 +108,7 @@ class Canvas extends React.Component {
           selectedIndex!==hoveredIndex &&
           <Distance distanceData={markData.distanceData}/>
         }
-        <img src={`/mock/${frameId.replace(':', '-')}.jpg`} ref={this.img} alt="frame"/>
+        <img src={`${process.env.PUBLIC_URL}/mock/${frameId.replace(':', '-')}.jpg`} ref={this.img} alt="frame"/>
       </div>
     )
 	}
