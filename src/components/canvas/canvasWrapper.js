@@ -194,6 +194,7 @@ export default function (Canvas) {
       window.onresize = throttle(this.handleResize, 200)
     }
     render () {
+      const { width, height } = this.props.frameData.absoluteBoundingBox
       const { initialWidth, initialHeight, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
         top: posY,
@@ -216,6 +217,7 @@ export default function (Canvas) {
             <Canvas
               {...this.props}
               spacePressed={spacePressed}
+              size={{width: width*scale, height: height*scale}}
             />
           </div>
         </div>

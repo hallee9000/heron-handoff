@@ -70,7 +70,7 @@ class Canvas extends React.Component {
     }
   }
 	render () {
-    const { frameId } = this.props
+    const { frameId, size } = this.props
     const { rects, pageRect, selectedIndex, hoveredIndex, markData } = this.state
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
@@ -108,7 +108,12 @@ class Canvas extends React.Component {
           selectedIndex!==hoveredIndex &&
           <Distance distanceData={markData.distanceData}/>
         }
-        <img src={`${process.env.PUBLIC_URL}/mock/${frameId.replace(':', '-')}.jpg`} ref={this.img} alt="frame"/>
+        <img
+          src={`${process.env.PUBLIC_URL}/mock/${frameId.replace(':', '-')}.jpg`}
+          ref={this.img}
+          alt="frame"
+          style={{width: size.width, height: size.height}}
+        />
       </div>
     )
 	}
