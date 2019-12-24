@@ -14,6 +14,7 @@ jobs:
       with:
         node-version: '10.x'
     - run: npm install
+    - run: echo PUBLIC_URL=figma-handoff > ./.env
     - run: npm run build
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.2.5
