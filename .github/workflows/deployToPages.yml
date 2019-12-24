@@ -18,4 +18,6 @@ jobs:
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.2.5
       with:
-         build_dir:  build
+        build_dir:  build
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
