@@ -1,6 +1,7 @@
 import React, { createRef }  from 'react'
 import { Plus, Minus } from 'react-feather'
-import { throttle, px2number, toFixed } from 'utils/helper'
+import { px2number, toFixed } from 'utils/mark'
+import { throttle } from 'utils/helper'
 
 import './canvas-wrapper.scss'
 
@@ -26,7 +27,8 @@ export default function (Canvas) {
         originY: 0
       }
     }
-    initializeCanvas = () => {
+    initializeCanvas = (needResetSizeAndPosition) => {
+      const { scale } = this.state
       const { width, height } = this.props.frameData.absoluteBoundingBox
       const { clientWidth, clientHeight } = this.container.current
       let minScale = 1
@@ -45,7 +47,7 @@ export default function (Canvas) {
         initialHeight = clientHeight
       }
       this.setState({
-        scale: minScale,
+        scale: needResetSizeAndPosition ? minScale : Math.max(scale, minScale),
         minScale,
         // remember container size
         containerWidth: clientWidth,
@@ -53,6 +55,12 @@ export default function (Canvas) {
         initialWidth,
         initialHeight
       })
+      if (needResetSizeAndPosition) {
+        this.setState({
+          posX: 0,
+          posY: 0
+        })
+      }
     }
     limitedPosition = (pos, scale, whichOne) => {
       const { containerWidth, containerHeight, initialWidth, initialHeight } = this.state
@@ -183,11 +191,11 @@ export default function (Canvas) {
     }
     componentDidUpdate (prevProps) {
       if (prevProps.frameId !== this.props.frameId) {
-        this.handleResize()
+        this.initializeCanvas(true)
       }
     }
     componentDidMount () {
-      this.initializeCanvas()
+      this.initializeCanvas(true)
       this.handleWheel()
       this.handleKeyboard()
       this.handleDrag()

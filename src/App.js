@@ -1,76 +1,67 @@
 import React from 'react'
+import Entry from 'components/Entry'
+import Main from 'components/Main'
 import Header from 'components/Header'
-import LeftSider from 'components/LeftSider'
-import RightSider from 'components/RightSider'
-import RightProps from 'components/RightProps'
-import Canvas from 'components/canvas'
-import data from 'mock/file'
+import mockData from 'mock/file'
 import 'assets/base.scss'
 import './app.scss'
 
+const isMock = false
+
 class App extends React.Component {
-  state = {
-    pageData: data.document,
-    frameData: data.document.children[0].children[0],
-    name: data.document.children[0].children[0].name,
-    frameId: '',
-    elementData: null,
-    propsDissolved: true
+  constructor(props) {
+    super(props)
+    let data, entryVisible
+    if (isMock) {
+      data = mockData
+      entryVisible = false
+    } else {
+      const innerData = document.getElementById('data')
+      if (innerData) {
+        data = JSON.parse(innerData.innerText)
+        entryVisible = false
+      } else {
+        entryVisible = true
+      }
+    }
+    this.state = {
+      entryVisible,
+      data,
+      names: {}
+    }
   }
-  handleSelectPage = currentFrameId => {
-    const { pageData, frameId } = this.state
-    if (frameId===currentFrameId) return
-    const frameData = pageData.children[0].children
-      .find(frame => frame.id===currentFrameId)
+  handleDataGot = data => {
     this.setState({
-      frameId: currentFrameId,
-      frameData,
-      name: frameData.name
+      entryVisible: false,
+      data
     })
-    this.handleDeselect()
   }
-  handleSelectElement = elementData => {
+  getNames = (pageName, frameName) => {
+    const { data } = this.state
     this.setState({
-      elementData,
-      propsDissolved: false
+      names: {
+        documentName: data.name,
+        pageName: pageName || data.document.children[0].name,
+        frameName: frameName || data.document.children[0].children[0].name
+      }
     })
-  }
-  handleDeselect = () => {
-    this.setState({ propsDissolved: true })
-  }
-  handleDissolveEnd = () => {
-    this.setState({ elementData: null })
   }
   render () {
-    const { pageData, name, frameId, frameData, elementData, propsDissolved } = this.state
+    const { entryVisible, data, names } = this.state
+    console.log(data)
     return (
       <div className="app-container">
-        <Header
-          name={name}
-        />
-        <div className="app-main">
-          <LeftSider
-            pageData={pageData}
-            onSelect={this.handleSelectPage}
+        <Header {...names}/>
+        {
+          entryVisible ?
+          <Entry
+            onGotData={this.handleDataGot}
+          /> :
+          <Main
+            data={data}
+            onNamesChange={this.getNames}
           />
-          <Canvas
-            frameData={frameData}
-            frameId={frameId}
-            onSelect={this.handleSelectElement}
-            onDeselect={this.handleDeselect}
-          />
-          <div className="main-right">
-            <RightSider hasMask={!propsDissolved}/>
-            {
-              elementData &&
-              <RightProps
-                data={elementData}
-                dissolved={propsDissolved}
-                onDissolveEnd={this.handleDissolveEnd}
-              />
-            }
-          </div>
-        </div>
+        }
       </div>
     )
   }

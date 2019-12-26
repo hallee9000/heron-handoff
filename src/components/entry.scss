@@ -1,0 +1,10 @@
+.app-entry{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background: #111421;
+  .entry-container{
+    width: 360px;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { toPercentage } from 'utils/helper'
+import { toPercentage } from 'utils/mark'
 import './ruler.scss'
 
 export default ({rulerData}) =>

@@ -1,34 +1,45 @@
 import React from 'react'
 import cn from 'classnames'
+import { WithTooltip } from 'utils/hoc'
 import './left-sider.scss'
 
 export default class LeftSider extends React.Component {
   state = {
     selectedIndex: 0,
     frames: [],
-    components: [],
+    pageIndex: 0,
     tabIndex: 0
   }
-  handleSelect = (index, id) => {
-    const { onSelect } = this.props
+  initializeFrames = () => {
+    const { pages } = this.props
+    const { pageIndex } = this.state
+    const frames = pages[pageIndex].children
+      .filter(frame => frame.type==='FRAME')
+    this.setState({ frames })
+    // select first frame
+    this.handleFrameSelect(0, frames[0].id)
+  }
+  handlePageChange = e => {
+    const pageIndex = e.target.value - 0
+    this.setState({ pageIndex }, () => {
+      this.initializeFrames()
+    })
+  }
+  handleFrameSelect = (index, frameId) => {
+    const { onFrameChange } = this.props
+    const { pageIndex } = this.state
     this.setState({ selectedIndex: index })
-    onSelect && onSelect(id)
+    onFrameChange && onFrameChange(pageIndex, frameId)
   }
   handleTabClick = (tabIndex) => {
     this.setState({ tabIndex })
   }
   componentDidMount () {
-    const { pageData, onSelect } = this.props
-    const frames = pageData.children[0].children
-      .filter(frame => frame.type==='FRAME')
-    const components = pageData.children[0].children
-      .filter(frame => frame.type==='COMPONENT')
-    this.setState({ frames, components })
-    onSelect(frames[0].id)
+    this.initializeFrames()
   }
   render () {
-    const { pageData } = this.props
-    const { selectedIndex, frames, components, tabIndex } = this.state
+    const { pages, components } = this.props
+    const { selectedIndex, frames, tabIndex } = this.state
     return (
       <div className="main-left-sider">
         <ul className="left-sider-tabs">
@@ -41,48 +52,53 @@ export default class LeftSider extends React.Component {
             onClick={() => this.handleTabClick(1)}
           >组件</li>
         </ul>
-        <div className="left-sider-pages">
-          <div className="pages-selector">
-            <select className="input">
+        <div className="left-sider-list">
+          <div className="list-pages">
+            <select className="input" onChange={this.handlePageChange}>
               {
-                pageData.children.map(
-                  page =>
-                    <option key={page.id} value={page.id}>{page.name}</option>
+                pages.map(
+                  (page, index) =>
+                    <option key={index} value={index}>{page.name}</option>
                 )
               }
             </select>
           </div>
-          <ul className={cn('pages-frames', {hide: tabIndex===1})}>
+          <ul className={cn('list-items list-frames', {hide: tabIndex===1})}>
             {
               frames.map(
                 (frame, index) =>
                   <li
                     key={frame.id}
                     className={cn({selected: selectedIndex===index})}
-                    onClick={() => this.handleSelect(index, frame.id)}
+                    onClick={() => this.handleFrameSelect(index, frame.id)}
                   >
                     <div
-                      className="frame-thumbnail"
+                      className="item-thumbnail"
                       style={{backgroundImage: `url(${process.env.PUBLIC_URL}/mock/${frame.id.replace(':', '-')}.jpg)`}}
                     /> {frame.name}
                   </li>
               )
             }
           </ul>
-          <ul className={cn('pages-components', {hide: tabIndex===0})}>
+          <ul className={cn('list-items list-components', {hide: tabIndex===0})}>
             {
-              components.map(
-                (component, index) =>
-                  <li
-                    key={component.id}
-                    className={cn({selected: selectedIndex===index})}
-                    onClick={() => this.handleSelect(index, component.id)}
-                  >
-                    <div
-                      className="component-thumbnail"
-                      style={{backgroundImage: `url(${process.env.PUBLIC_URL}/mock/${component.id.replace(':', '-')}.jpg)`}}
-                    /> {component.name}
-                  </li>
+              Object.keys(components).map(
+                (id, index) =>
+                  <WithTooltip
+                    key={id}
+                    yes={!!components[id].description}
+                    tooltipProps={{overlay: components[id].description, placement: 'right'}}
+                  >                                  
+                    <li
+                      className={cn({selected: index===selectedIndex})}
+                      onClick={() => this.handleFrameSelect(index, id)}
+                    >
+                      <div
+                        className="item-thumbnail"
+                        style={{backgroundImage: `url(${process.env.PUBLIC_URL}/mock/${id.replace(':', '-')}.jpg)`}}
+                      /> {components[id].name}
+                    </li>
+                  </WithTooltip>
               )
             }
           </ul>

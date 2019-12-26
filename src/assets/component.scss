@@ -1,7 +1,7 @@
 .rc-tooltip{
   opacity: 1;
   .rc-tooltip-inner{
-    background-color: rgba(8, 11, 25, 0.98);
+    background-color: rgba(47, 52, 70, 0.96);
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
     img{
       width: 100%;
@@ -10,7 +10,12 @@
   &-placement-top,
   &-placement-topLeft{
     .rc-tooltip-arrow{
-      border-top-color: rgba(8, 11, 25, 0.98);
+      border-top-color: rgba(47, 52, 70, 0.96);
+    }
+  }
+  &-placement-right{
+    .rc-tooltip-arrow{
+      border-right-color: rgba(47, 52, 70, 0.96);
     }
   }
 }

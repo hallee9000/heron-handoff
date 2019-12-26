@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
 import { getColor, getCSSColor } from 'utils/color'
-import { toFixed } from 'utils/helper'
+import { toFixed } from 'utils/mark'
 import FontPanel from './right/FontPanel'
 import './right-props.scss'
 

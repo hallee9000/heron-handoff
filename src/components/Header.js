@@ -17,11 +17,19 @@ class Header extends React.Component {
       })
   }
   render () {
-    const { name } = this.props
+    const { documentName, pageName, frameName } = this.props
     return (
       <header className="app-header">
         <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/>
-        <span className="header-name">{name}</span>
+        <span className="header-filename">{documentName}</span>
+        <span className="header-space"/>
+        {
+          pageName && frameName ?
+          <span className="header-pagename">
+            {pageName}<span> / </span>{frameName}
+          </span> :
+          <span className="header-pagename">Figma Handoff</span>
+        }
         <div className="header-operates">
           <span title="设置">
             <Settings size={14}/>

@@ -1,0 +1,55 @@
+// 基类
+.btn{
+  outline:none;
+  display: inline-block;
+  border:none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 20px;
+  font-size: 12px;
+  padding: 2px 12px;
+  border: 1px solid transparent;
+  background-image: none;
+  color: #333;
+  background: #999;
+  transition: all 0.6s;
+  &:hover {
+      text-decoration: none;
+  }
+  &:active {
+      text-decoration: none;
+  }
+  &:disabled {
+      text-decoration: none;
+  }
+  >svg{
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 5px;
+      vertical-align: middle;
+  }
+
+  &.btn-primary{
+    color: #FFF;
+    background: #0035FF;
+    &:hover{
+      background: darken(#0035FF, 6%);
+    }
+  }
+  
+  &.btn-block{
+    display: block;
+    width: 100%;
+  }
+}
+
+.btn-lg{
+  height: 32px;
+  padding: 5px 10px;
+  font-size: 14px;
+}

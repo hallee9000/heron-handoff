@@ -7,6 +7,7 @@
   height: 26px;
   padding: 2px 10px;
   color: #FFF;
+  font-size: 12px;
   border-radius: 2px;
   border: 1px solid transparent;
   transition: all 0.2s;
@@ -18,7 +19,7 @@
     border: 1px solid fade-out($primary-color, 0.36);
   }
   &::placeholder{
-    color: #999;
+    color: fade-out(#FFF, 0.65);
   }
   &[disabled]{
     opacity: 0.6;
@@ -43,4 +44,10 @@ textarea.input{
   padding: 5px 10px;
   resize: vertical;
   height: auto;
+}
+
+.input-lg{
+  height: 32px;
+  padding: 5px 10px;
+  font-size: 14px;
 }

@@ -1,6 +1,6 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
-import { toPercentage, generateRects, calculateMarkData } from 'utils/helper'
+import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
 import Ruler from './Ruler'

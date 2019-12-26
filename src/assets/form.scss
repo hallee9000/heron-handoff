@@ -1,0 +1,26 @@
+.form{
+	.form-item{
+		position: relative;
+		margin-bottom: 15px;
+		&:last-child{
+			margin-bottom: 0;
+		}
+		&-actions{
+			margin-top: 20px;
+			text-align: right;
+			button{
+				margin-left: 10px;
+			}
+		}
+		.help-block{
+			font-size: 12px;
+			color: #AAA;
+		}
+		&.has-error{
+			.help-block{
+				padding: 2px;
+				color: #f24d1d;
+			}
+		}
+	}
+}
