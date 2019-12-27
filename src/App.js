@@ -27,13 +27,15 @@ class App extends React.Component {
     this.state = {
       entryVisible,
       data,
+      images: {},
       names: {}
     }
   }
-  handleDataGot = data => {
+  handleDataGot = (fileData, imagesData) => {
     this.setState({
       entryVisible: false,
-      data
+      data: fileData,
+      images: imagesData
     })
   }
   getNames = (pageName, frameName) => {
@@ -47,8 +49,7 @@ class App extends React.Component {
     })
   }
   render () {
-    const { entryVisible, data, names } = this.state
-    console.log(data)
+    const { entryVisible, data, images, names } = this.state
     return (
       <div className="app-container">
         <Header {...names}/>
@@ -58,7 +59,9 @@ class App extends React.Component {
             onGotData={this.handleDataGot}
           /> :
           <Main
+            isMock={isMock}
             data={data}
+            images={images}
             onNamesChange={this.getNames}
           />
         }

@@ -69,6 +69,12 @@ class Canvas extends React.Component {
       this.generateMark()
     }
   }
+  getImage = (id) => {
+    const { isMock, images } = this.props
+    return isMock ?
+    `${process.env.PUBLIC_URL}/mock/${id.replace(':', '-')}.jpg` :
+    images[id]
+  }
 	render () {
     const { frameId, size } = this.props
     const { rects, pageRect, selectedIndex, hoveredIndex, markData } = this.state
@@ -109,7 +115,7 @@ class Canvas extends React.Component {
           <Distance distanceData={markData.distanceData}/>
         }
         <img
-          src={`${process.env.PUBLIC_URL}/mock/${frameId.replace(':', '-')}.jpg`}
+          src={this.getImage(frameId)}
           ref={this.img}
           alt="frame"
           style={{width: size.width, height: size.height}}

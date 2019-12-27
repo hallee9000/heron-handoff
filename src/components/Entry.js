@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { getFile } from 'api'
+import { getFile, getImages } from 'api'
 import { getFileKey } from 'utils/helper'
 import './entry.scss'
 
@@ -40,23 +40,33 @@ export default class Entry extends React.Component {
     }
     return true
   }
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault()
-    const { onGotData } = this.props
     if (this.validate()) {
       const { fileUrl } = this.state
       const fileKey = getFileKey(fileUrl)
       this.setState({
         isLoading: true
       })
-      getFile(fileKey)
-        .then(data => {
-          this.setState({
-            isLoading: false
-          })
-          onGotData && onGotData(data)
-        })
+      const fileData = await getFile(fileKey)
+      const ids = fileData.document.children
+        .map(page => page.children
+          .filter(frame => frame.type==='FRAME')
+          .map(frame => frame.id)
+          .join()
+        )
+        .filter(frameIds => frameIds!=='')
+        .join()
+      const { images } = await getImages(fileKey, ids)
+      this.onSucceed(fileData, images)
     }
+  }
+  onSucceed = (fileData, imagesData) => {
+    const { onGotData } = this.props
+    this.setState({
+      isLoading: false
+    })
+    onGotData && onGotData(fileData, imagesData)
   }
   componentDidMount () {
     const figmaToken = window.localStorage.getItem('figmaToken')

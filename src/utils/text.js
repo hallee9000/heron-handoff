@@ -21,6 +21,7 @@ export const getTextTable = ({ characters, characterStyleOverrides, styleOverrid
         })
       }
     }
+    return styleKey
   })
   return textTable
 }

@@ -22,6 +22,7 @@ export default class FontPanel extends React.Component {
       if (piece[key]) {
         style[key] = piece[key]
       }
+      return key
     })
     this.setState({
       selected: index,
@@ -57,7 +58,7 @@ export default class FontPanel extends React.Component {
               overlay={
                 () =>
                   <Fragment>
-                    <img src={`${process.env.PUBLIC_URL}/tutorial/multi-styles.gif`}/>
+                    <img src={`${process.env.PUBLIC_URL}/tutorial/multi-styles.gif`} alt="multi-styles tutorial"/>
                     <p>这段文本里面有多种样式，点击对应文字片段来查看不同的样式属性。</p>
                   </Fragment>
               }

@@ -13,18 +13,21 @@ export const getFile = (fileKey) => {
   }).then(function(response) {
     return response.json()
   }).catch(function (error) {
-    console.log(error)
+    console.dir(error)
     return { err: error }
   });
 }
 
 export const getImages = (fileKey, ids) => {
-  return fetch(urlWithParams(`${baseUrl}/images/${fileKey}`, { ids }), {
-    headers: tokenHeaders()
-  }).then(function(response) {
+  return fetch(
+    urlWithParams(`${baseUrl}/images/${fileKey}`, { ids, scale: 2, format: 'jpg', }),
+    {
+      headers: tokenHeaders()
+    }
+  ).then(function(response) {
     return response.json()
   }).catch(function (error) {
-    console.log(error)
+    console.dir(error)
     return { err: error }
   })
 }
@@ -37,7 +40,7 @@ export const getFileNodes = (fileKey, id) => {
   }).then(function(response) {
     return response.json()
   }).catch(function (error) {
-    console.log(error)
+    console.dir(error)
     return { err: error }
   })
 }

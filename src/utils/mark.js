@@ -97,6 +97,7 @@ export const getOrderedNums = (nums) => {
     .keys(nums)
     .map(key => {
       orderedNums[key] = getSortedNumbers(nums[key])
+      return key
     })
   return orderedNums
 }

@@ -16,8 +16,10 @@ export default class LeftSider extends React.Component {
     const frames = pages[pageIndex].children
       .filter(frame => frame.type==='FRAME')
     this.setState({ frames })
-    // select first frame
-    this.handleFrameSelect(0, frames[0].id)
+    if (frames.length) {
+      // select first frame
+      this.handleFrameSelect(0, frames[0].id)
+    }
   }
   handlePageChange = e => {
     const pageIndex = e.target.value - 0
@@ -36,6 +38,12 @@ export default class LeftSider extends React.Component {
   }
   componentDidMount () {
     this.initializeFrames()
+  }
+  getImage = (id) => {
+    const { isMock, images } = this.props
+    return isMock ?
+    `url(${process.env.PUBLIC_URL}/mock/${id.replace(':', '-')}.jpg)` :
+    `url(${images[id]})`
   }
   render () {
     const { pages, components } = this.props
@@ -65,6 +73,7 @@ export default class LeftSider extends React.Component {
           </div>
           <ul className={cn('list-items list-frames', {hide: tabIndex===1})}>
             {
+              !!frames.length ?
               frames.map(
                 (frame, index) =>
                   <li
@@ -74,10 +83,11 @@ export default class LeftSider extends React.Component {
                   >
                     <div
                       className="item-thumbnail"
-                      style={{backgroundImage: `url(${process.env.PUBLIC_URL}/mock/${frame.id.replace(':', '-')}.jpg)`}}
+                      style={{backgroundImage: this.getImage(frame.id)}}
                     /> {frame.name}
                   </li>
-              )
+              ) :
+              <li>本页没有 Frame</li>
             }
           </ul>
           <ul className={cn('list-items list-components', {hide: tabIndex===0})}>

@@ -11,7 +11,6 @@ export default class Main extends React.Component {
     super(props)
     const { data } = props
     this.state = {
-      data,
       frameData: data.document.children[0].children[0],
       components: data.components,
       frameId: '',
@@ -20,8 +19,8 @@ export default class Main extends React.Component {
     }
   }
   handleSelectFrame = (pageIndex, currentFrameId) => {
-    const { onNamesChange } = this.props
-    const { data, frameId } = this.state
+    const { data, onNamesChange } = this.props
+    const { frameId } = this.state
     if (frameId===currentFrameId) return
     const currentPage = data.document.children[pageIndex]
     const frameData = currentPage.children
@@ -46,15 +45,20 @@ export default class Main extends React.Component {
     this.setState({ elementData: null })
   }
   render () {
-    const { data, frameId, components, frameData, elementData, propsDissolved } = this.state
+    const { isMock, data, images } = this.props
+    const { frameId, components, frameData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider
+          isMock={isMock}
           pages={data.document.children}
+          images={images}
           components={components}
           onFrameChange={this.handleSelectFrame}
         />
         <Canvas
+          isMock={isMock}
+          images={images}
           frameData={frameData}
           frameId={frameId}
           onSelect={this.handleSelectElement}
