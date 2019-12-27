@@ -35,3 +35,11 @@ p{
   margin: 0;
   padding: 0;
 }
+
+a{
+  color: #FFF;
+  text-decoration: none;
+  &:hover{
+    opacity: 0.86;
+  }
+}

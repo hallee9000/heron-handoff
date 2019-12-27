@@ -6,7 +6,7 @@ import mockData from 'mock/file'
 import 'assets/base.scss'
 import './app.scss'
 
-const isMock = false
+const isMock = true
 
 class App extends React.Component {
   constructor(props) {

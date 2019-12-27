@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { getFile, getImages } from 'api'
+import { getFile, getImages, getFileStyles } from 'api'
 import { getFileKey } from 'utils/helper'
 import './entry.scss'
 
@@ -82,6 +82,9 @@ export default class Entry extends React.Component {
     return (
       <div className="app-entry">
         <div className="form entry-container">
+          <div className="form-item form-logo">
+            <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo"/>
+          </div>
           <div className={cn('form-item', {'has-error': fileUrlMessage})}>
             <input
               name="fileUrl"
@@ -99,13 +102,16 @@ export default class Entry extends React.Component {
             <input
               name="token"
               className="input input-lg"
-              placeholder="请输入你的 token"
+              placeholder="请输入你的 Access Token"
               value={token}
               onChange={this.handleChange}
             />
             {
-              tokenMessage &&
-              <div className="help-block">{ tokenMessage }</div>
+              tokenMessage ?
+              <div className="help-block">{ tokenMessage }</div> :
+              <div className="help-block">
+                <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener noreferrer">什么是 Access Token？</a>
+              </div>
             }
           </div>
           <button

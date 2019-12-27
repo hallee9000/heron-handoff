@@ -43,4 +43,25 @@
       }
     }
   }
+  .sider-list{
+    padding-bottom: 12px;
+    >li{
+      display: flex;
+      padding: 7px 12px;
+      cursor: pointer;
+      &:hover{
+        background: #141723;
+      }
+      &.item-title{
+        color: rgba($color: #FFF, $alpha: 0.65);
+      }
+      .item-preview{
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        border-radius: 9px;
+        background: #0035FF;
+      }
+    }
+  }
 }

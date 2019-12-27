@@ -13,12 +13,12 @@
 			}
 		}
 		.help-block{
+			padding: 3px;
 			font-size: 12px;
 			color: #AAA;
 		}
 		&.has-error{
 			.help-block{
-				padding: 2px;
 				color: #f24d1d;
 			}
 		}

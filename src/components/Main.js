@@ -1,4 +1,5 @@
 import React from 'react'
+import { walkFile } from 'utils/helper'
 import LeftSider from 'components/LeftSider'
 import RightSider from 'components/RightSider'
 import RightProps from 'components/RightProps'
@@ -15,7 +16,8 @@ export default class Main extends React.Component {
       components: data.components,
       frameId: '',
       elementData: null,
-      propsDissolved: true
+      propsDissolved: true,
+      styles: {}
     }
   }
   handleSelectFrame = (pageIndex, currentFrameId) => {
@@ -44,9 +46,14 @@ export default class Main extends React.Component {
   handleDissolveEnd = () => {
     this.setState({ elementData: null })
   }
+  componentDidMount () {
+    const { data } = this.props
+    const { componsnts, styles } = walkFile(data)
+    this.setState({ styles })
+  }
   render () {
     const { isMock, data, images } = this.props
-    const { frameId, components, frameData, elementData, propsDissolved } = this.state
+    const { styles, frameId, components, frameData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider
@@ -65,7 +72,10 @@ export default class Main extends React.Component {
           onDeselect={this.handleDeselect}
         />
         <div className="main-right">
-          <RightSider hasMask={!propsDissolved}/>
+          <RightSider
+            styles={styles}
+            hasMask={!propsDissolved}
+          />
           {
             elementData &&
             <RightProps
