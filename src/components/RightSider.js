@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { Droplet, Image } from 'react-feather'
+import { STYLE_TYPES, EFFECTS } from 'utils/const'
+import { getFillsStyle, getEffectsStyle } from 'utils/style'
 import './right-sider.scss'
 
 export default class RightSider extends React.Component {
@@ -22,6 +24,7 @@ export default class RightSider extends React.Component {
   render () {
     const { styles, hasMask } = this.props
     const { maskVisible, tabIndex } = this.state
+    console.log(styles)
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
         <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>
@@ -33,11 +36,20 @@ export default class RightSider extends React.Component {
           {
             Object.keys(styles).map(key => {
               return <Fragment key={key}>
-                <li className="item-title">{ key }</li>
+                <li className="item-title">{ STYLE_TYPES[key] }</li>
                 {
                   styles[key].map((style, index) =>
                     <li key={index}>
-                      <div className="item-preview"/>{ style.name }
+                      <div
+                        className="item-preview"
+                        style={{background: key==='FILL' && getFillsStyle(style.value).filter(fill => !!fill).join()}}
+                      >
+                        {
+                          key==='EFFECT' &&
+                          EFFECTS[getEffectsStyle(style.value).type].icon
+                        }
+                      </div>
+                      { style.name }
                     </li>
                   )
                 }

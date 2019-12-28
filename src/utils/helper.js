@@ -1,5 +1,3 @@
-import { STYLE_TYPES } from 'utils/const'
-
 export const throttle = (fn, delay) => {
  	var timer = null
  	return function(){

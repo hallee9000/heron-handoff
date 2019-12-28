@@ -48,19 +48,22 @@
     >li{
       display: flex;
       padding: 7px 12px;
-      cursor: pointer;
-      &:hover{
-        background: #141723;
+      &:not(.item-title){
+        cursor: pointer;
+        &:hover,
+        &.selected{
+          background: #141723;
+        }
       }
       &.item-title{
-        color: rgba($color: #FFF, $alpha: 0.65);
+        font-size: 12px;
+        color: rgba($color: #FFF, $alpha: 0.36);
       }
       .item-preview{
         width: 18px;
         height: 18px;
         margin-right: 8px;
         border-radius: 9px;
-        background: #0035FF;
       }
     }
   }

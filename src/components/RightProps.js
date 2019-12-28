@@ -1,6 +1,6 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
-import { getColor, getCSSColor } from 'utils/color'
+import { getColor, getCSSRGBA } from 'utils/style'
 import { toFixed } from 'utils/mark'
 import FontPanel from './right/FontPanel'
 import './right-props.scss'
@@ -74,7 +74,7 @@ export default class RightProps extends React.Component {
                 fills.map((fill, index) =>
                   fill.type==='SOLID' &&
                   <li className="item-block" key={index}>
-                    <div style={{background: getCSSColor(fill.color)}}/> { getColor(fill.color).hex() }
+                    <div style={{background: getCSSRGBA(fill.color)}}/> { getColor(fill.color).hex() }
                   </li>
                 )
               }
