@@ -11,7 +11,7 @@ class Header extends React.Component {
     getSourceCode(window.location.href)
       .then(indexSource => {
         const zip = new JSZip()
-        zip.file('index.html', indexSource.replace(/\/static/g, './static'))
+        zip.file('index.html', indexSource)
         const js = zip.folder("static/js")
         const scripts = document.getElementsByTagName('script')
         asyncForEach(scripts, async script => {
