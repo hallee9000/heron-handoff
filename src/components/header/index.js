@@ -49,7 +49,7 @@ class Header extends React.Component {
     return !!(pageName && frameName)
   }
   render () {
-    const { documentName, pageName, frameName } = this.props
+    const { isLocal, documentName, pageName, frameName } = this.props
     return (
       <header className="app-header">
         <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo"/>
@@ -63,7 +63,7 @@ class Header extends React.Component {
           <span className="header-pagename">Figma Handoff</span>
         }
         {
-          this.hasNames() &&
+          this.hasNames() && !isLocal &&
           <div className="header-operates">
             <span title="设置">
               <Settings size={14}/>

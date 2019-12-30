@@ -51,8 +51,8 @@ export default class LeftSider extends React.Component {
     this.initializeFrames()
   }
   getImage = (id) => {
-    const { isMock, images } = this.props
-    return isMock ?
+    const { useLocalImages, images } = this.props
+    return useLocalImages ?
     `url(${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.jpg)` :
     `url(${images[id]})`
   }

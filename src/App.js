@@ -2,24 +2,32 @@ import React from 'react'
 import Entry from 'components/Entry'
 import Main from 'components/Main'
 import Header from 'components/header'
+import { walkFile } from 'utils/helper'
 import 'assets/base.scss'
 import './app.scss'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
-    let data, entryVisible
+    let data = {}, components = [], styles = {}, isLocal = false, entryVisible
     const { FILE_DATA } = window
     if (FILE_DATA) {
       data = FILE_DATA
+      const parsedData = walkFile(data)
+      components = parsedData.components
+      styles = parsedData.styles
+      isLocal = true
       entryVisible = false
     } else {
       entryVisible = true
     }
     this.state = {
+      isLocal,
       isMock: false,
       entryVisible,
       data,
+      components,
+      styles,
       images: {},
       names: {}
     }
@@ -45,16 +53,17 @@ class App extends React.Component {
     })
   }
   render () {
-    const { entryVisible, isMock, data, components, styles, images, names } = this.state
+    const { entryVisible, isLocal, isMock, data, components, styles, images, names } = this.state
     return (
       <div className="app-container">
-        <Header {...names} data={data}/>
+        <Header {...names} data={data} isLocal={isLocal}/>
         {
           entryVisible ?
           <Entry
             onGotData={this.handleDataGot}
           /> :
           <Main
+            isLocal={isLocal}
             isMock={isMock}
             data={data}
             components={components}

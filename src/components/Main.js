@@ -44,19 +44,19 @@ export default class Main extends React.Component {
     this.setState({ elementData: null })
   }
   render () {
-    const { data, styles, components, images, isMock } = this.props
+    const { data, styles, components, images, isMock, isLocal } = this.props
     const { frameId, frameData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider
-          isMock={isMock}
+          useLocalImages={isMock || isLocal}
           pages={data.document.children}
           images={images}
           components={components}
           onFrameChange={this.handleSelectFrame}
         />
         <Canvas
-          isMock={isMock}
+          useLocalImages={isMock || isLocal}
           images={images}
           frameData={frameData}
           frameId={frameId}
