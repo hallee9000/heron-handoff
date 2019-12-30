@@ -13,6 +13,7 @@ class Header extends React.Component {
 
     // generate html
     const indexSource = await getSourceCode(window.location.href)
+    console.log(indexSource.replace('var FILE_DATA = "";', `var FILE_DATA = ${JSON.stringify(data)};`))
     zip.file('index.html', indexSource.replace('var FILE_DATA = "";', `var FILE_DATA = ${JSON.stringify(data)};`))
 
     // generate js
