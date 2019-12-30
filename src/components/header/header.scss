@@ -1,0 +1,42 @@
+.app-header{
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  background: #191C28;
+  .header-logo{
+    margin: 5px 0;
+    margin-left: 12px;
+    height: 30px;
+  }
+  .header-space{
+    flex: 1;
+  }
+  .header-filename{
+    padding: 0 10px;
+    font-weight: bold;
+  }
+  .header-pagename{
+    position: absolute;
+    left: 50%;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 500;
+    transform: translateX(-50%);
+    >span{
+      color: rgba(255, 255, 255, 0.36);
+    }
+  }
+  .header-operates{
+    span{
+      padding: 13px;
+      cursor: pointer;
+      &:last-child{
+        margin-right: 0;
+      }
+      &:hover{
+        background: rgb(13, 15, 22);
+      }
+    }
+  }
+}

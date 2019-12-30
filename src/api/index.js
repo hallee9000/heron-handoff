@@ -8,16 +8,26 @@ export const tokenHeaders = (others) => {
 }
 
 // get file data
-export const getFile = (fileKey) => {
-  return fetch(`${baseUrl}/files/${fileKey}`, {
+export const getFile = fileKey =>
+  fetch(`${baseUrl}/files/${fileKey}`, {
     headers: tokenHeaders()
   }).then(function(response) {
     return response.json()
   }).catch(function (error) {
     console.dir(error)
     return { err: error }
-  });
-}
+  })
+
+// get mock file data
+export const getMockFile = () =>
+  fetch(`${process.env.PUBLIC_URL}/mock/file.json`)
+    .then(function(response) {
+      return response.json()
+    })
+    .catch(function (error) {
+      console.dir(error)
+      return { err: error }
+    })
 
 // get images url
 export const getImages = (fileKey, ids) => {
@@ -26,9 +36,9 @@ export const getImages = (fileKey, ids) => {
     {
       headers: tokenHeaders()
     }
-  ).then(function(response) {
-    return response.json()
-  }).catch(function (error) {
+  )
+  .then(response => response.json())
+  .catch(function (error) {
     console.dir(error)
     return { err: error }
   })
@@ -41,9 +51,9 @@ export const getFileStyles = fileKey => {
     {
       headers: tokenHeaders()
     }
-  ).then(function(response) {
-    return response.json()
-  }).catch(function (error) {
+  )
+  .then(response => response.json())
+  .catch(function (error) {
     console.dir(error)
     return { err: error }
   })
@@ -92,3 +102,12 @@ export const getFileNodes = (fileKey, id) => {
     return { err: error }
   })
 }
+
+// get source Code
+export const getSourceCode = url =>
+  fetch(url)
+    .then(response => response.text())
+    .catch(error => {
+      console.dir(error)
+      return { err: error }
+    })

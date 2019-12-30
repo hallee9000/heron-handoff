@@ -1,8 +1,7 @@
 import React from 'react'
-import { walkFile } from 'utils/helper'
-import LeftSider from 'components/LeftSider'
-import RightSider from 'components/RightSider'
-import RightProps from 'components/RightProps'
+import LeftSider from 'components/left'
+import RightSider from 'components/right'
+import RightProps from 'components/right/RightProps'
 import Canvas from 'components/canvas'
 import 'assets/base.scss'
 import './main.scss'
@@ -13,11 +12,9 @@ export default class Main extends React.Component {
     const { data } = props
     this.state = {
       frameData: data.document.children[0].children[0],
-      components: data.components,
       frameId: '',
       elementData: null,
-      propsDissolved: true,
-      styles: {}
+      propsDissolved: true
     }
   }
   handleSelectFrame = (pageIndex, currentFrameId) => {
@@ -46,14 +43,9 @@ export default class Main extends React.Component {
   handleDissolveEnd = () => {
     this.setState({ elementData: null })
   }
-  componentDidMount () {
-    const { data } = this.props
-    const { componsnts, styles } = walkFile(data)
-    this.setState({ styles })
-  }
   render () {
-    const { isMock, data, images } = this.props
-    const { styles, frameId, components, frameData, elementData, propsDissolved } = this.state
+    const { data, styles, components, images, isMock } = this.props
+    const { frameId, frameData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider

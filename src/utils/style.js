@@ -13,14 +13,22 @@ export const getColor = color =>
 export const getSolidColor = fill =>
   `linear-gradient(to bottom, ${getCSSRGBA(fill.color)}, ${getCSSRGBA(fill.color)})`
   
-export const getGradientLinear = fill =>
+export const getLinearGradient = fill =>
   `linear-gradient(to top, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)})`
 
-export const getGradientRadial = fill =>
+export const getRadialGradient = fill =>
   `radial-gradient(circle at 0 0, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)})`
 
-export const getGradientAngular = fill =>
+export const getAngularGradient = fill =>
   `conic-gradient(from 0.25turn, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)})`
+
+export const getDiamondGradient = fill =>
+  `linear-gradient(to bottom right, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) bottom right / 50% 50% no-repeat,` +
+  `linear-gradient(to bottom left, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) bottom left / 50% 50% no-repeat, ` +
+  `linear-gradient(to top left, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) top left / 50% 50% no-repeat, ` +
+  `linear-gradient(to top right, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) top right / 50% 50% no-repeat`
+
+// background: 
 
 export const getFillsStyle = fills =>
   fills.map(fill => {
@@ -28,13 +36,13 @@ export const getFillsStyle = fills =>
       case 'SOLID':
         return getSolidColor(fill)
       case 'GRADIENT_LINEAR':
-        return getGradientLinear(fill)
+        return getLinearGradient(fill)
       case 'GRADIENT_RADIAL':
-        return getGradientRadial(fill)
+        return getRadialGradient(fill)
       case 'GRADIENT_ANGULAR':
-        return getGradientAngular(fill)
+        return getAngularGradient(fill)
       case 'GRADIENT_DIAMOND':
-        return getGradientLinear(fill)
+        return getDiamondGradient(fill)
       default:
         return ''
     }

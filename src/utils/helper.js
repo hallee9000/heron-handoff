@@ -25,8 +25,8 @@ export const urlWithParams = (url, data) => {
 }
 
 export const walkFile = fileData => {
-  const { styles } = fileData
-  const components = []
+  const { styles, components } = fileData
+  const finalComponents = []
   const step = (nodes) => {
     nodes.map(node => {
       if (node.styles) {
@@ -36,7 +36,7 @@ export const walkFile = fileData => {
         })
       }
       if (node.type==='COMPONENT') {
-        components.push(node)
+        finalComponents.push({...node, description: components[node.id].description})
       }
       if (node.children) {
         step(node.children)
@@ -45,7 +45,7 @@ export const walkFile = fileData => {
     })
   }
   step(fileData.document.children)
-  return { styles: formatStyles(styles), components }
+  return { styles: formatStyles(styles), components: finalComponents }
 }
 
 export const formatStyles = styles => {
@@ -59,4 +59,10 @@ export const formatStyles = styles => {
     }
   })
   return fatStyles
+}
+
+export async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
 }

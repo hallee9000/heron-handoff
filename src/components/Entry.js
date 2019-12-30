@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
-import { getFile, getImages, getFileStyles } from 'api'
-import { getFileKey } from 'utils/helper'
+import { getMockFile, getFile, getImages } from 'api'
+import { getFileKey, walkFile } from 'utils/helper'
 import './entry.scss'
 
 export default class Entry extends React.Component {
@@ -42,6 +42,7 @@ export default class Entry extends React.Component {
   }
   handleSubmit = async e => {
     e.preventDefault()
+    const { fileUrl } = this.state
     if (this.validate()) {
       const { fileUrl } = this.state
       const fileKey = getFileKey(fileUrl)
@@ -49,6 +50,7 @@ export default class Entry extends React.Component {
         isLoading: true
       })
       const fileData = await getFile(fileKey)
+      // get frames' images
       const ids = fileData.document.children
         .map(page => page.children
           .filter(frame => frame.type==='FRAME')
@@ -57,16 +59,24 @@ export default class Entry extends React.Component {
         )
         .filter(frameIds => frameIds!=='')
         .join()
-      const { images } = await getImages(fileKey, ids)
-      this.onSucceed(fileData, images)
+      // get components and styles
+      const { components, styles } = walkFile(fileData)
+      const componentIds = components.map(c => c.id).join()
+      const { images } = await getImages(fileKey, `${ids},${componentIds}`)
+      this.onSucceed(fileData, components, styles, images )
+    } else if (fileUrl==='mockmock') {
+      const fileData = await getMockFile()
+      // get components and styles
+      const { components, styles } = walkFile(fileData)
+      this.onSucceed(fileData, components, styles)
     }
   }
-  onSucceed = (fileData, imagesData) => {
+  onSucceed = (fileData, components, styles, imagesData ) => {
     const { onGotData } = this.props
     this.setState({
       isLoading: false
     })
-    onGotData && onGotData(fileData, imagesData)
+    onGotData && onGotData(fileData, components, styles, imagesData)
   }
   componentDidMount () {
     const figmaToken = window.localStorage.getItem('figmaToken')
@@ -92,6 +102,7 @@ export default class Entry extends React.Component {
               placeholder="请输入文件链接"
               value={fileUrl}
               onChange={this.handleChange}
+              onKeyUp={e => e.keyCode===13 && this.handleSubmit(e)}
             />
             {
               fileUrlMessage &&

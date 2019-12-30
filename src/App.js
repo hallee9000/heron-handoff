@@ -1,41 +1,37 @@
 import React from 'react'
 import Entry from 'components/Entry'
 import Main from 'components/Main'
-import Header from 'components/Header'
-import mockData from 'mock/file'
+import Header from 'components/header'
 import 'assets/base.scss'
 import './app.scss'
-
-const isMock = false
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     let data, entryVisible
-    if (isMock) {
-      data = mockData
+    const innerData = document.getElementById('data')
+    if (innerData) {
+      data = JSON.parse(innerData.innerText)
       entryVisible = false
     } else {
-      const innerData = document.getElementById('data')
-      if (innerData) {
-        data = JSON.parse(innerData.innerText)
-        entryVisible = false
-      } else {
-        entryVisible = true
-      }
+      entryVisible = true
     }
     this.state = {
+      isMock: false,
       entryVisible,
       data,
       images: {},
       names: {}
     }
   }
-  handleDataGot = (fileData, imagesData) => {
+  handleDataGot = (fileData, components, styles, imagesData) => {
     this.setState({
       entryVisible: false,
       data: fileData,
-      images: imagesData
+      components,
+      styles,
+      images: imagesData,
+      isMock: !imagesData
     })
   }
   getNames = (pageName, frameName) => {
@@ -49,7 +45,7 @@ class App extends React.Component {
     })
   }
   render () {
-    const { entryVisible, data, images, names } = this.state
+    const { entryVisible, isMock, data, components, styles, images, names } = this.state
     return (
       <div className="app-container">
         <Header {...names}/>
@@ -61,6 +57,8 @@ class App extends React.Component {
           <Main
             isMock={isMock}
             data={data}
+            components={components}
+            styles={styles}
             images={images}
             onNamesChange={this.getNames}
           />
