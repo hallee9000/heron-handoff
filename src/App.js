@@ -9,9 +9,9 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     let data, entryVisible
-    const innerData = document.getElementById('data')
-    if (innerData) {
-      data = JSON.parse(innerData.innerText)
+    const { FILE_DATA } = window
+    if (FILE_DATA) {
+      data = FILE_DATA
       entryVisible = false
     } else {
       entryVisible = true
