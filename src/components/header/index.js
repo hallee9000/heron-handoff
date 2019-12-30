@@ -17,7 +17,7 @@ class Header extends React.Component {
 
     // generate file.json
     const dataFolder = zip.folder("data")
-    dataFolder.file('file.json', data)
+    dataFolder.file('file.json', JSON.stringify(data))
 
     // generate js
     const js = zip.folder("static/js")
