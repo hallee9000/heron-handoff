@@ -9,11 +9,13 @@ import './header.scss'
 class Header extends React.Component {
   handleDownload = async () => {
     const { data, documentName } = this.props
-    console.log(data)
     const zip = new JSZip()
 
     // generate html
     const indexSource = await getSourceCode(window.location.href)
+    console.log(JSON.stringify(data))
+    console.log(`var FILE_DATA = ${JSON.stringify(data)};`)
+    console.log(indexSource.replace('var FILE_DATA = "";', `var FILE_DATA = ${JSON.stringify(data)};`))
     zip.file('index.html', indexSource.replace('var FILE_DATA = "";', `var FILE_DATA = ${JSON.stringify(data)};`))
 
     // generate js
