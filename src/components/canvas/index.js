@@ -72,7 +72,7 @@ class Canvas extends React.Component {
   getImage = (id) => {
     const { isMock, images } = this.props
     return isMock ?
-    `${process.env.PUBLIC_URL}/mock/${id.replace(':', '-')}.jpg` :
+    `${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.jpg` :
     images[id]
   }
 	render () {

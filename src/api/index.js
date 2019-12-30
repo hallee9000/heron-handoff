@@ -11,19 +11,17 @@ export const tokenHeaders = (others) => {
 export const getFile = fileKey =>
   fetch(`${baseUrl}/files/${fileKey}`, {
     headers: tokenHeaders()
-  }).then(function(response) {
-    return response.json()
-  }).catch(function (error) {
+  })
+  .then(response => response.json())
+  .catch(function (error) {
     console.dir(error)
     return { err: error }
   })
 
 // get mock file data
 export const getMockFile = () =>
-  fetch(`${process.env.PUBLIC_URL}/mock/file.json`)
-    .then(function(response) {
-      return response.json()
-    })
+  fetch(`${process.env.PUBLIC_URL}/data/file.json`)
+    .then(response => response.json())
     .catch(function (error) {
       console.dir(error)
       return { err: error }
@@ -107,6 +105,15 @@ export const getFileNodes = (fileKey, id) => {
 export const getSourceCode = url =>
   fetch(url)
     .then(response => response.text())
+    .catch(error => {
+      console.dir(error)
+      return { err: error }
+    })
+
+// get buffer data
+export const getBufferData = url =>
+  fetch(url)
+    .then(response => response.arrayBuffer())
     .catch(error => {
       console.dir(error)
       return { err: error }

@@ -53,7 +53,7 @@ export default class LeftSider extends React.Component {
   getImage = (id) => {
     const { isMock, images } = this.props
     return isMock ?
-    `url(${process.env.PUBLIC_URL}/mock/${id.replace(':', '-')}.jpg)` :
+    `url(${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.jpg)` :
     `url(${images[id]})`
   }
   render () {

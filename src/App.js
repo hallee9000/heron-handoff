@@ -48,7 +48,7 @@ class App extends React.Component {
     const { entryVisible, isMock, data, components, styles, images, names } = this.state
     return (
       <div className="app-container">
-        <Header {...names}/>
+        <Header {...names} data={data}/>
         {
           entryVisible ?
           <Entry
