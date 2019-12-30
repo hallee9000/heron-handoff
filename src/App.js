@@ -10,7 +10,6 @@ class App extends React.Component {
     super(props)
     let data, entryVisible
     const { FILE_DATA } = window
-    console.log(FILE_DATA)
     if (FILE_DATA) {
       data = FILE_DATA
       entryVisible = false
