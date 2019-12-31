@@ -4,6 +4,9 @@
   align-items: center;
   height: 40px;
   background: #191C28;
+  >*{
+    z-index: 1;
+  }
   .header-logo{
     margin: 5px 0;
     margin-left: 12px;
@@ -38,5 +41,13 @@
         background: rgb(13, 15, 22);
       }
     }
+  }
+  .header-loader{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 40px;
+    background: #232a4a;
+    z-index: 0;
   }
 }
