@@ -1,14 +1,14 @@
 import React from 'react'
 import cn from 'classnames'
-import { WithTooltip } from 'utils/hoc'
+import Frames from './Frames'
+import Components from './Components'
 import './left-sider.scss'
 
 export default class LeftSider extends React.Component {
   state = {
-    selectedIndex: 0,
     frames: [],
-    pageIndex: 0,
-    tabIndex: 0
+    tabIndex: 0,
+    pageIndex: 0
   }
   initializeFrames = () => {
     const { pages } = this.props
@@ -18,8 +18,21 @@ export default class LeftSider extends React.Component {
     this.setState({ frames })
     if (frames.length) {
       // select first frame
-      this.handleFrameSelect(0, frames[0].id)
+      this.onItemChange(frames[0].id, 'frame')
     }
+  }
+  handleTabClick = (index) => {
+    const { tabIndex } = this.state
+    if (tabIndex===index) return
+    this.setState({ tabIndex: index }, () => {
+      if (index===0) {
+        const { frames } = this.state
+        frames.length && this.onItemChange(frames[0].id, 'frame')
+      } else {
+        const { components } = this.props
+        components.length && this.onItemChange(components[0].id, 'component')
+      }
+    })
   }
   handlePageChange = e => {
     const pageIndex = e.target.value - 0
@@ -27,39 +40,17 @@ export default class LeftSider extends React.Component {
       this.initializeFrames()
     })
   }
-  handleFrameSelect = (index, frameId) => {
-    const { onFrameChange } = this.props
+  onItemChange = (id, type) => {
+    const { onFrameOrComponentChange } = this.props
     const { pageIndex } = this.state
-    this.setState({ selectedIndex: index })
-    onFrameChange && onFrameChange(pageIndex, frameId)
-  }
-  handleComponentSelect = (index, frameId) => {
-    const { onFrameChange } = this.props
-    const { pageIndex } = this.state
-    this.setState({ selectedIndex: index })
-    onFrameChange && onFrameChange(pageIndex, frameId)
-  }
-  handleTabClick = (tabIndex) => {
-    const { components } = this.props
-    this.setState({ tabIndex })
-    if (components.length) {
-      // select first component
-      this.handleComponentSelect(0, components[0].id)
-    }
+    onFrameOrComponentChange && onFrameOrComponentChange(id, pageIndex, type)
   }
   componentDidMount () {
     this.initializeFrames()
   }
-  getImage = (id) => {
-    const { useLocalImages, images } = this.props
-    return useLocalImages ?
-    `url(${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.jpg)` :
-    `url(${images[id]})`
-  }
   render () {
-    const { pages, components } = this.props
-    console.log(components)
-    const { selectedIndex, frames, tabIndex } = this.state
+    const { pages, components, useLocalImages, images } = this.props
+    const { frames, tabIndex, pageIndex } = this.state
     return (
       <div className="main-left-sider">
         <ul className="left-sider-tabs">
@@ -73,59 +64,34 @@ export default class LeftSider extends React.Component {
           >组件</li>
         </ul>
         <div className="left-sider-list">
-          <div className="list-pages">
-            <select className="input" onChange={this.handlePageChange}>
-              {
-                pages.map(
-                  (page, index) =>
-                    <option key={index} value={index}>{page.name}</option>
-                )
-              }
-            </select>
-          </div>
-          <ul className={cn('list-items list-frames', {hide: tabIndex===1})}>
-            {
-              !!frames.length ?
-              frames.map(
-                (frame, index) =>
-                  <li
-                    key={frame.id}
-                    className={cn({selected: selectedIndex===index})}
-                    onClick={() => this.handleFrameSelect(index, frame.id)}
-                  >
-                    <div
-                      className="item-thumbnail"
-                      style={{backgroundImage: this.getImage(frame.id)}}
-                    /> {frame.name}
-                  </li>
-              ) :
-              <li className="item-empty">本页没有 Frame</li>
-            }
-          </ul>
-          <ul className={cn('list-items list-components', {hide: tabIndex===0})}>
-            {
-              !!components.length ?
-              components.map(
-                (component, index) =>
-                  <WithTooltip
-                    key={component.id}
-                    yes={!!component.description}
-                    tooltipProps={{overlay: component.description, placement: 'right'}}
-                  >                                  
-                    <li
-                      className={cn({selected: index===selectedIndex})}
-                      onClick={() => this.handleComponentSelect(index, component.id)}
-                    >
-                      <div
-                        className="item-thumbnail"
-                        style={{backgroundImage: this.getImage(component.id)}}
-                      /> {component.name}
-                    </li>
-                  </WithTooltip>
-              ) :
-              <li className="item-empty">没有组件</li>
-            }
-          </ul>
+          {
+            tabIndex===0 &&
+            <div className="list-pages">
+              <select className="input" onChange={this.handlePageChange}>
+                {
+                  pages.map(
+                    (page, index) =>
+                      <option key={index} value={index}>{page.name}</option>
+                  )
+                }
+              </select>
+            </div>
+          }
+          <Frames
+            key={pageIndex}
+            visible={tabIndex===0}
+            frames={frames}
+            useLocalImages={useLocalImages}
+            images={images}
+            onFrameChange={id => this.onItemChange(id, 'frame')}
+          />
+          <Components
+            visible={tabIndex===1}
+            components={components}
+            useLocalImages={useLocalImages}
+            images={images}
+            onComponentChange={id => this.onItemChange(id, 'component')}
+          />
         </div>
       </div>
     )

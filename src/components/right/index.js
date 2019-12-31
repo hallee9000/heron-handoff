@@ -24,7 +24,6 @@ export default class RightSider extends React.Component {
   render () {
     const { styles, hasMask } = this.props
     const { maskVisible, tabIndex } = this.state
-    console.log(styles)
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
         <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>

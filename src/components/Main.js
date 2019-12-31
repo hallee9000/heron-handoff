@@ -11,24 +11,23 @@ export default class Main extends React.Component {
     super(props)
     const { data } = props
     this.state = {
-      frameData: data.document.children[0].children[0],
-      frameId: '',
+      canvasData: data.document.children[0].children[0],
+      id: '',
       elementData: null,
       propsDissolved: true
     }
   }
-  handleSelectFrame = (pageIndex, currentFrameId) => {
-    const { data, onNamesChange } = this.props
-    const { frameId } = this.state
-    if (frameId===currentFrameId) return
+  handleSelectFrameOrComponent = (currentId, pageIndex, type) => {
+    const { data, components, onNamesChange } = this.props
+    const { id } = this.state
+    if (id===currentId) return
     const currentPage = data.document.children[pageIndex]
-    const frameData = currentPage.children
-      .find(frame => frame.id===currentFrameId)
+    const canvasData = (type==='frame' ? currentPage.children : components).find(item => item.id===currentId)
     this.setState({
-      frameId: currentFrameId,
-      frameData
+      id: currentId,
+      canvasData
     })
-    onNamesChange && onNamesChange(currentPage.name, frameData.name)
+    onNamesChange && onNamesChange(currentPage.name, canvasData.name)
     this.handleDeselect()
   }
   handleSelectElement = elementData => {
@@ -45,7 +44,7 @@ export default class Main extends React.Component {
   }
   render () {
     const { data, styles, components, images, isMock, isLocal } = this.props
-    const { frameId, frameData, elementData, propsDissolved } = this.state
+    const { id, canvasData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider
@@ -53,13 +52,13 @@ export default class Main extends React.Component {
           pages={data.document.children}
           images={images}
           components={components}
-          onFrameChange={this.handleSelectFrame}
+          onFrameOrComponentChange={this.handleSelectFrameOrComponent}
         />
         <Canvas
           useLocalImages={isMock || isLocal}
           images={images}
-          frameData={frameData}
-          frameId={frameId}
+          canvasData={canvasData}
+          id={id}
           onSelect={this.handleSelectElement}
           onDeselect={this.handleDeselect}
         />

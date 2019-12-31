@@ -1,6 +1,7 @@
-import React, { createRef } from 'react'
+import React from 'react'
 import cn from 'classnames'
 import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
+import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
 import Ruler from './Ruler'
@@ -15,11 +16,8 @@ class Canvas extends React.Component {
     selectedIndex: null,
     hoveredRect: null,
     hoveredIndex: null,
-    markData: {}
-  }
-  constructor(props) {
-    super(props)
-    this.img = createRef()
+    markData: {},
+    isChanging: false
   }
   resetMark = () => {
     this.setState({
@@ -31,9 +29,9 @@ class Canvas extends React.Component {
     })
   }
   generateMark = () => {
-    const { frameData } = this.props
-    const pageRect = frameData.absoluteBoundingBox
-    const nodes = frameData.children
+    const { canvasData } = this.props
+    const pageRect = canvasData.absoluteBoundingBox
+    const nodes = canvasData.children
     const rects = generateRects(nodes, pageRect)
     this.setState({ rects, pageRect })
   }
@@ -60,24 +58,22 @@ class Canvas extends React.Component {
       markData: {}
     })
   }
+  handleImgLoaded = () => {
+    this.setState({ isChanging: false })
+  }
   componentDidMount () {
     this.generateMark()
   }
   componentDidUpdate(prevProps) {
-    if (this.props.frameId !== prevProps.frameId) {
+    if (this.props.id !== prevProps.id) {
+      this.setState({ isChanging: true })
       this.resetMark()
       this.generateMark()
     }
   }
-  getImage = (id) => {
-    const { useLocalImages, images } = this.props
-    return useLocalImages ?
-    `${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.jpg` :
-    images[id]
-  }
 	render () {
-    const { frameId, size } = this.props
-    const { rects, pageRect, selectedIndex, hoveredIndex, markData } = this.state
+    const { id, size, useLocalImages, images } = this.props
+    const { rects, pageRect, selectedIndex, hoveredIndex, markData, isChanging } = this.state
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         {
@@ -115,10 +111,10 @@ class Canvas extends React.Component {
           <Distance distanceData={markData.distanceData}/>
         }
         <img
-          src={this.getImage(frameId)}
-          ref={this.img}
+          src={getImage(id, useLocalImages, images)}
           alt="frame"
-          style={{width: size.width, height: size.height}}
+          style={{width: size.width, height: size.height, opacity: isChanging ? 0 : 1}}
+          onLoad={this.handleImgLoaded}
         />
       </div>
     )

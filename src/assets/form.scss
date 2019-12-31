@@ -23,4 +23,12 @@
 			}
 		}
 	}
+	.form-error{
+		margin-bottom: 15px;
+		padding: 8px 12px;
+		font-size: 12px;
+		color: #f24d1d;
+		background: rgba($color: #f24d1d, $alpha: 0.1);
+		border-radius: 2px;
+	}
 }

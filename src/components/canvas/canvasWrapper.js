@@ -29,7 +29,7 @@ export default function (Canvas) {
     }
     initializeCanvas = (needResetSizeAndPosition) => {
       const { scale } = this.state
-      const { width, height } = this.props.frameData.absoluteBoundingBox
+      const { width, height } = this.props.canvasData.absoluteBoundingBox
       const { clientWidth, clientHeight } = this.container.current
       let minScale = 1
       let initialWidth, initialHeight
@@ -190,7 +190,7 @@ export default function (Canvas) {
       })
     }
     componentDidUpdate (prevProps) {
-      if (prevProps.frameId !== this.props.frameId) {
+      if (prevProps.id !== this.props.id) {
         this.initializeCanvas(true)
       }
     }
@@ -202,7 +202,7 @@ export default function (Canvas) {
       window.onresize = throttle(this.handleResize, 200)
     }
     render () {
-      const { width, height } = this.props.frameData.absoluteBoundingBox
+      const { width, height } = this.props.canvasData.absoluteBoundingBox
       const { initialWidth, initialHeight, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
         top: posY,

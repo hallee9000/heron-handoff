@@ -12,6 +12,7 @@ class App extends React.Component {
     let data = {}, components = [], styles = {}, isLocal = false, entryVisible
     const { FILE_DATA } = window
     if (FILE_DATA) {
+      // local data (offline mode)
       data = FILE_DATA
       const parsedData = walkFile(data)
       components = parsedData.components

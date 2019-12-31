@@ -10,6 +10,7 @@ export default class Entry extends React.Component {
     token: '',
 		fileUrlMessage: '',
     tokenMessage: '',
+    errorMessage: '',
     hasToken: false,
     isLoading: false
   }
@@ -50,6 +51,16 @@ export default class Entry extends React.Component {
         isLoading: true
       })
       const fileData = await getFile(fileKey)
+      if (fileData.status===403 && fileData.err==='Invalid token') {
+        this.onFailed()
+        return
+      } else if (fileData.status===404) {
+        this.setState({
+          isLoading: false,
+          fileUrlMessage: '该文件不存在。'
+        })
+        return
+      }
       // get frames' images
       const ids = fileData.document.children
         .map(page => page.children
@@ -62,7 +73,7 @@ export default class Entry extends React.Component {
       // get components and styles
       const { components, styles } = walkFile(fileData)
       const componentIds = components.map(c => c.id).join()
-      const { images } = await getImages(fileKey, `${ids},${componentIds}`)
+      const { images } = await getImages(fileKey, ids + (componentIds ? `,${componentIds}` : ''))
       this.onSucceed(fileData, components, styles, images )
     } else if (fileUrl==='mockmock') {
       const fileData = await getMockFile()
@@ -78,6 +89,16 @@ export default class Entry extends React.Component {
     })
     onGotData && onGotData(fileData, components, styles, imagesData)
   }
+  onFailed = () => {
+    window.localStorage.removeItem('figmaToken')
+    this.setState({
+      isLoading: false,
+      hasToken: false,
+      token: '',
+      tokenMessage: '',
+      errorMessage: 'token 有误，可能已被删除，请重新创建并输入。'
+    })
+  }
   componentDidMount () {
     const figmaToken = window.localStorage.getItem('figmaToken')
     if (figmaToken) {
@@ -88,13 +109,17 @@ export default class Entry extends React.Component {
     }
   }
   render() {
-    const { fileUrl, token, fileUrlMessage, tokenMessage, hasToken, isLoading } = this.state
+    const { fileUrl, token, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading } = this.state
     return (
       <div className="app-entry">
         <div className="form entry-container">
           <div className="form-item form-logo">
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo"/>
           </div>
+          {
+            errorMessage &&
+            <div className="form-error">{ errorMessage }</div>
+          }
           <div className={cn('form-item', {'has-error': fileUrlMessage})}>
             <input
               name="fileUrl"
