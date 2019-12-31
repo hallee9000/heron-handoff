@@ -2,7 +2,7 @@ import React, { createRef } from 'react'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Download, Settings } from 'react-feather'
-import { asyncForEach } from 'utils/helper'
+import { asyncForEach, toDataURL } from 'utils/helper'
 import { getSourceCode, getBufferData } from 'api'
 import './header.scss'
 
@@ -11,11 +11,12 @@ class Header extends React.Component {
   handleDownload = async () => {
     const { data, documentName } = this.props
     const zip = new JSZip()
-
+    console.log('开始')
     // generate html
     const indexSource = await getSourceCode(window.location.href)
     zip.file('index.html', indexSource.replace('var FILE_DATA=""', `var FILE_DATA = ${JSON.stringify(data)}`))
 
+    console.log('html done')
     // generate js
     const js = zip.folder("static/js")
     const scripts = document.getElementsByTagName('script')
@@ -25,6 +26,7 @@ class Header extends React.Component {
       js.file(pieces[pieces.length - 1], jsSource)
     })
 
+    console.log('js done')
     // generate ico and css
     const css = zip.folder("static/css")
     const styles = document.getElementsByTagName('link')
@@ -39,15 +41,28 @@ class Header extends React.Component {
       }
     })
 
+    console.log('css ico done')
     // generate logo.svg
-    const logoData = await getBufferData(this.img.src)
+    const logoData = await toDataURL(this.img.current.src)
     zip.file('logo.svg', logoData, {base64: true})
 
+    console.log('logo done')
+    // generate frame and component images
+    const dataFolder = zip.folder("data")
+    const { images } = this.props
+    await asyncForEach(Object.keys(images), async id => {
+      const imgData = await toDataURL(images[id])
+      console.log(`${id} done`)
+      dataFolder.file(id.replace(':', '-') + 'png', imgData, {base64: true})
+    })
+
+    console.log('images done')
     // generate zip
     zip.generateAsync({type: 'blob'})
       .then(function(content) {
         saveAs(content, `${documentName}.zip`)
       })
+    console.log('done!')
   }
   hasNames = () => {
     const { pageName, frameName } = this.props
