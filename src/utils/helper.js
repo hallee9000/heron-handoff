@@ -69,7 +69,7 @@ export async function asyncForEach(array, callback) {
 
 export const getImage = (id, useLocalImages, images) =>
   useLocalImages ?
-  `${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.jpg` :
+  `${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.png` :
   images[id]
 
 export const getUrlImage = (id, useLocalImages, images) =>

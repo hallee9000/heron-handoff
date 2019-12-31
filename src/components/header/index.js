@@ -70,8 +70,8 @@ class Header extends React.Component {
   }
   setLoader = (percentage, message) => {
     this.setState({
-      percentage,
-      message
+      loaderWidth: percentage,
+      loaderMessage: message
     })
   }
   hasNames = () => {
