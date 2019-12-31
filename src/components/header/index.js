@@ -79,7 +79,8 @@ class Header extends React.Component {
     return !!(pageName && frameName)
   }
   render () {
-    const { isLocal, documentName, pageName, frameName, loaderWidth, loaderMessage } = this.props
+    const { isLocal, documentName, pageName, frameName, isComponent } = this.props
+    const { loaderWidth, loaderMessage } = this.state
     return (
       <header className="app-header">
         <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.img}/>
@@ -90,7 +91,13 @@ class Header extends React.Component {
           <span className="header-pagename">
             {
               (loaderWidth===0 || loaderWidth===100) ?
-              <Fragment>{pageName}<span> / </span>{frameName}</Fragment> :
+              <Fragment>
+                {
+                  !isComponent &&
+                  <Fragment>{pageName}<span> / </span></Fragment>
+                }
+                {frameName}
+              </Fragment> :
               loaderMessage
             }
           </span> :

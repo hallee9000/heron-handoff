@@ -43,13 +43,14 @@ class App extends React.Component {
       isMock: !imagesData
     })
   }
-  getNames = (pageName, frameName) => {
+  getNames = (pageName, frameName, type) => {
     const { data } = this.state
     this.setState({
       names: {
         documentName: data.name,
         pageName: pageName || data.document.children[0].name,
-        frameName: frameName || data.document.children[0].children[0].name
+        frameName: frameName || data.document.children[0].children[0].name,
+        isComponent: type==='component'
       }
     })
   }

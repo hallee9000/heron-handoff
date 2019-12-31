@@ -27,7 +27,7 @@ export default class Main extends React.Component {
       id: currentId,
       canvasData
     })
-    onNamesChange && onNamesChange(currentPage.name, canvasData.name)
+    onNamesChange && onNamesChange(currentPage.name, canvasData.name, type)
     this.handleDeselect()
   }
   handleSelectElement = elementData => {
