@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Download, Settings } from 'react-feather'
@@ -7,6 +7,7 @@ import { getSourceCode, getBufferData } from 'api'
 import './header.scss'
 
 class Header extends React.Component {
+  img = createRef()
   handleDownload = async () => {
     const { data, documentName } = this.props
     const zip = new JSZip()
@@ -38,6 +39,10 @@ class Header extends React.Component {
       }
     })
 
+    // generate logo.svg
+    const logoData = await getBufferData(this.img.src)
+    zip.file('logo.svg', logoData, {base64: true})
+
     // generate zip
     zip.generateAsync({type: 'blob'})
       .then(function(content) {
@@ -52,7 +57,7 @@ class Header extends React.Component {
     const { isLocal, documentName, pageName, frameName } = this.props
     return (
       <header className="app-header">
-        <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo"/>
+        <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.img}/>
         <span className="header-filename">{documentName}</span>
         <span className="header-space"/>
         {
@@ -68,8 +73,8 @@ class Header extends React.Component {
             <span title="设置">
               <Settings size={14}/>
             </span>
-            <span title="下载">
-              <Download size={14} onClick={this.handleDownload}/>
+            <span title="下载" onClick={this.handleDownload}>
+              <Download size={14}/>
             </span>
           </div>
         }
