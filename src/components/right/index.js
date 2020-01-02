@@ -36,7 +36,7 @@ export default class RightSider extends React.Component {
   }
   componentDidMount() {
     const { styles } = this.props
-    this.openDetail(styles.FILL[1])
+    // this.openDetail(styles.FILL[1])
   }
   render () {
     const { styles, exportSettings, hasMask } = this.props
