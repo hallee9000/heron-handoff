@@ -43,7 +43,7 @@ export default class Main extends React.Component {
     this.setState({ elementData: null })
   }
   render () {
-    const { data, styles, components, images, isMock, isLocal } = this.props
+    const { data, components, styles, exportSettings, images, isMock, isLocal } = this.props
     const { id, canvasData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
@@ -65,6 +65,7 @@ export default class Main extends React.Component {
         <div className="main-right">
           <RightSider
             styles={styles}
+            exportSettings={exportSettings}
             hasMask={!propsDissolved}
           />
           {

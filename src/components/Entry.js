@@ -99,6 +99,12 @@ export default class Entry extends React.Component {
       errorMessage: 'token 有误，可能已被删除，请重新创建并输入。'
     })
   }
+  showTokenInput = e => {
+    e.preventDefault()
+    this.setState({
+      hasToken: false
+    })
+  }
   componentDidMount () {
     const figmaToken = window.localStorage.getItem('figmaToken')
     if (figmaToken) {
@@ -133,6 +139,9 @@ export default class Entry extends React.Component {
               fileUrlMessage &&
               <div className="help-block">{ fileUrlMessage }</div>
             }
+          </div>
+          <div className={cn('form-item', {'hide': !hasToken})}>
+            <div className="help-block">Access Token 已保存，点<a href="#" onClick={this.showTokenInput}>这里</a>修改</div>
           </div>
           <div className={cn('form-item', {'has-error': tokenMessage, 'hide': hasToken})}>
             <input

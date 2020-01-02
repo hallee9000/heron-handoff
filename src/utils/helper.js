@@ -26,7 +26,7 @@ export const urlWithParams = (url, data) => {
 
 export const walkFile = fileData => {
   const { styles, components } = fileData
-  const finalComponents = []
+  const finalComponents = [], exportSettings = {}
   const step = (nodes) => {
     nodes.map(node => {
       if (node.styles) {
@@ -38,6 +38,9 @@ export const walkFile = fileData => {
       if (node.type==='COMPONENT') {
         finalComponents.push({...node, description: components[node.id].description})
       }
+      if (node.exportSettings && node.exportSettings.length) {
+        exportSettings[node.id] = node.exportSettings
+      }
       if (node.children) {
         step(node.children)
       }
@@ -45,7 +48,7 @@ export const walkFile = fileData => {
     })
   }
   step(fileData.document.children)
-  return { styles: formatStyles(styles), components: finalComponents }
+  return { styles: formatStyles(styles), components: finalComponents, exportSettings }
 }
 
 export const formatStyles = styles => {
@@ -74,3 +77,12 @@ export const getImage = (id, useLocalImages, images) =>
 
 export const getUrlImage = (id, useLocalImages, images) =>
   `url(${getImage(id, useLocalImages, images)})`
+
+export const onInputClick = e => {
+  const input = e.target
+  input.setSelectionRange(0, 9999)
+  if (document.execCommand('copy')) {
+    document.execCommand('copy')
+    console.log('复制成功!')
+  }
+}

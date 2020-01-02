@@ -32,6 +32,8 @@
   }
   .header-operates{
     span{
+      display: inline-block;
+      height: 40px;
       padding: 13px;
       cursor: pointer;
       &:last-child{
@@ -48,6 +50,46 @@
     left: 0;
     height: 40px;
     background: #232a4a;
+    transition: width 0.2s;
     z-index: 0;
+  }
+  .header-overlay{
+    display: none;
+    position: absolute;
+    top: 48px;
+    right: 8px;
+    width: 360px;
+    padding: 12px 20px;
+    border-radius: 2px;
+    background: #2f3446;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
+    z-index: 10000;
+    &-visible{
+      display: block;
+    }
+    .overlay-caret{
+      position: absolute;
+      top: -6px;
+      right: 5px;
+      border-width: 0 6px 6px 6px;
+      border-color: transparent;
+      border-style: solid;
+      border-bottom-color: #2f3446;
+    }
+    .overlay-close{
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      &:hover{
+        opacity: 0.85;
+      }
+    }
+    h4{
+      margin: 0;
+      margin-bottom: 12px;
+    }
   }
 }

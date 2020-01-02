@@ -9,7 +9,7 @@ import './app.scss'
 class App extends React.Component {
   constructor(props) {
     super(props)
-    let data = {}, components = [], styles = {}, isLocal = false, entryVisible
+    let data = {}, components = [], styles = {}, exportSettings = {}, isLocal = false, entryVisible
     const { FILE_DATA } = window
     if (FILE_DATA) {
       // local data (offline mode)
@@ -17,6 +17,7 @@ class App extends React.Component {
       const parsedData = walkFile(data)
       components = parsedData.components
       styles = parsedData.styles
+      exportSettings = parsedData.exportSettings
       isLocal = true
       entryVisible = false
     } else {
@@ -29,6 +30,7 @@ class App extends React.Component {
       data,
       components,
       styles,
+      exportSettings,
       images: {},
       names: {}
     }
@@ -55,7 +57,7 @@ class App extends React.Component {
     })
   }
   render () {
-    const { entryVisible, isLocal, isMock, data, components, styles, images, names } = this.state
+    const { entryVisible, isLocal, isMock, data, components, styles, exportSettings, images, names } = this.state
     return (
       <div className="app-container">
         <Header {...names} data={data} images={images} isLocal={isLocal}/>
@@ -70,6 +72,7 @@ class App extends React.Component {
             data={data}
             components={components}
             styles={styles}
+            exportSettings={exportSettings}
             images={images}
             onNamesChange={this.getNames}
           />

@@ -41,7 +41,6 @@ export default class RightProps extends React.Component {
     const { data } = this.props
     const { node } = data
     const { hasEntered, fills } = this.state
-    console.log(data)
     return (
       <div
         className={cn('main-right-props', {'main-right-props-entered': hasEntered})}
