@@ -1,0 +1,22 @@
+.style-item{
+  display: flex;
+  padding: 7px 12px;
+  cursor: pointer;
+  &:hover,
+  &.selected{
+    background: #141723;
+  }
+  .item-preview{
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    border-radius: 9px;
+    border: 1px solid #3d3e44;
+    overflow: hidden;
+  }
+  &.style-item-effect{
+    .item-preview{
+      border: none;
+    }
+  }
+}

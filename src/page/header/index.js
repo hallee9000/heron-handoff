@@ -12,7 +12,8 @@ export default class Header extends React.Component {
   state = {
     loaderWidth: 0,
     loaderMessage: '',
-    visible: false
+    downloadVisible: false,
+    settingVisible: false
   }
   handleDownload = async () => {
     const { data, documentName } = this.props
@@ -72,7 +73,7 @@ export default class Header extends React.Component {
         saveAs(content, `${documentName}.zip`)
       })
     this.setLoader(100, '离线标注：完成！')
-    this.toggleModal()
+    this.toggleDownloadModal()
   }
   setLoader = (percentage, message) => {
     this.setState({
@@ -84,18 +85,24 @@ export default class Header extends React.Component {
     const { pageName, frameName } = this.props
     return !!(pageName && frameName)
   }
-  toggleModal = () => {
-    const { visible } = this.state
+  toggleSettingModal = () => {
+    const { settingVisible } = this.state
     this.setState({
-      visible: !visible
+      settingVisible: !settingVisible
     })
-    if (visible) {
+  }
+  toggleDownloadModal = () => {
+    const { downloadVisible } = this.state
+    this.setState({
+      downloadVisible: !downloadVisible
+    })
+    if (downloadVisible) {
       this.setLoader(0, '')
     }
   }
   render () {
     const { isLocal, documentName, pageName, frameName, isComponent } = this.props
-    const { loaderWidth, loaderMessage, visible } = this.state
+    const { loaderWidth, loaderMessage, settingVisible, downloadVisible } = this.state
     return (
       <header className="app-header">
         <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.img}/>
@@ -121,7 +128,7 @@ export default class Header extends React.Component {
         {
           this.hasNames() && !isLocal &&
           <div className="header-operates">
-            <span title="设置" onClick={this.toggleModal}>
+            <span title="设置" onClick={this.toggleSettingModal}>
               <Settings size={14}/>
             </span>
             <span title="生成离线标注" onClick={this.handleDownload}>
@@ -130,7 +137,17 @@ export default class Header extends React.Component {
           </div>
         }
         <span className="header-loader" style={{width: `${loaderWidth}%`}}/>
-        <Overlay visible={visible} onClose={this.toggleModal}>
+        <Overlay visible={settingVisible} caretRight={46} onClose={this.toggleSettingModal}>
+          <h4><span role="img" aria-label="Congratulations">⚙️</span> 设置</h4>
+          <p>还没做呢，惊喜吧？</p>
+          <p>还没做呢，惊喜吧？</p>
+          <p>还没做呢，惊喜吧？</p>
+          <p>还没做呢，惊喜吧？</p>
+          <p>还没做呢，惊喜吧？</p>
+          <p>还没做呢，惊喜吧？</p>
+          <p>还没做呢，惊喜吧？</p>
+        </Overlay>
+        <Overlay visible={downloadVisible} onClose={this.toggleDownloadModal}>
           <h4><span role="img" aria-label="Congratulations">🎉</span> 离线标注导出成功！</h4>
           <p>你的离线标注已经导出成功，可以直接发送给开发，或者部署在自己的服务器中。</p>
         </Overlay>

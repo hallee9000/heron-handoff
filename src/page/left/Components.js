@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { WithTooltip } from 'utils/hoc'
+import { WithTooltip } from 'components/utilities'
 import { getUrlImage } from 'utils/helper'
 
 export default class Components extends React.Component {

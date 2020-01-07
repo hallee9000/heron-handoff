@@ -71,23 +71,23 @@ export default class Entry extends React.Component {
         .filter(frameIds => frameIds!=='')
         .join()
       // get components and styles
-      const { components, styles } = walkFile(fileData)
+      const { components, styles, exportSettings } = walkFile(fileData)
       const componentIds = components.map(c => c.id).join()
       const { images } = await getImages(fileKey, ids + (componentIds ? `,${componentIds}` : ''))
-      this.onSucceed(fileData, components, styles, images )
+      this.onSucceed(fileData, components, styles, exportSettings, images )
     } else if (fileUrl==='mockmock') {
       const fileData = await getMockFile()
       // get components and styles
-      const { components, styles } = walkFile(fileData)
-      this.onSucceed(fileData, components, styles)
+      const { components, styles, exportSettings } = walkFile(fileData)
+      this.onSucceed(fileData, components, styles, exportSettings)
     }
   }
-  onSucceed = (fileData, components, styles, imagesData ) => {
+  onSucceed = (fileData, components, styles, exportSettings, imagesData ) => {
     const { onGotData } = this.props
     this.setState({
       isLoading: false
     })
-    onGotData && onGotData(fileData, components, styles, imagesData)
+    onGotData && onGotData(fileData, components, styles, exportSettings, imagesData)
   }
   onFailed = () => {
     window.localStorage.removeItem('figmaToken')
@@ -141,7 +141,7 @@ export default class Entry extends React.Component {
             }
           </div>
           <div className={cn('form-item', {'hide': !hasToken})}>
-            <div className="help-block">Access Token 已保存，点<a href="#" onClick={this.showTokenInput}>这里</a>修改</div>
+            <div className="help-block">Access Token 已保存，点<a href="#access-token" onClick={this.showTokenInput}>这里</a>修改</div>
           </div>
           <div className={cn('form-item', {'has-error': tokenMessage, 'hide': hasToken})}>
             <input

@@ -28,8 +28,10 @@ export const walkFile = fileData => {
   const { styles, components } = fileData
   const finalComponents = [], exportSettings = {}
   const step = (nodes) => {
+    // eslint-disable-next-line
     nodes.map(node => {
       if (node.styles) {
+        // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
           styles[id].value = node[`${styleType}s`]
@@ -39,12 +41,14 @@ export const walkFile = fileData => {
         finalComponents.push({...node, description: components[node.id].description})
       }
       if (node.exportSettings && node.exportSettings.length) {
-        exportSettings[node.id] = node.exportSettings
+        exportSettings[node.id] = {
+          name: node.name,
+          settings: node.exportSettings
+        }
       }
       if (node.children) {
         step(node.children)
       }
-      return 1
     })
   }
   step(fileData.document.children)
@@ -53,6 +57,7 @@ export const walkFile = fileData => {
 
 export const formatStyles = styles => {
   const fatStyles = {}
+  // eslint-disable-next-line
   Object.keys(styles).map(key => {
     const { styleType } = styles[key]
     if (fatStyles[styleType]) {
@@ -78,11 +83,11 @@ export const getImage = (id, useLocalImages, images) =>
 export const getUrlImage = (id, useLocalImages, images) =>
   `url(${getImage(id, useLocalImages, images)})`
 
-export const onInputClick = e => {
+export const onInputClick = (e, callback) => {
   const input = e.target
   input.setSelectionRange(0, 9999)
   if (document.execCommand('copy')) {
     document.execCommand('copy')
-    console.log('复制成功!')
+    callback && callback()
   }
 }

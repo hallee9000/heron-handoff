@@ -1,7 +1,7 @@
 import React from 'react'
-import Entry from 'components/Entry'
-import Main from 'components/Main'
-import Header from 'components/header'
+import Entry from 'page/Entry'
+import Main from 'page/Main'
+import Header from 'page/header'
 import { walkFile } from 'utils/helper'
 import 'assets/base.scss'
 import './app.scss'
@@ -35,12 +35,13 @@ class App extends React.Component {
       names: {}
     }
   }
-  handleDataGot = (fileData, components, styles, imagesData) => {
+  handleDataGot = (fileData, components, styles, exportSettings, imagesData) => {
     this.setState({
       entryVisible: false,
       data: fileData,
       components,
       styles,
+      exportSettings,
       images: imagesData,
       isMock: !imagesData
     })

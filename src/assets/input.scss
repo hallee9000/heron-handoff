@@ -1,17 +1,13 @@
 @import './tokens.scss';
+@import './mixin.scss';
 
 //文本输入框
 .input{
-  outline: none;
   width: 100%;
   height: 26px;
-  padding: 2px 10px;
-  color: #FFF;
-  font-size: 12px;
-  border-radius: 2px;
   border: 1px solid transparent;
-  transition: all 0.2s;
-  background: #1C1F2A;
+  border-radius: 2px;
+  @include input-base;
   &:focus{
     border: 1px solid fade-out($primary-color, 0.36);
   }
@@ -49,5 +45,6 @@ textarea.input{
 .input-lg{
   height: 32px;
   padding: 5px 10px;
+  line-height: 16px;
   font-size: 14px;
 }

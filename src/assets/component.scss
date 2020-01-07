@@ -1,6 +1,8 @@
 .rc-tooltip{
   opacity: 1;
   .rc-tooltip-inner{
+    padding: 6px 10px;
+    min-height: 30px;
     background-color: rgba(47, 52, 70, 0.96);
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
     img{
@@ -16,6 +18,131 @@
   &-placement-right{
     .rc-tooltip-arrow{
       border-right-color: rgba(47, 52, 70, 0.96);
+    }
+  }
+  @mixin slide-effect {
+    animation-duration: 0.02s;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+  }
+  &-slide-enter {
+    @include slide-effect;
+    opacity: 1!important;
+    transform: translateY(5px);
+    animation-play-state: paused;
+    &.rc-tooltip-slide-enter-active {
+      animation-name: slideIn;
+      animation-play-state: running;
+    }
+  }
+  &-slide-leave {
+    @include slide-effect;
+    animation-play-state: paused;
+    &.rc-tooltip-slide-leave-active {
+      animation-name: slideOut;
+      animation-play-state: running;
+    }
+  }
+  @keyframes slideIn {
+    0% {
+      transform: translateY(5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideOut {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(5px);
+    }
+  }
+}
+
+.rc-notification {
+  position: fixed;
+  z-index: 1000;
+  &-notice {
+    padding: 6px 10px;
+    border-radius: 3px 3px;
+    border: 1px solid #999;
+    border: 0px solid rgba(0, 0, 0, 0);
+    font-size: 12px;
+    color: #FFF;
+    background-color: rgba(47, 52, 70, 0.96);
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
+    display: block;
+    width: auto;
+    line-height: 1.5;
+    vertical-align: middle;
+    position: relative;
+    left: 0;
+    margin-bottom: 10px;
+    &-closable {
+      padding-right: 20px;
+    }
+    &-close {
+      position: absolute;
+      right: 5px;
+      top: 3px;
+      color: #000;
+      cursor: pointer;
+      outline: none;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 0 1px 0 #fff;
+      filter: alpha(opacity=20);
+      opacity: .2;
+      text-decoration: none;
+      &-x:after {
+        content: '×';
+      }
+      &:hover {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        text-decoration: none;
+      }
+    }
+  }
+  @mixin fade-effect {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  }
+  &-fade-enter {
+    transform: translateX(calc(100% + 20px));
+    @include fade-effect;
+    animation-play-state: paused;
+    &.rc-notification-fade-enter-active {
+      animation-name: rcNotificationFadeIn;
+      animation-play-state: running;
+    }
+  }
+  &-fade-leave {
+    @include fade-effect;
+    animation-play-state: paused;
+    &.rc-notification-fade-leave-active {
+      animation-name: rcDialogFadeOut;
+      animation-play-state: running;
+    }
+  }
+  @keyframes rcNotificationFadeIn {
+    0% {
+      transform: translateX(calc(100% + 20px));
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  @keyframes rcDialogFadeOut {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(100% + 20px));
     }
   }
 }

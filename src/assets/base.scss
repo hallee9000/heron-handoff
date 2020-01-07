@@ -1,17 +1,18 @@
-@import 'assets/utils.scss';
-@import 'assets/component.scss';
-@import 'assets/input.scss';
-@import 'assets/form.scss';
-@import 'assets/button.scss';
+@import './tokens.scss';
+@import './typo.scss';
+@import './utils.scss';
+@import './component.scss';
+@import './input.scss';
+@import './form.scss';
+@import './button.scss';
 
 @import '~rc-tooltip/assets/bootstrap.css';
 
 body {
   margin: 0;
-  font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-size: $font-size;
+  font-family: $font-family;
+  line-height: $line-height;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

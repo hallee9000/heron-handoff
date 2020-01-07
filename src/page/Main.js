@@ -1,8 +1,8 @@
 import React from 'react'
-import LeftSider from 'components/left'
-import RightSider from 'components/right'
-import RightProps from 'components/right/RightProps'
-import Canvas from 'components/canvas'
+import LeftSider from './left'
+import RightSider from './right'
+import RightProps from './right/RightProps'
+import Canvas from './canvas'
 import 'assets/base.scss'
 import './main.scss'
 

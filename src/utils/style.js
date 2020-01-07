@@ -10,43 +10,71 @@ export const getCSSRGBA = color =>
 export const getCSSHEX = color =>
   getColor(color).hex()
 
+
+export const getCSSAlpha = color =>
+  getColor(color).alpha()
+
 export const getColor = color =>
   Color(getRGBA(color))
 
-export const getOpacity = opacity =>
-  `${toFixed(opacity)*100 || 100}%`
+export const getPercentage = opacity =>
+  `${toFixed(opacity)==='' ? 100 : toFixed(opacity)*100 }%`
+
+export const getStops = stops =>
+  stops.map(stop => ({
+    position: getPercentage(stop.position),
+    hex: getCSSHEX(stop.color),
+    alpha: toFixed(getCSSAlpha(stop.color))
+  }))
+
+export const stopsToBackground = stops =>
+  stops.map(s => getCSSRGBA(s.color) + getPercentage(s.position)).join()
 
 // gradientHandlePositions
 export const getSolidColor = fill => ({
   css: getCSSRGBA(fill.color),
-  opacity: getOpacity(fill.opacity),
-  color: getCSSHEX(fill.color)
+  opacity: getPercentage(fill.opacity),
+  color: getCSSHEX(fill.color),
+  type: 'Solid'
 })
 
 export const getLinearGradient = fill => ({
-  css: `linear-gradient(to top, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)})`,
-  opacity: getOpacity(fill.opacity),
-  color: 'Linear'
+  css: `linear-gradient(to bottom, ${ stopsToBackground(fill.gradientStops) }`,
+  opacity: getPercentage(fill.opacity),
+  color: 'Linear',
+  type: 'Linear',
+  stops: getStops(fill.gradientStops),
+  positions: 'fill.gradientHandlePositions'
 })
 
 export const getRadialGradient = fill => ({
-  css: `radial-gradient(circle at 50% 50%, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)})`,
-  opacity: getOpacity(fill.opacity),
-  color: 'Radial'
+  css: `radial-gradient(circle at 50% 50%, ${ stopsToBackground(fill.gradientStops) })`,
+  opacity: getPercentage(fill.opacity),
+  color: 'Radial',
+  type: 'Radial',
+  stops: getStops(fill.gradientStops),
+  positions: 'fill.gradientHandlePositions'
 })
 
 export const getAngularGradient = fill => ({
-  css: `conic-gradient(from 0.25turn, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)})`, opacity: getOpacity(fill.opacity),
-  color: 'Angular'
+  css: `conic-gradient(from 0.25turn, ${ stopsToBackground(fill.gradientStops) })`,
+  opacity: getPercentage(fill.opacity),
+  color: 'Angular',
+  type: 'Angular',
+  stops: getStops(fill.gradientStops),
+  positions: 'fill.gradientHandlePositions'
 })
 
 export const getDiamondGradient = fill => ({
-  css: `linear-gradient(to bottom right, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) bottom right / 50% 50% no-repeat,` +
-  `linear-gradient(to bottom left, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) bottom left / 50% 50% no-repeat, ` +
-  `linear-gradient(to top left, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) top left / 50% 50% no-repeat, ` +
-  `linear-gradient(to top right, ${getCSSRGBA(fill.gradientStops[0].color)}, ${getCSSRGBA(fill.gradientStops[1].color)}) top right / 50% 50% no-repeat`,
-  opacity: getOpacity(fill.opacity),
-  color: 'Diamond'
+  css: `linear-gradient(to bottom right, ${ stopsToBackground(fill.gradientStops) }) bottom right / 50% 50% no-repeat,` +
+  `linear-gradient(to bottom left, ${ stopsToBackground(fill.gradientStops) }) bottom left / 50% 50% no-repeat, ` +
+  `linear-gradient(to top left, ${ stopsToBackground(fill.gradientStops) }) top left / 50% 50% no-repeat, ` +
+  `linear-gradient(to top right, ${ stopsToBackground(fill.gradientStops) }) top right / 50% 50% no-repeat`,
+  opacity: getPercentage(fill.opacity),
+  color: 'Diamond',
+  type: 'Diamond',
+  stops: getStops(fill.gradientStops),
+  positions: 'fill.gradientHandlePositions'
 })
 
 export const getFillsStyle = fills =>
@@ -66,6 +94,7 @@ export const getFillsStyle = fills =>
         return ''
     }
   })
+  .filter(fill => !!fill)
 
 export const getEffectsStyle = effects => {
   let type = ''

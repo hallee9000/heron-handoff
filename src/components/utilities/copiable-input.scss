@@ -1,0 +1,36 @@
+@import 'assets/mixin.scss';
+
+.copiable-input{
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  background: #1C1F2A;
+  border-radius: 2px;
+  >input{
+    @include input-base;
+    display: block;
+    flex: 1;
+    width: 100%;
+    height: 14px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  >textarea{
+    @include input-base;
+    display: block;
+    flex: 1;
+    width: 100%;
+    height: 36px;
+    padding: 0;
+    border: none;
+    line-height: 1.5;
+    resize: none;
+    cursor: pointer;
+  }
+  .item-label{
+    margin-right: 4px;
+    color: rgba($color: #FFF, $alpha: 0.36);
+  }
+}
