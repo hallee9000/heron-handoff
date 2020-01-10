@@ -49,46 +49,9 @@
     padding: 12px;
     >h5{
       margin: 0;
+      margin-bottom: 8px;
     }
     .properties-items{
-      .properties-item{
-        position: relative;
-        display: flex;
-        padding: 8px 0;
-        .item-preview,
-        .item-bg{
-          width: 18px;
-          height: 18px;
-          margin-right: 4px;
-          border-radius: 2px;
-          border: 1px solid #3d3e44;
-        }
-        .item-preview{
-          flex-shrink: 0;
-          margin-top: 4px;
-        }
-        .item-bg{
-          position: absolute;
-          top: 12px;
-          left: 0;
-          background-color: #FFF;
-          z-index: -1;
-        }
-        .item-chevron{
-          flex-shrink: 0;
-          margin-top: 4px;
-          margin-right: 4px;
-          padding: 2px;
-          cursor: pointer;
-          transform: rotate(-90deg);
-          &-expanded{
-            transform: rotate(0);
-          }
-          &:hover{
-            background: #1b1e2a;
-          }
-        }
-      }
     }
   }
 }

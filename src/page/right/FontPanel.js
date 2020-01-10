@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { HelpCircle } from 'react-feather'
 import Tooltip from 'rc-tooltip'
+import { CopiableInput } from 'components/utilities'
 import { getTextTable } from 'utils/text'
 import './font-panel.scss'
 
@@ -78,22 +79,22 @@ export default class FontPanel extends React.Component {
         </div>
         <ul className="section-items">
           <li className="item-block">
-            字体: <input className="input" readOnly defaultValue={ fontFamily }/>
+            <CopiableInput isQuiet label="字体" defaultValue={ fontFamily }/>
           </li>
           <li className="item-block">
-            字重: <input className="input" readOnly defaultValue={ fontWeight }/>
+            <CopiableInput isQuiet label="字重" defaultValue={ fontWeight }/>
           </li>
           <li className="item-block">
-            字号: <input className="input" readOnly defaultValue={ fontSize }/>
+            <CopiableInput isQuiet label="字号" defaultValue={ fontSize }/>
           </li>
           <li className="item-block">
-            对齐方式: <input className="input" readOnly defaultValue={ textAlignHorizontal }/>
+            <CopiableInput isQuiet label="对齐方式" defaultValue={ textAlignHorizontal }/>
           </li>
           <li className="item-block">
-            字间距: <input className="input" readOnly defaultValue={ letterSpacing }/>
+            <CopiableInput isQuiet label="字间距" defaultValue={ letterSpacing }/>
           </li>
           <li className="item-block">
-            行高: <input className="input" readOnly defaultValue={ `${lineHeightPercent.toFixed()}%` }/>
+            <CopiableInput isQuiet label="行高" defaultValue={ `${lineHeightPercent.toFixed()}%` }/>
           </li>
         </ul>
       </div>

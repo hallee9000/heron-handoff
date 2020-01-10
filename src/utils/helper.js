@@ -26,6 +26,7 @@ export const urlWithParams = (url, data) => {
 
 export const walkFile = fileData => {
   const { styles, components } = fileData
+  const finalStyles = {...styles}
   const finalComponents = [], exportSettings = {}
   const step = (nodes) => {
     // eslint-disable-next-line
@@ -34,7 +35,10 @@ export const walkFile = fileData => {
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
-          styles[id].value = node[`${styleType}s`]
+          finalStyles[id] = {
+            items: styleType!=='text' ? node[`${styleType}s`] : node.style,
+            ...styles[id]
+          }
         })
       }
       if (node.type==='COMPONENT') {
@@ -52,7 +56,7 @@ export const walkFile = fileData => {
     })
   }
   step(fileData.document.children)
-  return { styles: formatStyles(styles), components: finalComponents, exportSettings }
+  return { styles: formatStyles(finalStyles), components: finalComponents, exportSettings }
 }
 
 export const formatStyles = styles => {
@@ -61,9 +65,9 @@ export const formatStyles = styles => {
   Object.keys(styles).map(key => {
     const { styleType } = styles[key]
     if (fatStyles[styleType]) {
-      fatStyles[styleType].push(styles[key])
+      fatStyles[styleType].push({id: key, ...styles[key]})
     } else {
-      fatStyles[styleType] = [styles[key]]
+      fatStyles[styleType] = [{id: key, ...styles[key]}]
     }
   })
   return fatStyles

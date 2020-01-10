@@ -6,6 +6,21 @@
   padding: 6px;
   background: #1C1F2A;
   border-radius: 2px;
+  transition: background 0.2s;
+  &-quiet{
+    background: transparent;
+    &:hover{
+      background: #1C1F2A;
+    }
+  }
+  .copiable-label{
+    margin-right: 4px;
+    line-height: 14px;
+    color: rgba($color: #FFF, $alpha: 0.36);
+    svg{
+      display: block;
+    }
+  }
   >input{
     @include input-base;
     display: block;
@@ -26,11 +41,8 @@
     padding: 0;
     border: none;
     line-height: 1.5;
+    background: transparent;
     resize: none;
     cursor: pointer;
-  }
-  .item-label{
-    margin-right: 4px;
-    color: rgba($color: #FFF, $alpha: 0.36);
   }
 }

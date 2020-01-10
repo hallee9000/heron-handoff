@@ -72,6 +72,7 @@ export default class Main extends React.Component {
             elementData &&
             <RightProps
               data={elementData}
+              styles={styles}
               dissolved={propsDissolved}
               onDissolveEnd={this.handleDissolveEnd}
             />

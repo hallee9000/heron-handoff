@@ -42,12 +42,11 @@ export default class RightSider extends React.Component {
   }
   componentDidMount() {
     // const { styles } = this.props
-    // this.openDetail(styles.FILL[1])exportSettings
+    // this.openDetail(styles.EFFECT[4])
   }
   render () {
     const { styles, exportSettings, hasMask } = this.props
     const { maskVisible, tabIndex, detailVisible, currentStyle } = this.state
-    console.log(exportSettings)
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
         <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>
@@ -67,7 +66,7 @@ export default class RightSider extends React.Component {
                     styles[key].map((style, index) =>
                       <StyleItem
                         key={index}
-                        styles={style.value}
+                        styles={style.items}
                         styleName={style.name}
                         styleType={style.styleType}
                         onClick={() => this.openDetail(style)}

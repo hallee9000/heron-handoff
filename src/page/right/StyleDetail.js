@@ -1,26 +1,25 @@
 import React from 'react'
 import cn from 'classnames'
-import { ChevronLeft, ChevronDown } from 'react-feather'
-import ColorDetail from './ColorDetail'
-import MixedFill from './items/MixedFill'
+import { ChevronLeft } from 'react-feather'
+import FillItem from './items/FillItem'
+import EffectItem from './items/EffectItem'
+import Preview from './items/Preview'
 import { CopiableInput } from 'components/utilities'
-import { getFillsStyle } from 'utils/style'
+import { getStyle } from 'utils/style'
 import './style-detail.scss'
 
+const itemsMap = {
+  'FILL': FillItem,
+  'EFFECT': EffectItem
+}
+
 export default class StyleDetail extends React.Component {
-  state = {
-    styleIndex: ''
-  }
-  toggleStyle = index => {
-    const { styleIndex } = this.state
-    this.setState({
-      styleIndex: styleIndex===index ? '' : index
-    })
-  }
   render () {
     const { visible, style, onBack } = this.props
-    const { styleIndex } = this.state
-    const fillStyles = style.value ? getFillsStyle(style.value) : []
+    const { styleType } = style
+    const isText = styleType==='TEXT'
+    const { styles: styleItems } = getStyle(styleType, style.items)
+    console.log(styleItems)
     return (
       <div className={cn('sider-detail', {'sider-detail-visible': visible})}>
         <div className="detail-title">
@@ -28,9 +27,9 @@ export default class StyleDetail extends React.Component {
           <span>{style.name}</span>
         </div>
         {
-          style.value &&
+          style.items &&
           <div className="detail-preview">
-            <MixedFill fillStyles={fillStyles}/>
+            <Preview type={styleType} styles={styleItems}/>
           </div>
         }
         <div className="detail-name">
@@ -44,27 +43,40 @@ export default class StyleDetail extends React.Component {
         <div className="detail-properties">
           <h5>属性</h5>
           {
-            style.value &&
-            <ul className="properties-items">
-              {
-                fillStyles
-                  .map((fillStyle, index) =>
-                    <li className="properties-item" key={index}>
-                      <div className="item-bg"/>
-                      <div className="item-preview" style={{background: fillStyle.css, opacity: fillStyle.opacity}}/>
-                      {
-                        fillStyle.stops &&
-                        <ChevronDown
-                          className={cn('item-chevron', { 'item-chevron-expanded': styleIndex===index })}
-                          size={18}
-                          onClick={() => this.toggleStyle(index)}
-                        />
-                      }
-                      <ColorDetail fillStyle={fillStyle} expanded={styleIndex===index}/>
+            style.items &&
+            (
+              isText ?
+              <ul className="properties-items">
+                <li className="properties-item">
+                  <CopiableInput isQuiet label="字体" defaultValue={ styleItems.fontFamily }/>
+                </li>
+                <li className="properties-item">
+                  <CopiableInput isQuiet label="字重" defaultValue={ styleItems.fontWeight }/>
+                </li>
+                <li className="properties-item">
+                  <CopiableInput isQuiet label="字号" defaultValue={ styleItems.fontSize }/>
+                </li>
+                <li className="properties-item">
+                  <CopiableInput isQuiet label="对齐方式" defaultValue={ styleItems.textAlignHorizontal }/>
+                </li>
+                <li className="properties-item">
+                  <CopiableInput isQuiet label="字间距" defaultValue={ styleItems.letterSpacing }/>
+                </li>
+                <li className="properties-item">
+                  <CopiableInput isQuiet label="行高" defaultValue={ `${styleItems.lineHeightPercent.toFixed()}%` }/>
+                </li>
+              </ul> :
+              <ul className="properties-items">
+                {
+                  styleItems.map((styleItem, index) => {
+                    const StyleItem = itemsMap[styleType]
+                    return <li className="properties-item" key={index}>
+                      <StyleItem style={styleItem}/>
                     </li>
-                  )
-              }
-            </ul>
+                  })
+                }
+              </ul>
+            )
           }
         </div>
       </div>

@@ -1,9 +1,10 @@
-import React, { useState, cloneElement } from 'react'
+import React, { useState } from 'react'
+import cn from 'classnames'
 import { onInputClick } from 'utils/helper'
 import WithTooltip from './WithTooltip'
 import './copiable-input.scss'
 
-export default ({ label, type='input', ...otherProps }) => {
+export default ({ label, type='input', isQuiet=false, ...otherProps }) => {
   const [ copied, setCopied ] = useState(false)
   const onCopied = () => {
     const timer = setTimeout(() => {
@@ -15,12 +16,10 @@ export default ({ label, type='input', ...otherProps }) => {
     setCopied(true)
     onInputClick(e, onCopied)
   }
-  return <span className="copiable-input">
+  return <span className={cn('copiable-input', {'copiable-input-quiet': isQuiet})}>
     {
       label &&
-      cloneElement(label, {
-        className: 'item-label'
-      })
+      <span className="copiable-label">{ label }</span>
     }
     <WithTooltip
       yes

@@ -4,6 +4,14 @@ import { toFixed } from 'utils/mark'
 export const getRGBA = color =>
   ({r: (color.r*255).toFixed(), g: (color.g*255).toFixed(), b: (color.b*255).toFixed(), alpha: color.a})
 
+export const getRGB = color => {
+  const rgba = getRGBA(color)
+  delete rgba.alpha
+  return Object.keys(rgba)
+    .map(key => rgba[key])
+    .join(', ')
+}
+
 export const getCSSRGBA = color =>
   `rgba(${Object.keys(getRGBA(color)).map(key => getRGBA(color)[key]).join(',')})`
 
@@ -34,6 +42,7 @@ export const stopsToBackground = stops =>
 export const getSolidColor = fill => ({
   css: getCSSRGBA(fill.color),
   opacity: getPercentage(fill.opacity),
+  hex: getCSSHEX(fill.color),
   color: getCSSHEX(fill.color),
   type: 'Solid'
 })
@@ -77,8 +86,10 @@ export const getDiamondGradient = fill => ({
   positions: 'fill.gradientHandlePositions'
 })
 
-export const getFillsStyle = fills =>
-  fills.map(fill => {
+export const getFillsStyle = fills => {
+  let type = ''
+  const styles = fills.map(fill => {
+    type = type==='' ? fill.type : ( type===fill.type ? type : 'MIX_FILL')
     switch (fill.type) {
       case 'SOLID':
         return getSolidColor(fill)
@@ -95,6 +106,17 @@ export const getFillsStyle = fills =>
     }
   })
   .filter(fill => !!fill)
+  return { type, styles }
+}
+
+export const getShadowEffect = effect => ({
+    x: effect.offset.x,
+    y: effect.offset.y,
+    blur: effect.radius,
+    hex: getCSSHEX(effect.color),
+    rgba: getRGB(effect.color),
+    alpha: toFixed(getCSSAlpha(effect.color))
+  })
 
 export const getEffectsStyle = effects => {
   let type = ''
@@ -102,16 +124,98 @@ export const getEffectsStyle = effects => {
     type = type==='' ? effect.type : ( type===effect.type ? type : 'MIX_EFFECT')
     switch (effect.type) {
       case 'DROP_SHADOW':
-        return { boxShadow: `${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}` }
+        return {
+          type: effect.type,
+          typeName: 'Drop Shadow',
+          category: 'shadow',
+          ...getShadowEffect(effect),
+          css: {
+            code: `box-shadow: ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
+            boxShadow: `${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
+          }
+        }
       case 'INNER_SHADOW':
-        return { boxShadow: `inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}` }
+        return {
+          type: effect.type,
+          typeName: 'Inner Shadow',
+          category: 'shadow',
+          ...getShadowEffect(effect),
+          css: {
+            code: `box-shadow: inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
+            boxShadow: `inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
+          }
+        }
       case 'LAYER_BLUR':
-        return { filter: `blur(${effect.radius}px)` }
+        return {
+          type: effect.type,
+          typeName: 'Layer Blur',
+          category: 'blur',
+          blur: effect.radius,
+          css: {
+            code: `filter: blur(${effect.radius}px)`,
+            filter: `blur(${effect.radius}px)`
+          }
+        }
       case 'BACKGROUND_BLUR':
-        return { backdropFilter: `blur(${effect.radius}px)` }
+        return {
+          type: effect.type,
+          category: 'blur',
+          typeName: 'Background Blur',
+          blur: effect.radius,
+          css: {
+            code: `backdrop-filter: blur(${effect.radius}px)`,
+            backdropFilter: `blur(${effect.radius}px)`
+          }
+        }
       default:
         return {}
     }
   })
   return { type, styles }
+}
+
+export const getCSSEffects = effectItems => {
+  let style = {}, shadows = []
+  // eslint-disable-next-line
+  effectItems.map(({type, css}) => {
+    if (type==='DROP_SHADOW' || type==='INNER_SHADOW') {
+      shadows.push(css.boxShadow)
+    } else {
+      style = { ...style, ...css }
+    }
+  })
+  style.boxShadow = shadows.join()
+  return style
+}
+
+export const getTextIcon = textStyle => {
+  const { fontSize, fontWeight } = textStyle
+  const size = fontSize > 30 ? 'large' : (fontSize < 16 ? 'small' : 'normal')
+  const weight = fontWeight > 500 ? 'bold' : (fontWeight < 400 ? 'thin' : 'regular')
+  return `${size}-${weight}`
+}
+
+export const getStyle = (type, styles) => {
+  if (!styles) return []
+  switch (type) {
+    case 'FILL':
+      return getFillsStyle(styles)
+    case 'EFFECT':
+      return getEffectsStyle(styles)
+    case 'TEXT':
+      return { type: 'TEXT', styles }
+    default:
+      return []
+  }
+}
+
+export const getStyleById = (styles, nodeStyles, type='fill') => {
+  if (!nodeStyles) {
+    return ''
+  }
+  if (styles[type.toUpperCase()] && nodeStyles[type]) {
+    return styles[type.toUpperCase()].find(({id}) => id===nodeStyles[type])
+  } else {
+    return ''
+  }
 }

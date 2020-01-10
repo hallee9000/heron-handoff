@@ -15,30 +15,33 @@
   .props-section{
     padding: 12px;
     border-bottom: 1px solid #383941;
-    >h5{
+    .section-title{
+      display: flex;
+      align-items: center;
       margin: 0;
       margin-bottom: 10px;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-    }
-    .section-items{
-      display: flex;
-      flex-flow: wrap;
-      justify-content: space-between;
-      width: 100%;
-      font-size: 12px;
-      >li{
-        flex: 0 1 47%;
+      .title-name{
+        flex: 1;
+      }
+      .title-reference{
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
-        input{
-          flex: 1;
-          margin-left: 10px;
+        font-weight: normal;
+        .reference-preview{
+          width: 16px;
+          height: 16px;
+          border-radius: 8px;
+          border: 1px solid #3d3e44;
+          overflow: hidden;
         }
-        &.item-block{
-          flex: 1 0 100%;
+        .reference-name{
+          margin: 0 4px;
+        }
+        >svg{
+          flex: 1 1 14px;
         }
       }
     }
@@ -50,14 +53,24 @@
         vertical-align: middle;
       }
     }
-  }
-  .props-color{
-    .item-block{
-      >div{
-        width: 16px;
-        height: 16px;
-        margin-right: 12px;
-        border: 1px solid #6B6F8B;
+    .section-items{
+      .item-block{
+        margin-bottom: 6px;
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+    }
+    &.props-basic{
+      .section-items{
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 12px;
+        .copiable-input{
+          flex: 0 1 47%;
+        }
       }
     }
   }

@@ -9,14 +9,16 @@
     padding: 0 6px;
     border-radius: 0;
   }
+  .copiable-input{
+    &:first-child{
+      padding-left: 0;
+    }
+    &:last-child{
+      padding-right: 0;
+    }
+  }
   &.input-group-divided{
     .copiable-input{
-      &:first-child{
-        padding-left: 0;
-      }
-      &:last-child{
-        padding-right: 0;
-      }
       &:not(:last-child){
         border-right: 1px solid #2f3446;
       }
