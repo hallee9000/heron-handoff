@@ -19,7 +19,6 @@ export default class StyleDetail extends React.Component {
     const { styleType } = style
     const isText = styleType==='TEXT'
     const { styles: styleItems } = getStyle(styleType, style.items)
-    console.log(styleItems)
     return (
       <div className={cn('sider-detail', {'sider-detail-visible': visible})}>
         <div className="detail-title">
@@ -29,7 +28,7 @@ export default class StyleDetail extends React.Component {
         {
           style.items &&
           <div className="detail-preview">
-            <Preview type={styleType} styles={styleItems}/>
+            <Preview type={styleType} styles={styleItems} name={style.name}/>
           </div>
         }
         <div className="detail-name">
@@ -71,7 +70,7 @@ export default class StyleDetail extends React.Component {
                   styleItems.map((styleItem, index) => {
                     const StyleItem = itemsMap[styleType]
                     return <li className="properties-item" key={index}>
-                      <StyleItem style={styleItem}/>
+                      <StyleItem flag={visible} style={styleItem}/>
                     </li>
                   })
                 }

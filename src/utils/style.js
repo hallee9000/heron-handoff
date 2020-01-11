@@ -204,8 +204,10 @@ export const getStyle = (type, styles) => {
       return getEffectsStyle(styles)
     case 'TEXT':
       return { type: 'TEXT', styles }
+    case 'GRID':
+      return { type: 'GRID', styles }
     default:
-      return []
+      return { styles }
   }
 }
 

@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { getCSSEffects } from 'utils/style'
 import './preview.scss'
 
-export default ({type, styles}) =>
+export default ({type, styles, name}) =>
   <div className={cn('preview', `preview-${type.toLowerCase()}`)}>
     <div className="preview-bg"/>
     {
@@ -13,7 +13,7 @@ export default ({type, styles}) =>
       ) :
       (
         type==='TEXT' ?
-        <div className="text-item" style={styles}>测试</div> :
+        <div className="text-item" style={styles}>{ name }</div> :
         <div className="effect-item" style={getCSSEffects(styles)}/>
       )
     }
