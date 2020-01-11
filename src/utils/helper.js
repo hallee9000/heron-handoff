@@ -24,6 +24,9 @@ export const urlWithParams = (url, data) => {
   return urlObj
 }
 
+export const getStyleItems = (node, key) =>
+  key==='background' ? node.fills : node[key]
+
 export const walkFile = fileData => {
   const { styles, components } = fileData
   const finalStyles = {...styles}
@@ -35,9 +38,11 @@ export const walkFile = fileData => {
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
-          finalStyles[id] = {
-            items: styleType!=='text' ? node[`${styleType}s`] : node.style,
-            ...styles[id]
+          if (!finalStyles[id].items) {
+            finalStyles[id] = {
+              items: styleType!=='text' ? getStyleItems(node, `${styleType}s`) : node.style,
+              ...styles[id]
+            }
           }
         })
       }

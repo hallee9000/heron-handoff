@@ -5,7 +5,6 @@ import FillPreview from './Preview'
 import './style-item.scss'
 
 export default ({styles, styleName, styleType, ...props}) => {
-  if (!styles) return ''
   switch (styleType) {
     case 'FILL':
       const { styles: fillItems } = getFillsStyle(styles)
