@@ -2,40 +2,31 @@ import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { HelpCircle } from 'react-feather'
 import Tooltip from 'rc-tooltip'
-import { CopiableInput } from 'components/utilities'
+import TextItems from './items/TextItems'
+import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
 import './font-panel.scss'
-
-const styleKeys = ['fontFamily', 'fontWeight', 'fontSize', 'textAlignHorizontal', 'letterSpacing', 'lineHeightPercent']
 
 export default class FontPanel extends React.Component {
   constructor(props) {
     super(props)
-    const { fontFamily, fontWeight, fontSize, textAlignHorizontal, letterSpacing, lineHeightPercent } = this.props.node.style
     this.state = {
+      textTable: getTextTable(props.node),
       selected: null,
-      fontFamily, fontWeight, fontSize, textAlignHorizontal, letterSpacing, lineHeightPercent
+      style: getTextStyle(props.node.style)
     }
   }
   switchPiece = (piece, index) => {
-    const style = {}
-    styleKeys.map(key => {
-      if (piece[key]) {
-        style[key] = piece[key]
-      }
-      return key
-    })
     this.setState({
       selected: index,
-      ...style
+      style: getTextStyle(piece)
     })
     const { onSwitch } = this.props
     onSwitch && onSwitch(piece.fills)
   }
   render() {
     const { node, propsSider } = this.props
-    const { selected, fontFamily, fontWeight, fontSize, textAlignHorizontal, letterSpacing, lineHeightPercent } = this.state
-    const textTable = getTextTable(node)
+    const { textTable, selected, style } = this.state
     return (
       <div className="props-section props-text">
         <h5>文字样式</h5>
@@ -77,26 +68,9 @@ export default class FontPanel extends React.Component {
             </Tooltip>
           }
         </div>
-        <ul className="section-items">
-          <li className="item-block">
-            <CopiableInput isQuiet label="字体" defaultValue={ fontFamily }/>
-          </li>
-          <li className="item-block">
-            <CopiableInput isQuiet label="字重" defaultValue={ fontWeight }/>
-          </li>
-          <li className="item-block">
-            <CopiableInput isQuiet label="字号" defaultValue={ fontSize }/>
-          </li>
-          <li className="item-block">
-            <CopiableInput isQuiet label="对齐方式" defaultValue={ textAlignHorizontal }/>
-          </li>
-          <li className="item-block">
-            <CopiableInput isQuiet label="字间距" defaultValue={ letterSpacing }/>
-          </li>
-          <li className="item-block">
-            <CopiableInput isQuiet label="行高" defaultValue={ `${lineHeightPercent.toFixed()}%` }/>
-          </li>
-        </ul>
+        <div className="section-items">
+          <TextItems flag={selected} items={style}/>
+        </div>
       </div>
     )
   }

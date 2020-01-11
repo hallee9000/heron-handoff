@@ -3,6 +3,7 @@ import cn from 'classnames'
 import { ChevronLeft } from 'react-feather'
 import FillItem from './items/FillItem'
 import EffectItem from './items/EffectItem'
+import TextItems from './items/TextItems'
 import Preview from './items/Preview'
 import { CopiableInput } from 'components/utilities'
 import { getStyle } from 'utils/style'
@@ -45,26 +46,7 @@ export default class StyleDetail extends React.Component {
             style.items &&
             (
               isText ?
-              <ul className="properties-items">
-                <li className="properties-item">
-                  <CopiableInput isQuiet label="字体" defaultValue={ styleItems.fontFamily }/>
-                </li>
-                <li className="properties-item">
-                  <CopiableInput isQuiet label="字重" defaultValue={ styleItems.fontWeight }/>
-                </li>
-                <li className="properties-item">
-                  <CopiableInput isQuiet label="字号" defaultValue={ styleItems.fontSize }/>
-                </li>
-                <li className="properties-item">
-                  <CopiableInput isQuiet label="对齐方式" defaultValue={ styleItems.textAlignHorizontal }/>
-                </li>
-                <li className="properties-item">
-                  <CopiableInput isQuiet label="字间距" defaultValue={ styleItems.letterSpacing }/>
-                </li>
-                <li className="properties-item">
-                  <CopiableInput isQuiet label="行高" defaultValue={ `${styleItems.lineHeightPercent.toFixed()}%` }/>
-                </li>
-              </ul> :
+              <TextItems flag={visible} items={styleItems}/> :
               <ul className="properties-items">
                 {
                   styleItems.map((styleItem, index) => {

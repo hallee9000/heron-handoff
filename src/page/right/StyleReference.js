@@ -2,6 +2,7 @@ import React from 'react'
 import { ArrowRight } from 'react-feather'
 import { getStyleById } from 'utils/style'
 import Preview from './items/Preview'
+import './style-reference.scss'
 
 export default ({styleItems, styles, nodeStyles, type}) => {
   const styleReference = getStyleById(styles, nodeStyles, type)

@@ -188,6 +188,28 @@ export const getCSSEffects = effectItems => {
   return style
 }
 
+export const getTextStyle = textItems => {
+  const {
+    fontFamily, fontWeight, fontSize, textDecoration,
+    letterSpacing, textAlignHorizontal, lineHeightPx,
+    lineHeightPercentFontSize, lineHeightUnit
+  } = textItems
+  const decorations = { 'UNDERLINE': 'underline', 'STRIKETHROUGH': 'line-through' }
+  const lineHeight =
+    lineHeightUnit==='PIXELS' ?
+    `${lineHeightPx}px` :
+    (lineHeightUnit==='INTRINSIC_%' ? 'normal' : `${lineHeightPercentFontSize || 100}%`)
+  return {
+    fontFamily,
+    fontWeight,
+    fontSize,
+    lineHeight,
+    letterSpacing,
+    textAlign: textAlignHorizontal.toLowerCase(),
+    textDecoration: decorations[textDecoration]
+  }
+}
+
 export const getTextIcon = textStyle => {
   const { fontSize, fontWeight } = textStyle
   const size = fontSize > 30 ? 'large' : (fontSize < 16 ? 'small' : 'normal')
@@ -203,7 +225,7 @@ export const getStyle = (type, styles) => {
     case 'EFFECT':
       return getEffectsStyle(styles)
     case 'TEXT':
-      return { type: 'TEXT', styles }
+      return { type: 'TEXT', styles: getTextStyle(styles) }
     case 'GRID':
       return { type: 'GRID', styles }
     default:

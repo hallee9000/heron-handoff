@@ -1,27 +1,34 @@
-export const getTextTable = ({ characters, characterStyleOverrides, styleOverrideTable }) => {
-  const text = characters
+export const getTextTable = ({ characters, characterStyleOverrides, styleOverrideTable, style, fills }) => {
   const overrides = characterStyleOverrides
   const styles = styleOverrideTable
   const textTable = []
+  let lastOverrideKey
   if (overrides.length===0) return textTable
-  overrides.map((styleKey, index) => {
+  // eslint-disable-next-line
+  Array().map.call(characters, (character, index) => {
+    const currentOverride = overrides[index]
+    const styleKey = currentOverride!==undefined ? currentOverride : lastOverrideKey
     const key = styleKey - 0
     if (index===0) {
       textTable.push({
-        text: text[0],
+        text: character,
+        fills,
+        ...style,
         ...styles[key]
       })
     } else {
-      if (key===overrides[index-1]) {
-        textTable[textTable.length-1].text += text[index]
+      if (key===lastOverrideKey) {
+        textTable[textTable.length-1].text += character
       } else {
         textTable.push({
-          text: text[index],
+          text: character,
+          fills,
+          ...style,
           ...styles[key]
         })
       }
     }
-    return styleKey
+    lastOverrideKey = styleKey
   })
   return textTable
 }

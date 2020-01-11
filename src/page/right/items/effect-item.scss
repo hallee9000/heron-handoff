@@ -1,7 +1,7 @@
 .effect-item{
   position: relative;
   &-expanded{
-    .extra-summary{
+    .effect-summary{
       .summary-chevron{
         transform: rotate(0)!important;
       }
@@ -22,9 +22,6 @@
       cursor: pointer;
       border-radius: 2px;
       transform: rotate(-90deg);
-      &-hidden{
-        visibility: hidden;
-      }
       &:hover{
         background: #1b1e2a;
       }

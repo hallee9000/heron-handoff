@@ -26,24 +26,6 @@
       .title-name{
         flex: 1;
       }
-      .title-reference{
-        display: flex;
-        align-items: center;
-        font-weight: normal;
-        .reference-preview{
-          width: 16px;
-          height: 16px;
-          border-radius: 8px;
-          border: 1px solid #3d3e44;
-          overflow: hidden;
-        }
-        .reference-name{
-          margin: 0 4px;
-        }
-        >svg{
-          flex: 1 1 14px;
-        }
-      }
     }
     .section-helper{
       font-size: 12px;
