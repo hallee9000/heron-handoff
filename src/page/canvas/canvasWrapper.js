@@ -101,7 +101,7 @@ export default function (Canvas) {
         }
       }
       window.onkeyup = e => {
-        // space key unpressed
+        // space key up
         if(e.keyCode === 32) {
           e.preventDefault()
           this.setState({ spacePressed: false })
@@ -125,6 +125,7 @@ export default function (Canvas) {
       })
       canvas.addEventListener('mousemove', e => {
         const { isDragging, spacePressed } = this.state
+        // support middle click
         if (isDragging && (e.which===2 || spacePressed)) {
           const { posX, posY, scale } = this.state
           this.setState({

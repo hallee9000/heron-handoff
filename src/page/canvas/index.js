@@ -77,7 +77,7 @@ class Canvas extends React.Component {
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         {
-          !!selectedIndex && (selectedIndex!==hoveredIndex) &&
+          selectedIndex!==null && (selectedIndex!==hoveredIndex) &&
           <Ruler rulerData={markData.rulerData}/>
         }
         {
