@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
-import { HelpCircle } from 'react-feather'
+import { HelpCircle, Copy } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import TextItems from './items/TextItems'
+import { copySomething } from 'utils/helper'
 import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
 import './font-panel.scss'
@@ -27,18 +28,29 @@ export default class FontPanel extends React.Component {
   render() {
     const { node, propsSider } = this.props
     const { textTable, selected, style } = this.state
+    console.log(node.characters)
     return (
       <div className="props-section props-text">
         <h5>文字样式</h5>
         <div className="text-content">
           <div className="content-box">
+            <Tooltip
+              trigger={['click']}
+              overlay="复制成功！"
+              placement="top"
+              transitionName="rc-tooltip-slide"
+            >
+              <span className="box-copy">
+                <Copy size={14} onClick={copySomething(node.characters)}/>
+              </span>
+            </Tooltip>
             {
               textTable.length===0 ?
               node.characters :
               textTable.map((piece, index) =>
                 <span
                   key={index}
-                  className={cn({'selected': selected===index})}
+                  className={cn('box-piece', {'selected': selected===index})}
                   onClick={() => this.switchPiece(piece, index)}
                 >{ piece.text }</span>
               )

@@ -1,15 +1,31 @@
+@import '~assets/tokens.scss';
+
 .props-text{
   .text-content{
     margin-bottom: 10px;
     .content-box{
-      font-size: 12px;
+      position: relative;
       max-height: 70px;
-      padding: 10px;
+      padding: 6px;
       border-radius: 2px;
       background: #1C1F2A;
+      font-size: 12px;
       white-space: pre-wrap;
       overflow: auto;
-      >span{
+      .box-copy{
+        position: absolute;
+        top: 8px;
+        right: 6px;
+        width: 14px;
+        height: 14px;
+        color: $white-36;
+        cursor: pointer;
+        transition: color 0.2s;
+        &:hover{
+          color: $white-85;
+        }
+      }
+      .box-piece{
         margin: 0;
         padding: 0 3px;
         border-radius: 2px;

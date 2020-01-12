@@ -18,7 +18,7 @@ export default ({flag, style}) => {
       <div className="summary-bg"/>
       <div className="summary-preview" style={{background: style.css, opacity: style.opacity}}/>
       <span className="summary-type">{ style.type }</span>
-      <InputGroup hasDivider={false} isQuiet>
+      <InputGroup isQuiet>
         {
           isSolid ?
           <CopiableInput label={<Fill size={12}/>} className="summary-color" defaultValue={style.hex} title="颜色"/> :
@@ -34,7 +34,7 @@ export default ({flag, style}) => {
           style.stops.map((stop, index) =>
             <div className="stops-item" key={index}>
               <div className="stops-dot"/>
-              <InputGroup hasDivider={false} isQuiet>
+              <InputGroup isQuiet>
                 <CopiableInput className="stops-position" defaultValue={ stop.position } title="位置"/>
                 <CopiableInput label={<Fill size={12}/>} className="stops-value" defaultValue={ stop.hex } title="颜色"/>
                 <CopiableInput label={<Opacity size={12}/>} className="stops-opacity" defaultValue={ stop.alpha } title="不透明度"/>

@@ -23,7 +23,7 @@ export default ({flag, style, hasCode=true}) => {
     {
       category==='shadow' &&
       <li className="effect-extra">
-        <InputGroup hasDivider={false} isQuiet>
+        <InputGroup isQuiet>
           <CopiableInput label="X" defaultValue={ x } title="X"/>
           <CopiableInput label="Y" defaultValue={ y } title="Y"/>
           <CopiableInput label={<Fill size={12}/>} className="extra-color" defaultValue={ hex } title="颜色"/>

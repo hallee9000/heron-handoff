@@ -1,7 +1,7 @@
 import React, { Fragment, createRef } from 'react'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import { Download, Settings } from 'react-feather'
+import { Download, Settings, HelpCircle } from 'react-feather'
 import Overlay from './Overlay'
 import { asyncForEach } from 'utils/helper'
 import { getSourceCode, getBufferData } from 'api'
@@ -125,17 +125,23 @@ export default class Header extends React.Component {
           </span> :
           <span className="header-pagename">Figma Handoff</span>
         }
-        {
-          this.hasNames() && !isLocal &&
-          <div className="header-operates">
+        <div className="header-operates">
+          {
+            this.hasNames() &&
             <span title="设置" onClick={this.toggleSettingModal}>
               <Settings size={14}/>
             </span>
+          }
+          <a title="获取帮助" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer">
+            <HelpCircle size={14}/>
+          </a>
+          {
+            this.hasNames() && !isLocal &&
             <span title="生成离线标注" onClick={this.handleDownload}>
               <Download size={14}/>
             </span>
-          </div>
-        }
+          }
+        </div>
         <span className="header-loader" style={{width: `${loaderWidth}%`}}/>
         <Overlay visible={settingVisible} caretRight={46} onClose={this.toggleSettingModal}>
           <h4><span role="img" aria-label="Congratulations">⚙️</span> 设置</h4>

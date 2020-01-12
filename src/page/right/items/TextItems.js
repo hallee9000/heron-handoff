@@ -3,7 +3,7 @@ import { CopiableInput } from 'components/utilities'
 import './text-items.scss'
 
 export default ({flag, items}) =>
-  <ul key={flag} className="text-items" title={flag}>
+  <ul key={flag} className="text-items">
     <li className="text-item">
       <CopiableInput isQuiet label="字体" defaultValue={ items.fontFamily }/>
     </li>

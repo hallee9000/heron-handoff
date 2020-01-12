@@ -7,7 +7,7 @@ export const getTextTable = ({ characters, characterStyleOverrides, styleOverrid
   // eslint-disable-next-line
   Array.prototype.map.call(characters, (character, index) => {
     const currentOverride = overrides[index]
-    const styleKey = currentOverride!==undefined ? currentOverride : lastOverrideKey
+    const styleKey = currentOverride!==undefined ? currentOverride : 0
     const key = styleKey - 0
     if (index===0) {
       textTable.push({

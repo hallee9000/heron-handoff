@@ -12,7 +12,15 @@ export default class Entry extends React.Component {
     tokenMessage: '',
     errorMessage: '',
     hasToken: false,
-    isLoading: false
+    isLoading: false,
+    percentage: 0,
+    buttonText: '生成标注'
+  }
+  setPercentage = (percentage, buttonText) => {
+    this.setState({
+      percentage,
+      buttonText
+    })
   }
   handleChange = e => {
     const { name, value } = e.target
@@ -50,6 +58,7 @@ export default class Entry extends React.Component {
       this.setState({
         isLoading: true
       })
+      this.setPercentage(0, '开始生成……')
       const fileData = await getFile(fileKey)
       if (fileData.status===403 && fileData.err==='Invalid token') {
         this.onFailed()
@@ -73,6 +82,7 @@ export default class Entry extends React.Component {
       // get components and styles
       const { components, styles, exportSettings } = walkFile(fileData)
       const componentIds = components.map(c => c.id).join()
+      this.setPercentage(20, '开始获取图片……')
       const { images } = await getImages(fileKey, ids + (componentIds ? `,${componentIds}` : ''))
       this.onSucceed(fileData, components, styles, exportSettings, images )
     } else if (fileUrl==='mockmock') {
