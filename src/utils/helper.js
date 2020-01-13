@@ -30,11 +30,12 @@ export const getStyleItems = (node, key) =>
 export const walkFile = fileData => {
   const { styles, components } = fileData
   const finalStyles = {...styles}
-  const finalComponents = [], exportSettings = {}
+  const finalComponents = [], exportSettings = []
   const step = (nodes) => {
     // eslint-disable-next-line
     nodes.map(node => {
       if (node.styles) {
+        // handle style
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
@@ -46,15 +47,22 @@ export const walkFile = fileData => {
           }
         })
       }
+      // handle component
       if (node.type==='COMPONENT') {
         finalComponents.push({...node, description: components[node.id].description})
       }
+      // handle exports
       if (node.exportSettings && node.exportSettings.length) {
-        exportSettings[node.id] = {
-          name: node.name,
-          settings: node.exportSettings
-        }
+        // eslint-disable-next-line
+        node.exportSettings.map(setting => {
+          exportSettings.push({
+            id: node.id,
+            name: node.name.replace('/', '-'),
+            ...setting
+          })
+        })
       }
+      // walk in
       if (node.children) {
         step(node.children)
       }
@@ -62,6 +70,13 @@ export const walkFile = fileData => {
   }
   step(fileData.document.children)
   return { styles: formatStyles(finalStyles), components: finalComponents, exportSettings }
+}
+
+export const getFileName = (exportSetting, index) => {
+  const { name, suffix, format, constraint } = exportSetting
+  const fileName = suffix ? `${name}-${suffix}` : name
+  const fileFormat = format.toLowerCase()
+  return `${fileName}-${index}@${constraint.value}x.${fileFormat}`
 }
 
 export const formatStyles = styles => {

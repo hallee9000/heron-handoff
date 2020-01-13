@@ -42,6 +42,21 @@ export const getImages = (fileKey, ids) => {
   })
 }
 
+// get image url
+export const getImage = (fileKey, ids, scale, format) => {
+  return fetch(
+    urlWithParams(`${baseUrl}/images/${fileKey}`, { ids, scale, format }),
+    {
+      headers: tokenHeaders()
+    }
+  )
+  .then(response => response.json())
+  .catch(function (error) {
+    console.dir(error)
+    return { err: error }
+  })
+}
+
 // get file styles
 export const getFileStyles = fileKey => {
   return fetch(

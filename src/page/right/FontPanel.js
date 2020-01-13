@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { HelpCircle, Copy } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import TextItems from './items/TextItems'
-import { copySomething } from 'utils/helper'
+import { WithCopy } from 'components/utilities'
 import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
 import './font-panel.scss'
@@ -25,40 +25,43 @@ export default class FontPanel extends React.Component {
     const { onSwitch } = this.props
     onSwitch && onSwitch(piece.fills)
   }
+  onDeselectPiece = e => {
+    const isContentBox = Array.prototype.indexOf.call(e.target.classList, 'content-box')>-1
+    if (isContentBox) {
+      const { node } = this.props
+      this.switchPiece({fills: node.fills, ...node.style}, null)
+    }
+  }
   render() {
     const { node, propsSider } = this.props
     const { textTable, selected, style } = this.state
-    console.log(node.characters)
     return (
       <div className="props-section props-text">
         <h5>文字样式</h5>
         <div className="text-content">
-          <div className="content-box">
-            <Tooltip
-              trigger={['click']}
-              overlay="复制成功！"
-              placement="top"
-              transitionName="rc-tooltip-slide"
-            >
-              <span className="box-copy">
-                <Copy size={14} onClick={copySomething(node.characters)}/>
-              </span>
-            </Tooltip>
+          <div className="content-box" onClick={this.onDeselectPiece}>
+            <WithCopy text={node.characters} className="box-copy">
+              <Copy size={14}/>
+            </WithCopy>
             {
               textTable.length===0 ?
-              node.characters :
+              <span>{ node.characters }</span> :
               textTable.map((piece, index) =>
-                <span
+                <WithCopy
                   key={index}
+                  text={piece.text}
                   className={cn('box-piece', {'selected': selected===index})}
-                  onClick={() => this.switchPiece(piece, index)}
-                >{ piece.text }</span>
+                  callback={() => this.switchPiece(piece, index)}
+                >
+                  { piece.text }
+                </WithCopy>
               )
             }
           </div>
           {
             !!textTable.length && propsSider &&
             <Tooltip
+              trigger={['click']}
               overlay={
                 () =>
                   <Fragment>

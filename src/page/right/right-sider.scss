@@ -1,3 +1,5 @@
+@import '~assets/tokens.scss';
+
 .main-right-sider{
   height: 100%;
   background: #222531;
@@ -40,7 +42,7 @@
       padding-bottom: 12px;
       .list-title{
         padding: 7px 12px;
-        color: rgba($color: #FFF, $alpha: 0.36);
+        color: $white-85;
       }
     }
     .exports-list{

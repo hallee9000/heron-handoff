@@ -35,6 +35,7 @@
       display: inline-block;
       height: 40px;
       padding: 13px;
+      transition: background 0.2s;
       cursor: pointer;
       &:last-child{
         margin-right: 0;
@@ -82,6 +83,7 @@
       right: 8px;
       width: 16px;
       height: 16px;
+      transition: opacity 0.2s;
       cursor: pointer;
       &:hover{
         opacity: 0.85;

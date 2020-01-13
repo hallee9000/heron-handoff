@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { Droplet, Image, Download } from 'react-feather'
+import { saveAs } from 'file-saver'
+import { getBufferData } from 'api'
 import StyleDetail from './StyleDetail'
 import StyleItem from './items/StyleItem'
 import { STYLE_TYPES } from 'utils/const'
+import { getFileName } from 'utils/helper'
 import './right-sider.scss'
 
 export default class RightSider extends React.Component {
@@ -40,12 +43,17 @@ export default class RightSider extends React.Component {
       this.setState({tabIndex: index})
     }
   }
+  handleSave = async (url, name) => {
+    const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${url}`)
+    saveAs(imgData, name)
+  }
   componentDidMount() {
     // const { styles } = this.props
     // this.openDetail(styles.EFFECT[4])
   }
   render () {
     const { styles, exportSettings, hasMask } = this.props
+    console.log(exportSettings)
     const { maskVisible, tabIndex, detailVisible, currentStyle } = this.state
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
@@ -79,18 +87,15 @@ export default class RightSider extends React.Component {
           </ul>
           <ul className={cn('exports-list', {'hide': tabIndex!==1})}>
             {
-              Object.keys(exportSettings)
-                .map(key => {
-                  const { name, settings } = exportSettings[key]
-                  return settings.map((setting, index) => {
-                    const fileName = setting.suffix ? `${name}-${setting.suffix}` : name
-                    const fileFormat = setting.format.toLowerCase()
-                    return <li key={index} className="list-item">
-                      <div/>
-                      <span>{ `${fileName}@${setting.constraint.value}x.${fileFormat}` }</span>
-                      <Download size={14}/>
-                    </li>
-                  })
+              exportSettings
+                .map((exportSetting, index) => {
+                  const { image } = exportSetting
+                  const name = getFileName(exportSetting, index)
+                  return <li key={index} className="list-item" onClick={() => this.handleSave(image, name)}>
+                    <div style={{backgroundImage: `url(${image})`}}/>
+                    <span>{ name }</span>
+                    <Download size={14}/>
+                  </li>
                 })
             }
           </ul>

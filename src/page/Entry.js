@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
-import { getMockFile, getFile, getImages } from 'api'
-import { getFileKey, walkFile } from 'utils/helper'
+import { getMockFile, getFile, getImages, getImage } from 'api'
+import { getFileKey, walkFile, asyncForEach, getFileName } from 'utils/helper'
 import './entry.scss'
 
 export default class Entry extends React.Component {
@@ -58,12 +58,14 @@ export default class Entry extends React.Component {
       this.setState({
         isLoading: true
       })
-      this.setPercentage(0, '开始生成……')
+      this.setPercentage(0, '开始获取数据……')
       const fileData = await getFile(fileKey)
       if (fileData.status===403 && fileData.err==='Invalid token') {
+        this.setPercentage(0, '生成标注')
         this.onFailed()
         return
       } else if (fileData.status===404) {
+        this.setPercentage(0, '生成标注')
         this.setState({
           isLoading: false,
           fileUrlMessage: '该文件不存在。'
@@ -84,7 +86,9 @@ export default class Entry extends React.Component {
       const componentIds = components.map(c => c.id).join()
       this.setPercentage(20, '开始获取图片……')
       const { images } = await getImages(fileKey, ids + (componentIds ? `,${componentIds}` : ''))
-      this.onSucceed(fileData, components, styles, exportSettings, images )
+      this.setPercentage(56, '开始获取切图数据……')
+      const exportings = await this.getExportingImages(fileKey, exportSettings)
+      this.onSucceed(fileData, components, styles, exportings, images )
     } else if (fileUrl==='mockmock') {
       const fileData = await getMockFile()
       // get components and styles
@@ -92,11 +96,33 @@ export default class Entry extends React.Component {
       this.onSucceed(fileData, components, styles, exportSettings)
     }
   }
+  getExportingImages = async (fileKey, exportSettings) => {
+    const exportings = []
+    const step = Math.floor(30/exportSettings.length)
+    let percentage = 56
+    await asyncForEach(exportSettings, async (exportSetting, index) => {
+      percentage += step
+      const fileFormat = exportSetting.format.toLowerCase()
+      this.setPercentage(percentage, `开始获取 ${getFileName(exportSetting, index)} ……`)
+      const { images } = await getImage(
+        fileKey,
+        exportSetting.id,
+        exportSetting.constraint.value,
+        fileFormat
+      )
+      exportings.push({
+        image: images[exportSetting.id],
+        ...exportSetting
+      })
+    })
+    return exportings
+  }
   onSucceed = (fileData, components, styles, exportSettings, imagesData ) => {
     const { onGotData } = this.props
     this.setState({
       isLoading: false
     })
+    this.setPercentage(100, '资源获取成功！')
     onGotData && onGotData(fileData, components, styles, exportSettings, imagesData)
   }
   onFailed = () => {
@@ -125,7 +151,7 @@ export default class Entry extends React.Component {
     }
   }
   render() {
-    const { fileUrl, token, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading } = this.state
+    const { fileUrl, token, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading, buttonText, percentage } = this.state
     return (
       <div className="app-entry">
         <div className="form entry-container">
@@ -174,7 +200,8 @@ export default class Entry extends React.Component {
             onClick={this.handleSubmit}
             disabled={isLoading}
           >
-            { isLoading ? '正在生成……' : '生成标注' }
+            <div className="entry-progress" style={{width: `${percentage}%`}}/>
+            <span>{ buttonText }</span>
           </button>
         </div>
       </div>

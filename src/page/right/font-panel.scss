@@ -6,7 +6,7 @@
     .content-box{
       position: relative;
       max-height: 70px;
-      padding: 6px;
+      padding: 8px 12px;
       border-radius: 2px;
       background: #1C1F2A;
       font-size: 12px;
@@ -29,12 +29,12 @@
         margin: 0;
         padding: 0 3px;
         border-radius: 2px;
+        cursor: pointer;
         &.selected{
           background: rgba($color: #FFF, $alpha: 0.2);
         }
         &:hover{
           text-decoration: underline;
-          cursor: pointer;
         }
       }
     }
@@ -42,6 +42,9 @@
       display: inline-block;
       margin-top: 5px;
       cursor: pointer;
+      &:hover{
+        color: $white-85;
+      }
     }
   }
 }
