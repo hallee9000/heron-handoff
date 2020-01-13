@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { Droplet, Image, Download } from 'react-feather'
 import { saveAs } from 'file-saver'
-import { getBufferData } from 'api'
+// import { getBufferData } from 'api'
 import StyleDetail from './StyleDetail'
 import StyleItem from './items/StyleItem'
 import { STYLE_TYPES } from 'utils/const'
@@ -48,7 +48,12 @@ export default class RightSider extends React.Component {
     `url(${process.env.PUBLIC_URL}/data/exports/${name})` :
     `url(${url})`
   handleSave = (url, name) => {
-    saveAs(`https://figma-handoff-cors.herokuapp.com/${url}`, name)
+    fetch(`https://figma-handoff-cors.herokuapp.com/${url}`)
+      .then(response => response.blob())
+      .then(blob => {
+        console.log(blob)
+        saveAs(blob, name)
+      })
   }
   componentDidMount() {
     // const { styles } = this.props
