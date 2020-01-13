@@ -64,6 +64,7 @@ export default class Main extends React.Component {
         />
         <div className="main-right">
           <RightSider
+            useLocalImages={isMock || isLocal}
             styles={styles}
             exportSettings={exportSettings}
             hasMask={!propsDissolved}

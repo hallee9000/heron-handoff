@@ -43,6 +43,10 @@ export default class RightSider extends React.Component {
       this.setState({tabIndex: index})
     }
   }
+  getBackgroundImage = (url, name, useLocalImages) =>
+    useLocalImages ?
+    `url(${process.env.PUBLIC_URL}/data/exports/${name})` :
+    `url(${url})`
   handleSave = async (url, name) => {
     const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${url}`)
     saveAs(imgData, name)
@@ -52,8 +56,7 @@ export default class RightSider extends React.Component {
     // this.openDetail(styles.EFFECT[4])
   }
   render () {
-    const { styles, exportSettings, hasMask } = this.props
-    console.log(exportSettings)
+    const { useLocalImages, styles, exportSettings, hasMask } = this.props
     const { maskVisible, tabIndex, detailVisible, currentStyle } = this.state
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
@@ -92,7 +95,7 @@ export default class RightSider extends React.Component {
                   const { image } = exportSetting
                   const name = getFileName(exportSetting, index)
                   return <li key={index} className="list-item" onClick={() => this.handleSave(image, name)}>
-                    <div style={{backgroundImage: `url(${image})`}}/>
+                    <div style={{backgroundImage: this.getBackgroundImage(image, name, useLocalImages)}}/>
                     <span>{ name }</span>
                     <Download size={14}/>
                   </li>

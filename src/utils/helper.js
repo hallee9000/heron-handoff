@@ -57,7 +57,7 @@ export const walkFile = fileData => {
         node.exportSettings.map(setting => {
           exportSettings.push({
             id: node.id,
-            name: node.name.replace('/', '-'),
+            name: node.name.replace(/\//g, '-'),
             ...setting
           })
         })
@@ -75,8 +75,9 @@ export const walkFile = fileData => {
 export const getFileName = (exportSetting, index) => {
   const { name, suffix, format, constraint } = exportSetting
   const fileName = suffix ? `${name}-${suffix}` : name
+  const scale = format==='SVG' ? '' : `@${constraint.value}x`
   const fileFormat = format.toLowerCase()
-  return `${fileName}-${index}@${constraint.value}x.${fileFormat}`
+  return `${fileName}-${index}${scale}.${fileFormat}`
 }
 
 export const formatStyles = styles => {
@@ -101,7 +102,7 @@ export async function asyncForEach(array, callback) {
 
 export const getImage = (id, useLocalImages, images) =>
   useLocalImages ?
-  `${process.env.PUBLIC_URL}/data/${id.replace(':', '-')}.png` :
+  `${process.env.PUBLIC_URL}/data/${id.replace(/:/g, '-')}.png` :
   images[id]
 
 export const getUrlImage = (id, useLocalImages, images) =>
