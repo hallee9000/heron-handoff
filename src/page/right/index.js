@@ -47,9 +47,8 @@ export default class RightSider extends React.Component {
     useLocalImages ?
     `url(${process.env.PUBLIC_URL}/data/exports/${name})` :
     `url(${url})`
-  handleSave = async (url, name) => {
-    const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${url}`)
-    saveAs(imgData, name)
+  handleSave = (url, name) => {
+    saveAs(`https://figma-handoff-cors.herokuapp.com/${url}`, name)
   }
   componentDidMount() {
     // const { styles } = this.props
