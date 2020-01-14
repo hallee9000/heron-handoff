@@ -111,7 +111,7 @@ export default class Entry extends React.Component {
         exportSetting.constraint.value,
         fileFormat
       )
-      exportings.push({
+      images[exportSetting.id] && exportings.push({
         image: images[exportSetting.id],
         ...exportSetting
       })

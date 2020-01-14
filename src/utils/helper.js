@@ -34,8 +34,8 @@ export const walkFile = fileData => {
   const step = (nodes) => {
     // eslint-disable-next-line
     nodes.map(node => {
+      // handle style
       if (node.styles) {
-        // handle style
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
@@ -52,7 +52,7 @@ export const walkFile = fileData => {
         finalComponents.push({...node, description: components[node.id].description})
       }
       // handle exports
-      if (node.exportSettings && node.exportSettings.length) {
+      if (node.visible && node.exportSettings && node.exportSettings.length) {
         // eslint-disable-next-line
         node.exportSettings.map(setting => {
           exportSettings.push({
