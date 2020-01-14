@@ -52,7 +52,7 @@ export const walkFile = fileData => {
         finalComponents.push({...node, description: components[node.id].description})
       }
       // handle exports
-      if (node.visible && node.exportSettings && node.exportSettings.length) {
+      if (node.visible!==false && node.exportSettings && node.exportSettings.length) {
         // eslint-disable-next-line
         node.exportSettings.map(setting => {
           exportSettings.push({
