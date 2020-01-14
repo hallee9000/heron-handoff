@@ -1,10 +1,16 @@
+@import '~assets/tokens.scss';
+
 .style-item{
   display: flex;
   padding: 7px 12px;
+  color: $white-85;
+  transition: background 0.2s;
   cursor: pointer;
-  &:hover,
-  &.selected{
-    background: #141723;
+  &-hoverable{
+    &:hover,
+    &.selected{
+      background: #141723;
+    }
   }
   .item-preview{
     width: 18px;
@@ -14,7 +20,7 @@
     border: 1px solid #3d3e44;
     overflow: hidden;
   }
-  &.style-item-effect{
+  &-effect{
     .item-preview{
       border: none;
     }

@@ -3,6 +3,7 @@ import cn from 'classnames'
 import { HelpCircle, Copy } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import TextItems from './items/TextItems'
+import StyleReference from './StyleReference'
 import { WithCopy } from 'components/utilities'
 import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
@@ -23,7 +24,7 @@ export default class FontPanel extends React.Component {
       style: getTextStyle(piece)
     })
     const { onSwitch } = this.props
-    onSwitch && onSwitch(piece.fills)
+    onSwitch && onSwitch(piece.fills, index)
   }
   onDeselectPiece = e => {
     const isContentBox = Array.prototype.indexOf.call(e.target.classList, 'content-box')>-1
@@ -33,11 +34,23 @@ export default class FontPanel extends React.Component {
     }
   }
   render() {
-    const { node, propsSider } = this.props
+    const { node, styles, propsSider, onShowDetail } = this.props
     const { textTable, selected, style } = this.state
     return (
       <div className="props-section props-text">
-        <h5>文字样式</h5>
+        <h5 className="section-title">
+          <span className="title-name">文字样式</span>
+          {
+            selected===null &&
+            <StyleReference
+              styleItems={style}
+              styles={styles}
+              nodeStyles={node.styles}
+              type="text"
+              onShowDetail={onShowDetail}
+            />
+          }
+        </h5>
         <div className="text-content">
           <div className="content-box" onClick={this.onDeselectPiece}>
             <WithCopy text={node.characters} className="box-copy">

@@ -7,62 +7,68 @@
   background: #222531;
   overflow: auto;
   z-index: 1;
-  transform: translateX(240px);
+  transform: translateX(260px);
   transition: transform 0.2s;
   &-entered{
     transform: translateX(0);
   }
-  .props-section{
-    padding: 12px;
-    border-bottom: 1px solid #383941;
-    &:last-child{
-      border-bottom: none;
+  .right-props{
+    transition: transform 0.2s;
+    &-hidden{
+      transform: translateX(-260px);
     }
-    .section-title{
-      display: flex;
-      align-items: center;
-      margin: 0;
-      margin-bottom: 10px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      .title-name{
-        flex: 1;
+    .props-section{
+      padding: 12px;
+      border-bottom: 1px solid #383941;
+      &:last-child{
+        border-bottom: none;
       }
-    }
-    .section-helper{
-      font-size: 12px;
-      color: rgba($color: #FFF, $alpha: 0.36);
-      >span,
-      >svg{
-        vertical-align: middle;
-      }
-    }
-    .section-items{
-      .item-block{
-        margin-bottom: 6px;
-        &:last-child{
-          margin-bottom: 0;
-        }
-      }
-    }
-    &.props-basic{
-      .section-items{
-        display: flex;
-        flex-flow: wrap;
-        justify-content: space-between;
-        width: 100%;
-        font-size: 12px;
-        .copiable-input{
-          flex: 0 1 47%;
-        }
-      }
-    }
-    &.props-export{
-      padding: 0;
       .section-title{
-        margin-bottom: 0;
-        padding: 12px;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        margin-bottom: 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        .title-name{
+          flex: 1;
+        }
+      }
+      .section-helper{
+        font-size: 12px;
+        color: rgba($color: #FFF, $alpha: 0.36);
+        >span,
+        >svg{
+          vertical-align: middle;
+        }
+      }
+      .section-items{
+        .item-block{
+          margin-bottom: 6px;
+          &:last-child{
+            margin-bottom: 0;
+          }
+        }
+      }
+      &.props-basic{
+        .section-items{
+          display: flex;
+          flex-flow: wrap;
+          justify-content: space-between;
+          width: 100%;
+          font-size: 12px;
+          .copiable-input{
+            flex: 0 1 47%;
+          }
+        }
+      }
+      &.props-export{
+        padding: 0;
+        .section-title{
+          margin-bottom: 0;
+          padding: 12px;
+        }
       }
     }
   }

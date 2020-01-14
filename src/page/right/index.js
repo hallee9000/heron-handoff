@@ -56,7 +56,7 @@ export default class RightSider extends React.Component {
     const length = exportSettings.length
     const folderName = `${documentName.replace(/\//g, '-')}-exports`
     const exportsFolder = zip.folder(folderName)
-    this.setProgress(0, '开始下载图片……')
+    this.setProgress(1, '开始下载图片……')
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
       const imgName = getFileName(exportSetting, index)
@@ -105,13 +105,14 @@ export default class RightSider extends React.Component {
                   {
                     styles[key] &&
                     styles[key].map((style, index) =>
-                      <StyleItem
-                        key={index}
-                        styles={style.items}
-                        styleName={style.name}
-                        styleType={style.styleType}
-                        onClick={() => this.openDetail(style)}
-                      />
+                      <li key={index}>
+                        <StyleItem
+                          styles={style.items}
+                          styleName={style.name}
+                          styleType={style.styleType}
+                          onClick={() => this.openDetail(style)}
+                        />
+                      </li>
                     )
                   }
                 </Fragment>

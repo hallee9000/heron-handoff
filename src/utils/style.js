@@ -238,7 +238,6 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
     return ''
   }
   if (styles[type.toUpperCase()] && nodeStyles[type]) {
-    console.log(type, nodeStyles[type], styles)
     return styles[type.toUpperCase()].find(({id}) => id===nodeStyles[type])
   } else {
     return ''

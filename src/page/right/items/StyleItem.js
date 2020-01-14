@@ -1,16 +1,17 @@
 import React from 'react'
+import cn from 'classnames'
 import { getFillsStyle, getEffectsStyle, getTextIcon } from 'utils/style'
 import { EFFECTS, TEXTS } from 'utils/const'
 import FillPreview from './Preview'
 import './style-item.scss'
 
-export default ({styles, styleName, styleType, ...props}) => {
+export default ({styles, styleName, styleType, isHoverable=true, ...props}) => {
   switch (styleType) {
     case 'FILL':
       const { styles: fillItems } = getFillsStyle(styles)
       const isSingleFill = fillItems.length===1
       const isMixFill = fillItems.length>1
-      return <li className="style-item style-item-fill" {...props}>
+      return <a className={cn('style-item style-item-fill', {'style-item-hoverable': isHoverable})} {...props}>
         <div
           className="item-preview"
           style={{background: isSingleFill && fillItems[0].css}}
@@ -20,22 +21,22 @@ export default ({styles, styleName, styleType, ...props}) => {
           }
         </div>
         { styleName }
-      </li>
+      </a>
     case 'EFFECT':
       const { type } = getEffectsStyle(styles)
-      return <li className="style-item style-item-effect" {...props}>
+      return <a className={cn('style-item style-item-effect', {'style-item-hoverable': isHoverable})} {...props}>
         <div className="item-preview">
           { EFFECTS[type].icon }
         </div>
         { styleName }
-      </li>
+      </a>
     case 'TEXT':
-      return <li className="style-item style-item-text" {...props}>
+      return <a className={cn('style-item style-item-text', {'style-item-hoverable': isHoverable})} {...props}>
         <div className="item-preview">
           { TEXTS[getTextIcon(styles)] }
         </div>
         { styleName }
-      </li>
+      </a>
     default:
       return ''
   }
