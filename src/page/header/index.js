@@ -3,7 +3,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Download, Settings, HelpCircle } from 'react-feather'
 import Overlay from './Overlay'
-import { asyncForEach } from 'utils/helper'
+import { asyncForEach, getFileName } from 'utils/helper'
 import { getSourceCode, getBufferData } from 'api'
 import './header.scss'
 
@@ -35,7 +35,7 @@ export default class Header extends React.Component {
     })
 
     // generate ico and css
-    this.setLoader(15, `离线标注：生成 css 文件……`)
+    this.setLoader(12, `离线标注：生成 css 文件……`)
     const css = zip.folder("static/css")
     const styles = document.getElementsByTagName('link')
     await asyncForEach(styles, async style => {
@@ -50,20 +50,32 @@ export default class Header extends React.Component {
     })
 
     // generate logo.svg
-    this.setLoader(26, `离线标注：生成 logo.svg……`)
+    this.setLoader(15, `离线标注：生成 logo.svg……`)
     const logoData = await getBufferData(this.img.current.src)
     zip.file('logo.svg', logoData, {base64: true})
 
     // generate frame and component images
-    this.setLoader(28, `离线标注：生成图片……`)
+    this.setLoader(16, `离线标注：生成图片……`)
     const { images } = this.props
     const ids = Object.keys(images)
     const dataFolder = zip.folder('data')
     await asyncForEach(ids, async (id, index) => {
       const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${images[id]}`)
       const imgName = id.replace(':', '-') + '.png'
-      this.setLoader(28+(index+1)*Math.floor(70/ids.length), `离线标注：生成 ${imgName}……`)
+      this.setLoader(16+(index+1)*Math.floor(36/ids.length), `离线标注：生成 ${imgName}……`)
       dataFolder.file(imgName, imgData, {base64: true})
+    })
+
+    // generate exporting images
+    this.setLoader(16, `离线标注：生成切图……`)
+    const { exportSettings } = this.props
+    const length = exportSettings.length
+    const exportsFolder = zip.folder('data/exports')
+    await asyncForEach(exportSettings, async (exportSetting, index) => {
+      const imgName = getFileName(exportSetting, index)
+      const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${exportSetting.image}`)
+      this.setLoader(52+(index+1)*Math.floor(42/length), `正在处理 ${imgName}……`)
+      exportsFolder.file(imgName, imgData, {base64: true})
     })
 
     // generate zip
@@ -75,10 +87,10 @@ export default class Header extends React.Component {
     this.setLoader(100, '离线标注：完成！')
     this.toggleDownloadModal()
   }
-  setLoader = (percentage, message) => {
+  setLoader = (loaderWidth, loaderMessage) => {
     this.setState({
-      loaderWidth: percentage,
-      loaderMessage: message
+      loaderWidth,
+      loaderMessage
     })
   }
   hasNames = () => {
