@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
-import { Droplet, Image, Download } from 'react-feather'
+import { Droplet, Image, DownloadCloud } from 'react-feather'
+import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-// import { getBufferData } from 'api'
+import { getBufferData } from 'api'
+import { asyncForEach, getFileName } from 'utils/helper'
+import { STYLE_TYPES } from 'utils/const'
 import StyleDetail from './StyleDetail'
 import StyleItem from './items/StyleItem'
-import { STYLE_TYPES } from 'utils/const'
-import { getFileName } from 'utils/helper'
+import ExportItem from './items/ExportItem'
 import './right-sider.scss'
 
 export default class RightSider extends React.Component {
@@ -14,17 +16,14 @@ export default class RightSider extends React.Component {
     maskVisible: false,
     tabIndex: 0,
     detailVisible: false,
-    currentStyle: {}
+    currentStyle: {},
+    percentage: 0,
+    progressText: ''
   }
   handleTransitionEnd = () => {
     const { hasMask } = this.props
     if (!hasMask) {
       this.setState({maskVisible: false})
-    }
-  }
-  componentDidUpdate (prevProps) {
-    if (this.props.hasMask && !prevProps.hasMask) {
-      this.setState({maskVisible: true})
     }
   }
   openDetail = style => {
@@ -43,17 +42,44 @@ export default class RightSider extends React.Component {
       this.setState({tabIndex: index})
     }
   }
-  getBackgroundImage = (url, name, useLocalImages) =>
-    useLocalImages ?
-    `url(${process.env.PUBLIC_URL}/data/exports/${name})` :
-    `url(${url})`
-  handleSave = (url, name) => {
-    fetch(`https://figma-handoff-cors.herokuapp.com/${url}`)
-      .then(response => response.blob())
-      .then(blob => {
-        console.log(blob)
-        saveAs(blob, name)
+  setProgress = (percentage, progressText) => {
+    this.setState({
+      percentage,
+      progressText
+    })
+  }
+  handleDownloadAll = async () => {
+    const { percentage } = this.state
+    if (percentage!==0) return
+    const { exportSettings, documentName } = this.props
+    const zip = new JSZip()
+    const length = exportSettings.length
+    const folderName = `${documentName.replace(/\//g, '-')}-exports`
+    const exportsFolder = zip.folder(folderName)
+    this.setProgress(0, '开始下载图片……')
+
+    await asyncForEach(exportSettings, async (exportSetting, index) => {
+      const imgName = getFileName(exportSetting, index)
+      const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${exportSetting.image}`)
+      this.setProgress((index+1)*Math.floor(90/length), `正在处理 ${imgName}……`)
+      exportsFolder.file(imgName, imgData, {base64: true})
+    })
+
+    this.setProgress(96, '正在压缩文件……')
+    zip.generateAsync({type: 'blob'})
+      .then(function(content) {
+        saveAs(content, `${folderName}.zip`)
+        this.setProgress(100, '完成下载！')
+        const timer = setTimeout(() => {
+          this.setProgress(0, '')
+          clearTimeout(timer)
+        }, 800)
       })
+  }
+  componentDidUpdate (prevProps) {
+    if (this.props.hasMask && !prevProps.hasMask) {
+      this.setState({maskVisible: true})
+    }
   }
   componentDidMount() {
     // const { styles } = this.props
@@ -61,7 +87,7 @@ export default class RightSider extends React.Component {
   }
   render () {
     const { useLocalImages, styles, exportSettings, hasMask } = this.props
-    const { maskVisible, tabIndex, detailVisible, currentStyle } = this.state
+    const { maskVisible, tabIndex, detailVisible, currentStyle, percentage, progressText } = this.state
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
         <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>
@@ -94,16 +120,26 @@ export default class RightSider extends React.Component {
           </ul>
           <ul className={cn('exports-list', {'hide': tabIndex!==1})}>
             {
+              !useLocalImages &&
+              <li
+                className={cn('exports-list-download-all', {'is-downloading': percentage})}
+                onClick={this.handleDownloadAll}
+              >
+                <span>{ progressText || '全部下载' }</span> { !percentage && <DownloadCloud size={14}/> }
+                <div className="download-all-progress" style={{width: `${percentage}%`}}/>
+              </li>
+            }
+            {
               exportSettings
-                .map((exportSetting, index) => {
-                  const { image } = exportSetting
-                  const name = getFileName(exportSetting, index)
-                  return <li key={index} className="list-item" onClick={() => this.handleSave(image, name)}>
-                    <div style={{backgroundImage: this.getBackgroundImage(image, name, useLocalImages)}}/>
-                    <span>{ name }</span>
-                    <Download size={14}/>
+                .map((exportSetting, index) =>
+                  <li key={index}>
+                    <ExportItem
+                      exportSetting={exportSetting}
+                      useLocalImages={useLocalImages}
+                      index={index}
+                    />
                   </li>
-                })
+                )
             }
           </ul>
         </div>

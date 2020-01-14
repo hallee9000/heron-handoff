@@ -76,6 +76,7 @@ class App extends React.Component {
             exportSettings={exportSettings}
             images={images}
             onNamesChange={this.getNames}
+            {...names}
           />
         }
       </div>

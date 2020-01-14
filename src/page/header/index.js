@@ -58,7 +58,7 @@ export default class Header extends React.Component {
     this.setLoader(28, `离线标注：生成图片……`)
     const { images } = this.props
     const ids = Object.keys(images)
-    const dataFolder = zip.folder("data")
+    const dataFolder = zip.folder('data')
     await asyncForEach(ids, async (id, index) => {
       const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${images[id]}`)
       const imgName = id.replace(':', '-') + '.png'
@@ -70,7 +70,7 @@ export default class Header extends React.Component {
     this.setLoader(98, '离线标注：生成压缩包……')
     zip.generateAsync({type: 'blob'})
       .then(function(content) {
-        saveAs(content, `${documentName}.zip`)
+        saveAs(content, `${documentName.replace(/\//g, '-')}.zip`)
       })
     this.setLoader(100, '离线标注：完成！')
     this.toggleDownloadModal()

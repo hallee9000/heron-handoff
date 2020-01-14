@@ -4,6 +4,7 @@ import { CopiableInput, InputGroup } from 'components/utilities'
 import { getFillsStyle, getEffectsStyle } from 'utils/style'
 import FillItem from './items/FillItem'
 import EffectItem from './items/EffectItem'
+import ExportItem from './items/ExportItem'
 import StyleReference from './StyleReference'
 import { toFixed } from 'utils/mark'
 import FontPanel from './FontPanel'
@@ -14,7 +15,18 @@ export default class RightProps extends React.Component {
   state = {
     hasEntered: false,
     flag: 0,
-    fills: this.props.data.node.fills
+    fills: this.props.data.node.fills,
+    exportSettings: []
+  }
+  getExportSettings = () => {
+    const { data, exportSettings } = this.props
+    this.setState({
+      exportSettings: exportSettings ?
+        exportSettings
+          .map((exportSetting, index) => ({...exportSetting, index}))
+          .filter(({id}) => id===data.node.id) :
+        []
+    })
   }
   handleTextChange = fills => {
     const { flag } = this.state
@@ -24,24 +36,26 @@ export default class RightProps extends React.Component {
     })
   }
   componentDidUpdate(prevProps) {
-    if (this.props.dissolved && this.props.dissolved!==prevProps.dissolved) {
+    const { data, dissolved, onDissolveEnd } = this.props
+    if (dissolved && dissolved!==prevProps.dissolved) {
       this.setState({
         hasEntered: false
       })
       setTimeout(() => {
-        const { onDissolveEnd } = this.props
         onDissolveEnd && onDissolveEnd()
       }, 200)
     }
-    if (this.props.data.index!==prevProps.data.index) {
+    if (data.index!==prevProps.data.index) {
       const { flag } = this.state
       this.setState({
         flag: 1-flag, 
-        fills: this.props.data.node.fills
+        fills: data.node.fills
       })
+      this.getExportSettings()
     }
   }
   componentDidMount () {
+    this.getExportSettings()
     setTimeout(() => {
       this.setState({
         hasEntered: true
@@ -49,10 +63,10 @@ export default class RightProps extends React.Component {
     }, 10)
   }
   render () {
-    const { data, styles } = this.props
+    const { data, styles, useLocalImages } = this.props
     const { node } = data
     const { strokes, effects, styles: nodeStyles } = node
-    const { hasEntered, fills, flag } = this.state
+    const { hasEntered, fills, exportSettings, flag } = this.state
     const { styles: fillItems } = getFillsStyle(fills)
     const { styles: strokeItems } = getFillsStyle(strokes)
     const { styles: effectItems } = getEffectsStyle(effects)
@@ -162,6 +176,28 @@ export default class RightProps extends React.Component {
                 effectItems.map((effectStyle, index) =>
                   <li className="item-block" key={index}>
                     <EffectItem flag={flag} style={effectStyle}/>
+                  </li>
+                )
+              }
+            </ul>
+          </div>
+        }
+        {/* export settings */}
+        {
+          !!(exportSettings && exportSettings.length) &&
+          <div className="props-section props-export">
+            <h5 className="section-title">
+              <span className="title-name">切图</span>
+            </h5>
+            <ul className="section-items">
+              {
+                exportSettings.map((exportSetting, index) =>
+                  <li key={index}>
+                    <ExportItem
+                      exportSetting={exportSetting}
+                      useLocalImages={useLocalImages}
+                      index={exportSetting.index}
+                    />
                   </li>
                 )
               }

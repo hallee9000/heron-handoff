@@ -41,46 +41,43 @@
       overflow: auto;
       padding-bottom: 12px;
       .list-title{
-        padding: 7px 12px;
+        padding: 6px 12px;
         color: $white-85;
       }
     }
     .exports-list{
       height: calc(100% - 36px);
       overflow: auto;
-      .list-item{
+      &-download-all{
+        position: relative;
         display: flex;
         align-items: center;
-        padding: 12px;
+        justify-content: flex-end;
+        padding: 6px 12px;
+        color: $white-65;
+        transition: background 0.2s, color 0.2s;
         cursor: pointer;
-        transition: background 0.2s;
+        &.is-downloading{
+          justify-content: flex-start;
+        }
         &:hover{
+          color: $white-85;
           background: #141723;
         }
-        &.selected{
-          background: #303446;
+        svg{
+          margin-left: 6px;
         }
-        &:hover,
-        &.selected{
-          >svg{
-            opacity: 1;
-          }
+        span{
+          position: relative;
+          z-index: 1;
         }
-        >div{
-          width: 46px;
-          height: 46px;
-          margin-right: 6px;
-          background-position: center;
-          background-size: contain;
-          background-repeat: no-repeat;
-          background-color: #111421;
-        }
-        >span{
-          flex: 1;
-        }
-        >svg{
-          opacity: 0;
-          transition: opacity 0.2s;
+        .download-all-progress{
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          background-color: #2f3446;
+          z-index: 0;
         }
       }
     }

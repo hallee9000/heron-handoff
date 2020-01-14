@@ -126,6 +126,15 @@ export const getSourceCode = url =>
     })
 
 // get buffer data
+export const getBlobData = url =>
+  fetch(url)
+    .then(response => response.blob())
+    .catch(error => {
+      console.dir(error)
+      return { err: error }
+    })
+
+// get buffer data
 export const getBufferData = url =>
   fetch(url)
     .then(response => response.arrayBuffer())

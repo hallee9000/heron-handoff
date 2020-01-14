@@ -1,0 +1,34 @@
+.export-item{
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  transition: background 0.2s;
+  cursor: pointer;
+  &:hover{
+    background: #141723;
+    >svg{
+      opacity: 1;
+    }
+  }
+  &-downloading{
+    >svg{
+      opacity: 1!important;
+    }
+  }
+  >div{
+    width: 46px;
+    height: 46px;
+    margin-right: 6px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #111421;
+  }
+  >span{
+    flex: 1;
+  }
+  >svg{
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}

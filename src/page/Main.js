@@ -43,7 +43,7 @@ export default class Main extends React.Component {
     this.setState({ elementData: null })
   }
   render () {
-    const { data, components, styles, exportSettings, images, isMock, isLocal } = this.props
+    const { documentName, data, components, styles, exportSettings, images, isMock, isLocal } = this.props
     const { id, canvasData, elementData, propsDissolved } = this.state
     return (
       <div className="app-main">
@@ -68,12 +68,15 @@ export default class Main extends React.Component {
             styles={styles}
             exportSettings={exportSettings}
             hasMask={!propsDissolved}
+            documentName={documentName}
           />
           {
             elementData &&
             <RightProps
+              useLocalImages={isMock || isLocal}
               data={elementData}
               styles={styles}
+              exportSettings={exportSettings}
               dissolved={propsDissolved}
               onDissolveEnd={this.handleDissolveEnd}
             />

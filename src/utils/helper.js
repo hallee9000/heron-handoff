@@ -74,10 +74,13 @@ export const walkFile = fileData => {
 
 export const getFileName = (exportSetting, index) => {
   const { name, suffix, format, constraint } = exportSetting
-  const fileName = suffix ? `${name}-${suffix}` : name
+  let fileName = suffix ? `${name}-${suffix}` : name
+  if (index!==undefined) {
+    fileName += `-${index}`
+  }
   const scale = format==='SVG' ? '' : `@${constraint.value}x`
   const fileFormat = format.toLowerCase()
-  return `${fileName}-${index}${scale}.${fileFormat}`
+  return `${fileName}${scale}.${fileFormat}`
 }
 
 export const formatStyles = styles => {

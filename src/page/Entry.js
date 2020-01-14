@@ -60,6 +60,7 @@ export default class Entry extends React.Component {
       })
       this.setPercentage(0, '开始获取数据……')
       const fileData = await getFile(fileKey)
+      // console.log(JSON.stringify(fileData))
       if (fileData.status===403 && fileData.err==='Invalid token') {
         this.setPercentage(0, '生成标注')
         this.onFailed()

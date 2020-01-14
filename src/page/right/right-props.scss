@@ -15,6 +15,9 @@
   .props-section{
     padding: 12px;
     border-bottom: 1px solid #383941;
+    &:last-child{
+      border-bottom: none;
+    }
     .section-title{
       display: flex;
       align-items: center;
@@ -53,6 +56,13 @@
         .copiable-input{
           flex: 0 1 47%;
         }
+      }
+    }
+    &.props-export{
+      padding: 0;
+      .section-title{
+        margin-bottom: 0;
+        padding: 12px;
       }
     }
   }
