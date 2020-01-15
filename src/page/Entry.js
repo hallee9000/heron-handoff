@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import cn from 'classnames'
-import { getMockFile, getFile, getImages, getImage } from 'api'
-import { getFileKey, walkFile, asyncForEach, getFileName } from 'utils/helper'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
+import { getMockFile, getFile, getImage, withCors, getBufferData } from 'api'
+import { getFileKey, trimFilePath, walkFile, asyncForEach, getFileName, getFrames } from 'utils/helper'
+import { handleIndex, handleJs, handleIcoAndCSS, handleLogo } from 'utils/download'
 import './entry.scss'
 
 export default class Entry extends React.Component {
+  logo = createRef()
   state = {
     fileUrl: '',
+    markType: 0,
     token: '',
 		fileUrlMessage: '',
     tokenMessage: '',
@@ -51,70 +56,100 @@ export default class Entry extends React.Component {
   }
   handleSubmit = async e => {
     e.preventDefault()
-    const { fileUrl } = this.state
+    const { fileUrl, markType } = this.state
+    const zip = markType===0 ? (new JSZip()) : null
+    const fileKey = getFileKey(fileUrl)
     if (this.validate()) {
-      const { fileUrl } = this.state
-      const fileKey = getFileKey(fileUrl)
-      this.setState({
-        isLoading: true
-      })
+      this.setState({ isLoading: true })
       this.setPercentage(0, '开始获取数据……')
       const fileData = await getFile(fileKey)
       // console.log(JSON.stringify(fileData))
-      if (fileData.status===403 && fileData.err==='Invalid token') {
-        this.setPercentage(0, '生成标注')
-        this.onFailed()
-        return
-      } else if (fileData.status===404) {
-        this.setPercentage(0, '生成标注')
-        this.setState({
-          isLoading: false,
-          fileUrlMessage: '该文件不存在。'
+      // token or file error
+      const hasError = this.hasError(fileData)
+      if (!hasError) {
+        if (zip) {
+          handleIndex(zip, fileData, () => { this.setPercentage(2, '处理 index.html ……') })
+          handleJs(zip, () => { this.setPercentage(6, '处理 Js ……') })
+          handleIcoAndCSS(zip, () => { this.setPercentage(12, '处理 CSS ……') })
+          handleLogo(zip, this.logo.current.src, () => { this.setPercentage(16, '处理 logo ……') })
+        }
+        // get frames' images
+        const frames = getFrames(fileData.document.children)
+        // get components and styles
+        const { components, styles, exportSettings } = walkFile(fileData)
+        const componentMetas = components.map(({id, name}) => ({id, name}))
+        const allMetas = frames.concat(componentMetas)
+        const images = await this.getFramesAndComponents(fileKey, allMetas, zip, (index, id, length) => {
+          const step = Math.floor(36/length)
+          this.setPercentage(20+step*(index+1), `开始获取  ${id} ……`)
         })
-        return
+        const exportings = await this.getExportingImages(fileKey, exportSettings, zip, (index, name, length) => {
+          const step = Math.floor(32/length)
+          this.setPercentage(60+step*(index+1), `开始获取 ${name} ……`)
+        })
+        if (zip) {
+          // generate zip
+          const { documentName } = this.props
+          this.setPercentage(98, '准备生成压缩包……')
+          zip.generateAsync({type: 'blob'})
+            .then(content => {
+              saveAs(content, `${trimFilePath(documentName)}.zip`)
+              this.setPercentage(100, '离线标注：完成！')
+            })
+        } else {
+          this.onSucceed(fileData, components, styles, exportings, images )
+        }
       }
-      // get frames' images
-      const ids = fileData.document.children
-        .map(page => page.children
-          .filter(frame => frame.type==='FRAME')
-          .map(frame => frame.id)
-          .join()
-        )
-        .filter(frameIds => frameIds!=='')
-        .join()
-      // get components and styles
-      const { components, styles, exportSettings } = walkFile(fileData)
-      const componentIds = components.map(c => c.id).join()
-      this.setPercentage(20, '开始获取图片……')
-      const { images } = await getImages(fileKey, ids + (componentIds ? `,${componentIds}` : ''))
-      this.setPercentage(56, '开始获取切图数据……')
-      const exportings = await this.getExportingImages(fileKey, exportSettings)
-      this.onSucceed(fileData, components, styles, exportings, images )
-    } else if (fileUrl==='mockmock') {
-      const fileData = await getMockFile()
-      // get components and styles
-      const { components, styles, exportSettings } = walkFile(fileData)
-      this.onSucceed(fileData, components, styles, exportSettings)
     }
   }
-  getExportingImages = async (fileKey, exportSettings) => {
+  gotoDemo = async e => {
+    e.preventDefault()
+    const fileData = await getMockFile()
+    // get components and styles
+    const { components, styles, exportSettings } = walkFile(fileData)
+    this.onSucceed(fileData, components, styles, exportSettings)
+  }
+  getFramesAndComponents = async (fileKey, allMetas, zip, whenStart) => {
+    const folder = zip ? zip.folder('data') : null
+    const images = {}
+    await asyncForEach(allMetas, async ({id, name}, index) => {
+      whenStart && whenStart(index, name, allMetas.length)
+      const { images: results } = await getImage(fileKey, id, 2, 'png')
+      images[id] = results[id]
+      if (folder) {
+        const imageData = await getBufferData(withCors(results[id]))
+        const imageName = trimFilePath(id) + '.png'
+        folder.file(imageName, imageData, {base64: true})
+      }
+    })
+    return images
+  }
+  getExportingImages = async (fileKey, exportSettings, zip, whenStart) => {
+    const exportsFolder = zip ? zip.folder('data/exports') : null
     const exportings = []
-    const step = Math.floor(30/exportSettings.length)
-    let percentage = 56
     await asyncForEach(exportSettings, async (exportSetting, index) => {
-      percentage += step
       const fileFormat = exportSetting.format.toLowerCase()
-      this.setPercentage(percentage, `开始获取 ${getFileName(exportSetting, index)} ……`)
+      const imageName = getFileName(exportSetting, index)
+      whenStart && whenStart(index, imageName, exportSettings.length)
       const { images } = await getImage(
         fileKey,
         exportSetting.id,
         exportSetting.constraint.value,
         fileFormat
       )
-      images[exportSetting.id] && exportings.push({
-        image: images[exportSetting.id],
-        ...exportSetting
-      })
+      const imageUrl = images[exportSetting.id]
+      // image url not null
+      if (imageUrl) {
+        if (exportsFolder) {
+          const imageData = await getBufferData(withCors(imageUrl))
+          exportsFolder.file(imageName, imageData, {base64: true})
+        } else {
+          exportings.push({
+            image: imageUrl,
+            ...exportSetting
+          })
+        }
+      }
     })
     return exportings
   }
@@ -126,7 +161,22 @@ export default class Entry extends React.Component {
     this.setPercentage(100, '资源获取成功！')
     onGotData && onGotData(fileData, components, styles, exportSettings, imagesData)
   }
-  onFailed = () => {
+  hasError = fileData => {
+    if (fileData.status===403 && fileData.err==='Invalid token') {
+      this.setPercentage(0, '生成标注')
+      this.handleTokenError()
+      return true
+    } else if (fileData.status===404) {
+      this.setPercentage(0, '生成标注')
+      this.setState({
+        isLoading: false,
+        fileUrlMessage: '该文件不存在。'
+      })
+      return true
+    }
+    return false
+  }
+  handleTokenError = () => {
     window.localStorage.removeItem('figmaToken')
     this.setState({
       isLoading: false,
@@ -157,21 +207,32 @@ export default class Entry extends React.Component {
       <div className="app-entry">
         <div className="form entry-container">
           <div className="form-item form-logo">
-            <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo"/>
+            <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
           {
             errorMessage &&
             <div className="form-error">{ errorMessage }</div>
           }
           <div className={cn('form-item', {'has-error': fileUrlMessage})}>
-            <input
-              name="fileUrl"
-              className="input input-lg"
-              placeholder="请输入文件链接"
-              value={fileUrl}
-              onChange={this.handleChange}
-              onKeyUp={e => e.keyCode===13 && this.handleSubmit(e)}
-            />
+            <div className="item-group">
+              <input
+                name="fileUrl"
+                className="input input-lg"
+                placeholder="请输入文件链接"
+                value={fileUrl}
+                onChange={this.handleChange}
+                onKeyUp={e => e.keyCode===13 && this.handleSubmit(e)}
+              />
+              <select
+                name="markType"
+                defaultValue={0}
+                className="input input-lg"
+                onChange={this.handleChange}
+              >
+                <option value={0}>离线标注</option>
+                <option value={1}>在线标注</option>
+              </select>
+            </div>
             {
               fileUrlMessage &&
               <div className="help-block">{ fileUrlMessage }</div>
@@ -204,6 +265,9 @@ export default class Entry extends React.Component {
             <div className="entry-progress" style={{width: `${percentage}%`}}/>
             <span>{ buttonText }</span>
           </button>
+          <div className="form-item form-item-centered">
+            <a onClick={this.gotoDemo} href="/">查看 Demo</a>
+          </div>
         </div>
       </div>
     )

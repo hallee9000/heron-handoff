@@ -24,6 +24,15 @@ export const urlWithParams = (url, data) => {
   return urlObj
 }
 
+export const getFrames = data =>
+  data
+    .map(page => page.children
+      .filter(frame => frame.type==='FRAME')
+      .map(({id, name}) => ({id, name}))
+    )
+    .filter(frameIds => frameIds.length)
+    .reduce((ids, currentIds) => ids.concat(currentIds), [])
+
 export const getStyleItems = (node, key) =>
   key==='background' ? node.fills : node[key]
 
@@ -135,3 +144,6 @@ export const copySomething = (text, callback) => {
     document.body.removeChild(textarea)
   }
 }
+
+export const trimFilePath = filePath =>
+  filePath.replace(/\//g, '-').replace(/:/g, '-')

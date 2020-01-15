@@ -1,6 +1,9 @@
 import { urlWithParams } from 'utils/helper'
 
 export const baseUrl = 'https://api.figma.com/v1'
+export const corsUrl = 'https://figma-handoff-cors.herokuapp.com/'
+
+export const withCors = url => corsUrl+url
 
 export const tokenHeaders = (others) => {
   const figmaToken = window.localStorage.getItem('figmaToken')

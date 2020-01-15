@@ -67,7 +67,7 @@ export default class RightSider extends React.Component {
 
     this.setProgress(96, '正在压缩文件……')
     zip.generateAsync({type: 'blob'})
-      .then(function(content) {
+      .then(content => {
         saveAs(content, `${folderName}.zip`)
         this.setProgress(100, '完成下载！')
         const timer = setTimeout(() => {

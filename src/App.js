@@ -72,6 +72,7 @@ class App extends React.Component {
           entryVisible ?
           <Entry
             onGotData={this.handleDataGot}
+            {...names}
           /> :
           <Main
             isLocal={isLocal}

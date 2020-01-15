@@ -15,8 +15,17 @@
         width: 120px;
       }
     }
+    .item-group{
+			input{
+				margin-right: 6px;
+			}
+			select{
+				width: 100px;
+			}
+    }
     .btn-primary{
       position: relative;
+      margin-bottom: 12px;
       border: none;
       overflow: hidden;
       span{

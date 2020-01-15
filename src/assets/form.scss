@@ -12,6 +12,12 @@
 				margin-left: 10px;
 			}
 		}
+		&-centered{
+			text-align: center;
+		}
+		.item-group{
+			display: flex;
+		}
 		.help-block{
 			padding: 3px;
 			font-size: 12px;

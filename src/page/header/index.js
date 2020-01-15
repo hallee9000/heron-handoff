@@ -8,7 +8,7 @@ import { getSourceCode, getBufferData } from 'api'
 import './header.scss'
 
 export default class Header extends React.Component {
-  img = createRef()
+  logo = createRef()
   state = {
     loaderWidth: 0,
     loaderMessage: '',
@@ -51,7 +51,7 @@ export default class Header extends React.Component {
 
     // generate logo.svg
     this.setLoader(15, `离线标注：生成 logo.svg……`)
-    const logoData = await getBufferData(this.img.current.src)
+    const logoData = await getBufferData(this.logo.current.src)
     zip.file('logo.svg', logoData, {base64: true})
 
     // generate frame and component images
@@ -81,10 +81,10 @@ export default class Header extends React.Component {
     // generate zip
     this.setLoader(98, '离线标注：生成压缩包……')
     zip.generateAsync({type: 'blob'})
-      .then(function(content) {
+      .then(content => {
         saveAs(content, `${documentName.replace(/\//g, '-')}.zip`)
+        this.setLoader(100, '离线标注：完成！')
       })
-    this.setLoader(100, '离线标注：完成！')
     this.toggleDownloadModal()
   }
   setLoader = (loaderWidth, loaderMessage) => {
@@ -117,7 +117,7 @@ export default class Header extends React.Component {
     const { loaderWidth, loaderMessage, settingVisible, downloadVisible } = this.state
     return (
       <header className="app-header">
-        <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.img}/>
+        <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
         <span className="header-filename">{documentName}</span>
         <span className="header-space"/>
         {

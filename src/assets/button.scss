@@ -1,3 +1,5 @@
+@import './tokens.scss';
+
 // 基类
 .btn{
   outline:none;
@@ -36,12 +38,22 @@
 
   &.btn-primary{
     color: #FFF;
-    background: #0035FF;
+    background: $primary-color;
     &:hover{
-      background: darken(#0035FF, 6%);
+      background: darken($primary-color, 6%);
     }
   }
-  
+
+  &.btn-white-o{
+    color: $white-85;
+    border-color: $white-85;
+    background: transparent;
+    &:hover{
+      color: $primary-color;
+      background: $white-85;
+    }
+  }
+
   &.btn-block{
     display: block;
     width: 100%;
