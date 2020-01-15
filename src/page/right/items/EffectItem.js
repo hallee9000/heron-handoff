@@ -10,15 +10,21 @@ export default ({flag, style, hasCode=true}) => {
   const [isExpanded, setExpanded] = useState(false)
   const { type, category, typeName, blur, x, y, hex, alpha, css } = style
   return <ul key={flag} className={cn('effect-item', { 'effect-item-expanded': isExpanded })}>
-    <li className="effect-summary">
+    <li className="effect-summary" onClick={() => setExpanded(!isExpanded)}>
       <ChevronDown
         className="summary-chevron"
         size={18}
-        onClick={() => setExpanded(!isExpanded)}
       />
       { EFFECTS[type].icon }
       <span className="summary-name">{ typeName }</span>
-      <CopiableInput label={<MixEffect size={12}/>} className="summary-blur" defaultValue={ blur } title="模糊" isQuiet/>
+      <CopiableInput
+        label={<MixEffect size={12}/>}
+        className="summary-blur"
+        defaultValue={ blur }
+        title="模糊"
+        isQuiet
+        onWrapperClick={e => e.stopPropagation()}
+      />
     </li>
     {
       category==='shadow' &&

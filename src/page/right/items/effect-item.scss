@@ -16,15 +16,16 @@
     display: flex;
     align-items: center;
     margin-bottom: 6px;
+    border-radius: 2px;
+    transition: background 0.2s;
+    cursor: pointer;
+    &:hover{
+      background: #1b1e2a;
+    }
     .summary-chevron{
       flex-shrink: 0;
       padding: 2px;
-      cursor: pointer;
-      border-radius: 2px;
       transform: rotate(-90deg);
-      &:hover{
-        background: #1b1e2a;
-      }
     }
     .effect-thumbnail{
       width: 18px;

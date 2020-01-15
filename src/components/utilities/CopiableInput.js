@@ -4,7 +4,7 @@ import { onInputClick } from 'utils/helper'
 import WithTooltip from './WithTooltip'
 import './copiable-input.scss'
 
-export default ({ label, type='input', isQuiet=false, ...otherProps }) => {
+export default ({ label, type='input', isQuiet=false, onWrapperClick, ...otherProps }) => {
   const [ copied, setCopied ] = useState(false)
   const onCopied = () => {
     const timer = setTimeout(() => {
@@ -16,7 +16,7 @@ export default ({ label, type='input', isQuiet=false, ...otherProps }) => {
     setCopied(true)
     onInputClick(e, onCopied)
   }
-  return <span className={cn('copiable-input', {'copiable-input-quiet': isQuiet})}>
+  return <span className={cn('copiable-input', {'copiable-input-quiet': isQuiet})} onClick={onWrapperClick}>
     {
       label &&
       <span className="copiable-label">{ label }</span>

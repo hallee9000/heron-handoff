@@ -104,9 +104,9 @@ export default class RightSider extends React.Component {
                   <li className="list-title">{ STYLE_TYPES[key] }</li>
                   {
                     styles[key] &&
-                    styles[key].
-                      filter(style => key==='FILL' ? !isAllImageFill(style.items) : true).
-                      map((style, index) =>
+                    styles[key]
+                      .filter(style => key==='FILL' ? !isAllImageFill(style.items) : true)
+                      .map((style, index) =>
                         <li key={index}>
                           <StyleItem
                             styles={style.items}

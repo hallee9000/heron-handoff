@@ -9,16 +9,15 @@ export default ({flag, style}) => {
   const isSolid = style.type==='Solid'
   const [isExpanded, setExpanded] = useState(false)
   return <ul key={flag} className={cn('fill-item', { 'fill-item-expanded': isExpanded })}>
-    <li className="fill-summary">
+    <li className="fill-summary" onClick={() => setExpanded(!isExpanded)}>
       <ChevronDown
         className="summary-chevron"
         size={18}
-        onClick={() => setExpanded(!isExpanded)}
       />
       <div className="summary-bg"/>
       <div className="summary-preview" style={{background: style.css, opacity: style.opacity}}/>
       <span className="summary-type">{ style.type }</span>
-      <InputGroup isQuiet>
+      <InputGroup isQuiet onWrapperClick={e => e.stopPropagation()}>
         {
           isSolid ?
           <CopiableInput label={<Fill size={12}/>} className="summary-color" defaultValue={style.hex} title="颜色"/> :
