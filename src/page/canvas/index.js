@@ -31,8 +31,7 @@ class Canvas extends React.Component {
   generateMark = () => {
     const { canvasData } = this.props
     const pageRect = canvasData.absoluteBoundingBox
-    const nodes = canvasData.children
-    const rects = generateRects(nodes, pageRect)
+    const rects = generateRects([canvasData], pageRect)
     this.setState({ rects, pageRect })
   }
   onSelect = (rect, index) => {
