@@ -78,7 +78,6 @@ class App extends React.Component {
           <Entry
             onGotImagesData={this.handleImagesGot}
             onGotData={this.handleDataGot}
-            {...names}
           /> :
           <Main
             isLocal={isLocal}

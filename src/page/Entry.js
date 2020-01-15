@@ -91,7 +91,7 @@ export default class Entry extends React.Component {
         })
         if (zip) {
           // generate zip
-          const { documentName } = this.props
+          const documentName = fileData.name
           this.setPercentage(98, '准备生成压缩包……')
           zip.generateAsync({type: 'blob'})
             .then(content => {
