@@ -34,11 +34,14 @@ export const getFrames = data =>
     .reduce((ids, currentIds) => ids.concat(currentIds), [])
 
 export const getStyleItems = (node, key) =>
-  key==='background' ? node.fills : node[key]
+  key==='backgrounds' ? node.fills : node[key]
+
+export const isAllImageFill = fills =>
+  fills.filter(fill => fill.type === 'IMAGE').length === fills.length
 
 export const walkFile = fileData => {
   const { styles, components } = fileData
-  const finalStyles = {...styles}
+  const finalStyles = {}
   const finalComponents = [], exportSettings = []
   const step = (nodes) => {
     // eslint-disable-next-line
@@ -48,9 +51,10 @@ export const walkFile = fileData => {
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
-          if (!finalStyles[id].items) {
+          if (!finalStyles[id]) {
+            const items = styleType!=='text' ? getStyleItems(node, `${styleType}s`) : node.style
             finalStyles[id] = {
-              items: styleType!=='text' ? getStyleItems(node, `${styleType}s`) : node.style,
+              items,
               ...styles[id]
             }
           }

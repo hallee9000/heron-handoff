@@ -4,7 +4,7 @@ import { Droplet, Image, DownloadCloud } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { getBufferData } from 'api'
-import { asyncForEach, getFileName } from 'utils/helper'
+import { asyncForEach, getFileName, isAllImageFill } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
 import StyleDetail from './StyleDetail'
 import StyleItem from './items/StyleItem'
@@ -104,16 +104,18 @@ export default class RightSider extends React.Component {
                   <li className="list-title">{ STYLE_TYPES[key] }</li>
                   {
                     styles[key] &&
-                    styles[key].map((style, index) =>
-                      <li key={index}>
-                        <StyleItem
-                          styles={style.items}
-                          styleName={style.name}
-                          styleType={style.styleType}
-                          onClick={() => this.openDetail(style)}
-                        />
-                      </li>
-                    )
+                    styles[key].
+                      filter(style => key==='FILL' ? !isAllImageFill(style.items) : true).
+                      map((style, index) =>
+                        <li key={index}>
+                          <StyleItem
+                            styles={style.items}
+                            styleName={style.name}
+                            styleType={style.styleType}
+                            onClick={() => this.openDetail(style)}
+                          />
+                        </li>
+                      )
                   }
                 </Fragment>
               )
