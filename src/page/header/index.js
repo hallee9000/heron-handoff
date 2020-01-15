@@ -2,8 +2,9 @@ import React, { Fragment, createRef } from 'react'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Download, Settings, HelpCircle } from 'react-feather'
-import Overlay from './Overlay'
+import { handleIndex, handleJs, handleIcoAndCSS, handleLogo, handleFramesAndComponents, handleExports } from 'utils/download'
 import { trimFilePath } from 'utils/helper'
+import Overlay from './Overlay'
 import './header.scss'
 
 export default class Header extends React.Component {
