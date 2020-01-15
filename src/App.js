@@ -32,8 +32,12 @@ class App extends React.Component {
       styles,
       exportSettings,
       images: {},
-      names: {}
+      names: {},
+      imageMetas: []
     }
+  }
+  handleImagesGot = images => {
+    this.setState({ imageMetas: images })
   }
   handleDataGot = (fileData, components, styles, exportSettings, imagesData) => {
     this.setState({
@@ -58,12 +62,13 @@ class App extends React.Component {
     })
   }
   render () {
-    const { entryVisible, isLocal, isMock, data, components, styles, exportSettings, images, names } = this.state
+    const { entryVisible, isLocal, isMock, data, components, styles, exportSettings, images, names, imageMetas } = this.state
     return (
       <div className="app-container">
         <Header
           data={data}
           images={images}
+          imageMetas={imageMetas}
           exportSettings={exportSettings}
           isLocal={isLocal}
           {...names}
@@ -71,6 +76,7 @@ class App extends React.Component {
         {
           entryVisible ?
           <Entry
+            onGotImagesData={this.handleImagesGot}
             onGotData={this.handleDataGot}
             {...names}
           /> :

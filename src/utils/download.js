@@ -45,21 +45,22 @@ export const handleLogo = async (zip, logoSrc, whenStart) => {
 }
 
 // generate frame and component images
-export const handleFramesAndComponents = async (zip, images) => {
-  const ids = Object.keys(images)
+export const handleFramesAndComponents = async (zip, images, imageMetas, whenStart) => {
   const dataFolder = zip.folder('data')
-  await asyncForEach(ids, async (id, index) => {
-    const imgData = await getBufferData(withCors(images[id]))
+  await asyncForEach(imageMetas, async ({id, name}, index) => {
     const imgName = trimFilePath(id) + '.png'
+    whenStart && whenStart(index, name, imageMetas.length)
+    const imgData = await getBufferData(withCors(images[id]))
     dataFolder.file(imgName, imgData, {base64: true})
   })
 }
 
 // generate exporting images
-export const handleExports = async (zip, exportSettings) => {
+export const handleExports = async (zip, exportSettings, whenStart) => {
   const exportsFolder = zip.folder('data/exports')
   await asyncForEach(exportSettings, async (exportSetting, index) => {
     const imgName = getFileName(exportSetting, index)
+    whenStart && whenStart(index, imgName, exportSettings.length)
     const imgData = await getBufferData(withCors(exportSetting.image))
     exportsFolder.file(imgName, imgData, {base64: true})
   })

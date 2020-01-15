@@ -3,8 +3,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Download, Settings, HelpCircle } from 'react-feather'
 import Overlay from './Overlay'
-import { asyncForEach, getFileName } from 'utils/helper'
-import { getSourceCode, getBufferData } from 'api'
+import { trimFilePath } from 'utils/helper'
 import './header.scss'
 
 export default class Header extends React.Component {
@@ -16,76 +15,27 @@ export default class Header extends React.Component {
     settingVisible: false
   }
   handleDownload = async () => {
-    const { data, documentName } = this.props
+    const { data, images, imageMetas, exportSettings, documentName } = this.props
     const zip = new JSZip()
 
-    // generate html
-    this.setLoader(3, '离线标注：生成 index.html……')
-    const indexSource = await getSourceCode(window.location.href)
-    zip.file('index.html', indexSource.replace('var FILE_DATA=""', `var FILE_DATA = ${JSON.stringify(data)}`))
-
-    // generate js
-    this.setLoader(8, '离线标注：生成 js 文件……')
-    const js = zip.folder("static/js")
-    const scripts = document.getElementsByTagName('script')
-    await asyncForEach(scripts, async script => {
-      const jsSource = await getSourceCode(script.src)
-      const pieces = script.src.split('/')
-      js.file(pieces[pieces.length - 1], jsSource)
+    await handleIndex(zip, data, () => { this.setLoader(3, '开始处理 index.html ……') })
+    await handleJs(zip, () => { this.setLoader(8, '开始处理 Js ……') })
+    await handleIcoAndCSS(zip, () => { this.setLoader(12, '开始处理 CSS ……') })
+    await handleLogo(zip, this.logo.current.src, () => { this.setLoader(16, '开始处理 logo ……') })
+    await handleFramesAndComponents(zip, images, imageMetas, (index, name, length) => {
+      this.setLoader(18+(index+1)*Math.floor(36/length), `开始生成 ${name}……`)
     })
-
-    // generate ico and css
-    this.setLoader(12, `离线标注：生成 css 文件……`)
-    const css = zip.folder("static/css")
-    const styles = document.getElementsByTagName('link')
-    await asyncForEach(styles, async style => {
-      if (style.rel==='icon') {
-        const iconSource = await getBufferData(style.href)
-        zip.file('favicon.ico', iconSource, {base64: true})
-      } else if (style.rel==='stylesheet') {
-        const cssSource = await getSourceCode(style.href)
-        const pieces = style.href.split('/')
-        css.file(pieces[pieces.length - 1], cssSource)
-      }
+    await handleExports(zip, exportSettings, (index, name, length) => {
+      this.setLoader(54+(index+1)*Math.floor(36/length), `开始生成 ${name}……`)
     })
-
-    // generate logo.svg
-    this.setLoader(15, `离线标注：生成 logo.svg……`)
-    const logoData = await getBufferData(this.logo.current.src)
-    zip.file('logo.svg', logoData, {base64: true})
-
-    // generate frame and component images
-    this.setLoader(16, `离线标注：生成图片……`)
-    const { images } = this.props
-    const ids = Object.keys(images)
-    const dataFolder = zip.folder('data')
-    await asyncForEach(ids, async (id, index) => {
-      const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${images[id]}`)
-      const imgName = id.replace(':', '-') + '.png'
-      this.setLoader(16+(index+1)*Math.floor(36/ids.length), `离线标注：生成 ${imgName}……`)
-      dataFolder.file(imgName, imgData, {base64: true})
-    })
-
-    // generate exporting images
-    this.setLoader(16, `离线标注：生成切图……`)
-    const { exportSettings } = this.props
-    const length = exportSettings.length
-    const exportsFolder = zip.folder('data/exports')
-    await asyncForEach(exportSettings, async (exportSetting, index) => {
-      const imgName = getFileName(exportSetting, index)
-      const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${exportSetting.image}`)
-      this.setLoader(52+(index+1)*Math.floor(42/length), `正在处理 ${imgName}……`)
-      exportsFolder.file(imgName, imgData, {base64: true})
-    })
-
     // generate zip
-    this.setLoader(98, '离线标注：生成压缩包……')
+    this.setLoader(92, '开始生成压缩包……')
     zip.generateAsync({type: 'blob'})
       .then(content => {
-        saveAs(content, `${documentName.replace(/\//g, '-')}.zip`)
-        this.setLoader(100, '离线标注：完成！')
+        saveAs(content, `${trimFilePath(documentName)}.zip`)
+        this.setLoader(100, '离线标注文件已生成！')
+        this.toggleDownloadModal()
       })
-    this.toggleDownloadModal()
   }
   setLoader = (loaderWidth, loaderMessage) => {
     this.setState({

@@ -56,6 +56,7 @@ export default class Entry extends React.Component {
   }
   handleSubmit = async e => {
     e.preventDefault()
+    const { onGotImagesData } = this.props
     const { fileUrl, markType } = this.state
     const zip = markType===0 ? (new JSZip()) : null
     const fileKey = getFileKey(fileUrl)
@@ -68,10 +69,10 @@ export default class Entry extends React.Component {
       const hasError = this.hasError(fileData)
       if (!hasError) {
         if (zip) {
-          handleIndex(zip, fileData, () => { this.setPercentage(2, '处理 index.html ……') })
-          handleJs(zip, () => { this.setPercentage(6, '处理 Js ……') })
-          handleIcoAndCSS(zip, () => { this.setPercentage(12, '处理 CSS ……') })
-          handleLogo(zip, this.logo.current.src, () => { this.setPercentage(16, '处理 logo ……') })
+          await handleIndex(zip, fileData, () => { this.setPercentage(2, '处理 index.html ……') })
+          await handleJs(zip, () => { this.setPercentage(6, '处理 Js ……') })
+          await handleIcoAndCSS(zip, () => { this.setPercentage(12, '处理 CSS ……') })
+          await handleLogo(zip, this.logo.current.src, () => { this.setPercentage(16, '处理 logo ……') })
         }
         // get frames' images
         const frames = getFrames(fileData.document.children)
@@ -79,9 +80,10 @@ export default class Entry extends React.Component {
         const { components, styles, exportSettings } = walkFile(fileData)
         const componentMetas = components.map(({id, name}) => ({id, name}))
         const allMetas = frames.concat(componentMetas)
-        const images = await this.getFramesAndComponents(fileKey, allMetas, zip, (index, id, length) => {
+        onGotImagesData && onGotImagesData(allMetas)
+        const images = await this.getFramesAndComponents(fileKey, allMetas, zip, (index, name, length) => {
           const step = Math.floor(36/length)
-          this.setPercentage(20+step*(index+1), `开始获取  ${id} ……`)
+          this.setPercentage(20+step*(index+1), `开始获取  ${name} ……`)
         })
         const exportings = await this.getExportingImages(fileKey, exportSettings, zip, (index, name, length) => {
           const step = Math.floor(32/length)
@@ -94,7 +96,7 @@ export default class Entry extends React.Component {
           zip.generateAsync({type: 'blob'})
             .then(content => {
               saveAs(content, `${trimFilePath(documentName)}.zip`)
-              this.setPercentage(100, '离线标注：完成！')
+              this.setPercentage(100, '离线标注已生成！')
             })
         } else {
           this.onSucceed(fileData, components, styles, exportings, images )
