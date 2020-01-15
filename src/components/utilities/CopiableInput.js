@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import { onInputClick } from 'utils/helper'
 import WithTooltip from './WithTooltip'
@@ -6,16 +6,23 @@ import './copiable-input.scss'
 
 export default ({ label, type='input', isQuiet=false, onWrapperClick, ...otherProps }) => {
   const [ copied, setCopied ] = useState(false)
+  const [ timer, setTimer ] = useState()
   const onCopied = () => {
-    const timer = setTimeout(() => {
+    let timer = setTimeout(() => {
       setCopied(false)
       clearTimeout(timer)
     }, 1000)
+    setTimer(timer)
   }
   const handleClick = e => {
     setCopied(true)
     onInputClick(e, onCopied)
   }
+  useEffect(() => {
+    return () => {
+      timer!==undefined && clearTimeout(timer)
+    }
+  }, [timer])
   return <span className={cn('copiable-input', {'copiable-input-quiet': isQuiet})} onClick={onWrapperClick}>
     {
       label &&
