@@ -3,7 +3,6 @@ import LeftSider from './left'
 import RightSider from './right'
 import RightProps from './right/RightProps'
 import Canvas from './canvas'
-import 'assets/base.scss'
 import './main.scss'
 
 export default class Main extends React.Component {

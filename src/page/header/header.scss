@@ -54,44 +54,23 @@
     transition: width 0.2s;
     z-index: 0;
   }
-  .header-overlay{
-    display: none;
-    position: absolute;
-    top: 48px;
-    right: 8px;
-    width: 360px;
-    padding: 12px 20px;
-    border-radius: 2px;
-    background: #2f3446;
-    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
-    z-index: 10000;
-    &-visible{
-      display: block;
+}
+
+.header-overlay{
+  .rc-tooltip-inner{
+    padding: 20px!important;
+    h3{
+      margin-top: 0;
     }
-    .overlay-caret{
-      position: absolute;
-      top: -6px;
-      right: 5px;
-      border-width: 0 6px 6px 6px;
-      border-color: transparent;
-      border-style: solid;
-      border-bottom-color: #2f3446;
+  }
+  &-settings{
+    .rc-tooltip-arrow{
+      right: 15px!important;
     }
-    .overlay-close{
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 16px;
-      height: 16px;
-      transition: opacity 0.2s;
-      cursor: pointer;
-      &:hover{
-        opacity: 0.85;
-      }
-    }
-    h4{
-      margin: 0;
-      margin-bottom: 12px;
+  }
+  &-exported{
+    .rc-tooltip-arrow{
+      right: 9px!important;
     }
   }
 }

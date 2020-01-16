@@ -26,6 +26,7 @@
       flex-shrink: 0;
       padding: 2px;
       transform: rotate(-90deg);
+      transition: transform 0.2s;
     }
     .effect-thumbnail{
       width: 18px;

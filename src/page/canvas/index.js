@@ -1,5 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
+import { withGlobalSettings } from 'contexts/SettingsContext'
 import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
 import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
@@ -120,4 +121,4 @@ class Canvas extends React.Component {
 	}
 }
 
-export default canvasWrapper(Canvas)
+export default canvasWrapper(withGlobalSettings(Canvas))

@@ -24,7 +24,13 @@ export default class StyleDetail extends React.Component {
       <div className={cn('sider-detail', {'sider-detail-visible': visible})}>
         <div className="detail-title">
           <ChevronLeft onClick={onBack} size={36}/>
-          <span>{style.name}</span>
+          <span className="title-name">{style.name}</span>
+          <select className="input" defaultValue={0}>
+            <option value={0}>HEX</option>
+            <option value={0}>HEXA</option>
+            <option value={1}>RGBA</option>
+            <option value={2}>HSLA</option>
+          </select>
         </div>
         {
           style.items &&

@@ -1,8 +1,12 @@
+@import './tokens.scss';
+@import './mixin.scss';
+
 .rc-tooltip{
   opacity: 1;
   .rc-tooltip-inner{
-    padding: 6px 10px;
+    padding: 6px 12px;
     min-height: 30px;
+    border-radius: 2px;
     background-color: rgba(47, 52, 70, 0.96);
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.26);
     img{
@@ -13,6 +17,12 @@
   &-placement-topLeft{
     .rc-tooltip-arrow{
       border-top-color: rgba(47, 52, 70, 0.96);
+    }
+  }
+  &-placement-bottom,
+  &-placement-bottomRight{
+    .rc-tooltip-arrow{
+      border-bottom-color: rgba(47, 52, 70, 0.96);
     }
   }
   &-placement-right{
@@ -143,6 +153,62 @@
     }
     100% {
       transform: translateX(calc(100% + 20px));
+    }
+  }
+}
+
+.rc-input-number{
+  @include input-base;
+  width: 100%;
+  height: 26px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 0;
+  padding-left: 10px;
+  &:hover{
+    border: 1px solid fade-out($primary-color, 0.36);
+    .rc-input-number-handler-wrap {
+      border-color: $white-16;
+    }
+  }
+  &-focused{
+    border: 1px solid transparent;
+    box-shadow: none;
+  }
+  .rc-input-number-input-wrap{
+    .rc-input-number-input{
+      text-align: left;
+      color: $white-85;
+      background: #1C1F2A;
+    }
+  }
+  .rc-input-number-handler-wrap {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid $white-16;
+    .rc-input-number-handler{
+      flex: 1 1 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 0;
+      cursor: pointer;
+      &:hover{
+        flex: 1 0 66.67%;
+        background: $white-16;
+        .rc-input-number-handler-up-inner,
+        .rc-input-number-handler-down-inner{
+          color: $white-85;
+        }
+      }
+      &-up-inner,
+      &-down-inner{
+        
+        color: $white-36;
+      }
+    }
+    .rc-input-number-handler-up{
+      border-bottom: none;
     }
   }
 }

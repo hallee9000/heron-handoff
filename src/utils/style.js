@@ -1,5 +1,8 @@
 import Color from "color"
 import { toFixed } from 'utils/mark'
+import { WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS } from 'utils/const'
+
+const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
 export const getRGBA = color =>
   ({r: (color.r*255).toFixed(), g: (color.g*255).toFixed(), b: (color.b*255).toFixed(), alpha: color.a})
@@ -242,4 +245,10 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
   } else {
     return ''
   }
+}
+
+export const formattedNumber = (number, { platform, unit, resolution, remBase }) => {
+  const scaledNumber = number*resolutions[platform][resolution].value
+  const finalNumber = unit===4 ? number/remBase : scaledNumber
+  return toFixed(finalNumber) + UNITS[unit]
 }

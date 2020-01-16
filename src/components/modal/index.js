@@ -17,7 +17,7 @@ export default class Modal extends React.Component {
       <div className={cn('modal-overlay', {'modal-hidden': !(PropsVisible || visible)})}>
         <div className="modal">
           { children }
-          <div className="modal-close" onClick={this.toggleVisible}>
+          <div className="modal-close" onClick={this.onClose}>
             <X size={20}/>
           </div>
         </div>

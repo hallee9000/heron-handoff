@@ -20,6 +20,7 @@ export default ({ label, type='input', isQuiet=false, onWrapperClick, ...otherPr
   }
   useEffect(() => {
     return () => {
+      // clear when will unmount
       timer!==undefined && clearTimeout(timer)
     }
   }, [timer])

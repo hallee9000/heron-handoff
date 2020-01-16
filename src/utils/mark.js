@@ -7,7 +7,7 @@ export const px2number = str => str.replace('px', '') - 0
 // 0.2637378 -> 0.26, 8 -> 8
 export const toFixed = num =>
   typeof num==='number' ?
-  (Math.floor(num)===num ? num : (num.toFixed(2) - 0)) :
+  (Math.round(num)===num ? num : (num.toFixed(2) - 0)) :
   ''
 
 // generate box data

@@ -1,3 +1,4 @@
+@import "~assets/tokens.scss";
 @import 'assets/mixin.scss';
 
 .copiable-input{
@@ -15,7 +16,7 @@
   .copiable-label{
     margin-left: 6px;
     line-height: 14px;
-    color: rgba($color: #FFF, $alpha: 0.36);
+    color: $white-36;
     svg{
       display: block;
     }

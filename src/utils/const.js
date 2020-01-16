@@ -44,3 +44,66 @@ export const TEXTS = {
   'normal-bold': <NormalBold size={16} className="text-thumbnail"/>,
   'large-bold': <LargeBold size={16} className="text-thumbnail"/>
 }
+
+
+export const DEFAULT_SETTINGS = {
+  platform: 0,
+  resolution: 0,
+  unit: 2,
+  remBase: 14,
+}
+
+export const PLATFORMS = [ 'Web', 'iOS', 'Android' ]
+
+export const WEB_MULTIPLE = [
+  {
+    label: '1x',
+    value: 1
+  }, {
+    label: '2x',
+    value: 2
+  }, {
+    label: '3x',
+    value: 3
+  }
+]
+
+export const IOS_DENSITY = [
+  {
+    label: '@1x',
+    value: 1
+  }, {
+    label: '@2x',
+    value: 1/2
+  }, {
+    label: '@3x',
+    value: 1/3
+  }
+]
+
+export const ANDROID_DENSITY = [
+  {
+    label: 'ldpi',
+    value: 4/3
+  }, {
+    label: 'mdpi',
+    value: 1
+  }, {
+    label: 'tvdpi',
+    value: 3/4
+  }, {
+    label: 'hdpi',
+    value: 2/3
+  }, {
+    label: 'xhdpi',
+    value: 1/2
+  }, {
+    label: 'xxhdpi',
+    value: 1/3
+  }, {
+    label: 'xxxhdpi',
+    value: 1/4
+  }
+]
+
+export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx（小程序）' ]

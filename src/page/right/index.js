@@ -3,6 +3,7 @@ import cn from 'classnames'
 import { Droplet, Image, DownloadCloud } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
+import { withGlobalSettings } from 'contexts/SettingsContext'
 import { getBufferData } from 'api'
 import { asyncForEach, getFileName, isAllImageFill } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
@@ -11,7 +12,7 @@ import StyleItem from './items/StyleItem'
 import ExportItem from './items/ExportItem'
 import './right-sider.scss'
 
-export default class RightSider extends React.Component {
+class RightSider extends React.Component {
   state = {
     maskVisible: false,
     tabIndex: 0,
@@ -155,3 +156,5 @@ export default class RightSider extends React.Component {
     )
   }
 }
+
+export default withGlobalSettings(RightSider)

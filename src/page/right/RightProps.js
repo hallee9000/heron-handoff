@@ -1,7 +1,8 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
+import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
-import { getFillsStyle, getEffectsStyle } from 'utils/style'
+import { getFillsStyle, getEffectsStyle, formattedNumber } from 'utils/style'
 import { toFixed } from 'utils/mark'
 import FillItem from './items/FillItem'
 import EffectItem from './items/EffectItem'
@@ -11,7 +12,7 @@ import StyleDetail from './StyleDetail'
 import FontPanel from './FontPanel'
 import './right-props.scss'
 
-export default class RightProps extends React.Component {
+class RightProps extends React.Component {
   propsSider = createRef()
   state = {
     hasEntered: false,
@@ -83,7 +84,7 @@ export default class RightProps extends React.Component {
     }, 10)
   }
   render () {
-    const { data, styles, useLocalImages } = this.props
+    const { data, styles, useLocalImages, globalSettings } = this.props
     const { node } = data
     const { strokes, effects, styles: nodeStyles } = node
     const { hasEntered, fills, exportSettings, flag, isPieceSelected, detailVisible, currentStyle } = this.state
@@ -104,17 +105,17 @@ export default class RightProps extends React.Component {
           <div className="props-section props-basic">
             <h5 className="section-title">位置和尺寸</h5>
             <div className="section-items">
-              <CopiableInput isQuiet label="X" defaultValue={ toFixed(data.left) }/>
-              <CopiableInput isQuiet label="Y" defaultValue={ toFixed(data.top) }/>
-              <CopiableInput isQuiet label="W" defaultValue={ toFixed(data.width) }/>
-              <CopiableInput isQuiet label="H" defaultValue={ toFixed(data.height) }/>
+              <CopiableInput isQuiet label="X" defaultValue={ formattedNumber(data.left, globalSettings) }/>
+              <CopiableInput isQuiet label="Y" defaultValue={ formattedNumber(data.top, globalSettings) }/>
+              <CopiableInput isQuiet label="W" defaultValue={ formattedNumber(data.width, globalSettings) }/>
+              <CopiableInput isQuiet label="H" defaultValue={ formattedNumber(data.height, globalSettings) }/>
               {
-                data.opacity &&
-                <CopiableInput isQuiet label="不透明度" defaultValue={ toFixed(data.opacity) }/>
+                node.opacity &&
+                <CopiableInput isQuiet label="不透明度" defaultValue={ toFixed(node.opacity) }/>
               }
               {
-                data.cornerRadius &&
-                <CopiableInput isQuiet label="圆角" defaultValue={ toFixed(data.cornerRadius) }/>
+                node.cornerRadius &&
+                <CopiableInput isQuiet label="圆角" defaultValue={ formattedNumber(node.cornerRadius, globalSettings) }/>
               }
             </div>
           </div>
@@ -243,3 +244,5 @@ export default class RightProps extends React.Component {
     )
   }
 }
+
+export default withGlobalSettings(RightProps)

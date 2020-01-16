@@ -30,6 +30,7 @@
       flex-shrink: 0;
       padding: 2px;
       transform: rotate(-90deg);
+      transition: transform 0.2s;
     }
     .summary-preview,
     .summary-bg{

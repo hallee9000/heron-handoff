@@ -1,8 +1,10 @@
 import React from 'react'
+import SettingsContext from 'contexts/SettingsContext'
 import Entry from 'page/Entry'
 import Main from 'page/Main'
 import Header from 'page/header'
-import { walkFile } from 'utils/helper'
+import { walkFile, getGlobalSettings, setGlobalSettings } from 'utils/helper'
+import { DEFAULT_SETTINGS } from 'utils/const'
 import 'assets/base.scss'
 import './app.scss'
 
@@ -33,8 +35,23 @@ class App extends React.Component {
       exportSettings,
       images: {},
       names: {},
-      imageMetas: []
+      imageMetas: [],
+      globalSettings: this.initializeGlobalSettings()
     }
+  }
+  initializeGlobalSettings = () => {
+    const localSettings = getGlobalSettings()
+    if (localSettings) {
+      return localSettings
+    } else {
+      setGlobalSettings(DEFAULT_SETTINGS)
+      return DEFAULT_SETTINGS
+    }
+  }
+  setSettings = (name, value) => {
+    setGlobalSettings(name, value, globalSettings => {
+      this.setState({ globalSettings })
+    })
   }
   handleImagesGot = images => {
     this.setState({ imageMetas: images })
@@ -62,34 +79,41 @@ class App extends React.Component {
     })
   }
   render () {
-    const { entryVisible, isLocal, isMock, data, components, styles, exportSettings, images, names, imageMetas } = this.state
+    const {
+      entryVisible, isLocal, isMock, data, components, styles,
+      exportSettings, images, names, imageMetas, globalSettings
+    } = this.state
     return (
       <div className="app-container">
-        <Header
-          data={data}
-          images={images}
-          imageMetas={imageMetas}
-          exportSettings={exportSettings}
-          isLocal={isLocal}
-          {...names}
-        />
+        <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
+          <Header
+            data={data}
+            images={images}
+            imageMetas={imageMetas}
+            exportSettings={exportSettings}
+            isLocal={isLocal}
+            {...names}
+          />
+        </SettingsContext.Provider>
         {
           entryVisible ?
           <Entry
             onGotImagesData={this.handleImagesGot}
             onGotData={this.handleDataGot}
           /> :
-          <Main
-            isLocal={isLocal}
-            isMock={isMock}
-            data={data}
-            components={components}
-            styles={styles}
-            exportSettings={exportSettings}
-            images={images}
-            onNamesChange={this.getNames}
-            {...names}
-          />
+          <SettingsContext.Provider value={{globalSettings}}>
+            <Main
+              isLocal={isLocal}
+              isMock={isMock}
+              data={data}
+              components={components}
+              styles={styles}
+              exportSettings={exportSettings}
+              images={images}
+              onNamesChange={this.getNames}
+              {...names}
+            />
+          </SettingsContext.Provider>
         }
       </div>
     )

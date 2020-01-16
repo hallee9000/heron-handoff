@@ -1,10 +1,13 @@
 import React, { Fragment, createRef } from 'react'
+import { Download, Settings, HelpCircle } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import { Download, Settings, HelpCircle } from 'react-feather'
+import SettingsContext from 'contexts/SettingsContext'
+import Overlay from './Overlay'
+import GlobalSettings from './Settings'
+import Exported from './Exported'
 import { handleIndex, handleJs, handleIcoAndCSS, handleLogo, handleFramesAndComponents, handleExports } from 'utils/download'
 import { trimFilePath } from 'utils/helper'
-import Overlay from './Overlay'
 import './header.scss'
 
 export default class Header extends React.Component {
@@ -12,8 +15,7 @@ export default class Header extends React.Component {
   state = {
     loaderWidth: 0,
     loaderMessage: '',
-    downloadVisible: false,
-    settingVisible: false
+    isExported: false
   }
   handleDownload = async () => {
     const { data, images, imageMetas, exportSettings, documentName } = this.props
@@ -35,7 +37,7 @@ export default class Header extends React.Component {
       .then(content => {
         saveAs(content, `${trimFilePath(documentName)}.zip`)
         this.setLoader(100, '离线标注文件已生成！')
-        this.toggleDownloadModal()
+        this.toggleExportedOverlay()
       })
   }
   setLoader = (loaderWidth, loaderMessage) => {
@@ -48,24 +50,28 @@ export default class Header extends React.Component {
     const { pageName, frameName } = this.props
     return !!(pageName && frameName)
   }
-  toggleSettingModal = () => {
-    const { settingVisible } = this.state
+  toggleExportedOverlay = () => {
+    const { isExported } = this.state
     this.setState({
-      settingVisible: !settingVisible
+      isExported: !isExported
     })
-  }
-  toggleDownloadModal = () => {
-    const { downloadVisible } = this.state
-    this.setState({
-      downloadVisible: !downloadVisible
-    })
-    if (downloadVisible) {
+    if (isExported) {
       this.setLoader(0, '')
     }
   }
+  componentDidMount () {
+    // close exported message when clicking other places
+    document.addEventListener('click', e => {
+      const { isExported } = this.state
+      if (isExported) {
+        e.preventDefault()
+        this.toggleExportedOverlay()
+      }
+    })
+  }
   render () {
     const { isLocal, documentName, pageName, frameName, isComponent } = this.props
-    const { loaderWidth, loaderMessage, settingVisible, downloadVisible } = this.state
+    const { loaderWidth, loaderMessage, isExported } = this.state
     return (
       <header className="app-header">
         <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
@@ -91,35 +97,44 @@ export default class Header extends React.Component {
         <div className="header-operates">
           {
             this.hasNames() &&
-            <span title="设置" onClick={this.toggleSettingModal}>
-              <Settings size={14}/>
-            </span>
+            <Overlay
+              overlay={
+                <SettingsContext.Consumer>
+                  {({globalSettings, changeGlobalSettings}) => (
+                    <GlobalSettings
+                      globalSettings={globalSettings}
+                      onSettingsChange={changeGlobalSettings}
+                    />
+                  )}
+                </SettingsContext.Consumer>
+              }
+              overlayClassName="header-overlay header-overlay-settings"
+            >
+              <span title="设置">
+                <Settings size={14}/>
+              </span>
+            </Overlay>
           }
           <a title="获取帮助" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
           {
             this.hasNames() && !isLocal &&
-            <span title="生成离线标注" onClick={this.handleDownload}>
-              <Download size={14}/>
-            </span>
+            <Overlay
+              visible={isExported}
+              overlay={<Exported/>}
+              align={{
+                offset: [-6, -10]
+              }}
+              overlayClassName="header-overlay header-overlay-exported"
+            >
+              <span title="生成离线标注" onClick={this.handleDownload}>
+                <Download size={14}/>
+              </span>
+            </Overlay>
           }
         </div>
         <span className="header-loader" style={{width: `${loaderWidth}%`}}/>
-        <Overlay visible={settingVisible} caretRight={46} onClose={this.toggleSettingModal}>
-          <h4><span role="img" aria-label="Congratulations">⚙️</span> 设置</h4>
-          <p>还没做呢，惊喜吧？</p>
-          <p>还没做呢，惊喜吧？</p>
-          <p>还没做呢，惊喜吧？</p>
-          <p>还没做呢，惊喜吧？</p>
-          <p>还没做呢，惊喜吧？</p>
-          <p>还没做呢，惊喜吧？</p>
-          <p>还没做呢，惊喜吧？</p>
-        </Overlay>
-        <Overlay visible={downloadVisible} onClose={this.toggleDownloadModal}>
-          <h4><span role="img" aria-label="Congratulations">🎉</span> 离线标注导出成功！</h4>
-          <p>你的离线标注已经导出成功，可以直接发送给开发，或者部署在自己的服务器中。</p>
-        </Overlay>
       </header>
     )
   }

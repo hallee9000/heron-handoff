@@ -15,7 +15,7 @@
     border: 1px solid fade-out($primary-color, 0.36);
   }
   &::placeholder{
-    color: fade-out(#FFF, 0.65);
+    color: $white-65;
   }
   &[disabled]{
     opacity: 0.6;
@@ -27,7 +27,7 @@
     }
   }
   &[readonly]{
-    color: #EEE;
+    color: $white-65;
     &:hover,
     &:active,
     &:focus{

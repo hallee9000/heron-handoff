@@ -1,7 +1,9 @@
+@import "~assets/tokens.scss";
+
 @mixin input-base {
   outline: none;
   padding: 2px 10px;
-  color: #FFF;
+  color: $white-85;
   font-size: 12px;
   line-height: 14px;
   transition: all 0.2s;

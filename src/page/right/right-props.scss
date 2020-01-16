@@ -5,7 +5,6 @@
   width: 260px;
   height: 100%;
   background: #222531;
-  overflow: auto;
   z-index: 1;
   transform: translateX(260px);
   transition: transform 0.2s;
@@ -13,6 +12,8 @@
     transform: translateX(0);
   }
   .right-props{
+    height: 100%;
+    overflow: auto;
     transition: transform 0.2s;
     &-hidden{
       transform: translateX(-260px);
