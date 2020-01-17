@@ -1,0 +1,12 @@
+@import '~assets/tokens.scss';
+
+.settings{
+  .form{
+    &:not(:last-child){
+      margin-bottom: 20px;
+    }
+    .settings-title{
+      color: $white-36;
+    }
+  }
+}

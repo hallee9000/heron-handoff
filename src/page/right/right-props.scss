@@ -35,6 +35,15 @@
         .title-name{
           flex: 1;
         }
+        &.section-name{
+          margin: 0;
+          span{
+            flex: 1;
+            margin-right: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
       }
       .section-helper{
         font-size: 12px;

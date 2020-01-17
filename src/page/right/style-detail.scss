@@ -11,6 +11,7 @@
   }
   .detail-title{
     display: flex;
+    padding-right: 12px;
     align-items: center;
     line-height: 36px;
     svg{
@@ -23,17 +24,6 @@
     }
     .title-name{
       flex: 1;
-    }
-    select{
-      width: 56px;
-      background: transparent;
-      &:hover{
-        border-color: transparent;
-        background: #1b1e2a;
-      }
-      &:focus{
-        border-color: transparent;
-      }
     }
   }
   .detail-preview{

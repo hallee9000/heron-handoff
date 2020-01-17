@@ -54,14 +54,11 @@
     .summary-type{
       flex: 1;
     }
-    .summary-color{
-      width: 64px;
-    }
     .summary-degree{
       width: 30px;
     }
     .summary-opacity{
-      width: 46px;
+      width: 36px;
     }
   }
   .fill-stops{
@@ -89,11 +86,6 @@
         border-radius: 3px;
         background-color: #3d3e44;
         z-index: 1;
-      }
-      .input-group{
-        .stops-value{
-          width: 60px;
-        }
       }
     }
   }

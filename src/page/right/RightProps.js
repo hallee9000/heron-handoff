@@ -4,9 +4,7 @@ import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
 import { getFillsStyle, getEffectsStyle, formattedNumber } from 'utils/style'
 import { toFixed } from 'utils/mark'
-import FillItem from './items/FillItem'
-import EffectItem from './items/EffectItem'
-import ExportItem from './items/ExportItem'
+import { ColorFormatSelect, FillItem, EffectItem, ExportItem } from './items'
 import StyleReference from './StyleReference'
 import StyleDetail from './StyleDetail'
 import FontPanel from './FontPanel'
@@ -99,7 +97,10 @@ class RightProps extends React.Component {
       >
         <div className={cn('right-props', {'right-props-hidden': detailVisible})}>
           <div className="props-section">
-            <h5 className="section-title">{ node.name }</h5>
+            <h5 className="section-title section-name" title={node.name}>
+              <span>{ node.name }</span>
+              <ColorFormatSelect/>
+            </h5>
           </div>
           {/* position and size */}
           <div className="props-section props-basic">
@@ -182,7 +183,14 @@ class RightProps extends React.Component {
                 }
               </ul>
               <InputGroup>
-                <CopiableInput label="粗细" defaultValue={ node.strokeWeight }/>
+                <CopiableInput label="粗细" defaultValue={ formattedNumber(node.strokeWeight, globalSettings) }/>
+                {
+                  node.strokeDashes &&
+                  <CopiableInput
+                    label="间隔"
+                    defaultValue={ node.strokeDashes.map(dash => formattedNumber(dash, globalSettings, true)).join() }
+                  />
+                }
                 <CopiableInput label="位置" defaultValue={ node.strokeAlign.toLowerCase() }/>
               </InputGroup>
             </div>

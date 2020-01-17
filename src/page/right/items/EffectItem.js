@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import cn from 'classnames'
 import { ChevronDown } from 'react-feather'
+import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
-import { Fill, Opacity, MixEffect } from 'components/icons/style'
+import { MixEffect } from 'components/icons/style'
+import Color from './Color'
+import { formattedNumber } from 'utils/style'
 import { EFFECTS } from 'utils/const'
 import './effect-item.scss'
 
-export default ({flag, style, hasCode=true}) => {
+const EffectItem = ({flag, style, globalSettings}) => {
+  const colorFormat = globalSettings.colorFormat || 0
   const [isExpanded, setExpanded] = useState(false)
-  const { type, category, typeName, blur, x, y, hex, alpha, css } = style
+  const { type, category, typeName, blur, x, y, css } = style
   return <ul key={flag} className={cn('effect-item', { 'effect-item-expanded': isExpanded })}>
     <li className="effect-summary" onClick={() => setExpanded(!isExpanded)}>
       <ChevronDown
@@ -20,7 +24,7 @@ export default ({flag, style, hasCode=true}) => {
       <CopiableInput
         label={<MixEffect size={12}/>}
         className="summary-blur"
-        defaultValue={ blur }
+        value={ formattedNumber(blur, globalSettings) }
         title="模糊"
         isQuiet
         onWrapperClick={e => e.stopPropagation()}
@@ -30,18 +34,16 @@ export default ({flag, style, hasCode=true}) => {
       category==='shadow' &&
       <li className="effect-extra">
         <InputGroup isQuiet>
-          <CopiableInput label="X" defaultValue={ x } title="X"/>
-          <CopiableInput label="Y" defaultValue={ y } title="Y"/>
-          <CopiableInput label={<Fill size={12}/>} className="extra-color" defaultValue={ hex } title="颜色"/>
-          <CopiableInput label={<Opacity size={12}/>} className="extra-opacity" defaultValue={ alpha } title="不透明度"/>
+          <CopiableInput label="X" value={ formattedNumber(x, globalSettings) } title="X"/>
+          <CopiableInput label="Y" value={ formattedNumber(y, globalSettings) } title="Y"/>
+          <Color color={style} colorFormat={colorFormat}/>
         </InputGroup>
       </li>
     }
-    {
-      hasCode &&
-      <li className="effect-code">
-        <CopiableInput type="textarea" defaultValue={ css.code }/>
-      </li>
-    }
+    <li className="effect-code">
+      <CopiableInput type="textarea" value={ css.code }/>
+    </li>
   </ul>
 }
+
+export default withGlobalSettings(EffectItem)

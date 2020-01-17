@@ -1,0 +1,12 @@
+select.color-format-select{
+  width: 56px;
+  background: transparent;
+  cursor: pointer;
+  &:hover{
+    border-color: transparent;
+    background: #1b1e2a;
+  }
+  &:focus{
+    border-color: transparent;
+  }
+}

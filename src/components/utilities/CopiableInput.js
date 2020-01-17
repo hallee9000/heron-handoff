@@ -4,7 +4,7 @@ import { onInputClick } from 'utils/helper'
 import WithTooltip from './WithTooltip'
 import './copiable-input.scss'
 
-export default ({ label, type='input', isQuiet=false, onWrapperClick, ...otherProps }) => {
+export default ({ label, type='input', isQuiet=false, onWrapperClick, value, ...otherProps }) => {
   const [ copied, setCopied ] = useState(false)
   const [ timer, setTimer ] = useState()
   const onCopied = () => {
@@ -24,7 +24,7 @@ export default ({ label, type='input', isQuiet=false, onWrapperClick, ...otherPr
       timer!==undefined && clearTimeout(timer)
     }
   }, [timer])
-  return <span className={cn('copiable-input', {'copiable-input-quiet': isQuiet})} onClick={onWrapperClick}>
+  return <span key={value} className={cn('copiable-input', {'copiable-input-quiet': isQuiet})} onClick={onWrapperClick}>
     {
       label &&
       <span className="copiable-label">{ label }</span>
@@ -41,8 +41,8 @@ export default ({ label, type='input', isQuiet=false, onWrapperClick, ...otherPr
     >
       {
         type==='input' ?
-        <input readOnly={true} onClick={handleClick} {...otherProps}/> :
-        <textarea readOnly={true} onClick={handleClick} {...otherProps}/>
+        <input readOnly={true} onClick={handleClick} defaultValue={value} {...otherProps}/> :
+        <textarea readOnly={true} onClick={handleClick} defaultValue={value} {...otherProps}/>
       }
     </WithTooltip>
   </span>

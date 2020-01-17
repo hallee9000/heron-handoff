@@ -2,6 +2,7 @@ import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
+import { formattedNumber } from 'utils/style'
 import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
@@ -72,7 +73,7 @@ class Canvas extends React.Component {
     }
   }
 	render () {
-    const { id, size, useLocalImages, images } = this.props
+    const { id, size, useLocalImages, images, globalSettings } = this.props
     const { rects, pageRect, selectedIndex, hoveredIndex, markData, isChanging } = this.state
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
@@ -100,20 +101,24 @@ class Canvas extends React.Component {
                 onClick={() => this.onSelect(rect, index)}
                 onMouseOver={() => this.onHover(rect, index)}
               >
-                <div className="layer-sizing layer-width">{ `${rect.actualWidth}px` }</div>
-                <div className="layer-sizing layer-height">{ `${rect.actualHeight}px` }</div>
+                <div className="layer-sizing layer-width">{ formattedNumber(rect.actualWidth, globalSettings) }</div>
+                <div className="layer-sizing layer-height">{ formattedNumber(rect.actualHeight, globalSettings) }</div>
               </div>
             )
           })
         }
         {
           selectedIndex!==hoveredIndex &&
-          <Distance distanceData={markData.distanceData}/>
+          <Distance distanceData={markData.distanceData} globalSettings={globalSettings}/>
         }
         <img
           src={getImage(id, useLocalImages, images)}
           alt="frame"
-          style={{width: size.width, height: size.height, opacity: isChanging ? 0 : 1}}
+          style={{
+            width: size.width,
+            height: size.height,
+            opacity: isChanging ? 0 : 1
+          }}
           onLoad={this.handleImgLoaded}
         />
       </div>

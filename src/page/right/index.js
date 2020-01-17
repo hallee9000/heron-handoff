@@ -8,8 +8,7 @@ import { getBufferData } from 'api'
 import { asyncForEach, getFileName, isAllImageFill } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
 import StyleDetail from './StyleDetail'
-import StyleItem from './items/StyleItem'
-import ExportItem from './items/ExportItem'
+import { StyleItem, ExportItem } from './items'
 import './right-sider.scss'
 
 class RightSider extends React.Component {

@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import cn from 'classnames'
 import { ChevronDown } from 'react-feather'
+import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
-import { Fill, Degree, Opacity } from 'components/icons/style'
+import { Degree, Opacity } from 'components/icons/style'
+import Color from './Color'
 import './fill-item.scss'
 
-export default ({flag, style}) => {
+const FillItem = ({flag, style, globalSettings}) => {
+  const colorFormat = globalSettings.colorFormat || 0
   const isSolid = style.type==='Solid'
   const [isExpanded, setExpanded] = useState(false)
   return <ul key={flag} className={cn('fill-item', { 'fill-item-expanded': isExpanded })}>
@@ -20,10 +23,10 @@ export default ({flag, style}) => {
       <InputGroup isQuiet onWrapperClick={e => e.stopPropagation()}>
         {
           isSolid ?
-          <CopiableInput label={<Fill size={12}/>} className="summary-color" defaultValue={style.hex} title="颜色"/> :
-          <CopiableInput label={<Degree size={12}/>} className="summary-degree" defaultValue='12°' title="角度"/>
+          <Color color={style} colorFormat={colorFormat}/> :
+          <CopiableInput label={<Degree size={12}/>} className="summary-degree" value={style.angle} title="角度"/>
         }
-        <CopiableInput label={<Opacity size={12}/>} className="summary-opacity" defaultValue={ style.opacity } title="不透明度"/>
+        <CopiableInput label={<Opacity size={12}/>} className="summary-opacity" value={ style.opacity } title="不透明度"/>
       </InputGroup>
     </li>
     {
@@ -34,9 +37,8 @@ export default ({flag, style}) => {
             <div className="stops-item" key={index}>
               <div className="stops-dot"/>
               <InputGroup isQuiet>
-                <CopiableInput className="stops-position" defaultValue={ stop.position } title="位置"/>
-                <CopiableInput label={<Fill size={12}/>} className="stops-value" defaultValue={ stop.hex } title="颜色"/>
-                <CopiableInput label={<Opacity size={12}/>} className="stops-opacity" defaultValue={ stop.alpha } title="不透明度"/>
+                <CopiableInput className="stops-position" value={ stop.position } title="位置"/>
+                <Color color={stop} colorFormat={colorFormat}/>
               </InputGroup>
             </div>
           )
@@ -44,7 +46,9 @@ export default ({flag, style}) => {
       </li>
     }
     <li className="fill-code fill-collapse">
-      <CopiableInput type="textarea" defaultValue={ style.css }/>
+      <CopiableInput type="textarea" value={ style.css }/>
     </li>
   </ul>
 }
+
+export default withGlobalSettings(FillItem)

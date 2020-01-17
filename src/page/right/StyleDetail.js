@@ -1,10 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { ChevronLeft } from 'react-feather'
-import FillItem from './items/FillItem'
-import EffectItem from './items/EffectItem'
-import TextItems from './items/TextItems'
-import Preview from './items/Preview'
+import { ColorFormatSelect, FillItem, EffectItem, TextItems, Preview } from './items'
 import { CopiableInput } from 'components/utilities'
 import { getStyle } from 'utils/style'
 import './style-detail.scss'
@@ -25,12 +22,7 @@ export default class StyleDetail extends React.Component {
         <div className="detail-title">
           <ChevronLeft onClick={onBack} size={36}/>
           <span className="title-name">{style.name}</span>
-          <select className="input" defaultValue={0}>
-            <option value={0}>HEX</option>
-            <option value={0}>HEXA</option>
-            <option value={1}>RGBA</option>
-            <option value={2}>HSLA</option>
-          </select>
+          <ColorFormatSelect/>
         </div>
         {
           style.items &&

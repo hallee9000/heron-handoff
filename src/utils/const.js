@@ -106,4 +106,6 @@ export const ANDROID_DENSITY = [
   }
 ]
 
-export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx（小程序）' ]
+export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx' ]
+
+export const COLOR_FORMATS = [ 'HEX', 'HEXA', 'RGBA', 'HSLA' ]

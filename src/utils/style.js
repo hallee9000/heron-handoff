@@ -1,14 +1,17 @@
 import Color from "color"
 import { toFixed } from 'utils/mark'
-import { WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS } from 'utils/const'
+import { WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, COLOR_FORMATS } from 'utils/const'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
-export const getRGBA = color =>
-  ({r: (color.r*255).toFixed(), g: (color.g*255).toFixed(), b: (color.b*255).toFixed(), alpha: color.a})
+export const getRGBAObj = color =>
+  ({r: (color.r*255).toFixed(), g: (color.g*255).toFixed(), b: (color.b*255).toFixed(), alpha: toFixed(color.a)})
+
+export const getColor = color =>
+  Color(getRGBAObj(color))
 
 export const getRGB = color => {
-  const rgba = getRGBA(color)
+  const rgba = getRGBAObj(color)
   delete rgba.alpha
   return Object.keys(rgba)
     .map(key => rgba[key])
@@ -16,65 +19,104 @@ export const getRGB = color => {
 }
 
 export const getCSSRGBA = color =>
-  `rgba(${Object.keys(getRGBA(color)).map(key => getRGBA(color)[key]).join(',')})`
+  `rgba(${Object.keys(getRGBAObj(color)).map(key => getRGBAObj(color)[key]).join(',')})`
 
 export const getCSSHEX = color =>
   getColor(color).hex()
 
+export const getCSSHEXA = color => {
+  const alpha = getColor(color).valpha
+  const hexAlpha = ("0" + parseInt(alpha*256,10)
+    .toString(16))
+    .slice(-2)
+    .toUpperCase()
+  return  getCSSHEX(color) + hexAlpha
+}
+
+export const getCSSHSLA = color => {
+  const c = getColor(color).hsl().string()
+  const hsl = c.split(',')
+    .map((part, index) =>
+      index===0 ? part.split('(')[0] + '(' + toFixed(part.split('(')[1] - 0) : part
+    )
+    .join()
+  return hsl
+}
 
 export const getCSSAlpha = color =>
   getColor(color).alpha()
 
-export const getColor = color =>
-  Color(getRGBA(color))
+export const formattedColor = (type, color) => {
+  const key = COLOR_FORMATS[type].toLowerCase()
+  return color[key]
+}
 
-export const getPercentage = opacity =>
-  `${toFixed(opacity)==='' ? 100 : toFixed(opacity)*100 }%`
+export const getPercentage = num =>
+  `${toFixed(num)==='' ? 100 : toFixed(num)*100 }%`
+
+export const getOpacity = opacity =>
+  toFixed(opacity) || 1
 
 export const getStops = stops =>
   stops.map(stop => ({
     position: getPercentage(stop.position),
     hex: getCSSHEX(stop.color),
-    alpha: toFixed(getCSSAlpha(stop.color))
+    hexa: getCSSHEXA(stop.color),
+    rgba: getCSSRGBA(stop.color),
+    hsla: getCSSHSLA(stop.color),
+    alpha: toFixed(stop.color.a)
   }))
 
 export const stopsToBackground = stops =>
   stops.map(s => getCSSRGBA(s.color) + getPercentage(s.position)).join()
 
-// gradientHandlePositions
+export const getGradientDegree = positions => {
+  const offsetX = positions[1].x-positions[0].x
+  const offsetY = positions[1].y-positions[0].y
+  const a = Math.atan2(offsetY, offsetX)
+  let angle = a * 180 / Math.PI
+  if (angle > 360) {
+      angle -= 360
+  }
+  if (angle < 0) {
+      angle += 360
+  }
+  return toFixed(angle) + '°'
+}
+
 export const getSolidColor = fill => ({
   css: getCSSRGBA(fill.color),
-  opacity: getPercentage(fill.opacity),
+  opacity: getOpacity(fill.opacity),
+  alpha: toFixed(fill.color.a),
   hex: getCSSHEX(fill.color),
-  color: getCSSHEX(fill.color),
+  hexa: getCSSHEXA(fill.color),
+  rgba: getCSSRGBA(fill.color),
+  hsla: getCSSHSLA(fill.color),
   type: 'Solid'
 })
 
 export const getLinearGradient = fill => ({
   css: `linear-gradient(to bottom, ${ stopsToBackground(fill.gradientStops) }`,
-  opacity: getPercentage(fill.opacity),
-  color: 'Linear',
+  opacity: getOpacity(fill.opacity),
   type: 'Linear',
   stops: getStops(fill.gradientStops),
-  positions: 'fill.gradientHandlePositions'
+  angle: getGradientDegree(fill.gradientHandlePositions)
 })
 
 export const getRadialGradient = fill => ({
   css: `radial-gradient(circle at 50% 50%, ${ stopsToBackground(fill.gradientStops) })`,
-  opacity: getPercentage(fill.opacity),
-  color: 'Radial',
+  opacity: getOpacity(fill.opacity),
   type: 'Radial',
   stops: getStops(fill.gradientStops),
-  positions: 'fill.gradientHandlePositions'
+  angle: getGradientDegree(fill.gradientHandlePositions)
 })
 
 export const getAngularGradient = fill => ({
   css: `conic-gradient(from 0.25turn, ${ stopsToBackground(fill.gradientStops) })`,
-  opacity: getPercentage(fill.opacity),
-  color: 'Angular',
+  opacity: getOpacity(fill.opacity),
   type: 'Angular',
   stops: getStops(fill.gradientStops),
-  positions: 'fill.gradientHandlePositions'
+  angle: getGradientDegree(fill.gradientHandlePositions)
 })
 
 export const getDiamondGradient = fill => ({
@@ -82,11 +124,10 @@ export const getDiamondGradient = fill => ({
   `linear-gradient(to bottom left, ${ stopsToBackground(fill.gradientStops) }) bottom left / 50% 50% no-repeat, ` +
   `linear-gradient(to top left, ${ stopsToBackground(fill.gradientStops) }) top left / 50% 50% no-repeat, ` +
   `linear-gradient(to top right, ${ stopsToBackground(fill.gradientStops) }) top right / 50% 50% no-repeat`,
-  opacity: getPercentage(fill.opacity),
-  color: 'Diamond',
+  opacity: getOpacity(fill.opacity),
   type: 'Diamond',
   stops: getStops(fill.gradientStops),
-  positions: 'fill.gradientHandlePositions'
+  angle: getGradientDegree(fill.gradientHandlePositions)
 })
 
 export const getFillsStyle = fills => {
@@ -117,8 +158,10 @@ export const getShadowEffect = effect => ({
     y: effect.offset.y,
     blur: effect.radius,
     hex: getCSSHEX(effect.color),
-    rgba: getRGB(effect.color),
-    alpha: toFixed(getCSSAlpha(effect.color))
+    hexa: getCSSHEXA(effect.color),
+    rgba: getCSSRGBA(effect.color),
+    hsla: getCSSHSLA(effect.color),
+    alpha: toFixed(effect.color.a)
   })
 
 export const getEffectsStyle = effects => {
@@ -200,13 +243,14 @@ export const getTextStyle = textItems => {
   const decorations = { 'UNDERLINE': 'underline', 'STRIKETHROUGH': 'line-through' }
   const lineHeight =
     lineHeightUnit==='PIXELS' ?
-    `${lineHeightPx}px` :
-    (lineHeightUnit==='INTRINSIC_%' ? 'normal' : `${lineHeightPercentFontSize || 100}%`)
+    lineHeightPx :
+    (lineHeightUnit==='INTRINSIC_%' ? 'normal' : toFixed((lineHeightPercentFontSize || 100)/100))
   return {
     fontFamily,
     fontWeight,
     fontSize,
     lineHeight,
+    lineHeightUnit,
     letterSpacing,
     textAlign: textAlignHorizontal.toLowerCase(),
     textDecoration: decorations[textDecoration]
@@ -247,8 +291,8 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
   }
 }
 
-export const formattedNumber = (number, { platform, unit, resolution, remBase }) => {
+export const formattedNumber = (number, { platform, unit, resolution, remBase }, withoutUnit=false) => {
   const scaledNumber = number*resolutions[platform][resolution].value
   const finalNumber = unit===4 ? number/remBase : scaledNumber
-  return toFixed(finalNumber) + UNITS[unit]
+  return toFixed(finalNumber) + (withoutUnit ? '' : UNITS[unit])
 }

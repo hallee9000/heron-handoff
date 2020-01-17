@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import InputNumber from "rc-input-number"
 import { PLATFORMS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS } from 'utils/const'
+import './settings.scss'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
@@ -56,9 +57,10 @@ export default class Settings extends Component {
   }
   render () {
     const { platform, resolution, unit, remBase } = this.state
-    return <Fragment>
+    return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> 设置</h3>
       <div className="form">
+        <div className="form-item settings-title">标注</div>
         <div className="form-item form-item-horizontal">
           <label htmlFor="platform" className="item-label">平台</label>
           <select
@@ -105,7 +107,9 @@ export default class Settings extends Component {
               onChange={this.handleChange}
             >
               {
-                UNITS.map((unit, index) => index>1 && <option key={index} value={index}>{ unit }</option>)
+                UNITS.map((unit, index) =>
+                  index>1 && <option key={index} value={index}>{ unit }{ unit==='rpx' && '（小程序）' }</option>
+                )
               }
             </select>  :
             <input name="unit" className="input" readOnly value={UNITS[platform===1 ? 0 : 1]}/>
@@ -127,6 +131,19 @@ export default class Settings extends Component {
           </div>
         }
       </div>
-    </Fragment>
+      <div className="form">
+        <div className="form-item settings-title">语言</div>
+        <div className="form-item">
+          <select
+            name="language"
+            className="input"
+            placeholder="请选择语言"
+          >
+            <option value={0}>英文</option>
+            <option value={1}>中文</option>
+          </select>
+        </div>
+      </div>
+    </div>
   }
 }

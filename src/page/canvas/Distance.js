@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import { toPercentage } from 'utils/mark'
+import { formattedNumber } from 'utils/style'
 import './distance.scss'
 
-export default ({ distanceData }) =>
+export default ({ distanceData, globalSettings }) =>
   distanceData && distanceData.length ?
   <Fragment>
     {
@@ -15,7 +16,7 @@ export default ({ distanceData }) =>
             className={`mark-distance mark-distance-${isVertical ? 'v' : 'h'}`}
             style={{left: toPercentage(distance.x), top: toPercentage(distance.y), ...size }}
           >
-            <div className="mark-distance-sizing">{ `${distance.distance}px` }</div>
+            <div className="mark-distance-sizing">{ formattedNumber(distance.distance, globalSettings) }</div>
           </div>
         )
       })
