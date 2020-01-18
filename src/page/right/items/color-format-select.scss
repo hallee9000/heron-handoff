@@ -1,5 +1,5 @@
 select.color-format-select{
-  width: 56px;
+  width: 86px;
   background: transparent;
   cursor: pointer;
   &:hover{
@@ -8,5 +8,8 @@ select.color-format-select{
   }
   &:focus{
     border-color: transparent;
+  }
+  option{
+    background: initial;
   }
 }
