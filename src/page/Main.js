@@ -19,6 +19,7 @@ export default class Main extends React.Component {
   handleSelectFrameOrComponent = (currentId, pageIndex, type) => {
     const { data, components, onNamesChange } = this.props
     const { id } = this.state
+    // console.log('current:', id, 'new:', currentId)
     if (id===currentId) return
     const currentPage = data.document.children[pageIndex]
     const canvasData = (type==='frame' ? currentPage.children : components).find(item => item.id===currentId)

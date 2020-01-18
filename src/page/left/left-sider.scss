@@ -53,10 +53,28 @@
       }
       &.list-frames{
         height: calc(100% - 50px);
+        li{
+          span{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .item-thumbnail{
+            flex: 0 0 46px;
+          }
+        }
       }
       &.list-components{
-        li .item-thumbnail{
-          border: 1px solid #8d77fc;
+        li{
+          span{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .item-thumbnail{
+            flex: 0 0 46px;
+            border: 1px solid #8d77fc;
+          }
         }
       }
     }

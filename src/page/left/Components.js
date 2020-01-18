@@ -14,8 +14,9 @@ export default class Components extends React.Component {
   }
   componentDidUpdate(prevProps) {
     const { components } = this.props
-    if (this.props.visible !== prevProps.visible) {
-      this.handleComponentSelect(0, components[0].id)
+    const { selectedIndex } = this.state
+    if (this.props.visible && (this.props.visible !== prevProps.visible) && components.length) {
+      this.handleComponentSelect(selectedIndex, components[selectedIndex].id)
     }
   }
   render () {
@@ -35,13 +36,15 @@ export default class Components extends React.Component {
                 <li
                   className={cn({selected: index===selectedIndex})}
                   onClick={() => this.handleComponentSelect(index, component.id)}
+                  title={component.name}
                 >
                   <div
                     className="item-thumbnail"
                     style={{
                       backgroundImage: getUrlImage(component.id, useLocalImages, images)
                     }}
-                  /> {component.name}
+                  />
+                  <span>{component.name}</span>
                 </li>
               </WithTooltip>
           ) :

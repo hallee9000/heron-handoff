@@ -13,8 +13,9 @@ export default class Frames extends React.Component {
   }
   componentDidUpdate(prevProps) {
     const { frames } = this.props
-    if (this.props.visible !== prevProps.visible) {
-      this.handleFrameSelect(0, frames[0].id)
+    const { selectedIndex } = this.state
+    if (this.props.visible && (this.props.visible !== prevProps.visible) && frames.length) {
+      this.handleFrameSelect(selectedIndex, frames[selectedIndex].id)
     }
   }
   render () {
@@ -36,7 +37,9 @@ export default class Frames extends React.Component {
                   style={{
                     backgroundImage: getUrlImage(frame.id, useLocalImages, images)
                   }}
-                /> {frame.name}
+                  title={frame.name}
+                />
+                <span>{frame.name}</span>
               </li>
           ) :
           <li className="item-empty">本页没有 Frame</li>

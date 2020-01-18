@@ -24,15 +24,7 @@ export default class LeftSider extends React.Component {
   handleTabClick = (index) => {
     const { tabIndex } = this.state
     if (tabIndex===index) return
-    this.setState({ tabIndex: index }, () => {
-      if (index===0) {
-        const { frames } = this.state
-        frames.length && this.onItemChange(frames[0].id, 'frame')
-      } else {
-        const { components } = this.props
-        components.length && this.onItemChange(components[0].id, 'component')
-      }
-    })
+    this.setState({ tabIndex: index })
   }
   handlePageChange = e => {
     const pageIndex = e.target.value - 0
@@ -67,7 +59,7 @@ export default class LeftSider extends React.Component {
           {
             tabIndex===0 &&
             <div className="list-pages">
-              <select className="input" onChange={this.handlePageChange}>
+              <select className="input" value={pageIndex} onChange={this.handlePageChange}>
                 {
                   pages.map(
                     (page, index) =>
