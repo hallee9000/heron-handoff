@@ -12,6 +12,7 @@ export default class Entry extends React.Component {
   state = {
     fileUrl: '',
     markType: 0,
+    notDouble: false,
     token: '',
 		fileUrlMessage: '',
     tokenMessage: '',
@@ -31,6 +32,13 @@ export default class Entry extends React.Component {
     const { name, value } = e.target
     this.setState({
       [name]: value
+    })
+  }
+  handleScaleOptionChange = e => {
+    const { checked } = e.target
+    console.log(checked)
+    this.setState({
+      notDouble: checked
     })
   }
   validate = () => {
@@ -112,11 +120,12 @@ export default class Entry extends React.Component {
     this.onSucceed(fileData, components, styles, exportSettings)
   }
   getFramesAndComponents = async (fileKey, allMetas, zip, whenStart) => {
+    const { notDouble } = this.state
     const folder = zip ? zip.folder('data') : null
     const images = {}
     await asyncForEach(allMetas, async ({id, name}, index) => {
       whenStart && whenStart(index, name, allMetas.length)
-      const { images: results } = await getImage(fileKey, id, 2, 'png')
+      const { images: results } = await getImage(fileKey, id, notDouble ? 1 : 2, 'png')
       images[id] = results[id]
       if (folder) {
         const imageData = await getBufferData(withCors(results[id]))
@@ -204,11 +213,11 @@ export default class Entry extends React.Component {
     }
   }
   render() {
-    const { fileUrl, token, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading, buttonText, percentage } = this.state
+    const { fileUrl, token, notDouble, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading, buttonText, percentage } = this.state
     return (
       <div className="app-entry">
         <div className="form entry-container">
-          <div className="form-item form-logo">
+          <div className="form-item entry-logo">
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
           {
@@ -258,6 +267,12 @@ export default class Entry extends React.Component {
                 <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener noreferrer">什么是 Access Token？</a>
               </div>
             }
+          </div>
+          <div className="form-item entry-option">
+            <label>
+              <input name="notDouble" type="checkbox" checked={notDouble} onChange={this.handleScaleOptionChange}/>下载使用 1 倍图
+            </label>
+            <div className="help-block">默认使用 2 倍图，使用 1 倍图可以加快生成速度。</div>
           </div>
           <button
             className="btn btn-lg btn-primary btn-block"

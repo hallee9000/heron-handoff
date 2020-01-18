@@ -9,10 +9,15 @@
   .entry-container{
     width: 360px;
     padding: 15px;
-    .form-logo{
+    .entry-logo{
       text-align: center;
       img{
         width: 120px;
+      }
+    }
+    .entry-option{
+      >label{
+        cursor: pointer;
       }
     }
     .item-group{
