@@ -4,8 +4,8 @@ import { withCors, getSourceCode, getBufferData } from 'api'
 // generate index.html
 export const handleIndex = async (zip, data, pagedFrames, onStart) => {
   onStart && onStart()
-  const indexSourceCode = await getSourceCode(window.location.href)
-  indexSourceCode
+  let indexSourceCode = await getSourceCode(window.location.href)
+  indexSourceCode = indexSourceCode
     .replace('PAGED_FRAMES=""', `PAGED_FRAMES = ${JSON.stringify(pagedFrames)}`)
     .replace('FILE_DATA=""', `FILE_DATA = ${JSON.stringify(data)}`)
   zip.file('index.html', indexSourceCode)
