@@ -8,7 +8,7 @@ export const handleIndex = async (zip, data, pagedFrames, onStart) => {
   indexSourceCode
     .replace('var PAGED_FRAMES=""', `var PAGED_FRAMES = ${JSON.stringify(pagedFrames)}`)
     .replace('var FILE_DATA=""', `var FILE_DATA = ${JSON.stringify(data)}`)
-  zip.file('index.html', )
+  zip.file('index.html', indexSourceCode)
 }
 
 // generate js

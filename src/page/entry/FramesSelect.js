@@ -197,7 +197,7 @@ export default class FramesSelect extends React.Component {
             {
               Object.keys(results)
                 .map(pageId =>
-                  <section className="selected-section">
+                  <section key={pageId} className="selected-section">
                     <h5 className="section-title">{ results[pageId].name }</h5>
                     <div className="section-items">
                       {
