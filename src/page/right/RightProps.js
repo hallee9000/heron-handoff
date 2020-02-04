@@ -82,13 +82,14 @@ class RightProps extends React.Component {
     }, 10)
   }
   render () {
-    const { data, styles, useLocalImages, globalSettings } = this.props
+    const { data, styles, components, useLocalImages, globalSettings } = this.props
     const { node } = data
     const { strokes, effects, styles: nodeStyles } = node
     const { hasEntered, fills, exportSettings, flag, isPieceSelected, detailVisible, currentStyle } = this.state
     const { styles: fillItems } = getFillsStyle(fills)
     const { styles: strokeItems } = getFillsStyle(strokes)
     const { styles: effectItems } = getEffectsStyle(effects)
+    const master = components.find(c => c.id===node.componentId)
     return (
       <div
         className={cn('main-right-props', {'main-right-props-entered': hasEntered})}
@@ -120,6 +121,15 @@ class RightProps extends React.Component {
               }
             </div>
           </div>
+          {
+            node.type==='INSTANCE' && master &&
+            <div className="props-section">
+              <h5 className="section-title">组件</h5>
+              <div className="section-items">
+                { master.name }
+              </div>
+            </div>
+          }
           {/* font */}
           {
             node.type==='TEXT' &&

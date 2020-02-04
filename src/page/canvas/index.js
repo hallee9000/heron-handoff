@@ -66,6 +66,9 @@ class Canvas extends React.Component {
     this.generateMark()
   }
   componentDidUpdate(prevProps) {
+    if (this.props.propsDissolved && (this.props.propsDissolved !== prevProps.propsDissolved)) {
+      this.resetMark()
+    }
     if (this.props.id !== prevProps.id) {
       this.setState({ isChanging: true })
       this.resetMark()

@@ -1,6 +1,6 @@
 import React from 'react'
 import SettingsContext from 'contexts/SettingsContext'
-import Entry from 'page/Entry'
+import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
 import { walkFile, getGlobalSettings, setGlobalSettings } from 'utils/helper'
@@ -11,8 +11,8 @@ import './app.scss'
 class App extends React.Component {
   constructor(props) {
     super(props)
-    let data = {}, components = [], styles = {}, exportSettings = {}, isLocal = false, entryVisible
-    const { FILE_DATA } = window
+    let data = {}, components = [], styles = {}, exportSettings = {}, pagedFrames = {}, isLocal = false, entryVisible
+    const { FILE_DATA, PAGED_FRAMES } = window
     if (FILE_DATA) {
       // local data (offline mode)
       data = FILE_DATA
@@ -20,6 +20,7 @@ class App extends React.Component {
       components = parsedData.components
       styles = parsedData.styles
       exportSettings = parsedData.exportSettings
+      pagedFrames = PAGED_FRAMES
       isLocal = true
       entryVisible = false
     } else {
@@ -35,7 +36,7 @@ class App extends React.Component {
       exportSettings,
       images: {},
       names: {},
-      imageMetas: [],
+      pagedFrames,
       globalSettings: this.initializeGlobalSettings()
     }
   }
@@ -53,35 +54,33 @@ class App extends React.Component {
       this.setState({ globalSettings })
     })
   }
-  handleImagesGot = images => {
-    this.setState({ imageMetas: images })
-  }
-  handleDataGot = (fileData, components, styles, exportSettings, imagesData) => {
+  handleDataGot = (fileData, components, styles, exportSettings, pagedFrames, imagesData) => {
     this.setState({
       entryVisible: false,
       data: fileData,
       components,
       styles,
       exportSettings,
+      pagedFrames,
       images: imagesData,
       isMock: !imagesData
     })
   }
-  getNames = (pageName, frameName, type) => {
+  getNames = (frameName, pageName) => {
     const { data } = this.state
     this.setState({
       names: {
         documentName: data.name,
         pageName: pageName || data.document.children[0].name,
         frameName: frameName || data.document.children[0].children[0].name,
-        isComponent: type==='component'
+        isComponent: !pageName
       }
     })
   }
   render () {
     const {
       entryVisible, isLocal, isMock, data, components, styles,
-      exportSettings, images, names, imageMetas, globalSettings
+      exportSettings, images, pagedFrames, names, globalSettings
     } = this.state
     return (
       <div className="app-container">
@@ -89,7 +88,7 @@ class App extends React.Component {
           <Header
             data={data}
             images={images}
-            imageMetas={imageMetas}
+            pagedFrames={pagedFrames}
             exportSettings={exportSettings}
             isLocal={isLocal}
             {...names}
@@ -98,8 +97,7 @@ class App extends React.Component {
         {
           entryVisible ?
           <Entry
-            onGotImagesData={this.handleImagesGot}
-            onGotData={this.handleDataGot}
+            onDataGot={this.handleDataGot}
           /> :
           <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
             <Main
@@ -110,6 +108,7 @@ class App extends React.Component {
               styles={styles}
               exportSettings={exportSettings}
               images={images}
+              pagedFrames={pagedFrames}
               onNamesChange={this.getNames}
               {...names}
             />

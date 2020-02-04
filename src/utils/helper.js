@@ -24,14 +24,55 @@ export const urlWithParams = (url, data) => {
   return urlObj
 }
 
-export const getFrames = data =>
-  data
-    .map(page => page.children
-      .filter(frame => frame.type==='FRAME')
-      .map(({id, name}) => ({id, name}))
-    )
-    .filter(frameIds => frameIds.length)
-    .reduce((ids, currentIds) => ids.concat(currentIds), [])
+export const getPagedFrames = data => {
+  let pagedFrames = {}
+  if (data.document && data.document.children) {
+    data.document.children
+      // eslint-disable-next-line
+      .map((page) => {
+        pagedFrames[page.id] = {
+          isCollapsed: true,
+          checked: true,
+          name: page.name,
+          frames: page.children
+            .filter(frame => frame.type==='FRAME')
+            .map(({id, name}) => ({id, name, checked: true}))
+        }
+      })
+  }
+  return pagedFrames
+}
+
+export const getSelectedPagedFrames = pagedFrames => {
+  let finalFrames = {}
+  Object.keys(pagedFrames)
+    // eslint-disable-next-line
+    .map(pageId => {
+      const { name, frames } = pagedFrames[pageId]
+      const checkedFrames = frames.filter(({checked}) => checked)
+      if (checkedFrames.length) {
+        finalFrames[pageId] = {
+          name, frames: checkedFrames
+        }
+      }
+    })
+  return finalFrames
+}
+
+export const getFlattedFrames = (pagedFrames, needCheck=true) => {
+  let flattedFrames = []
+  Object.keys(pagedFrames)
+    // eslint-disable-next-line
+    .map(pageId => {
+      flattedFrames = flattedFrames
+        .concat(
+          pagedFrames[pageId].frames
+            .filter(({checked}) => needCheck ? checked : true)
+            .map(({id, name}) => ({id, name}))
+        )
+    })
+  return flattedFrames
+}
 
 export const getStyleItems = (node, key) =>
   key==='backgrounds' ? node.fills : node[key]
@@ -119,7 +160,7 @@ export async function asyncForEach(array, callback) {
 export const getImage = (id, useLocalImages, images) =>
   useLocalImages ?
   `${process.env.PUBLIC_URL}/data/${id.replace(/:/g, '-')}.png` :
-  images[id]
+  images[id].url
 
 export const getUrlImage = (id, useLocalImages, images) =>
   `url(${getImage(id, useLocalImages, images)})`

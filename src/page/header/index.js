@@ -18,14 +18,14 @@ export default class Header extends React.Component {
     isExported: false
   }
   handleDownload = async () => {
-    const { data, images, imageMetas, exportSettings, documentName } = this.props
+    const { data, images, exportSettings, pagedFrames, documentName } = this.props
     const zip = new JSZip()
 
-    await handleIndex(zip, data, () => { this.setLoader(3, '开始处理 index.html ……') })
+    await handleIndex(zip, data, pagedFrames, () => { this.setLoader(3, '开始处理 index.html ……') })
     await handleJs(zip, () => { this.setLoader(8, '开始处理 Js ……') })
     await handleIcoAndCSS(zip, () => { this.setLoader(12, '开始处理 CSS ……') })
     await handleLogo(zip, this.logo.current.src, () => { this.setLoader(16, '开始处理 logo ……') })
-    await handleFramesAndComponents(zip, images, imageMetas, (index, name, length) => {
+    await handleFramesAndComponents(zip, images, (index, name, length) => {
       this.setLoader(18+(index+1)*Math.floor(36/length), `开始生成 ${name}……`)
     })
     await handleExports(zip, exportSettings, (index, name, length) => {

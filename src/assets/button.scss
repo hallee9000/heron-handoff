@@ -20,20 +20,16 @@
   background: #999;
   transition: all 0.6s;
   &:hover {
-      text-decoration: none;
+    text-decoration: none;
   }
   &:active {
-      text-decoration: none;
+    text-decoration: none;
   }
   &:disabled {
-      text-decoration: none;
+    text-decoration: none;
   }
   >svg{
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      margin-right: 5px;
-      vertical-align: middle;
+    display: block;
   }
 
   &.btn-primary{
@@ -58,10 +54,18 @@
     display: block;
     width: 100%;
   }
+  
+  &.btn-round{
+    border-radius: 13px;
+  }
 }
 
 .btn-lg{
   height: 32px;
   padding: 5px 10px;
   font-size: 14px;
+  
+  &.btn-round{
+    border-radius: 16px;
+  }
 }

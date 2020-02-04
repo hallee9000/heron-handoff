@@ -31,9 +31,9 @@ export const getMockFile = () =>
     })
 
 // get images url
-export const getImages = (fileKey, ids) => {
+export const getImages = (fileKey, ids, scale=2) => {
   return fetch(
-    urlWithParams(`${baseUrl}/images/${fileKey}`, { ids, scale: 2, format: 'png', }),
+    urlWithParams(`${baseUrl}/images/${fileKey}`, { ids, scale, format: 'png', }),
     {
       headers: tokenHeaders()
     }

@@ -2,15 +2,18 @@ import { asyncForEach, getFileName, trimFilePath } from 'utils/helper'
 import { withCors, getSourceCode, getBufferData } from 'api'
 
 // generate index.html
-export const handleIndex = async (zip, data, whenStart) => {
-  whenStart && whenStart()
-  const indexSource = await getSourceCode(window.location.href)
-  zip.file('index.html', indexSource.replace('var FILE_DATA=""', `var FILE_DATA = ${JSON.stringify(data)}`))
+export const handleIndex = async (zip, data, pagedFrames, onStart) => {
+  onStart && onStart()
+  const indexSourceCode = await getSourceCode(window.location.href)
+  indexSourceCode
+    .replace('var PAGED_FRAMES=""', `var PAGED_FRAMES = ${JSON.stringify(pagedFrames)}`)
+    .replace('var FILE_DATA=""', `var FILE_DATA = ${JSON.stringify(data)}`)
+  zip.file('index.html', )
 }
 
 // generate js
-export const handleJs = async (zip, whenStart) => {
-  whenStart && whenStart()
+export const handleJs = async (zip, onStart) => {
+  onStart && onStart()
   const js = zip.folder("static/js")
   const scripts = document.getElementsByTagName('script')
   await asyncForEach(scripts, async script => {
@@ -21,8 +24,8 @@ export const handleJs = async (zip, whenStart) => {
 }
 
 // generate ico and css
-export const handleIcoAndCSS = async (zip, whenStart) => {
-  whenStart && whenStart()
+export const handleIcoAndCSS = async (zip, onStart) => {
+  onStart && onStart()
   const css = zip.folder("static/css")
   const styles = document.getElementsByTagName('link')
   await asyncForEach(styles, async style => {
@@ -38,29 +41,31 @@ export const handleIcoAndCSS = async (zip, whenStart) => {
 }
 
 // generate logo.svg
-export const handleLogo = async (zip, logoSrc, whenStart) => {
-  whenStart && whenStart()
+export const handleLogo = async (zip, logoSrc, onStart) => {
+  onStart && onStart()
   const logoData = await getBufferData(logoSrc)
   zip.file('logo.svg', logoData, {base64: true})
 }
 
 // generate frame and component images
-export const handleFramesAndComponents = async (zip, images, imageMetas, whenStart) => {
+export const handleFramesAndComponents = async (zip, images, onStart) => {
   const dataFolder = zip.folder('data')
-  await asyncForEach(imageMetas, async ({id, name}, index) => {
+  const ids = Object.keys(images)
+  await asyncForEach(ids, async (id, index) => {
+    const { name, url } = images[id]
     const imgName = trimFilePath(id) + '.png'
-    whenStart && whenStart(index, name, imageMetas.length)
-    const imgData = await getBufferData(withCors(images[id]))
+    onStart && onStart(index, name, ids.length)
+    const imgData = await getBufferData(withCors(url))
     dataFolder.file(imgName, imgData, {base64: true})
   })
 }
 
 // generate exporting images
-export const handleExports = async (zip, exportSettings, whenStart) => {
+export const handleExports = async (zip, exportSettings, onStart) => {
   const exportsFolder = zip.folder('data/exports')
   await asyncForEach(exportSettings, async (exportSetting, index) => {
     const imgName = getFileName(exportSetting, index)
-    whenStart && whenStart(index, imgName, exportSettings.length)
+    onStart && onStart(index, imgName, exportSettings.length)
     const imgData = await getBufferData(withCors(exportSetting.image))
     exportsFolder.file(imgName, imgData, {base64: true})
   })
