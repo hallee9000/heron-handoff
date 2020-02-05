@@ -90,6 +90,7 @@ class App extends React.Component {
             images={images}
             pagedFrames={pagedFrames}
             exportSettings={exportSettings}
+            isMock={isMock}
             isLocal={isLocal}
             {...names}
           />

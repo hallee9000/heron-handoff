@@ -70,7 +70,7 @@ export default class Header extends React.Component {
     })
   }
   render () {
-    const { isLocal, documentName, pageName, frameName, isComponent } = this.props
+    const { isLocal, isMock, documentName, pageName, frameName, isComponent } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
     return (
       <header className="app-header">
@@ -119,7 +119,7 @@ export default class Header extends React.Component {
             <HelpCircle size={14}/>
           </a>
           {
-            this.hasNames() && !isLocal &&
+            this.hasNames() && !isLocal && !isMock &&
             <Overlay
               visible={isExported}
               overlay={<Exported/>}
