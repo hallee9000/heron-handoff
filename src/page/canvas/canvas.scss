@@ -4,42 +4,47 @@
     display: block;
     width: 100%;
   }
-  .layer{
+  .mark-layers{
     position: absolute;
-    border: 1px solid #FF3366;
-    opacity: 0;
-    transition: 0.2s opacity;
-    &.hovered{
-      opacity: 1;
-    }
-    &.component{
-      border-color: #8d77fc;
-    }
-    &.selected{
-      border: 1px solid #2ca7fb;
-      opacity: 1;
-    }
-    &.selected.hovered{
-      .layer-sizing{
-        display: block;
-      }
-    }
-    &-sizing{
-      display: none;
+    width: 100%;
+    height: 100%;
+    .layer{
       position: absolute;
-      padding: 0 6px;
-      border-radius: 2px;
-      background: #2ca7fb;
-      font-size: 12px;
-    }
-    &-width{
-      top: -22px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    &-height{
-      left: calc(100% + 3px);
-      top: calc(50% - 10px);
+      border: 1px solid #FF3366;
+      opacity: 0;
+      transition: 0.2s opacity;
+      &.hovered{
+        opacity: 1;
+      }
+      &.component{
+        border-color: #8d77fc;
+      }
+      &.selected{
+        border: 1px solid #2ca7fb;
+        opacity: 1;
+      }
+      &.selected.hovered{
+        .layer-sizing{
+          display: block;
+        }
+      }
+      &-sizing{
+        display: none;
+        position: absolute;
+        padding: 0 6px;
+        border-radius: 2px;
+        background: #2ca7fb;
+        font-size: 12px;
+      }
+      &-width{
+        top: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &-height{
+        left: calc(100% + 3px);
+        top: calc(50% - 10px);
+      }
     }
   }
 }

@@ -132,24 +132,26 @@ export const getDiamondGradient = fill => ({
 
 export const getFillsStyle = fills => {
   let type = ''
-  const styles = fills.map(fill => {
-    type = type==='' ? fill.type : ( type===fill.type ? type : 'MIX_FILL')
-    switch (fill.type) {
-      case 'SOLID':
-        return getSolidColor(fill)
-      case 'GRADIENT_LINEAR':
-        return getLinearGradient(fill)
-      case 'GRADIENT_RADIAL':
-        return getRadialGradient(fill)
-      case 'GRADIENT_ANGULAR':
-        return getAngularGradient(fill)
-      case 'GRADIENT_DIAMOND':
-        return getDiamondGradient(fill)
-      default:
-        return ''
-    }
-  })
-  .filter(fill => !!fill)
+  const styles = fills
+    .filter(({visible}) => visible!==false)
+    .map(fill => {
+      type = type==='' ? fill.type : ( type===fill.type ? type : 'MIX_FILL')
+      switch (fill.type) {
+        case 'SOLID':
+          return getSolidColor(fill)
+        case 'GRADIENT_LINEAR':
+          return getLinearGradient(fill)
+        case 'GRADIENT_RADIAL':
+          return getRadialGradient(fill)
+        case 'GRADIENT_ANGULAR':
+          return getAngularGradient(fill)
+        case 'GRADIENT_DIAMOND':
+          return getDiamondGradient(fill)
+        default:
+          return ''
+      }
+    })
+    .filter(fill => !!fill)
   return { type, styles }
 }
 
@@ -166,57 +168,59 @@ export const getShadowEffect = effect => ({
 
 export const getEffectsStyle = effects => {
   let type = ''
-  const styles = effects.map(effect => {
-    type = type==='' ? effect.type : ( type===effect.type ? type : 'MIX_EFFECT')
-    switch (effect.type) {
-      case 'DROP_SHADOW':
-        return {
-          type: effect.type,
-          typeName: 'Drop Shadow',
-          category: 'shadow',
-          ...getShadowEffect(effect),
-          css: {
-            code: `box-shadow: ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
-            boxShadow: `${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
+  const styles = effects
+    .filter(({visible}) => visible!==false)
+    .map(effect => {
+      type = type==='' ? effect.type : ( type===effect.type ? type : 'MIX_EFFECT')
+      switch (effect.type) {
+        case 'DROP_SHADOW':
+          return {
+            type: effect.type,
+            typeName: 'Drop Shadow',
+            category: 'shadow',
+            ...getShadowEffect(effect),
+            css: {
+              code: `box-shadow: ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
+              boxShadow: `${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
+            }
           }
-        }
-      case 'INNER_SHADOW':
-        return {
-          type: effect.type,
-          typeName: 'Inner Shadow',
-          category: 'shadow',
-          ...getShadowEffect(effect),
-          css: {
-            code: `box-shadow: inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
-            boxShadow: `inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
+        case 'INNER_SHADOW':
+          return {
+            type: effect.type,
+            typeName: 'Inner Shadow',
+            category: 'shadow',
+            ...getShadowEffect(effect),
+            css: {
+              code: `box-shadow: inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
+              boxShadow: `inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
+            }
           }
-        }
-      case 'LAYER_BLUR':
-        return {
-          type: effect.type,
-          typeName: 'Layer Blur',
-          category: 'blur',
-          blur: effect.radius,
-          css: {
-            code: `filter: blur(${effect.radius}px)`,
-            filter: `blur(${effect.radius}px)`
+        case 'LAYER_BLUR':
+          return {
+            type: effect.type,
+            typeName: 'Layer Blur',
+            category: 'blur',
+            blur: effect.radius,
+            css: {
+              code: `filter: blur(${effect.radius}px)`,
+              filter: `blur(${effect.radius}px)`
+            }
           }
-        }
-      case 'BACKGROUND_BLUR':
-        return {
-          type: effect.type,
-          category: 'blur',
-          typeName: 'Background Blur',
-          blur: effect.radius,
-          css: {
-            code: `backdrop-filter: blur(${effect.radius}px)`,
-            backdropFilter: `blur(${effect.radius}px)`
+        case 'BACKGROUND_BLUR':
+          return {
+            type: effect.type,
+            category: 'blur',
+            typeName: 'Background Blur',
+            blur: effect.radius,
+            css: {
+              code: `backdrop-filter: blur(${effect.radius}px)`,
+              backdropFilter: `blur(${effect.radius}px)`
+            }
           }
-        }
-      default:
-        return {}
-    }
-  })
+        default:
+          return {}
+      }
+    })
   return { type, styles }
 }
 

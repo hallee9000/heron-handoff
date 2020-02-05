@@ -19,6 +19,7 @@ class Canvas extends React.Component {
     hoveredRect: null,
     hoveredIndex: null,
     markData: {},
+    frameStyle: {},
     isChanging: false
   }
   resetMark = () => {
@@ -32,9 +33,21 @@ class Canvas extends React.Component {
   }
   generateMark = () => {
     const { canvasData } = this.props
-    const pageRect = canvasData.absoluteBoundingBox
+    const { absoluteBoundingBox: pageRect } = canvasData
     const rects = generateRects([canvasData], pageRect)
     this.setState({ rects, pageRect })
+  }
+  getBound = () => {
+    const { frameBound } =this.props
+    const { pageRect } = this.state
+    const { top, bottom, left, right } = frameBound
+    const frameStyle = {
+      top: toPercentage(top/(pageRect.height+top+bottom)),
+      left: toPercentage(left/(pageRect.width+left+right)),
+      height: toPercentage(pageRect.height/(pageRect.height+top+bottom)),
+      width: toPercentage(pageRect.width/(pageRect.width+left+right))
+    }
+    this.setState({ frameStyle })
   }
   onSelect = (rect, index) => {
     const { spacePressed } =this.props
@@ -74,46 +87,51 @@ class Canvas extends React.Component {
       this.resetMark()
       this.generateMark()
     }
+    if (this.props.frameBound.top !== prevProps.frameBound.top) {
+      this.getBound()
+    }
   }
 	render () {
     const { id, size, useLocalImages, images, globalSettings } = this.props
-    const { rects, pageRect, selectedIndex, hoveredIndex, markData, isChanging } = this.state
+    const { rects, pageRect, frameStyle, selectedIndex, hoveredIndex, markData, isChanging } = this.state
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
-        {
-          selectedIndex!==null && (selectedIndex!==hoveredIndex) &&
-          <Ruler rulerData={markData.rulerData}/>
-        }
-        {
-          rects.map((rect, index) => {
-            const { top, left, width, height } = rect
-            return (
-              <div
-                key={index}
-                className={cn(
-                  "layer",
-                  ...rect.clazz,
-                  {selected: selectedIndex===index, hovered: hoveredIndex===index}
-                )}
-                style={{
-                  top: toPercentage(top/pageRect.height),
-                  left: toPercentage(left/pageRect.width),
-                  width: toPercentage(width/pageRect.width),
-                  height: toPercentage(height/pageRect.height)
-                }}
-                onClick={() => this.onSelect(rect, index)}
-                onMouseOver={() => this.onHover(rect, index)}
-              >
-                <div className="layer-sizing layer-width">{ formattedNumber(rect.actualWidth, globalSettings) }</div>
-                <div className="layer-sizing layer-height">{ formattedNumber(rect.actualHeight, globalSettings) }</div>
-              </div>
-            )
-          })
-        }
-        {
-          selectedIndex!==hoveredIndex &&
-          <Distance distanceData={markData.distanceData} globalSettings={globalSettings}/>
-        }
+        <div className="mark-layers" style={frameStyle}>
+          {
+            selectedIndex!==null && (selectedIndex!==hoveredIndex) &&
+            <Ruler rulerData={markData.rulerData}/>
+          }
+          {
+            rects.map((rect, index) => {
+              const { top, left, width, height } = rect
+              return (
+                <div
+                  key={index}
+                  className={cn(
+                    "layer",
+                    ...rect.clazz,
+                    {selected: selectedIndex===index, hovered: hoveredIndex===index}
+                  )}
+                  style={{
+                    top: toPercentage(top/pageRect.height),
+                    left: toPercentage(left/pageRect.width),
+                    width: toPercentage(width/pageRect.width),
+                    height: toPercentage(height/pageRect.height)
+                  }}
+                  onClick={() => this.onSelect(rect, index)}
+                  onMouseOver={() => this.onHover(rect, index)}
+                >
+                  <div className="layer-sizing layer-width">{ formattedNumber(rect.actualWidth, globalSettings) }</div>
+                  <div className="layer-sizing layer-height">{ formattedNumber(rect.actualHeight, globalSettings) }</div>
+                </div>
+              )
+            })
+          }
+          {
+            selectedIndex!==hoveredIndex &&
+            <Distance distanceData={markData.distanceData} globalSettings={globalSettings}/>
+          }
+        </div>
         <img
           src={getImage(id, useLocalImages, images)}
           alt="frame"

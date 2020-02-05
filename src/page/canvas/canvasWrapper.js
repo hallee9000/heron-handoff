@@ -1,6 +1,6 @@
 import React, { createRef }  from 'react'
 import { Plus, Minus } from 'react-feather'
-import { px2number, toFixed } from 'utils/mark'
+import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
 
 import './canvas-wrapper.scss'
@@ -14,6 +14,7 @@ export default function (Canvas) {
       this.state = {
         containerWidth: 0,
         containerHeight: 0,
+        frameBound: {},
         initialWidth: 0,
         initialHeight: 0,
         posX: 0,
@@ -28,8 +29,8 @@ export default function (Canvas) {
       }
     }
     initializeCanvas = (needResetSizeAndPosition) => {
+      const { frameBound, width, height } = this.getOffsetSize()
       const { scale } = this.state
-      const { width, height } = this.props.canvasData.absoluteBoundingBox
       const { clientWidth, clientHeight } = this.container.current
       let minScale = 1
       let initialWidth, initialHeight
@@ -52,6 +53,7 @@ export default function (Canvas) {
         // remember container size
         containerWidth: clientWidth,
         containerHeight: clientHeight,
+        frameBound,
         initialWidth,
         initialHeight
       })
@@ -60,6 +62,17 @@ export default function (Canvas) {
           posX: 0,
           posY: 0
         })
+      }
+    }
+    getOffsetSize = () => {
+      const { canvasData } = this.props
+      const { strokes, strokeWeight, strokeAlign, effects, absoluteBoundingBox: pageRect } = canvasData
+      const frameBound = getFrameBound(strokes, strokeWeight, strokeAlign, effects)
+      const { width, height } = pageRect
+      return {
+        frameBound,
+        width: frameBound.left + frameBound.right + width,
+        height: frameBound.top + frameBound.bottom + height
       }
     }
     limitedPosition = (pos, scale, whichOne) => {
@@ -203,8 +216,8 @@ export default function (Canvas) {
       window.onresize = throttle(this.handleResize, 200)
     }
     render () {
-      const { width, height } = this.props.canvasData.absoluteBoundingBox
-      const { initialWidth, initialHeight, posX, posY, scale, spacePressed, isDragging } = this.state
+      const { width, height } = this.getOffsetSize()
+      const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
         top: posY,
         left: posX,
@@ -226,6 +239,7 @@ export default function (Canvas) {
             <Canvas
               {...this.props}
               spacePressed={spacePressed}
+              frameBound={frameBound}
               size={{width: width*scale, height: height*scale}}
             />
           </div>

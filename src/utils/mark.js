@@ -53,6 +53,41 @@ export const generateRects = (nodes, docRect) => {
   return rects
 }
 
+// get Bound of Frame
+export const getFrameBound = (strokes, strokeWeight, strokeAlign, effects) => {
+  let strokeBase = 0
+  const visibleStrokes = strokes.filter(({visible}) => visible!==false)
+  if (visibleStrokes.length > 0) {
+    switch (strokeAlign) {
+      case 'OUTSIDE':
+        strokeBase += strokeWeight
+        break
+      case 'CENTER':
+        strokeBase += strokeWeight/2
+        break
+      default:
+        strokeBase += 0
+    }
+  }
+
+  const bound = { top: 0, bottom: 0, left: 0, right: 0 }
+  effects
+    .filter(({type, visible}) => (type==='DROP_SHADOW' || type==='LAYER_BLUR') && visible!==false)
+    // eslint-disable-next-line
+    .map(effect => {
+      const { offset, radius } = effect
+      const x = offset ? offset.x : 0
+      const y = offset ? offset.y : 0
+      bound.top = Math.max(radius-y, bound.top, 0)
+      bound.bottom = Math.max(radius+y, bound.bottom, 0)
+      bound.left = Math.max(radius-x, bound.left, 0)
+      bound.right = Math.max(radius+x, bound.right, 0)
+    })
+  Object.keys(bound)
+    .map(key => bound[key] += strokeBase)
+  return bound
+}
+
 // return: selected position, not intersect direction
 export const getPosition = (selected, target) => {
   const position = {}
