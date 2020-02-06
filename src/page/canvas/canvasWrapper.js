@@ -112,6 +112,14 @@ export default function (Canvas) {
           e.preventDefault()
           this.setState({ spacePressed: true })
         }
+        // when + pressed
+        if(e.keyCode === 187) {
+          this.onStep(1)
+        }
+        // when - pressed
+        if(e.keyCode === 189) {
+          this.onStep(-1)
+        }
       }
       window.onkeyup = e => {
         // space key up
