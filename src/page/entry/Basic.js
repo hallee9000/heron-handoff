@@ -56,7 +56,7 @@ export default class Basic extends React.Component {
       this.setState({ isLoading: true })
       const fileData = await getFile(fileKey)
       // const fileData = JSON.parse(localStorage.getItem('data'))
-      // console.log(fileData)
+      // console.log(JSON.stringify(fileData))
 
       // token or file error
       const hasError = this.hasError(fileData)

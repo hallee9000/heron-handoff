@@ -77,6 +77,11 @@ class App extends React.Component {
       }
     })
   }
+  componentDidMount () {
+    window.onpopstate = function(event) {
+      console.log("location: " + document.location + ", state: " + JSON.stringify(event.state))
+    }
+  }
   render () {
     const {
       entryVisible, isLocal, isMock, data, components, styles,

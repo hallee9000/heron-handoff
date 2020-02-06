@@ -134,6 +134,7 @@ export const getFileName = (exportSetting, index) => {
   }
   const scale = format==='SVG' ? '' : `@${constraint.value}x`
   const fileFormat = format.toLowerCase()
+  fileName = fileName.replace(/ /g, '-')
   return `${fileName}${scale}.${fileFormat}`
 }
 
