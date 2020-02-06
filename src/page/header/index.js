@@ -1,5 +1,5 @@
 import React, { Fragment, createRef } from 'react'
-import { Download, Settings, HelpCircle } from 'react-feather'
+import { Download, Settings, HelpCircle, ChevronLeft } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import SettingsContext from 'contexts/SettingsContext'
@@ -70,11 +70,17 @@ export default class Header extends React.Component {
     })
   }
   render () {
-    const { isLocal, isMock, documentName, pageName, frameName, isComponent } = this.props
+    const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
     return (
       <header className="app-header">
-        <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
+        {
+          this.hasNames() && !isLocal ?
+          <span className="header-back" onClick={onBack}>
+            <ChevronLeft size={24}/>
+          </span> :
+          <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
+        }
         <span className="header-filename">{documentName}</span>
         <span className="header-space"/>
         {

@@ -215,6 +215,11 @@ export default function (Canvas) {
       this.handleDrag()
       window.onresize = throttle(this.handleResize, 200)
     }
+    componentWillUnmount () {
+      window.onresize = null
+      window.onkeydown = null
+      window.onkeyup = null
+    }
     render () {
       const { width, height } = this.getOffsetSize()
       const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state

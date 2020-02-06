@@ -18,6 +18,14 @@ export const getFileKey = pageUrl => {
   return parser.pathname.replace('/file/', '').replace(/\/.*/,'')
 }
 
+export const getUrlParameter = name => {
+  // eslint-disable-next-line
+  const tempName = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  const regex = new RegExp('[\\?&]' + tempName + '=([^&#]*)');
+  const results = regex.exec(window.location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
 export const urlWithParams = (url, data) => {
   const urlObj = new URL(url)
   Object.keys(data).forEach(key => urlObj.searchParams.append(key, data[key]))

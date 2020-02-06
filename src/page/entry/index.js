@@ -24,7 +24,6 @@ export default class Entry extends React.Component {
     const { components, styles, exportSettings } = walkFile(fileData)
     const { onDataGot } = this.props
     const pagedFrames = getSelectedPagedFrames(getPagedFrames(fileData))
-    window.history.pushState({fileKey: 'demo'}, "Demo", "demo");
     onDataGot && onDataGot(fileData, components, styles, exportSettings, pagedFrames)
   }
   switchStep = (step, key, data, fileKey) => {

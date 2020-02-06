@@ -77,10 +77,11 @@ class App extends React.Component {
       }
     })
   }
-  componentDidMount () {
-    window.onpopstate = function(event) {
-      console.log("location: " + document.location + ", state: " + JSON.stringify(event.state))
-    }
+  handleBack = () => {
+    this.setState({
+      entryVisible: true,
+      names: {}
+    })
   }
   render () {
     const {
@@ -97,6 +98,7 @@ class App extends React.Component {
             exportSettings={exportSettings}
             isMock={isMock}
             isLocal={isLocal}
+            onBack={this.handleBack}
             {...names}
           />
         </SettingsContext.Provider>
