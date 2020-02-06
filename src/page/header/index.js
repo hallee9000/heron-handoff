@@ -79,7 +79,9 @@ export default class Header extends React.Component {
           <span className="header-back" onClick={onBack}>
             <ChevronLeft size={24}/>
           </span> :
-          <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
+          <a href="https://leadream.github.io/figma-handoff/" target="_blank" rel="noopener noreferrer">
+            <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
+          </a>
         }
         <span className="header-filename">{documentName}</span>
         <span className="header-space"/>
