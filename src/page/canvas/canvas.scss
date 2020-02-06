@@ -16,6 +16,9 @@
       &.hovered{
         opacity: 1;
       }
+      &.group{
+        border-style: dotted;
+      }
       &.component{
         border-color: #8d77fc;
       }

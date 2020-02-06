@@ -103,6 +103,12 @@ class RightProps extends React.Component {
               <ColorFormatSelect/>
             </h5>
           </div>
+          {
+            node.type==='GROUP' &&
+            <div className="props-section">
+              <h5 className="section-title section-name">类型 {node.type.toLowerCase()}</h5>
+            </div>
+          }
           {/* position and size */}
           <div className="props-section props-basic">
             <h5 className="section-title">位置和尺寸</h5>

@@ -17,9 +17,11 @@ export const handleJs = async (zip, onStart) => {
   const js = zip.folder("static/js")
   const scripts = document.getElementsByTagName('script')
   await asyncForEach(scripts, async script => {
-    const jsSource = await getSourceCode(script.src)
-    const pieces = script.src.split('/')
-    js.file(pieces[pieces.length - 1], jsSource)
+    if (/chunk.js$/.test(script.src)) {
+      const jsSource = await getSourceCode(script.src)
+      const pieces = script.src.split('/')
+      js.file(pieces[pieces.length - 1], jsSource)
+    }
   })
 }
 
@@ -33,9 +35,11 @@ export const handleIcoAndCSS = async (zip, onStart) => {
       const iconSource = await getBufferData(style.href)
       zip.file('favicon.ico', iconSource, {base64: true})
     } else if (style.rel==='stylesheet') {
-      const cssSource = await getSourceCode(style.href)
-      const pieces = style.href.split('/')
-      css.file(pieces[pieces.length - 1], cssSource)
+      if (/chunk.css$/.test(style.href)) {
+        const cssSource = await getSourceCode(style.href)
+        const pieces = style.href.split('/')
+        css.file(pieces[pieces.length - 1], cssSource)
+      }
     }
   })
 }

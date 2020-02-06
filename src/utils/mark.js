@@ -20,28 +20,27 @@ export const generateRects = (nodes, docRect) => {
       if (node.visible===false) {
         return 1
       } else {
-        if (node.type!=='GROUP') {
-          const top = (nbb.y - docRect.y)
-          const left = (nbb.x - docRect.x)
-          const width = nbb.width
-          const height = nbb.height
-          rects.push({
-            index: index++,
-            top: top,
-            left: left,
-            bottom: top+height,
-            right: left+width,
-            width: width,
-            height: height,
-            actualWidth: toFixed(nbb.width),
-            actualHeight: toFixed(nbb.height),
-            title: node.name,
-            clazz: [
-              node.type==='COMPONENT' || node.type==='INSTANCE' ? 'component' : ''
-            ],
-            node
-          })
-        }
+        const top = (nbb.y - docRect.y)
+        const left = (nbb.x - docRect.x)
+        const width = nbb.width
+        const height = nbb.height
+        rects.push({
+          index: index++,
+          top: top,
+          left: left,
+          bottom: top+height,
+          right: left+width,
+          width: width,
+          height: height,
+          actualWidth: toFixed(nbb.width),
+          actualHeight: toFixed(nbb.height),
+          title: node.name,
+          clazz: [
+            node.type==='COMPONENT' || node.type==='INSTANCE' ? 'component' : '',
+            node.type==='GROUP' ? 'group' : ''
+          ],
+          node
+        })
         if (node.children) {
           step(node.children)
         }

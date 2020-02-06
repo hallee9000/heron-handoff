@@ -13,8 +13,17 @@
     }
   }
   .entry-footer{
-    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     text-align: right;
+    padding: 10px 0;
+    >a{
+      padding: 5px;
+      >svg{
+        display: block;
+      }
+    }
   }
   .entry-block{
     width: 360px;

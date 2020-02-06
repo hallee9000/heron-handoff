@@ -1,4 +1,6 @@
 import React, { createRef } from 'react'
+import { GitHub, Coffee, Eye } from 'react-feather'
+import Tooltip from 'rc-tooltip'
 import Basic from './Basic'
 import FramesSelect from './FramesSelect'
 import Options from './Options'
@@ -71,7 +73,15 @@ export default class Entry extends React.Component {
             onFinished={onDataGot}
           />
           <div className="entry-footer">
-            <a onClick={this.gotoDemo} href="/">查看 Demo</a>
+            <Tooltip overlay="GitHub 源码" placement="top">
+              <a href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer"><GitHub size={14}/></a>
+            </Tooltip>
+            <Tooltip overlay="请我喝杯咖啡" placement="top">
+              <a onClick={this.gotoDemo} href="/"><Coffee size={14}/></a>
+            </Tooltip>
+            <Tooltip overlay="查看 Demo" placement="top">
+              <a onClick={this.gotoDemo} href="/"><Eye size={14}/></a>
+            </Tooltip>
           </div>
         </div>
       </div>
