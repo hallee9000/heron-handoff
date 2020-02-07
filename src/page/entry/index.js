@@ -1,5 +1,6 @@
 import React, { createRef } from 'react'
-import { GitHub, Coffee, Eye } from 'react-feather'
+import { withTranslation } from 'react-i18next'
+import { GitHub, Coffee, Eye, Globe } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import Basic from './Basic'
 import FramesSelect from './FramesSelect'
@@ -8,14 +9,19 @@ import { getMockFile } from 'api'
 import { walkFile, getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
 import './entry.scss'
 
-export default class Entry extends React.Component {
+const languages = {
+  en: 'English',
+  zh: '中文'
+}
+
+class Entry extends React.Component {
   logo = createRef()
   state = {
     currentStep: 0,
     data: {},
     fileKey: '',
     pagedFrames: {},
-    options: {}
+    language: 'en'
   }
   gotoDemo = async e => {
     e.preventDefault()
@@ -43,9 +49,17 @@ export default class Entry extends React.Component {
       currentStep: step
     })
   }
+  changeLanguage = e => {
+    e.preventDefault()
+    const { i18n } = this.props
+    const { value } = e.target
+    this.setState({language: value}, () => {
+      i18n.changeLanguage(value)
+    })
+  }
   render() {
-    const { onDataGot } = this.props
-    const { currentStep, data, fileKey, pagedFrames } = this.state
+    const { onDataGot, t } = this.props
+    const { currentStep, data, fileKey, pagedFrames, language } = this.state
     return (
       <div className="app-entry">
         <div>
@@ -73,14 +87,25 @@ export default class Entry extends React.Component {
             onFinished={onDataGot}
           />
           <div className="entry-footer">
-            <Tooltip overlay="GitHub 源码" placement="top">
-              <a href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer"><GitHub size={14}/></a>
+            <Tooltip overlay="Change Language" placement="top" align={{offset: [0, 3]}}>
+              <a className="footer-language" onClick={this.changeLanguage} href="/">
+                <select value={language} onChange={this.changeLanguage}>
+                  <option value="en">English</option>
+                  <option value="zh">中文</option>
+                </select>
+                <Globe size={14}/>
+                <span>{languages[language]}</span>
+              </a>
             </Tooltip>
-            <Tooltip overlay="请我喝杯咖啡" placement="top">
-              <a onClick={this.gotoDemo} href="/"><Coffee size={14}/></a>
+            <span className="footer-stretch"/>
+            <Tooltip overlay="GitHub 源码" placement="top" align={{offset: [0, 3]}}>
+              <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer"><GitHub size={14}/></a>
             </Tooltip>
-            <Tooltip overlay="查看 Demo" placement="top">
-              <a onClick={this.gotoDemo} href="/"><Eye size={14}/></a>
+            <Tooltip overlay={t('buy me a coffee')} placement="top" align={{offset: [0, 3]}}>
+              <a className="footer-item" onClick={this.gotoDemo} href="/"><Coffee size={14}/></a>
+            </Tooltip>
+            <Tooltip overlay="查看 Demo" placement="top" align={{offset: [0, 3]}}>
+              <a className="footer-item" onClick={this.gotoDemo} href="/"><Eye size={14}/></a>
             </Tooltip>
           </div>
         </div>
@@ -88,3 +113,5 @@ export default class Entry extends React.Component {
     )
   }
 }
+
+export default withTranslation()(Entry)

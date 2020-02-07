@@ -1,4 +1,5 @@
 import React, { Fragment, createRef } from 'react'
+import cn from 'classnames'
 import { Download, Settings, HelpCircle, ChevronLeft } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
@@ -72,17 +73,20 @@ export default class Header extends React.Component {
   render () {
     const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
+    const logoHidden = this.hasNames() && !isLocal
     return (
       <header className="app-header">
-        {
-          this.hasNames() && !isLocal ?
-          <span className="header-back" onClick={onBack}>
-            <ChevronLeft size={24}/>
-          </span> :
-          <a href="https://leadream.github.io/figma-handoff/" target="_blank" rel="noopener noreferrer">
-            <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
-          </a>
-        }
+        <span className={cn('header-back', {'hide': !logoHidden})} onClick={onBack}>
+          <ChevronLeft size={24}/>
+        </span>
+        <a
+          className={cn({'hide': logoHidden})}
+          href="https://leadream.github.io/figma-handoff/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="header-logo" src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
+        </a>
         <span className="header-filename">{documentName}</span>
         <span className="header-space"/>
         {

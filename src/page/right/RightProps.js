@@ -236,6 +236,12 @@ class RightProps extends React.Component {
               </ul>
             </div>
           }
+          <div className="props-section">
+            <h5 className="section-title">参考代码</h5>
+            <div className="section-items">
+              <CopiableInput type="textarea" defaultValue='code/naa'/>
+            </div>
+          </div>
           {/* export settings */}
           {
             !!(exportSettings && exportSettings.length) &&
