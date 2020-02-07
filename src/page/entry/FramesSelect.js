@@ -123,7 +123,7 @@ export default class FramesSelect extends React.Component {
     const selectedFrames = getFlattedFrames(pagedFrames)
     const results = getSelectedPagedFrames(pagedFrames)
     return (
-      <div className="entry-block entry-selection">
+      <div className="entry-selection">
         <Title
           step={2}
           content="选择 Frame"

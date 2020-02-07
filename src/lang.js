@@ -1,0 +1,1 @@
+export { default as entry } from './page/entry/entry.lang.json'

@@ -104,9 +104,11 @@ class App extends React.Component {
         </SettingsContext.Provider>
         {
           entryVisible ?
-          <Entry
-            onDataGot={this.handleDataGot}
-          /> :
+          <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
+            <Entry
+              onDataGot={this.handleDataGot}
+            />
+          </SettingsContext.Provider> :
           <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
             <Main
               isLocal={isLocal}

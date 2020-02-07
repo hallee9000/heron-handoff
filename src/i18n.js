@@ -1,20 +1,15 @@
-import i18n from "i18next"
-import { initReactI18next } from "react-i18next"
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import { entry } from './lang'
 
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {
   en: {
-    translation: {
-      "get file": "Fetch file",
-      "buy me a coffee": "buy me a coffee"
-    }
+    entry: entry.en
   },
   zh: {
-    translation: {
-      "get file": "获取文件",
-      "buy me a coffee": "请我喝杯咖啡"
-    }
+    entry: entry.zh
   }
 }
 
@@ -31,4 +26,4 @@ i18n
     }
   })
 
-  export default i18n
+export default i18n

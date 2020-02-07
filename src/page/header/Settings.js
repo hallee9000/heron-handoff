@@ -55,8 +55,14 @@ export default class Settings extends Component {
       }
     }
   }
+  changeLanguage = e => {
+    const { onSettingsChange } = this.props
+    const { value } = e.target
+    this.setState({language: value})
+    onSettingsChange('language', value)
+  }
   render () {
-    const { platform, resolution, unit, remBase } = this.state
+    const { platform, resolution, unit, remBase, language } = this.state
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> 设置</h3>
       <div className="form">
@@ -134,13 +140,9 @@ export default class Settings extends Component {
       <div className="form">
         <div className="form-item settings-title">语言</div>
         <div className="form-item">
-          <select
-            name="language"
-            className="input"
-            placeholder="请选择语言"
-          >
-            <option value={0}>英文</option>
-            <option value={1}>中文</option>
+          <select name="language" className="input" value={language} onChange={this.changeLanguage}>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
           </select>
         </div>
       </div>

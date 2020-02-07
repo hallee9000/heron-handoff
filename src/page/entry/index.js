@@ -1,18 +1,16 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
-import { GitHub, Coffee, Eye, Globe } from 'react-feather'
+import cn from 'classnames'
+import { GitHub, Coffee, Eye, DollarSign } from 'react-feather'
 import Tooltip from 'rc-tooltip'
+import SettingsContext from 'contexts/SettingsContext'
 import Basic from './Basic'
 import FramesSelect from './FramesSelect'
 import Options from './Options'
+import LangSetting from './LangSetting'
 import { getMockFile } from 'api'
 import { walkFile, getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
 import './entry.scss'
-
-const languages = {
-  en: 'English',
-  zh: '中文'
-}
 
 class Entry extends React.Component {
   logo = createRef()
@@ -21,7 +19,7 @@ class Entry extends React.Component {
     data: {},
     fileKey: '',
     pagedFrames: {},
-    language: 'en'
+    coffeeVisible: false
   }
   gotoDemo = async e => {
     e.preventDefault()
@@ -49,60 +47,62 @@ class Entry extends React.Component {
       currentStep: step
     })
   }
-  changeLanguage = e => {
+  toggleCoffee = e => {
     e.preventDefault()
-    const { i18n } = this.props
-    const { value } = e.target
-    this.setState({language: value}, () => {
-      i18n.changeLanguage(value)
+    const { coffeeVisible } = this.state
+    this.setState({
+      coffeeVisible: !coffeeVisible
     })
   }
   render() {
     const { onDataGot, t } = this.props
-    const { currentStep, data, fileKey, pagedFrames, language } = this.state
+    const { currentStep, data, fileKey, pagedFrames, coffeeVisible } = this.state
     return (
       <div className="app-entry">
         <div>
           <div className="entry-logo">
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
-          <Basic
-            formVisible={currentStep===0}
-            onFinished={(data, fileKey) => this.switchStep(1, 'data', data, fileKey)}
-            onEdit={() => this.goBack(0)}
-          />
-          <FramesSelect
-            formVisible={currentStep===1}
-            fileKey={fileKey}
-            data={data}
-            onFinished={data => this.switchStep(2, 'pagedFrames', data)}
-            onEdit={() => this.goBack(1)}
-          />
-          <Options
-            formVisible={currentStep===2}
-            fileKey={fileKey}
-            data={data}
-            pagedFrames={pagedFrames}
-            logo={this.logo}
-            onFinished={onDataGot}
-          />
+          <div className={cn('entry-block', {hide: coffeeVisible})}>
+            <Basic
+              formVisible={currentStep===0}
+              onFinished={(data, fileKey) => this.switchStep(1, 'data', data, fileKey)}
+              onEdit={() => this.goBack(0)}
+            />
+            <FramesSelect
+              formVisible={currentStep===1}
+              fileKey={fileKey}
+              data={data}
+              onFinished={data => this.switchStep(2, 'pagedFrames', data)}
+              onEdit={() => this.goBack(1)}
+            />
+            <Options
+              formVisible={currentStep===2}
+              fileKey={fileKey}
+              data={data}
+              pagedFrames={pagedFrames}
+              logo={this.logo}
+              onFinished={onDataGot}
+            />
+          </div>
+          <div className={cn('entry-coffee', {hide: !coffeeVisible})}>
+            <a href="https://paypal.me/leadream"><DollarSign size={12}/> PayPal 支持</a>
+          </div>
           <div className="entry-footer">
-            <Tooltip overlay="Change Language" placement="top" align={{offset: [0, 3]}}>
-              <a className="footer-language" onClick={this.changeLanguage} href="/">
-                <select value={language} onChange={this.changeLanguage}>
-                  <option value="en">English</option>
-                  <option value="zh">中文</option>
-                </select>
-                <Globe size={14}/>
-                <span>{languages[language]}</span>
-              </a>
-            </Tooltip>
+            <SettingsContext.Consumer>
+              {({globalSettings, changeGlobalSettings}) => (
+                <LangSetting
+                  globalSettings={globalSettings}
+                  onSettingsChange={changeGlobalSettings}
+                />
+              )}
+            </SettingsContext.Consumer>
             <span className="footer-stretch"/>
             <Tooltip overlay="GitHub 源码" placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer"><GitHub size={14}/></a>
             </Tooltip>
             <Tooltip overlay={t('buy me a coffee')} placement="top" align={{offset: [0, 3]}}>
-              <a className="footer-item" onClick={this.gotoDemo} href="/"><Coffee size={14}/></a>
+              <a className="footer-item" onClick={this.toggleCoffee} href="/"><Coffee size={14}/></a>
             </Tooltip>
             <Tooltip overlay="查看 Demo" placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" onClick={this.gotoDemo} href="/"><Eye size={14}/></a>
@@ -114,4 +114,4 @@ class Entry extends React.Component {
   }
 }
 
-export default withTranslation()(Entry)
+export default withTranslation('entry')(Entry)

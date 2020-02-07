@@ -153,7 +153,7 @@ export default class Options extends React.Component {
     const { formVisible } = this.props
     const { useHighQuality, offlineMode, isLoading, buttonText, percentage } = this.state
     return (
-      <div className="entry-block entry-options">
+      <div className="entry-options">
         <Title step={3} content="其它选项" hasBottom={formVisible}/>
         <div className={cn('form entry-form', {'form-visible': formVisible})}>
           <div className="form-item">

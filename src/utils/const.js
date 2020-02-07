@@ -51,6 +51,7 @@ export const DEFAULT_SETTINGS = {
   resolution: 0,
   unit: 2,
   remBase: 14,
+  language: 'en'
 }
 
 export const PLATFORMS = [ 'Web', 'iOS', 'Android' ]

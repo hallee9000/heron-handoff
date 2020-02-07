@@ -124,7 +124,7 @@ export default class Basic extends React.Component {
     const { formVisible, onEdit } = this.props
     const { fileUrl, token, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading, editable, documentName, thumbnail, lastUpdatedDate } = this.state
     return (
-      <div className="entry-block entry-basic">
+      <div className="entry-basic">
         <Title
           step={1}
           content="获取文件"
