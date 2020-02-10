@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next'
 import { getGlobalSettings } from 'utils/helper'
 import { entry, right, rightItems, utilities } from './lang'
 
-const { language } = getGlobalSettings()
+const { language } = getGlobalSettings() || {}
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {
@@ -25,7 +25,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: language,
+    lng: language || 'en',
     // debug: true,
     keySeparator: false, // we do not use keys in form messages.welcome
 
