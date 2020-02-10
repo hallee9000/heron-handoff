@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { GitHub, Coffee, Eye, DollarSign } from 'react-feather'
+import { GitHub, Coffee, Eye, DollarSign, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import SettingsContext from 'contexts/SettingsContext'
 import Basic from './Basic'
@@ -55,7 +55,7 @@ class Entry extends React.Component {
     })
   }
   componentDidMount () {
-    this.gotoDemo()
+    // this.gotoDemo()
   }
   render() {
     const { onDataGot, t } = this.props
@@ -89,7 +89,10 @@ class Entry extends React.Component {
             />
           </div>
           <div className={cn('entry-coffee', {hide: !coffeeVisible})}>
-            <a href="https://paypal.me/leadream"><DollarSign size={12}/> {t('paypal')}</a>
+            <X size={36} className="coffee-close" onClick={this.toggleCoffee}/>
+            <img src={require('./qrcode.jpg')} alt="coffee qrcode"/>
+            <div className="coffee-or">Or</div>
+            <a href="https://paypal.me/leadream" target="_blank" rel="noopener noreferrer"><DollarSign size={12}/> {t('paypal')}</a>
           </div>
           <div className="entry-footer">
             <SettingsContext.Consumer>

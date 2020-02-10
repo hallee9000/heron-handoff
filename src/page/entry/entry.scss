@@ -78,8 +78,37 @@
       }
     }
     .entry-coffee{
+      position: relative;
       width: 360px;
-      padding: 15px;
+      padding: 0 15px;
+      padding-top: 60px;
+      text-align: center;
+      .coffee-close{
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 6px;
+        border-radius: 2px;
+        color: $white-65;
+        transition: color 0.2s;
+        cursor: pointer;
+        &:hover{
+          color: $white-85;
+        }
+      }
+      img{
+        width: 240px;
+        border-radius: 12px;
+      }
+      .coffee-or{
+        margin: 10px 0;
+        color: $white-36;
+      }
+      a{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
     .entry-footer{
       display: flex;
