@@ -2,6 +2,7 @@ import React, { createRef } from 'react'
 import cn from 'classnames'
 import Prism from 'prismjs'
 import { withTranslation } from 'react-i18next'
+import { Copy } from 'react-feather'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup, WithCopy } from 'components/utilities'
 import { getFillsStyle, getEffectsStyle, formattedNumber, getCode } from 'utils/style'
@@ -250,11 +251,12 @@ class RightProps extends React.Component {
             <div className="props-section props-code">
               <h5 className="section-title">参考代码</h5>
               <div className="section-items">
-                <WithCopy text={code} className="code-box">
-                  <pre>
-                    <code dangerouslySetInnerHTML={{__html: styledCode}}></code>
-                  </pre>
-                </WithCopy>
+                <pre className="code-box">
+                  <WithCopy text={code} className="code-copy">
+                    <Copy size={14}/>
+                  </WithCopy>
+                  <code dangerouslySetInnerHTML={{__html: styledCode}}></code>
+                </pre>
               </div>
             </div>
           }

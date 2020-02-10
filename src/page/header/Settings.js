@@ -20,7 +20,7 @@ export default class Settings extends Component {
       onSettingsChange(name, value - 0)
       this.changeResolution(name)
       this.changeUnit(name, value)
-      this.changeResolutionWhenRem(name, value)
+      this.changeResolutionWhenRemOrEm(name, value)
     })
   }
   handleRemBaseChange = value => {
@@ -37,9 +37,9 @@ export default class Settings extends Component {
       this.setState({resolution: 0})
     }
   }
-  changeResolutionWhenRem = (name, value) => {
+  changeResolutionWhenRemOrEm = (name, value) => {
     // rem selected
-    if (name==='unit' && value==='4') {
+    if (name==='unit' && (value==='3' || value==='4')) {
       this.changeResolution('platform')
     }
   }
@@ -63,6 +63,7 @@ export default class Settings extends Component {
   }
   render () {
     const { platform, resolution, unit, remBase, language } = this.state
+    const baseVisible = platform===0 && (unit===3 || unit===4)
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> 设置</h3>
       <div className="form">
@@ -89,7 +90,7 @@ export default class Settings extends Component {
           <select
             name="resolution"
             className="input"
-            disabled={platform===0 && unit===4}
+            disabled={baseVisible}
             value={resolution}
             onChange={this.handleChange}
           >
@@ -122,12 +123,12 @@ export default class Settings extends Component {
           }
         </div>
         {
-          platform===0 && unit===4 &&
+          baseVisible &&
           <div className="form-item form-item-horizontal">
-            <label htmlFor="rem-base" className="item-label">CSS Rem</label>
+            <label htmlFor="rem-base" className="item-label">(R)em 基准</label>
             <InputNumber
               name="remBase"
-              placeholder="请填写基准数"
+              placeholder="请填写基准值"
               min={1}
               max={100}
               precision={0}

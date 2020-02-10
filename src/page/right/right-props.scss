@@ -78,14 +78,25 @@
       }
       &.props-code{
         .code-box{
+          position: relative;
           display: block;
+          margin: 0;
           padding: 12px;
           border-radius: 2px;
           background: $black-2;
-          cursor: pointer;
           overflow-x: auto;
-          pre{
-            margin: 0;
+          .code-copy{
+            position: absolute;
+            top: 8px;
+            right: 6px;
+            width: 14px;
+            height: 14px;
+            color: $white-36;
+            cursor: pointer;
+            transition: color 0.2s;
+            &:hover{
+              color: $white-85;
+            }
           }
         }
       }
