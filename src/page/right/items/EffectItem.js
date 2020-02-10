@@ -4,15 +4,16 @@ import { ChevronDown } from 'react-feather'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
 import { MixEffect } from 'components/icons/style'
-import Color from './Color'
-import { formattedNumber } from 'utils/style'
+import { formattedNumber, getEffectCSSCode } from 'utils/style'
 import { EFFECTS } from 'utils/const'
+import Color from './Color'
 import './effect-item.scss'
 
-const EffectItem = ({flag, style, globalSettings}) => {
+const EffectItem = ({flag, style, nodeType, globalSettings}) => {
   const colorFormat = globalSettings.colorFormat || 0
   const [isExpanded, setExpanded] = useState(false)
-  const { type, category, typeName, blur, x, y, css } = style
+  const { type, category, typeName, blur, x, y, dashedPorpertyName } = style
+  const code = getEffectCSSCode(style, globalSettings, colorFormat)
   return <ul key={flag} className={cn('effect-item', { 'effect-item-expanded': isExpanded })}>
     <li className="effect-summary" onClick={() => setExpanded(!isExpanded)}>
       <ChevronDown
@@ -41,7 +42,9 @@ const EffectItem = ({flag, style, globalSettings}) => {
       </li>
     }
     <li className="effect-code">
-      <CopiableInput type="textarea" value={ css.code }/>
+      <CopiableInput
+        type="textarea"
+        value={ `${ dashedPorpertyName || (nodeType==='TEXT' ? 'text-shadow' : 'box-shadow') }: ${code};` }/>
     </li>
   </ul>
 }

@@ -1,6 +1,6 @@
 import Color from "color"
 import { toFixed } from 'utils/mark'
-import { WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, COLOR_FORMATS } from 'utils/const'
+import { DEFAULT_SETTINGS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, COLOR_FORMATS } from 'utils/const'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
@@ -205,11 +205,7 @@ export const getEffectsStyle = effects => {
             category: 'shadow',
             ...getShadowEffect(effect),
             porpertyName: 'shadow',
-            codeTemplate: `{{x}} {{y}} {{radius}} 0 {{color}}`,
-            css: {
-              code: `box-shadow: ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
-              boxShadow: `${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
-            }
+            codeTemplate: `{{x}} {{y}} {{radius}} 0 {{color}}`
           }
         case 'INNER_SHADOW':
           return {
@@ -218,11 +214,7 @@ export const getEffectsStyle = effects => {
             category: 'shadow',
             ...getShadowEffect(effect),
             porpertyName: 'shadow',
-            codeTemplate: `inset {{x}} {{y}} {{radius}} 0 {{color}}`,
-            css: {
-              code: `box-shadow: inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
-              boxShadow: `inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
-            }
+            codeTemplate: `inset {{x}} {{y}} {{radius}} 0 {{color}}`
           }
         case 'LAYER_BLUR':
           return {
@@ -230,12 +222,9 @@ export const getEffectsStyle = effects => {
             typeName: 'Layer Blur',
             category: 'blur',
             blur: effect.radius,
+            dashedPorpertyName: 'filter',
             porpertyName: 'filter',
-            codeTemplate: `blur({{radius}})`,
-            css: {
-              code: `filter: blur(${effect.radius}px)`,
-              filter: `blur(${effect.radius}px)`
-            }
+            codeTemplate: `blur({{radius}})`
           }
         case 'BACKGROUND_BLUR':
           return {
@@ -243,12 +232,9 @@ export const getEffectsStyle = effects => {
             category: 'blur',
             typeName: 'Background Blur',
             blur: effect.radius,
-            porpertyName: 'backdrop-filter',
-            codeTemplate: `blur({{radius}})`,
-            css: {
-              code: `backdrop-filter: blur(${effect.radius}px)`,
-              backdropFilter: `blur(${effect.radius}px)`
-            }
+            dashedPorpertyName: 'backdrop-filter',
+            porpertyName: 'backdropFilter',
+            codeTemplate: `blur({{radius}})`
           }
         default:
           return {}
@@ -257,7 +243,7 @@ export const getEffectsStyle = effects => {
   return { type, styles }
 }
 
-export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=0) => {
+export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=2) => {
   const { category, codeTemplate, blur, x, y } = effectStyle
   let code = codeTemplate
   code = code.replace('{{radius}}', formattedNumber(blur, globalSettings))
@@ -269,17 +255,25 @@ export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=0) => 
   return code
 }
 
-export const getCSSEffects = effectItems => {
+export const getEffectsCSSObject = (
+  effectItems,
+  globalSettings=DEFAULT_SETTINGS,
+  colorFormat=2,
+  shadowType='box',
+  useDashedName
+) => {
   let style = {}, shadows = []
   // eslint-disable-next-line
-  effectItems.map(({type, css}) => {
+  effectItems.map((effectItem) => {
+    const { type, dashedPorpertyName, porpertyName } = effectItem
+    const code = getEffectCSSCode(effectItem, globalSettings, colorFormat)
     if (type==='DROP_SHADOW' || type==='INNER_SHADOW') {
-      shadows.push(css.boxShadow)
+      shadows.push(code)
     } else {
-      style = { ...style, ...css }
+      style[useDashedName ? dashedPorpertyName : porpertyName] = code
     }
   })
-  style.boxShadow = shadows.join()
+  style[useDashedName ? `${shadowType}-shadow` : `${shadowType}Shadow`] = shadows.join()
   return style
 }
 
@@ -363,19 +357,25 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
 
   // color or background
   if (fillItems.length) {
-    const propertyName = node.type==='TEXT' ? 'color' : 'background'
-    fillItems
-      // eslint-disable-next-line
-      .map(fill => {
-        const fillColor = getFillCSSCode(fill, colorFormat)
-        code += `${propertyName}: ${fillColor};\n`
-      })
+    if (node.type==='TEXT') {
+      fillItems
+        .filter(({type}) => type==='Solid')
+        // eslint-disable-next-line
+        .map(fill => {
+          code += `color: ${getFillCSSCode(fill, colorFormat)};\n`
+        })
+    } else {
+      code += 'background: ' + fillItems
+        .map(fill => getFillCSSCode(fill, colorFormat))
+        .join()
+    }
   }
 
   // border
   if (strokeItems.length) {
     const borderStyle = strokeDashes ? 'dashed' : 'solid'
     strokeItems
+      .filter(({type}) => type==='Solid')
       // eslint-disable-next-line
       .map(stroke => {
         const strokeColor = getFillCSSCode(stroke, colorFormat)
@@ -385,10 +385,12 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
 
   // shadow or blur
   if (effectItems.length) {
-    effectItems
+    const shadowType = node.type==='TEXT' ? 'text' : 'box'
+    const effects = getEffectsCSSObject(effectItems, globalSettings, colorFormat, shadowType, true)
+    Object.keys(effects)
       // eslint-disable-next-line
-      .map(effect => {
-        code += getEffectCSSCode(effect, globalSettings, colorFormat) +'\n'
+      .map(propertyName => {
+        code += `${propertyName}: ${effects[propertyName]};\n`
       })
   }
 

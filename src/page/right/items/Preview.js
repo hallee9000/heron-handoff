@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { getCSSEffects } from 'utils/style'
+import { getEffectsCSSObject } from 'utils/style'
 import './preview.scss'
 
 export default ({type, styles, name}) =>
@@ -14,7 +14,7 @@ export default ({type, styles, name}) =>
       (
         type==='TEXT' ?
         <div className="text-item" style={styles}>{ name }</div> :
-        <div className="effect-item" style={getCSSEffects(styles)}/>
+        <div className="effect-item" style={getEffectsCSSObject(styles)}/>
       )
     }
   </div>

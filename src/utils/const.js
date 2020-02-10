@@ -51,6 +51,7 @@ export const DEFAULT_SETTINGS = {
   resolution: 0,
   unit: 2,
   remBase: 14,
+  colorFormat: 0,
   language: 'en'
 }
 

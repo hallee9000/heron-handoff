@@ -238,7 +238,7 @@ class RightProps extends React.Component {
                 {
                   effectItems.map((effectStyle, index) =>
                     <li className="item-block" key={index}>
-                      <EffectItem flag={flag} style={effectStyle}/>
+                      <EffectItem flag={flag} style={effectStyle} nodeType={node.type}/>
                     </li>
                   )
                 }
