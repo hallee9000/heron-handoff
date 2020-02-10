@@ -1,10 +1,40 @@
 {
   "en": {
+    "paypal": "PayPal Support",
+    "buy me a coffee": "buy me a coffee",
+    "github": "GitHub source code",
+    "demo": "View Demo",
     "get file": "Fetch file",
-    "buy me a coffee": "buy me a coffee"
+    "select frames": "Select frames",
+    "other options": "Other Options",
+    "please fulfill file link": "please fulfill file link",
+    "file link is invalid": "file link is invalid",
+    "please fulfill access token": "please fulfill access token",
+    "this file not exists": "this file not exists",
+    "access token is not invalid": "access token is not invalid, maybe it's deleted, please regenerate it",
+    "file link placeholder": "your file link",
+    "access token saved": "Access Token saved, click <1>here</1> to change",
+    "access token placeholder": "your Access Token",
+    "what is access token": "what is Access Token？",
+    "last updated at": "last updated at "
   },
   "zh": {
+    "paypal": "PayPal 支持",
+    "buy me a coffee": "请我喝杯咖啡",
+    "github": "GitHub 源码",
+    "demo": "查看 Demo",
     "get file": "获取文件",
-    "buy me a coffee": "请我喝杯咖啡"
+    "select frames": "选择 Frame",
+    "other options": "其它选项",
+    "please fulfill file link": "请填写文件链接",
+    "file link is invalid": "文件链接格式不对啊",
+    "please fulfill access token": "请填写 Access Token",
+    "this file not exists": "该文件不存在",
+    "access token is not invalid": "token 有误，可能已被删除，请重新创建并输入",
+    "file link placeholder": "请输入文件链接",
+    "access token saved": "Access Token 已保存，点<1>这里</1>修改",
+    "access token placeholder": "请输入你的 Access Token",
+    "what is access token": "什么是 Access Token？",
+    "last updated at": "最后更新于"
   }
 }

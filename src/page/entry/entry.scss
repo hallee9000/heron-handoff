@@ -6,110 +6,113 @@
   align-items: center;
   justify-content: center;
   background: $black-0;
-  .entry-logo{
-    text-align: center;
-    img{
-      width: 120px;
-    }
-  }
-  .entry-block{
-    width: 360px;
-    >[class^=entry-]{
-      padding: 15px 0;
-      border-bottom: 1px solid $white-8;
-    }
-    .entry-form{
-      display: none;
-      &.form-visible{
-        display: block;
+  .entry-container{
+    padding: 60px 0;
+    .entry-logo{
+      text-align: center;
+      img{
+        width: 120px;
       }
     }
-    .btn-round{
-      padding: 5px 7px;
-    }
-    .entry-basic{
-      .basic-abstract{
+    .entry-block{
+      width: 360px;
+      >[class^=entry-]{
+        padding: 15px 0;
+        border-bottom: 1px solid $white-8;
+      }
+      .entry-form{
         display: none;
-        &.abstract-visible{
-          display: flex;
+        &.form-visible{
+          display: block;
         }
-        .abstract-thumbnail{
-          width: 50px;
-          height: 50px;
-          margin-right: 6px;
-          background-size: contain;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-color: $black;
-          border-radius: 2px;
+      }
+      .btn-round{
+        padding: 5px 7px;
+      }
+      .entry-basic{
+        .basic-abstract{
+          display: none;
+          &.abstract-visible{
+            display: flex;
+          }
+          .abstract-thumbnail{
+            width: 50px;
+            height: 50px;
+            margin-right: 6px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: $black;
+            border-radius: 2px;
+          }
+          h5{
+            margin: 0;
+            margin-bottom: 6px;
+          }
+          p{
+            color: $white-65;
+          }
         }
-        h5{
-          margin: 0;
-          margin-bottom: 6px;
+      }
+      .entry-options{
+        label{
+          cursor: pointer;
         }
-        p{
-          color: $white-65;
+        .btn-generate{
+          position: relative;
+          border: none;
+          overflow: hidden;
+          span{
+            position: relative;
+            z-index: 1;
+          }
+          .entry-progress{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #2650F3;
+            transition: width 0.2s;
+          }
         }
       }
     }
-    .entry-options{
-      label{
-        cursor: pointer;
+    .entry-coffee{
+      width: 360px;
+      padding: 15px;
+    }
+    .entry-footer{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
+      padding: 10px 0;
+      .footer-stretch{
+        flex: 1;
       }
-      .btn-generate{
+      .footer-language{
         position: relative;
-        border: none;
-        overflow: hidden;
-        span{
-          position: relative;
-          z-index: 1;
-        }
-        .entry-progress{
+        display: flex;
+        align-items: center;
+        padding: 3px 5px;
+        >select{
           position: absolute;
           top: 0;
           left: 0;
-          height: 100%;
-          background: #2650F3;
-          transition: width 0.2s;
+          opacity: 0;
+          height: 20px;
+          cursor: pointer;
+        }
+        >svg{
+          display: block;
+          margin-right: 6px;
         }
       }
-    }
-  }
-  .entry-coffee{
-    width: 360px;
-    padding: 15px;
-  }
-  .entry-footer{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    text-align: right;
-    padding: 10px 0;
-    .footer-stretch{
-      flex: 1;
-    }
-    .footer-language{
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 3px 5px;
-      >select{
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        height: 20px;
-        cursor: pointer;
-      }
-      >svg{
-        display: block;
-        margin-right: 6px;
-      }
-    }
-    .footer-item{
-      padding: 5px;
-      >svg{
-        display: block;
+      .footer-item{
+        padding: 5px;
+        >svg{
+          display: block;
+        }
       }
     }
   }

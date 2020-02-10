@@ -1,5 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import Title from './Title'
@@ -7,7 +8,7 @@ import { getImage, getImages, withCors, getBufferData } from 'api'
 import { trimFilePath, walkFile, asyncForEach, getFileName, getFlattedFrames } from 'utils/helper'
 import { handleIndex, handleJs, handleIcoAndCSS, handleLogo } from 'utils/download'
 
-export default class Options extends React.Component {
+class Options extends React.Component {
   state = {
     useHighQuality: true,
     offlineMode: true,
@@ -150,11 +151,11 @@ export default class Options extends React.Component {
     }
   }
   render() {
-    const { formVisible } = this.props
+    const { formVisible, t } = this.props
     const { useHighQuality, offlineMode, isLoading, buttonText, percentage } = this.state
     return (
       <div className="entry-options">
-        <Title step={3} content="其它选项" hasBottom={formVisible}/>
+        <Title step={3} content={t('other options')} hasBottom={formVisible}/>
         <div className={cn('form entry-form', {'form-visible': formVisible})}>
           <div className="form-item">
             <label>
@@ -183,3 +184,5 @@ export default class Options extends React.Component {
     )
   }
 }
+
+export default withTranslation('entry')(Options)

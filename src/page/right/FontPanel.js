@@ -12,18 +12,23 @@ import './font-panel.scss'
 export default class FontPanel extends React.Component {
   constructor(props) {
     super(props)
+    const { onGetStyle } = props
+    const textStyle = getTextStyle(props.node.style)
     this.state = {
       textTable: getTextTable(props.node),
       selected: null,
-      style: getTextStyle(props.node.style)
+      style: textStyle
     }
+    onGetStyle && onGetStyle(textStyle)
   }
   switchPiece = (piece, index) => {
+    const textStyle = getTextStyle(piece)
     this.setState({
       selected: index,
-      style: getTextStyle(piece)
+      style: textStyle
     })
-    const { onSwitch } = this.props
+    const { onSwitch, onGetStyle } = this.props
+    onGetStyle && onGetStyle(textStyle)
     onSwitch && onSwitch(piece.fills, index)
   }
   onDeselectPiece = e => {

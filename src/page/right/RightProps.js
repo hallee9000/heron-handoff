@@ -1,8 +1,10 @@
 import React, { createRef } from 'react'
 import cn from 'classnames'
+import Prism from 'prismjs'
+import { withTranslation } from 'react-i18next'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { CopiableInput, InputGroup } from 'components/utilities'
-import { getFillsStyle, getEffectsStyle, formattedNumber } from 'utils/style'
+import { CopiableInput, InputGroup, WithCopy } from 'components/utilities'
+import { getFillsStyle, getEffectsStyle, formattedNumber, getCode } from 'utils/style'
 import { toFixed } from 'utils/mark'
 import { ColorFormatSelect, FillItem, EffectItem, ExportItem } from './items'
 import StyleReference from './StyleReference'
@@ -19,7 +21,8 @@ class RightProps extends React.Component {
     exportSettings: [],
     isPieceSelected: false,
     detailVisible: false,
-    currentStyle: {}
+    currentStyle: {},
+    textStyle: {}
   }
   getExportSettings = () => {
     const { data, exportSettings } = this.props
@@ -30,6 +33,9 @@ class RightProps extends React.Component {
           .filter(({id}) => id===data.node.id) :
         []
     })
+  }
+  handleStyleGot = textStyle => {
+    this.setState({textStyle})
   }
   handleTextChange = (fills, pieceIndex) => {
     const { flag } = this.state
@@ -82,14 +88,16 @@ class RightProps extends React.Component {
     }, 10)
   }
   render () {
-    const { data, styles, components, useLocalImages, globalSettings } = this.props
+    const { data, styles, components, useLocalImages, globalSettings, t } = this.props
     const { node } = data
     const { strokes, effects, styles: nodeStyles } = node
-    const { hasEntered, fills, exportSettings, flag, isPieceSelected, detailVisible, currentStyle } = this.state
+    const { hasEntered, fills, exportSettings, flag, isPieceSelected, detailVisible, currentStyle, textStyle } = this.state
     const { styles: fillItems } = getFillsStyle(fills)
     const { styles: strokeItems } = getFillsStyle(strokes)
     const { styles: effectItems } = getEffectsStyle(effects)
     const master = components.find(c => c.id===node.componentId)
+    const code = getCode(node, fillItems, strokeItems, effectItems, textStyle, globalSettings)
+    const styledCode = Prism.highlight(code, Prism.languages.css, 'css')
     return (
       <div
         className={cn('main-right-props', {'main-right-props-entered': hasEntered})}
@@ -111,14 +119,14 @@ class RightProps extends React.Component {
           }
           {/* position and size */}
           <div className="props-section props-basic">
-            <h5 className="section-title">位置和尺寸</h5>
+            <h5 className="section-title">{t('position and spacing')}</h5>
             <div className="section-items">
               <CopiableInput isQuiet label="X" defaultValue={ formattedNumber(data.left, globalSettings) }/>
               <CopiableInput isQuiet label="Y" defaultValue={ formattedNumber(data.top, globalSettings) }/>
               <CopiableInput isQuiet label="W" defaultValue={ formattedNumber(data.width, globalSettings) }/>
               <CopiableInput isQuiet label="H" defaultValue={ formattedNumber(data.height, globalSettings) }/>
               {
-                node.opacity &&
+                node.opacity!==undefined &&
                 <CopiableInput isQuiet label="不透明度" defaultValue={ toFixed(node.opacity) }/>
               }
               {
@@ -144,6 +152,7 @@ class RightProps extends React.Component {
               styles={styles}
               propsSider={this.propsSider.current}
               onSwitch={this.handleTextChange}
+              onGetStyle={this.handleStyleGot}
               onShowDetail={this.toggleDetail}
             />
           }
@@ -236,12 +245,19 @@ class RightProps extends React.Component {
               </ul>
             </div>
           }
-          <div className="props-section">
-            <h5 className="section-title">参考代码</h5>
-            <div className="section-items">
-              <CopiableInput type="textarea" defaultValue='code/naa'/>
+          {
+            code &&
+            <div className="props-section props-code">
+              <h5 className="section-title">参考代码</h5>
+              <div className="section-items">
+                <WithCopy text={code} className="code-box">
+                  <pre>
+                    <code dangerouslySetInnerHTML={{__html: styledCode}}></code>
+                  </pre>
+                </WithCopy>
+              </div>
             </div>
-          </div>
+          }
           {/* export settings */}
           {
             !!(exportSettings && exportSettings.length) &&
@@ -275,4 +291,4 @@ class RightProps extends React.Component {
   }
 }
 
-export default withGlobalSettings(RightProps)
+export default withTranslation('right')(withGlobalSettings(RightProps))

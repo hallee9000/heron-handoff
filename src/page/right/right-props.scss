@@ -1,3 +1,6 @@
+@import '~assets/tokens.scss';
+@import '~prismjs/themes/prism-tomorrow.css';
+
 .main-right-props{
   position: absolute;
   top: 0;
@@ -70,6 +73,19 @@
           font-size: 12px;
           .copiable-input{
             flex: 0 1 47%;
+          }
+        }
+      }
+      &.props-code{
+        .code-box{
+          display: block;
+          padding: 12px;
+          border-radius: 2px;
+          background: $black-2;
+          cursor: pointer;
+          overflow-x: auto;
+          pre{
+            margin: 0;
           }
         }
       }

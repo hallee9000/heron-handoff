@@ -4,6 +4,7 @@ import { ChevronDown } from 'react-feather'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
 import { Degree, Opacity } from 'components/icons/style'
+import { getFillCSSCode } from 'utils/style'
 import Color from './Color'
 import './fill-item.scss'
 
@@ -46,7 +47,7 @@ const FillItem = ({flag, style, globalSettings}) => {
       </li>
     }
     <li className="fill-code fill-collapse">
-      <CopiableInput type="textarea" value={ style.css }/>
+      <CopiableInput type="textarea" value={ getFillCSSCode(style, colorFormat) }/>
     </li>
   </ul>
 }

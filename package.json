@@ -9,6 +9,7 @@
     "i18next": "^19.1.0",
     "jszip": "^3.2.2",
     "node-sass": "^4.13.0",
+    "prismjs": "^1.19.0",
     "rc-input-number": "^4.5.3",
     "rc-notification": "^3.3.1",
     "rc-tooltip": "^4.0.0-alpha.3",

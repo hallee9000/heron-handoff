@@ -46,8 +46,8 @@ export const getCSSHSLA = color => {
 export const getCSSAlpha = color =>
   getColor(color).alpha()
 
-export const formattedColor = (type, color) => {
-  const key = COLOR_FORMATS[type].toLowerCase()
+export const formattedColor = (colorFormat, color) => {
+  const key = COLOR_FORMATS[colorFormat].toLowerCase()
   return color[key]
 }
 
@@ -67,8 +67,11 @@ export const getStops = stops =>
     alpha: toFixed(stop.color.a)
   }))
 
-export const stopsToBackground = stops =>
-  stops.map(s => getCSSRGBA(s.color) + getPercentage(s.position)).join()
+// default RGBA
+export const stopsToBackground = (stops, colorFormat=2, separator=', ') =>
+  stops.map(stop =>
+    formattedColor(colorFormat, stop) + ' ' + stop.position
+  ).join(separator)
 
 export const getGradientDegree = positions => {
   const offsetX = positions[1].x-positions[0].x
@@ -85,6 +88,7 @@ export const getGradientDegree = positions => {
 }
 
 export const getSolidColor = fill => ({
+  codeTemplate: '{{color}}',
   css: getCSSRGBA(fill.color),
   opacity: getOpacity(fill.opacity),
   alpha: toFixed(fill.color.a),
@@ -96,7 +100,8 @@ export const getSolidColor = fill => ({
 })
 
 export const getLinearGradient = fill => ({
-  css: `linear-gradient(to bottom, ${ stopsToBackground(fill.gradientStops) }`,
+  codeTemplate: 'linear-gradient(to bottom, {{stops}})',
+  css: `linear-gradient(to bottom, ${ stopsToBackground(getStops(fill.gradientStops)) })`,
   opacity: getOpacity(fill.opacity),
   type: 'Linear',
   stops: getStops(fill.gradientStops),
@@ -104,7 +109,8 @@ export const getLinearGradient = fill => ({
 })
 
 export const getRadialGradient = fill => ({
-  css: `radial-gradient(circle at 50% 50%, ${ stopsToBackground(fill.gradientStops) })`,
+  codeTemplate: 'radial-gradient(circle at 50% 50%, {{stops}})',
+  css: `radial-gradient(circle at 50% 50%, ${ stopsToBackground(getStops(fill.gradientStops)) })`,
   opacity: getOpacity(fill.opacity),
   type: 'Radial',
   stops: getStops(fill.gradientStops),
@@ -112,18 +118,24 @@ export const getRadialGradient = fill => ({
 })
 
 export const getAngularGradient = fill => ({
-  css: `conic-gradient(from 0.25turn, ${ stopsToBackground(fill.gradientStops) })`,
+  codeTemplate: 'conic-gradient(from 0.25turn, {{stops}})',
+  css: `conic-gradient(from 0.25turn, ${ stopsToBackground(getStops(fill.gradientStops)) })`,
   opacity: getOpacity(fill.opacity),
   type: 'Angular',
   stops: getStops(fill.gradientStops),
   angle: getGradientDegree(fill.gradientHandlePositions)
 })
 
+export const getDiamondCodeTemplate = () => {
+  const directions = ['bottom right', 'bottom left', 'top left', 'top right']
+  return directions
+    .map(direction => `linear-gradient(to ${direction}, {{stops}}) ${direction} / 50% 50% no-repeat`)
+    .join(', ')
+}
+
 export const getDiamondGradient = fill => ({
-  css: `linear-gradient(to bottom right, ${ stopsToBackground(fill.gradientStops) }) bottom right / 50% 50% no-repeat,` +
-  `linear-gradient(to bottom left, ${ stopsToBackground(fill.gradientStops) }) bottom left / 50% 50% no-repeat, ` +
-  `linear-gradient(to top left, ${ stopsToBackground(fill.gradientStops) }) top left / 50% 50% no-repeat, ` +
-  `linear-gradient(to top right, ${ stopsToBackground(fill.gradientStops) }) top right / 50% 50% no-repeat`,
+  codeTemplate: getDiamondCodeTemplate(),
+  css: getDiamondCodeTemplate().replace(/{{stops}}/g, stopsToBackground(getStops(fill.gradientStops))),
   opacity: getOpacity(fill.opacity),
   type: 'Diamond',
   stops: getStops(fill.gradientStops),
@@ -155,6 +167,19 @@ export const getFillsStyle = fills => {
   return { type, styles }
 }
 
+export const getFillCSSCode = (fillStyle, colorFormat=0) => {
+  const { codeTemplate } = fillStyle
+  const color = formattedColor(colorFormat, fillStyle)
+  let code = codeTemplate
+  if (codeTemplate.indexOf('{{color}}') > -1) {
+    code = code.replace(/{{color}}/g, color)
+  }
+  if (codeTemplate.indexOf('{{stops}}') > -1) {
+    code = code.replace(/{{stops}}/g, stopsToBackground(fillStyle.stops, colorFormat, ', '))
+  }
+  return code
+}
+
 export const getShadowEffect = effect => ({
     x: effect.offset.x,
     y: effect.offset.y,
@@ -179,6 +204,8 @@ export const getEffectsStyle = effects => {
             typeName: 'Drop Shadow',
             category: 'shadow',
             ...getShadowEffect(effect),
+            porpertyName: 'shadow',
+            codeTemplate: `{{x}} {{y}} {{radius}} 0 {{color}}`,
             css: {
               code: `box-shadow: ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
               boxShadow: `${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
@@ -190,6 +217,8 @@ export const getEffectsStyle = effects => {
             typeName: 'Inner Shadow',
             category: 'shadow',
             ...getShadowEffect(effect),
+            porpertyName: 'shadow',
+            codeTemplate: `inset {{x}} {{y}} {{radius}} 0 {{color}}`,
             css: {
               code: `box-shadow: inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`,
               boxShadow: `inset ${effect.offset.x}px ${effect.offset.y}px ${effect.radius}px 0 ${getCSSRGBA(effect.color)}`
@@ -201,6 +230,8 @@ export const getEffectsStyle = effects => {
             typeName: 'Layer Blur',
             category: 'blur',
             blur: effect.radius,
+            porpertyName: 'filter',
+            codeTemplate: `blur({{radius}})`,
             css: {
               code: `filter: blur(${effect.radius}px)`,
               filter: `blur(${effect.radius}px)`
@@ -212,6 +243,8 @@ export const getEffectsStyle = effects => {
             category: 'blur',
             typeName: 'Background Blur',
             blur: effect.radius,
+            porpertyName: 'backdrop-filter',
+            codeTemplate: `blur({{radius}})`,
             css: {
               code: `backdrop-filter: blur(${effect.radius}px)`,
               backdropFilter: `blur(${effect.radius}px)`
@@ -222,6 +255,18 @@ export const getEffectsStyle = effects => {
       }
     })
   return { type, styles }
+}
+
+export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=0) => {
+  const { category, codeTemplate, blur, x, y } = effectStyle
+  let code = codeTemplate
+  code = code.replace('{{radius}}', formattedNumber(blur, globalSettings))
+  if (category==='shadow') {
+    code = code.replace('{{x}}', formattedNumber(x, globalSettings))
+    code = code.replace('{{y}}', formattedNumber(y, globalSettings))
+    code = code.replace('{{color}}', formattedColor(colorFormat, effectStyle))
+  }
+  return code
 }
 
 export const getCSSEffects = effectItems => {
@@ -299,4 +344,67 @@ export const formattedNumber = (number, { platform, unit, resolution, remBase },
   const scaledNumber = number*resolutions[platform][resolution].value
   const finalNumber = unit===4 ? number/remBase : scaledNumber
   return toFixed(finalNumber) + (withoutUnit ? '' : UNITS[unit])
+}
+
+export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, globalSettings) => {
+  const colorFormat = globalSettings.colorFormat || 0
+  const { opacity, cornerRadius, strokeWeight, strokeDashes } = node
+  let code = ''
+
+  // opacity
+  if (opacity!==undefined) {
+    code += `opacity: ${opacity};\n`
+  }
+
+  // border-radius
+  if (cornerRadius) {
+    code += `border-radius: ${formattedNumber(cornerRadius, globalSettings)};\n`
+  }
+
+  // color or background
+  if (fillItems.length) {
+    const propertyName = node.type==='TEXT' ? 'color' : 'background'
+    fillItems
+      // eslint-disable-next-line
+      .map(fill => {
+        const fillColor = getFillCSSCode(fill, colorFormat)
+        code += `${propertyName}: ${fillColor};\n`
+      })
+  }
+
+  // border
+  if (strokeItems.length) {
+    const borderStyle = strokeDashes ? 'dashed' : 'solid'
+    strokeItems
+      // eslint-disable-next-line
+      .map(stroke => {
+        const strokeColor = getFillCSSCode(stroke, colorFormat)
+        code += `border: ${formattedNumber(strokeWeight, globalSettings)} ${borderStyle} ${strokeColor};\n`
+      })
+  }
+
+  // shadow or blur
+  if (effectItems.length) {
+    effectItems
+      // eslint-disable-next-line
+      .map(effect => {
+        code += getEffectCSSCode(effect, globalSettings, colorFormat) +'\n'
+      })
+  }
+
+  // font style
+  if (node.type==='TEXT') {
+    const { fontFamily, fontWeight, fontSize, lineHeightUnit, lineHeight, letterSpacing, textAlign, textDecoration } = textStyle
+    code += `font-family: ${fontFamily};\n`
+    code += `font-weight: ${fontWeight};\n`
+    code += `font-size: ${formattedNumber(fontSize, globalSettings)};\n`
+    code += `line-height: ${lineHeightUnit==='PIXELS' ? formattedNumber(lineHeight, globalSettings) : lineHeight};\n`
+    code += `letter-spacing: ${formattedNumber(letterSpacing, globalSettings)};\n`
+    code += `text-align: ${textAlign};\n`
+    if (textDecoration) {
+      code += `text-decoration: ${textDecoration};\n`
+    }
+  }
+
+  return code
 }

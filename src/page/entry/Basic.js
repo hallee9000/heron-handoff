@@ -1,11 +1,12 @@
 import React from 'react'
 import cn from 'classnames'
+import { withTranslation, Trans } from 'react-i18next'
 import { ArrowDown, Loader } from 'react-feather'
 import Title from './Title'
 import { getFile } from 'api'
 import { getFileKey } from 'utils/helper'
 
-export default class Basic extends React.Component {
+class Basic extends React.Component {
   state = {
     fileUrl: '',
     token: '',
@@ -26,19 +27,20 @@ export default class Basic extends React.Component {
     })
   }
   validate = () => {
+    const { t } = this.props
     const { fileUrl, token } = this.state
     const fileKey = getFileKey(fileUrl)
     if (!fileUrl) {
-      this.setState({ fileUrlMessage: '请填写文件链接' })
+      this.setState({ fileUrlMessage: t('please fulfill file link') })
       return false
     } else if (!fileKey) {
-      this.setState({ fileUrlMessage: '文件链接格式不对啊' })
+      this.setState({ fileUrlMessage: t('file link is invalid') })
       return false
     } else {
       this.setState({ fileUrlMessage: '' })
     }
     if (!token) {
-      this.setState({ tokenMessage: '请填写 Access Token' })
+      this.setState({ tokenMessage: t('please fulfill access token') })
       return false
     } else {
       window.localStorage.setItem('figmaToken', token)
@@ -76,26 +78,28 @@ export default class Basic extends React.Component {
     }
   }
   hasError = fileData => {
+    const { t } = this.props
     if (fileData.status===403 && fileData.err==='Invalid token') {
       this.handleTokenError()
       return true
     } else if (fileData.status===404) {
       this.setState({
         isLoading: false,
-        fileUrlMessage: '该文件不存在。'
+        fileUrlMessage: t('this file not exists')
       })
       return true
     }
     return false
   }
   handleTokenError = () => {
+    const { t } = this.props
     window.localStorage.removeItem('figmaToken')
     this.setState({
       isLoading: false,
       hasToken: false,
       token: '',
       tokenMessage: '',
-      errorMessage: 'token 有误，可能已被删除，请重新创建并输入。'
+      errorMessage: t('access token is not invalid')
     })
   }
   showTokenInput = e => {
@@ -121,13 +125,13 @@ export default class Basic extends React.Component {
     }
   }
   render() {
-    const { formVisible, onEdit } = this.props
+    const { formVisible, onEdit, t } = this.props
     const { fileUrl, token, errorMessage, fileUrlMessage, tokenMessage, hasToken, isLoading, editable, documentName, thumbnail, lastUpdatedDate } = this.state
     return (
       <div className="entry-basic">
         <Title
           step={1}
-          content="获取文件"
+          content={t('get file')}
           editable={editable}
           hasBottom={formVisible || editable}
           onEdit={onEdit}
@@ -141,7 +145,7 @@ export default class Basic extends React.Component {
             <input
               name="fileUrl"
               className="input input-lg"
-              placeholder="请输入文件链接"
+              placeholder={t('file link placeholder')}
               value={fileUrl}
               onChange={this.handleChange}
               onKeyUp={e => e.keyCode===13 && this.handleSubmit(e)}
@@ -152,13 +156,15 @@ export default class Basic extends React.Component {
             }
           </div>
           <div className={cn('form-item', {'hide': !hasToken})}>
-            <div className="help-block">Access Token 已保存，点<a href="#access-token" onClick={this.showTokenInput}>这里</a>修改</div>
+              <div className="help-block">
+                <Trans i18nKey="access token saved" ns="entry">Access Token saved, click <a href="#access-token" onClick={this.showTokenInput}>here</a> to change</Trans>
+              </div>
           </div>
           <div className={cn('form-item', {'has-error': tokenMessage, 'hide': hasToken})}>
             <input
               name="token"
               className="input input-lg"
-              placeholder="请输入你的 Access Token"
+              placeholder={t('access token placeholder')}
               value={token}
               onChange={this.handleChange}
             />
@@ -166,7 +172,9 @@ export default class Basic extends React.Component {
               tokenMessage ?
               <div className="help-block">{ tokenMessage }</div> :
               <div className="help-block">
-                <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener noreferrer">什么是 Access Token？</a>
+                <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener noreferrer">
+                  {t('what is access token')}
+                </a>
               </div>
             }
           </div>
@@ -188,10 +196,12 @@ export default class Basic extends React.Component {
           <div className="abstract-thumbnail" style={{backgroundImage: `url(${thumbnail})`}}/>
           <div>
             <h5>{ documentName }</h5>
-            <p>最后更新于 {lastUpdatedDate}</p>
+            <p>{t('last updated at')} {lastUpdatedDate}</p>
           </div>
         </div>
       </div>
     )
   }
 }
+
+export default withTranslation('entry')(Basic)

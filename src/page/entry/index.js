@@ -22,7 +22,7 @@ class Entry extends React.Component {
     coffeeVisible: false
   }
   gotoDemo = async e => {
-    e.preventDefault()
+    e && e.preventDefault()
     const fileData = await getMockFile()
     // get components and styles
     const { components, styles, exportSettings } = walkFile(fileData)
@@ -54,12 +54,15 @@ class Entry extends React.Component {
       coffeeVisible: !coffeeVisible
     })
   }
+  componentDidMount () {
+    // this.gotoDemo()
+  }
   render() {
     const { onDataGot, t } = this.props
     const { currentStep, data, fileKey, pagedFrames, coffeeVisible } = this.state
     return (
       <div className="app-entry">
-        <div>
+        <div className="entry-container">
           <div className="entry-logo">
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
@@ -86,7 +89,7 @@ class Entry extends React.Component {
             />
           </div>
           <div className={cn('entry-coffee', {hide: !coffeeVisible})}>
-            <a href="https://paypal.me/leadream"><DollarSign size={12}/> PayPal 支持</a>
+            <a href="https://paypal.me/leadream"><DollarSign size={12}/> {t('paypal')}</a>
           </div>
           <div className="entry-footer">
             <SettingsContext.Consumer>
@@ -98,13 +101,13 @@ class Entry extends React.Component {
               )}
             </SettingsContext.Consumer>
             <span className="footer-stretch"/>
-            <Tooltip overlay="GitHub 源码" placement="top" align={{offset: [0, 3]}}>
+            <Tooltip overlay={t('github')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer"><GitHub size={14}/></a>
             </Tooltip>
             <Tooltip overlay={t('buy me a coffee')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" onClick={this.toggleCoffee} href="/"><Coffee size={14}/></a>
             </Tooltip>
-            <Tooltip overlay="查看 Demo" placement="top" align={{offset: [0, 3]}}>
+            <Tooltip overlay={t('demo')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" onClick={this.gotoDemo} href="/"><Eye size={14}/></a>
             </Tooltip>
           </div>

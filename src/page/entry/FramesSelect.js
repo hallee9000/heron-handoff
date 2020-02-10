@@ -1,11 +1,12 @@
 import React from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import { ArrowDown, ChevronDown } from 'react-feather'
 import Title from './Title'
 import { getPagedFrames, getSelectedPagedFrames, getFlattedFrames } from 'utils/helper'
 import './framesSelect.scss'
 
-export default class FramesSelect extends React.Component {
+class FramesSelect extends React.Component {
   state = {
     editable: false,
     allSelected: true,
@@ -118,7 +119,7 @@ export default class FramesSelect extends React.Component {
     }
   }
   render() {
-    const { formVisible, onEdit } = this.props
+    const { formVisible, onEdit, t } = this.props
     const { errorMessage, editable, pagedFrames, allSelected } = this.state
     const selectedFrames = getFlattedFrames(pagedFrames)
     const results = getSelectedPagedFrames(pagedFrames)
@@ -126,7 +127,7 @@ export default class FramesSelect extends React.Component {
       <div className="entry-selection">
         <Title
           step={2}
-          content="选择 Frame"
+          content={t('select frames')}
           editable={editable}
           hasBottom={formVisible || editable}
           onEdit={onEdit}
@@ -216,3 +217,5 @@ export default class FramesSelect extends React.Component {
     )
   }
 }
+
+export default withTranslation('entry')(FramesSelect)
