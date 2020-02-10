@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { HelpCircle, Copy } from 'react-feather'
 import Tooltip from 'rc-tooltip'
@@ -9,7 +10,7 @@ import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
 import './font-panel.scss'
 
-export default class FontPanel extends React.Component {
+class FontPanel extends React.Component {
   constructor(props) {
     super(props)
     const { onGetStyle } = props
@@ -39,12 +40,12 @@ export default class FontPanel extends React.Component {
     }
   }
   render() {
-    const { node, styles, propsSider, onShowDetail } = this.props
+    const { node, styles, propsSider, onShowDetail, t } = this.props
     const { textTable, selected, style } = this.state
     return (
       <div className="props-section props-text">
         <h5 className="section-title">
-          <span className="title-name">文字样式</span>
+          <span className="title-name">{t('text')}</span>
           {
             selected===null &&
             <StyleReference
@@ -57,10 +58,10 @@ export default class FontPanel extends React.Component {
           }
         </h5>
         <div className="text-content">
+          <WithCopy text={node.characters} className="content-copy">
+            <Copy size={14}/>
+          </WithCopy>
           <div className="content-box" onClick={this.onDeselectPiece}>
-            <WithCopy text={node.characters} className="box-copy">
-              <Copy size={14}/>
-            </WithCopy>
             {
               textTable.length===0 ?
               <span>{ node.characters }</span> :
@@ -84,7 +85,7 @@ export default class FontPanel extends React.Component {
                 () =>
                   <Fragment>
                     <img src={require('./multi-styles.gif')} alt="multi-styles tutorial"/>
-                    <p>这段文本里面有多种样式，点击对应文字片段来查看不同的样式属性。</p>
+                    <p>{t('multiple text styles tip')}</p>
                   </Fragment>
               }
               overlayStyle={{width: 'calc(100% - 24px)'}}
@@ -96,7 +97,7 @@ export default class FontPanel extends React.Component {
               }}
             >
               <p className="section-helper">
-                <span>多样式文本</span> <HelpCircle size={12}/>
+                <span>{t('multiple text styles')}</span> <HelpCircle size={12}/>
               </p>
             </Tooltip>
           }
@@ -108,3 +109,5 @@ export default class FontPanel extends React.Component {
     )
   }
 }
+
+export default withTranslation('right')(FontPanel)

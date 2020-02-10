@@ -25,9 +25,9 @@ const FillItem = ({flag, style, globalSettings}) => {
         {
           isSolid ?
           <Color color={style} colorFormat={colorFormat}/> :
-          <CopiableInput label={<Degree size={12}/>} className="summary-degree" value={style.angle} title="角度"/>
+          <CopiableInput label={<Degree size={12}/>} inputClass="summary-degree" value={style.angle} title="角度"/>
         }
-        <CopiableInput label={<Opacity size={12}/>} className="summary-opacity" value={ style.opacity } title="不透明度"/>
+        <CopiableInput label={<Opacity size={12}/>} inputClass="summary-opacity" value={ style.opacity } title="不透明度"/>
       </InputGroup>
     </li>
     {
@@ -38,7 +38,7 @@ const FillItem = ({flag, style, globalSettings}) => {
             <div className="stops-item" key={index}>
               <div className="stops-dot"/>
               <InputGroup isQuiet>
-                <CopiableInput className="stops-position" value={ stop.position } title="位置"/>
+                <CopiableInput inputClass="stops-position" value={ stop.position } title="位置"/>
                 <Color color={stop} colorFormat={colorFormat}/>
               </InputGroup>
             </div>

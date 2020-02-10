@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import InputNumber from "rc-input-number"
 import { PLATFORMS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS } from 'utils/const'
 import './settings.scss'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
-export default class Settings extends Component {
+class Settings extends Component {
   constructor (props) {
     super(props)
     const { globalSettings } = props
@@ -56,9 +57,10 @@ export default class Settings extends Component {
     }
   }
   changeLanguage = e => {
-    const { onSettingsChange } = this.props
+    const { onSettingsChange, i18n } = this.props
     const { value } = e.target
     this.setState({language: value})
+    i18n.changeLanguage(value)
     onSettingsChange('language', value)
   }
   render () {
@@ -150,3 +152,5 @@ export default class Settings extends Component {
     </div>
   }
 }
+
+export default withTranslation('header')(Settings)

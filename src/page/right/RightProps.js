@@ -115,31 +115,31 @@ class RightProps extends React.Component {
           {
             node.type==='GROUP' &&
             <div className="props-section">
-              <h5 className="section-title section-name">类型 {node.type.toLowerCase()}</h5>
+              <h5 className="section-title section-name">{t('group type')}</h5>
             </div>
           }
           {/* position and size */}
           <div className="props-section props-basic">
             <h5 className="section-title">{t('position and spacing')}</h5>
             <div className="section-items">
-              <CopiableInput isQuiet label="X" defaultValue={ formattedNumber(data.left, globalSettings) }/>
-              <CopiableInput isQuiet label="Y" defaultValue={ formattedNumber(data.top, globalSettings) }/>
-              <CopiableInput isQuiet label="W" defaultValue={ formattedNumber(data.width, globalSettings) }/>
-              <CopiableInput isQuiet label="H" defaultValue={ formattedNumber(data.height, globalSettings) }/>
+              <CopiableInput isQuiet label="X" value={ formattedNumber(data.left, globalSettings) }/>
+              <CopiableInput isQuiet label="Y" value={ formattedNumber(data.top, globalSettings) }/>
+              <CopiableInput isQuiet label="W" value={ formattedNumber(data.width, globalSettings) }/>
+              <CopiableInput isQuiet label="H" value={ formattedNumber(data.height, globalSettings) }/>
               {
                 node.opacity!==undefined &&
-                <CopiableInput isQuiet label="不透明度" defaultValue={ toFixed(node.opacity) }/>
+                <CopiableInput isQuiet label={t('opacity')} value={ toFixed(node.opacity) }/>
               }
               {
                 node.cornerRadius &&
-                <CopiableInput isQuiet label="圆角" defaultValue={ formattedNumber(node.cornerRadius, globalSettings) }/>
+                <CopiableInput isQuiet label={t('radius')} value={ formattedNumber(node.cornerRadius, globalSettings) }/>
               }
             </div>
           </div>
           {
             node.type==='INSTANCE' && master &&
             <div className="props-section">
-              <h5 className="section-title">组件</h5>
+              <h5 className="section-title">{t('component')}</h5>
               <div className="section-items">
                 { master.name }
               </div>
@@ -162,7 +162,7 @@ class RightProps extends React.Component {
             !!(fillItems && fillItems.length) &&
             <div className="props-section props-fills">
               <h5 className="section-title">
-                <span className="title-name">颜色</span>
+                <span className="title-name">{t('fill')}</span>
                 {
                   !isPieceSelected &&
                   <StyleReference
@@ -190,7 +190,7 @@ class RightProps extends React.Component {
             !!(strokeItems && strokeItems.length) &&
             <div className="props-section props-strokes">
               <h5 className="section-title">
-                <span className="title-name">描边</span>
+                <span className="title-name">{t('stroke')}</span>
                 <StyleReference
                   styleItems={strokes}
                   styles={styles}
@@ -209,15 +209,15 @@ class RightProps extends React.Component {
                 }
               </ul>
               <InputGroup>
-                <CopiableInput label="粗细" defaultValue={ formattedNumber(node.strokeWeight, globalSettings) }/>
+                <CopiableInput label={t('stroke weight')} value={ formattedNumber(node.strokeWeight, globalSettings) }/>
                 {
                   node.strokeDashes &&
                   <CopiableInput
-                    label="间隔"
-                    defaultValue={ node.strokeDashes.map(dash => formattedNumber(dash, globalSettings, true)).join() }
+                    label={t('stroke dash')}
+                    value={ node.strokeDashes.map(dash => formattedNumber(dash, globalSettings, true)).join() }
                   />
                 }
-                <CopiableInput label="位置" defaultValue={ node.strokeAlign.toLowerCase() }/>
+                <CopiableInput label={t('stroke position')} value={ node.strokeAlign.toLowerCase() }/>
               </InputGroup>
             </div>
           }
@@ -226,7 +226,7 @@ class RightProps extends React.Component {
             !!(effects && effects.length) &&
             <div className="props-section props-effects">
               <h5 className="section-title">
-                <span className="title-name">效果</span>
+                <span className="title-name">{t('effect')}</span>
                 <StyleReference
                   styleItems={effects}
                   styles={styles}
@@ -249,12 +249,12 @@ class RightProps extends React.Component {
           {
             code &&
             <div className="props-section props-code">
-              <h5 className="section-title">参考代码</h5>
+              <h5 className="section-title">{t('code')}</h5>
               <div className="section-items">
+                <WithCopy text={code} className="code-copy">
+                  <Copy size={14}/>
+                </WithCopy>
                 <pre className="code-box">
-                  <WithCopy text={code} className="code-copy">
-                    <Copy size={14}/>
-                  </WithCopy>
                   <code dangerouslySetInnerHTML={{__html: styledCode}}></code>
                 </pre>
               </div>
@@ -265,7 +265,7 @@ class RightProps extends React.Component {
             !!(exportSettings && exportSettings.length) &&
             <div className="props-section props-export">
               <h5 className="section-title">
-                <span className="title-name">切图</span>
+                <span className="title-name">{t('exported images')}</span>
               </h5>
               <ul className="section-items">
                 {

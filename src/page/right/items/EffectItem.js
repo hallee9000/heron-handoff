@@ -24,7 +24,7 @@ const EffectItem = ({flag, style, nodeType, globalSettings}) => {
       <span className="summary-name">{ typeName }</span>
       <CopiableInput
         label={<MixEffect size={12}/>}
-        className="summary-blur"
+        inputClass="summary-blur"
         value={ formattedNumber(blur, globalSettings) }
         title="模糊"
         isQuiet

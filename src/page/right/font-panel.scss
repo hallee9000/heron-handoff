@@ -2,29 +2,30 @@
 
 .props-text{
   .text-content{
+    position: relative;
     margin-bottom: 10px;
+    .content-copy{
+      position: absolute;
+      top: 8px;
+      right: 6px;
+      width: 14px;
+      height: 14px;
+      color: $white-36;
+      cursor: pointer;
+      transition: color 0.2s;
+      &:hover{
+        color: $white-85;
+      }
+    }
     .content-box{
-      position: relative;
       max-height: 70px;
       padding: 8px 12px;
+      padding-right: 24px;
       border-radius: 2px;
       background: #1C1F2A;
       font-size: 12px;
       white-space: pre-wrap;
       overflow: auto;
-      .box-copy{
-        position: absolute;
-        top: 8px;
-        right: 6px;
-        width: 14px;
-        height: 14px;
-        color: $white-36;
-        cursor: pointer;
-        transition: color 0.2s;
-        &:hover{
-          color: $white-85;
-        }
-      }
       .box-piece{
         margin: 0;
         padding: 0 3px;

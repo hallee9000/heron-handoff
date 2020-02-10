@@ -1,30 +1,33 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput } from 'components/utilities'
 import { formattedNumber } from 'utils/style'
 import './text-items.scss'
 
-const TextItems = ({flag, items, globalSettings}) =>
-  <ul key={flag} className="text-items">
+const TextItems = ({flag, items, globalSettings, t, i18n}) => {
+  const labelWidth = i18n.language==='en' ? 80 : 60
+  return <ul key={flag} className="text-items">
     <li className="text-item">
-      <CopiableInput isQuiet label="字体" value={ items.fontFamily }/>
+      <CopiableInput isQuiet labelWidth={labelWidth} label={t('font family')} value={ items.fontFamily }/>
     </li>
     <li className="text-item">
-      <CopiableInput isQuiet label="字重" value={ items.fontWeight }/>
+      <CopiableInput isQuiet labelWidth={labelWidth} label={t('font weight')} value={ items.fontWeight }/>
     </li>
     <li className="text-item">
-      <CopiableInput isQuiet label="字号" value={ formattedNumber(items.fontSize, globalSettings) }/>
+      <CopiableInput isQuiet labelWidth={labelWidth} label={t('font size')} value={ formattedNumber(items.fontSize, globalSettings) }/>
     </li>
     <li className="text-item">
-      <CopiableInput isQuiet label="对齐方式" value={ items.textAlign }/>
+      <CopiableInput isQuiet labelWidth={labelWidth} label={t('text align')} value={ items.textAlign }/>
     </li>
     <li className="text-item">
-      <CopiableInput isQuiet label="字间距" value={ formattedNumber(items.letterSpacing, globalSettings) }/>
+      <CopiableInput isQuiet labelWidth={labelWidth} label={t('letter spacing')} value={ formattedNumber(items.letterSpacing, globalSettings) }/>
     </li>
     <li className="text-item">
       <CopiableInput
         isQuiet
-        label="行高"
+        labelWidth={labelWidth}
+        label={t('line height')}
         value={
           items.lineHeightUnit==='PIXELS' ?
           formattedNumber(items.lineHeight, globalSettings) :
@@ -35,9 +38,10 @@ const TextItems = ({flag, items, globalSettings}) =>
     {
       items.textDecoration &&
       <li className="text-item">
-        <CopiableInput isQuiet label="样式" value={ items.textDecoration }/>
+        <CopiableInput isQuiet labelWidth={labelWidth} label={t('text decoration')} value={ items.textDecoration }/>
       </li>
     }
   </ul>
+}
 
-export default withGlobalSettings(TextItems)
+export default withTranslation('right.items')(withGlobalSettings(TextItems))

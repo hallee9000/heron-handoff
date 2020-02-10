@@ -32,10 +32,10 @@ export default class StyleDetail extends React.Component {
         }
         <div className="detail-name">
           <h5>名称</h5>
-          <CopiableInput defaultValue={ style.name }/>
+          <CopiableInput value={ style.name }/>
           {
             style.description &&
-            <CopiableInput type="textarea" defaultValue={ style.description }/>
+            <CopiableInput type="textarea" value={ style.description }/>
           }
         </div>
         <div className="detail-properties">

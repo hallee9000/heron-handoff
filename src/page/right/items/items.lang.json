@@ -1,0 +1,20 @@
+{
+  "en": {
+    "font family": "Font family",
+    "font weight": "Font weight",
+    "font size": "Font size",
+    "text align": "Text align",
+    "letter spacing": "Letter spacing",
+    "line height": "Line height",
+    "text decoration": "Text decoration"
+  },
+  "zh": {
+    "font family": "字体",
+    "font weight": "字重",
+    "font size": "字号",
+    "text align": "对齐方式",
+    "letter spacing": "字间距",
+    "line height": "行高",
+    "text decoration": "样式"
+  }
+}

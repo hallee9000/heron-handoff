@@ -1,8 +1,38 @@
 {
   "en": {
-    "position and spacing": "position and spacing"
+    "group type": "Type: Group",
+    "position and spacing": "Position and spacing",
+    "opacity": "Opacity",
+    "radius": "Radius",
+    "component": "Component",
+    "fill": "Fill",
+    "stroke": "Stroke",
+    "stroke weight": "Weight",
+    "stroke dash": "Dash",
+    "stroke position": "Position",
+    "effect": "Effects",
+    "code": "Code",
+    "exported images": "Exported images",
+    "text": "Text Style",
+    "multiple text styles tip": "This text contains multiple styles, click every piece to get detail.",
+    "multiple text styles": "Multiple text styles"
   },
   "zh": {
-    "position and spacing": "位置和尺寸"
+    "group type": "类型：组",
+    "position and spacing": "位置和尺寸",
+    "opacity": "不透明度",
+    "radius": "圆角",
+    "component": "组件",
+    "fill": "填充颜色",
+    "stroke": "描边",
+    "stroke weight": "粗细",
+    "stroke dash": "间隔",
+    "stroke position": "位置",
+    "effect": "效果",
+    "code": "参考代码",
+    "exported images": "切图",
+    "text": "文字样式",
+    "multiple text styles tip": "这段文本里面有多种样式，点击对应文字片段来查看不同的样式属性。",
+    "multiple text styles": "多样式文本"
   }
 }

@@ -77,14 +77,10 @@
         }
       }
       &.props-code{
-        .code-box{
+        .section-items{
           position: relative;
-          display: block;
-          margin: 0;
-          padding: 12px;
           border-radius: 2px;
           background: $black-2;
-          overflow-x: auto;
           .code-copy{
             position: absolute;
             top: 8px;
@@ -97,6 +93,13 @@
             &:hover{
               color: $white-85;
             }
+          }
+          .code-box{
+            display: block;
+            margin: 0;
+            margin-right: 24px;
+            padding: 12px;
+            overflow-x: auto;
           }
         }
       }

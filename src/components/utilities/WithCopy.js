@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import { withTranslation } from 'react-i18next'
 import Tooltip from 'rc-tooltip'
 import { copySomething } from 'utils/helper'
 
-export default ({children, text, className, callback, props}) => {
+const WithCopy = ({children, text, className, callback, t, props}) => {
   const [ visible, setVisible ] = useState(false)
   const onCopied = () => {
     const timer = setTimeout(() => {
@@ -18,7 +19,7 @@ export default ({children, text, className, callback, props}) => {
   return <Tooltip
     visible={visible}
     trigger={['click']}
-    overlay="复制成功！"
+    overlay={t('copied tip')}
     placement="top"
     transitionName="rc-tooltip-slide"
     {...props}
@@ -28,3 +29,5 @@ export default ({children, text, className, callback, props}) => {
     </span>
   </Tooltip>
 }
+
+export default withTranslation('utilities')(WithCopy)
