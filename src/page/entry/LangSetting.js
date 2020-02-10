@@ -10,6 +10,9 @@ const languages = {
 
 const LangSetting = ({i18n, globalSettings, onSettingsChange}) => {
   const { language: lang } = globalSettings
+  if (!lang) {
+    onSettingsChange('language', 'en')
+  }
   const [language, setLanguage] = useState(lang)
   const changeLanguage = e => {
     const { value } = e.target
