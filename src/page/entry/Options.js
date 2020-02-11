@@ -30,7 +30,7 @@ class Options extends React.Component {
   }
   handleSubmit = async e => {
     e.preventDefault()
-    const { fileKey, data, pagedFrames, logo } = this.props
+    const { fileKey, data, pagedFrames, logo, onDownloaded } = this.props
     const frames = getFlattedFrames(pagedFrames, false)
     const { offlineMode } = this.state
     const zip = offlineMode ? (new JSZip()) : null
@@ -69,6 +69,9 @@ class Options extends React.Component {
         .then(content => {
           saveAs(content, `${trimFilePath(documentName)}.zip`)
           this.setPercentage(100, '离线标注已生成！')
+          setTimeout(() => {
+            onDownloaded && onDownloaded()
+          }, 400)
         })
     } else {
       this.onFinished(data, components, styles, exportings, pagedFrames, images )

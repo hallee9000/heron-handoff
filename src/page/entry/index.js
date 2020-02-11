@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { GitHub, Coffee, Eye, DollarSign, X } from 'react-feather'
+import { GitHub, Coffee, Eye, DollarSign, Package, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import SettingsContext from 'contexts/SettingsContext'
 import Basic from './Basic'
@@ -19,7 +19,8 @@ class Entry extends React.Component {
     data: {},
     fileKey: '',
     pagedFrames: {},
-    coffeeVisible: false
+    coffeeVisible: false,
+    isDownloaded: false
   }
   gotoDemo = async e => {
     e && e.preventDefault()
@@ -49,9 +50,24 @@ class Entry extends React.Component {
   }
   toggleCoffee = e => {
     e.preventDefault()
-    const { coffeeVisible } = this.state
+    const { coffeeVisible, isDownloaded } = this.state
     this.setState({
       coffeeVisible: !coffeeVisible
+    })
+    if (coffeeVisible && isDownloaded) {
+      this.setState({
+        currentStep: 0,
+        data: {},
+        fileKey: '',
+        pagedFrames: {},
+        isDownloaded: false
+      })
+    }
+  }
+  handleDownloaded = () => {
+    this.setState({
+      isDownloaded: true,
+      coffeeVisible: true
     })
   }
   componentDidMount () {
@@ -59,37 +75,49 @@ class Entry extends React.Component {
   }
   render() {
     const { onDataGot, t } = this.props
-    const { currentStep, data, fileKey, pagedFrames, coffeeVisible } = this.state
+    const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded } = this.state
     return (
       <div className="app-entry">
         <div className="entry-container">
           <div className="entry-logo">
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
-          <div className={cn('entry-block', {hide: coffeeVisible})}>
-            <Basic
-              formVisible={currentStep===0}
-              onFinished={(data, fileKey) => this.switchStep(1, 'data', data, fileKey)}
-              onEdit={() => this.goBack(0)}
-            />
-            <FramesSelect
-              formVisible={currentStep===1}
-              fileKey={fileKey}
-              data={data}
-              onFinished={data => this.switchStep(2, 'pagedFrames', data)}
-              onEdit={() => this.goBack(1)}
-            />
-            <Options
-              formVisible={currentStep===2}
-              fileKey={fileKey}
-              data={data}
-              pagedFrames={pagedFrames}
-              logo={this.logo}
-              onFinished={onDataGot}
-            />
-          </div>
-          <div className={cn('entry-coffee', {hide: !coffeeVisible})}>
+          {
+            !isDownloaded &&
+            <div className={cn('entry-block', {hide: coffeeVisible})}>
+              <Basic
+                formVisible={currentStep===0}
+                onFinished={(data, fileKey) => this.switchStep(1, 'data', data, fileKey)}
+                onEdit={() => this.goBack(0)}
+              />
+              <FramesSelect
+                formVisible={currentStep===1}
+                fileKey={fileKey}
+                data={data}
+                onFinished={data => this.switchStep(2, 'pagedFrames', data)}
+                onEdit={() => this.goBack(1)}
+              />
+              <Options
+                formVisible={currentStep===2}
+                fileKey={fileKey}
+                data={data}
+                pagedFrames={pagedFrames}
+                logo={this.logo}
+                onFinished={onDataGot}
+                onDownloaded={this.handleDownloaded}
+              />
+            </div>
+          }
+          <div className={cn('entry-coffee', {'entry-coffee-downloaded': isDownloaded, hide: !coffeeVisible})}>
             <X size={36} className="coffee-close" onClick={this.toggleCoffee}/>
+            {
+              isDownloaded &&
+              <div className="coffee-congratulation">
+                <Package size={36}/>
+                <h2>离线标注已生成！</h2>
+                <p>如果对你有帮助可以考虑通过以下方式支持我。</p>
+              </div>
+            }
             <img src={require('./qrcode.jpg')} alt="coffee qrcode"/>
             <div className="coffee-or">Or</div>
             <a href="https://paypal.me/leadream" target="_blank" rel="noopener noreferrer"><DollarSign size={12}/> {t('paypal')}</a>

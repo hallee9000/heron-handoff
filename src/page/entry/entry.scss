@@ -83,6 +83,9 @@
       padding: 0 15px;
       padding-top: 60px;
       text-align: center;
+      &-downloaded{
+        padding-top: 36px;
+      }
       .coffee-close{
         position: absolute;
         top: 12px;
@@ -94,6 +97,16 @@
         cursor: pointer;
         &:hover{
           color: $white-85;
+        }
+      }
+      .coffee-congratulation{
+        margin-bottom: 32px;
+        h2{
+          margin: 6px 0;
+        }
+        p{
+          margin: 6px 0;
+          color: $white-65;
         }
       }
       img{
