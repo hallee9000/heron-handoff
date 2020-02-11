@@ -90,11 +90,11 @@ class FramesSelect extends React.Component {
     this.setState({ pagedFrames })
   }
   handleSubmit = () => {
-    const { onFinished } = this.props
+    const { onFinished, t } = this.props
     const { pagedFrames } = this.state
     const selectedFrames = getFlattedFrames(pagedFrames)
     if (!selectedFrames.length) {
-      this.setState({ errorMessage: '请至少选择一个 Frame' })
+      this.setState({ errorMessage: t('select at least one frame') })
       return
     }
     this.setState({ editable: true })
@@ -175,7 +175,7 @@ class FramesSelect extends React.Component {
             </div>
             <div className="selection-all-select">
               <label>
-                <input type="checkbox" checked={allSelected} onChange={this.handleAllSelect}/> 全选
+                <input type="checkbox" checked={allSelected} onChange={this.handleAllSelect}/> {t('select all')}
               </label>
             </div>
             {

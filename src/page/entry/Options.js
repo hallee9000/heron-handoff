@@ -14,7 +14,7 @@ class Options extends React.Component {
     offlineMode: true,
     isLoading: false,
     percentage: 0,
-    buttonText: '生成标注'
+    buttonText: this.props.t('generate design mark')
   }
   setPercentage = (percentage, buttonText) => {
     this.setState({
@@ -30,19 +30,19 @@ class Options extends React.Component {
   }
   handleSubmit = async e => {
     e.preventDefault()
-    const { fileKey, data, pagedFrames, logo, onDownloaded } = this.props
+    const { fileKey, data, pagedFrames, logo, onDownloaded, t } = this.props
     const frames = getFlattedFrames(pagedFrames, false)
     const { offlineMode } = this.state
     const zip = offlineMode ? (new JSZip()) : null
 
     this.setState({ isLoading: true })
-    this.setPercentage(0, '开始获取数据……')
+    this.setPercentage(0, t('fetching data'))
 
     if (zip) {
-      await handleIndex(zip, data, pagedFrames, () => { this.setPercentage(2, '处理 index.html ……') })
-      await handleJs(zip, () => { this.setPercentage(6, '处理 Js ……') })
-      await handleIcoAndCSS(zip, () => { this.setPercentage(12, '处理 CSS ……') })
-      await handleLogo(zip, logo.current.src, () => { this.setPercentage(16, '处理 logo ……') })
+      await handleIndex(zip, data, pagedFrames, () => { this.setPercentage(2, t('dealing with', {name: 'index.html'})) })
+      await handleJs(zip, () => { this.setPercentage(6, t('dealing with', {name: 'Js'})) })
+      await handleIcoAndCSS(zip, () => { this.setPercentage(12, t('dealing with', {name: 'CSS'})) })
+      await handleLogo(zip, logo.current.src, () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
     }
     // get components and styles
     const { components, styles, exportSettings } = walkFile(data)
@@ -51,24 +51,24 @@ class Options extends React.Component {
     const images = zip ?
       await this.downloadFramesAndComponentsImages(fileKey, imageIds, zip, (index, name, length) => {
         const step = Math.floor(36/length)
-        this.setPercentage(20+step*(index+1), `开始获取  ${name} ……`)
+        this.setPercentage(20+step*(index+1), t('fetching', {name}))
       }) :
       await this.getFramesAndComponentsImages(fileKey, imageIds, () => {
-        this.setPercentage(56, `开始获取图片……`)
+        this.setPercentage(56, t('fetching', {name: '图片'}))
       })
     // get export settings
     const exportings = await this.getExportingImages(fileKey, exportSettings, zip, (index, name, length) => {
       const step = Math.floor(32/length)
-      this.setPercentage(60+step*(index+1), `开始获取 ${name} ……`)
+      this.setPercentage(60+step*(index+1), t('fetching', {name}))
     })
     if (zip) {
       // generate zip
       const documentName = data.name
-      this.setPercentage(98, '准备生成压缩包……')
+      this.setPercentage(98, 'generating zip')
       zip.generateAsync({type: 'blob'})
         .then(content => {
           saveAs(content, `${trimFilePath(documentName)}.zip`)
-          this.setPercentage(100, '离线标注已生成！')
+          this.setPercentage(100, 'marked zip downloaded')
           setTimeout(() => {
             onDownloaded && onDownloaded()
           }, 400)
@@ -137,11 +137,11 @@ class Options extends React.Component {
     return exportings
   }
   onFinished = (fileData, components, styles, exportSettings, pagedFrames, imagesData ) => {
-    const { onFinished } = this.props
+    const { onFinished, t } = this.props
     this.setState({
       isLoading: false
     })
-    this.setPercentage(100, '资源获取成功！')
+    this.setPercentage(100, t('marked data generated'))
     onFinished && onFinished(fileData, components, styles, exportSettings, pagedFrames, imagesData)
   }
   componentDidMount () {
@@ -162,15 +162,15 @@ class Options extends React.Component {
         <div className={cn('form entry-form', {'form-visible': formVisible})}>
           <div className="form-item">
             <label>
-              <input name="offlineMode" type="checkbox" checked={offlineMode} onChange={this.handleOptionChange}/>生成离线标注
+              <input name="offlineMode" type="checkbox" checked={offlineMode} onChange={this.handleOptionChange}/>{t('offline mode')}
             </label>
-            <div className="help-block">默认生成离线标注压缩包，取消勾选则生成在线标注，但关闭后需要重新生成。</div>
+            <div className="help-block">{t('offline mode description')}</div>
           </div>
           <div className="form-item">
             <label>
-              <input name="useHighQuality" type="checkbox" checked={useHighQuality} onChange={this.handleOptionChange}/>使用高清图生成标注
+              <input name="useHighQuality" type="checkbox" checked={useHighQuality} onChange={this.handleOptionChange}/>{t('use high quality')}
             </label>
-            <div className="help-block">默认使用高清图，不使用高清图可以加快生成速度。</div>
+            <div className="help-block">{t('use high quality description')}</div>
           </div>
           <div className="form-item">
             <button

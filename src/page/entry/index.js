@@ -114,8 +114,8 @@ class Entry extends React.Component {
               isDownloaded &&
               <div className="coffee-congratulation">
                 <Package size={36}/>
-                <h2>离线标注已生成！</h2>
-                <p>如果对你有帮助可以考虑通过以下方式支持我。</p>
+                <h2>{t('congratulation title')}</h2>
+                <p>{t('congratulation description')}</p>
               </div>
             }
             <img src={require('./qrcode.jpg')} alt="coffee qrcode"/>
