@@ -1,9 +1,10 @@
 import React from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import { WithTooltip } from 'components/utilities'
 import { getUrlImage } from 'utils/helper'
 
-export default class Components extends React.Component {
+class Components extends React.Component {
   state = {
     selectedIndex: 0
   }
@@ -20,7 +21,7 @@ export default class Components extends React.Component {
     }
   }
   render () {
-    const { visible, components, useLocalImages, images } = this.props
+    const { visible, components, useLocalImages, images, t } = this.props
     const { selectedIndex } = this.state
     return (
       <ul className={cn('list-items list-components', {hide: !visible})}>
@@ -48,9 +49,11 @@ export default class Components extends React.Component {
                 </li>
               </WithTooltip>
           ) :
-          <li className="item-empty">没有组件</li>
+          <li className="item-empty">{t('no components')}</li>
         }
       </ul>
     )
   }
 }
+
+export default withTranslation('left')(Components)

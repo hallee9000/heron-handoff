@@ -1,0 +1,12 @@
+{
+  "en": {
+    "pages": "Pages",
+    "components": "Components",
+    "no components": "no components"
+  },
+  "zh": {
+    "pages": "页面",
+    "components": "组件",
+    "no components": "没有组件"
+  }
+}

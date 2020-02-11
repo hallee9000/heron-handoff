@@ -4,7 +4,7 @@
 
 Figma Handoff 是一个设计交付工具，可以帮助你从 Figma 设计文件生成标注，方便开发人员查看。它是一个线上应用，通过 [Figma API](https://www.figma.com/developers/api) 获取设计数据，并生成离线或在线标注，但不会将你的数据保存至任何服务器。
 
-访问地址：https://leadream.github.io/figma-handoff/
+访问地址：https://figmacn.com/handoff/
 
 你可以通过这个按钮查看 Demo。
 

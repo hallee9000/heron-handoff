@@ -1,10 +1,11 @@
 import React from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import Frames from './Frames'
 import Components from './Components'
 import './left-sider.scss'
 
-export default class LeftSider extends React.Component {
+class LeftSider extends React.Component {
   state = {
     tabIndex: 0
   }
@@ -18,7 +19,7 @@ export default class LeftSider extends React.Component {
     onFrameOrComponentChange && onFrameOrComponentChange(itemId, pageId)
   }
   render () {
-    const { components, useLocalImages, images, pagedFrames } = this.props
+    const { components, useLocalImages, images, pagedFrames, t } = this.props
     const { tabIndex } = this.state
     return (
       <div className="main-left-sider">
@@ -26,11 +27,11 @@ export default class LeftSider extends React.Component {
           <li
             className={cn({selected: tabIndex===0})}
             onClick={() => this.handleTabClick(0)}
-          >页面</li>
+          >{t('pages')}</li>
           <li
             className={cn({selected: tabIndex===1})}
             onClick={() => this.handleTabClick(1)}
-          >组件</li>
+          >{t('components')}</li>
         </ul>
         <div className="left-sider-list">
           <Frames
@@ -52,3 +53,5 @@ export default class LeftSider extends React.Component {
     )
   }
 }
+
+export default withTranslation('left')(LeftSider)

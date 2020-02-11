@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import { Droplet, Image, DownloadCloud } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
@@ -51,25 +52,25 @@ class RightSider extends React.Component {
   handleDownloadAll = async () => {
     const { percentage } = this.state
     if (percentage!==0) return
-    const { exportSettings, documentName } = this.props
+    const { exportSettings, documentName, t } = this.props
     const zip = new JSZip()
     const length = exportSettings.length
     const folderName = `${documentName.replace(/\//g, '-')}-exports`
     const exportsFolder = zip.folder(folderName)
-    this.setProgress(1, '开始下载图片……')
+    this.setProgress(1, t('downloading images'))
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
       const imgName = getFileName(exportSetting, index)
       const imgData = await getBufferData(`https://figma-handoff-cors.herokuapp.com/${exportSetting.image}`)
-      this.setProgress((index+1)*Math.floor(90/length), `正在处理 ${imgName}……`)
+      this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))
       exportsFolder.file(imgName, imgData, {base64: true})
     })
 
-    this.setProgress(96, '正在压缩文件……')
+    this.setProgress(96, t('compressing files'))
     zip.generateAsync({type: 'blob'})
       .then(content => {
         saveAs(content, `${folderName}.zip`)
-        this.setProgress(100, '完成下载！')
+        this.setProgress(100, t('downloaded'))
         const timer = setTimeout(() => {
           this.setProgress(0, '')
           clearTimeout(timer)
@@ -86,22 +87,22 @@ class RightSider extends React.Component {
     // this.openDetail(styles.EFFECT[4])
   }
   render () {
-    const { useLocalImages, styles, exportSettings, hasMask } = this.props
+    const { useLocalImages, styles, exportSettings, hasMask, t } = this.props
     const { maskVisible, tabIndex, detailVisible, currentStyle, percentage, progressText } = this.state
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
         <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>
         <div className={cn('sider-styles', {'sider-styles-visible': !detailVisible})}>
           <ul className="styles-tabs">
-            <li className={cn({'selected': tabIndex===0})} onClick={() => this.changeTab(0)}><Droplet size={14}/>样式</li>
-            <li className={cn({'selected': tabIndex===1})} onClick={() => this.changeTab(1)}><Image size={14}/>切图</li>
+            <li className={cn({'selected': tabIndex===0})} onClick={() => this.changeTab(0)}><Droplet size={14}/>{t('tab style')}</li>
+            <li className={cn({'selected': tabIndex===1})} onClick={() => this.changeTab(1)}><Image size={14}/>{t('tab slice')}</li>
           </ul>
           <ul className={cn('styles-list', {'hide': tabIndex!==0})}>
             {
               Object.keys(styles).map(key =>
                 key!=='GRID' &&
                 <Fragment key={key}>
-                  <li className="list-title">{ STYLE_TYPES[key] }</li>
+                  <li className="list-title">{ t(STYLE_TYPES[key]) }</li>
                   {
                     styles[key] &&
                     styles[key]
@@ -128,7 +129,7 @@ class RightSider extends React.Component {
                 className={cn('exports-list-download-all', {'is-downloading': percentage})}
                 onClick={this.handleDownloadAll}
               >
-                <span>{ progressText || '全部下载' }</span> { !percentage && <DownloadCloud size={14}/> }
+                <span>{ progressText || t('download all') }</span> { !percentage && <DownloadCloud size={14}/> }
                 <div className="download-all-progress" style={{width: `${percentage}%`}}/>
               </li>
             }
@@ -156,4 +157,4 @@ class RightSider extends React.Component {
   }
 }
 
-export default withGlobalSettings(RightSider)
+export default withTranslation('right')(withGlobalSettings(RightSider))

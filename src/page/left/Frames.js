@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import { getUrlImage } from 'utils/helper'
 
-export default class Frames extends React.Component {
+class Frames extends React.Component {
   constructor (props) {
     super(props)
     const pageId = this.getDefaultPageId(props)
@@ -98,3 +99,5 @@ export default class Frames extends React.Component {
     )
   }
 }
+
+export default withTranslation('left')(Frames)

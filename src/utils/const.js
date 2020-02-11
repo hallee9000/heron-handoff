@@ -7,10 +7,10 @@ import {
 } from 'components/icons/text'
 
 export const STYLE_TYPES = {
-  'FILL': '颜色',
-  'TEXT': '文字',
-  'EFFECT': '效果',
-  'GRID': '布局栅格'
+  'FILL': 'fill type',
+  'TEXT': 'text type',
+  'EFFECT': 'effect type',
+  'GRID': 'grid type'
 }
 
 export const PAINTS = [ 'SOLID', 'GRADIENT_LINEAR', 'GRADIENT_RADIAL', 'GRADIENT_ANGULAR', 'GRADIENT_DIAMOND', 'IMAGE', 'EMOJI' ]

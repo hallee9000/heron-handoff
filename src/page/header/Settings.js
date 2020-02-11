@@ -64,18 +64,19 @@ class Settings extends Component {
     onSettingsChange('language', value)
   }
   render () {
+    const { t } = this.props
     const { platform, resolution, unit, remBase, language } = this.state
     const baseVisible = platform===0 && (unit===3 || unit===4)
     return <div className="settings">
-      <h3><span role="img" aria-label="Congratulations">⚙️</span> 设置</h3>
+      <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
       <div className="form">
-        <div className="form-item settings-title">标注</div>
+        <div className="form-item settings-title">{t('settings mark')}</div>
         <div className="form-item form-item-horizontal">
-          <label htmlFor="platform" className="item-label">平台</label>
+          <label htmlFor="platform" className="item-label">{t('settings platform')}</label>
           <select
             name="platform"
             className="input"
-            placeholder="请选择平台"
+            placeholder={t('platform placeholder')}
             value={platform}
             onChange={this.handleChange}
           >
@@ -87,7 +88,7 @@ class Settings extends Component {
         </div>
         <div className="form-item form-item-horizontal">
           <label htmlFor="resolution" className="item-label">
-            { platform===0 ? '倍数' : '像素密度' }
+            { platform===0 ? t('multiple') : t('pixel density') }
           </label>
           <select
             name="resolution"
@@ -105,19 +106,19 @@ class Settings extends Component {
           </select>
         </div>
         <div className="form-item form-item-horizontal">
-          <label htmlFor="unit" className="item-label">单位</label>
+          <label htmlFor="unit" className="item-label">{t('unit')}</label>
           {
             platform===0 ?
             <select
               name="unit"
               className="input"
-              placeholder="请选择单位"
+              placeholder={t('unit placeholder')}
               value={unit}
               onChange={this.handleChange}
             >
               {
                 UNITS.map((unit, index) =>
-                  index>1 && <option key={index} value={index}>{ unit }{ unit==='rpx' && '（小程序）' }</option>
+                  index>1 && <option key={index} value={index}>{ unit }{ unit==='rpx' && t('miniprogram') }</option>
                 )
               }
             </select>  :
@@ -127,10 +128,10 @@ class Settings extends Component {
         {
           baseVisible &&
           <div className="form-item form-item-horizontal">
-            <label htmlFor="rem-base" className="item-label">(R)em 基准</label>
+            <label htmlFor="rem-base" className="item-label">{t('(r)em base')}</label>
             <InputNumber
               name="remBase"
-              placeholder="请填写基准值"
+              placeholder={t('(r)em base placeholder')}
               min={1}
               max={100}
               precision={0}
@@ -141,7 +142,7 @@ class Settings extends Component {
         }
       </div>
       <div className="form">
-        <div className="form-item settings-title">语言</div>
+        <div className="form-item settings-title">{t('language')}</div>
         <div className="form-item">
           <select name="language" className="input" value={language} onChange={this.changeLanguage}>
             <option value="en">English</option>

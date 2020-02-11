@@ -1,5 +1,6 @@
 import React, { Fragment, createRef } from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import { Download, Settings, HelpCircle, ChevronLeft } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
@@ -11,7 +12,7 @@ import { handleIndex, handleJs, handleIcoAndCSS, handleLogo, handleFramesAndComp
 import { trimFilePath } from 'utils/helper'
 import './header.scss'
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   logo = createRef()
   state = {
     loaderWidth: 0,
@@ -19,25 +20,26 @@ export default class Header extends React.Component {
     isExported: false
   }
   handleDownload = async () => {
-    const { data, images, exportSettings, pagedFrames, documentName } = this.props
+    const { data, images, exportSettings, pagedFrames, documentName, t } = this.props
     const zip = new JSZip()
-
-    await handleIndex(zip, data, pagedFrames, () => { this.setLoader(3, '开始处理 index.html ……') })
-    await handleJs(zip, () => { this.setLoader(8, '开始处理 Js ……') })
-    await handleIcoAndCSS(zip, () => { this.setLoader(12, '开始处理 CSS ……') })
-    await handleLogo(zip, this.logo.current.src, () => { this.setLoader(16, '开始处理 logo ……') })
+    
+    
+    await handleIndex(zip, data, pagedFrames, () => { this.setLoader(3, t('dealing with', {name: 'index.html'})) })
+    await handleJs(zip, () => { this.setLoader(8, t('dealing with', {name: 'Js'})) })
+    await handleIcoAndCSS(zip, () => { this.setLoader(12, t('dealing with', {name: 'CSS'})) })
+    await handleLogo(zip, this.logo.current.src, () => { this.setLoader(16, t('dealing with', {name: 'logo'})) })
     await handleFramesAndComponents(zip, images, (index, name, length) => {
-      this.setLoader(18+(index+1)*Math.floor(36/length), `开始生成 ${name}……`)
+      this.setLoader(18+(index+1)*Math.floor(36/length), t('generating', {name}))
     })
     await handleExports(zip, exportSettings, (index, name, length) => {
-      this.setLoader(54+(index+1)*Math.floor(36/length), `开始生成 ${name}……`)
+      this.setLoader(54+(index+1)*Math.floor(36/length), t('generating', {name}))
     })
     // generate zip
-    this.setLoader(92, '开始生成压缩包……')
+    this.setLoader(92, t('generating zip'))
     zip.generateAsync({type: 'blob'})
       .then(content => {
         saveAs(content, `${trimFilePath(documentName)}.zip`)
-        this.setLoader(100, '离线标注文件已生成！')
+        this.setLoader(100, t('marked zip downloaded'))
         this.toggleExportedOverlay()
       })
   }
@@ -71,7 +73,7 @@ export default class Header extends React.Component {
     })
   }
   render () {
-    const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack } = this.props
+    const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack, t } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
     const logoHidden = this.hasNames() && !isLocal
     return (
@@ -81,7 +83,7 @@ export default class Header extends React.Component {
         </span>
         <a
           className={cn({'hide': logoHidden})}
-          href="https://leadream.github.io/figma-handoff/"
+          href="https://figmacn.com/handoff/"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -122,12 +124,12 @@ export default class Header extends React.Component {
               }
               overlayClassName="header-overlay header-overlay-settings"
             >
-              <span title="设置">
+              <span title={t('settings')}>
                 <Settings size={14}/>
               </span>
             </Overlay>
           }
-          <a title="获取帮助" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer">
+          <a title={t('help')} href="https://github.com/leadream/figma-handoff#简介" target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
           {
@@ -140,7 +142,7 @@ export default class Header extends React.Component {
               }}
               overlayClassName="header-overlay header-overlay-exported"
             >
-              <span title="生成离线标注" onClick={this.handleDownload}>
+              <span title={t('generate marked zip')} onClick={this.handleDownload}>
                 <Download size={14}/>
               </span>
             </Overlay>
@@ -151,3 +153,5 @@ export default class Header extends React.Component {
     )
   }
 }
+
+export default withTranslation('header')(Header)

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import cn from 'classnames'
+import { withTranslation } from 'react-i18next'
 import { ChevronDown } from 'react-feather'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
@@ -9,7 +10,7 @@ import { EFFECTS } from 'utils/const'
 import Color from './Color'
 import './effect-item.scss'
 
-const EffectItem = ({flag, style, nodeType, globalSettings}) => {
+const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
   const colorFormat = globalSettings.colorFormat || 0
   const [isExpanded, setExpanded] = useState(false)
   const { type, category, typeName, blur, x, y, dashedPorpertyName } = style
@@ -26,7 +27,7 @@ const EffectItem = ({flag, style, nodeType, globalSettings}) => {
         label={<MixEffect size={12}/>}
         inputClass="summary-blur"
         value={ formattedNumber(blur, globalSettings) }
-        title="模糊"
+        title={t('blur')}
         isQuiet
         onWrapperClick={e => e.stopPropagation()}
       />
@@ -49,4 +50,4 @@ const EffectItem = ({flag, style, nodeType, globalSettings}) => {
   </ul>
 }
 
-export default withGlobalSettings(EffectItem)
+export default withTranslation('right.items')(withGlobalSettings(EffectItem))

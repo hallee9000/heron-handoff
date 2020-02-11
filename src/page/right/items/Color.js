@@ -1,15 +1,16 @@
 import React, { Fragment } from 'react'
+import { withTranslation } from 'react-i18next'
 import { CopiableInput } from 'components/utilities'
 import { Fill } from 'components/icons/style'
 import { formattedColor } from 'utils/style'
 
-export default ({color, colorFormat}) =>
+const Color = ({color, colorFormat, t}) =>
   <Fragment>
     <CopiableInput
       label={<Fill size={12}/>}
       value={formattedColor(colorFormat, color)}
       style={{width: colorFormat===0 ? 64 : 100}}
-      title="颜色"
+      title={t('color value')}
     />
     {
       colorFormat===0 &&
@@ -20,3 +21,5 @@ export default ({color, colorFormat}) =>
       />
     }
   </Fragment>
+
+export default withTranslation('right.items')(Color)
