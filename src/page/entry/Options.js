@@ -30,7 +30,7 @@ class Options extends React.Component {
   }
   handleSubmit = async e => {
     e.preventDefault()
-    const { fileKey, data, pagedFrames, logo, onDownloaded, t } = this.props
+    const { fileKey, data, pagedFrames, framercnLogo, logo, onDownloaded, t } = this.props
     const frames = getFlattedFrames(pagedFrames, false)
     const { offlineMode } = this.state
     const zip = offlineMode ? (new JSZip()) : null
@@ -42,6 +42,7 @@ class Options extends React.Component {
       await handleIndex(zip, data, pagedFrames, () => { this.setPercentage(2, t('dealing with', {name: 'index.html'})) })
       await handleJs(zip, () => { this.setPercentage(6, t('dealing with', {name: 'Js'})) })
       await handleIcoAndCSS(zip, () => { this.setPercentage(12, t('dealing with', {name: 'CSS'})) })
+      await handleLogo(zip, framercnLogo.current.src, () => { this.setPercentage(14, t('dealing with', {name: 'framercn-logo'})) })
       await handleLogo(zip, logo.current.src, () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
     }
     // get components and styles

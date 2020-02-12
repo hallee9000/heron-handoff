@@ -9,10 +9,26 @@
   >*{
     z-index: 1;
   }
+  .header-framercn-logo{
+    padding: 10px 12px;
+    padding-right: 6px;
+    img{
+      display: block;
+      height: 20px;
+    }
+  }
+  .header-divider{
+    width: 1px;
+    height: 20px;
+    background-color: $white-16;
+  }
   .header-logo{
-    margin: 5px 0;
-    margin-left: 12px;
-    height: 30px;
+    padding: 5px 0;
+    padding-left: 6px;
+    img{
+      display: block;
+      height: 30px;
+    }
   }
   .header-back{
     padding: 8px;
