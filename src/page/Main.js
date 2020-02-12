@@ -12,6 +12,7 @@ export default class Main extends React.Component {
       canvasData: null,
       id: '',
       elementData: null,
+      currentComponentName: '',
       propsDissolved: true
     }
   }
@@ -29,9 +30,10 @@ export default class Main extends React.Component {
     onNamesChange && onNamesChange(canvasData.name, currentPage.name)
     this.handleDeselect()
   }
-  handleSelectElement = elementData => {
+  handleSelectElement = (elementData, currentComponentName) => {
     this.setState({
       elementData,
+      currentComponentName,
       propsDissolved: false
     })
   }
@@ -43,7 +45,7 @@ export default class Main extends React.Component {
   }
   render () {
     const { documentName, components, styles, exportSettings, images, pagedFrames, isMock, isLocal } = this.props
-    const { id, canvasData, elementData, propsDissolved } = this.state
+    const { id, canvasData, elementData, currentComponentName, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider
@@ -79,6 +81,7 @@ export default class Main extends React.Component {
             <RightProps
               useLocalImages={isMock || isLocal}
               data={elementData}
+              currentComponentName={currentComponentName}
               styles={styles}
               components={components}
               exportSettings={exportSettings}

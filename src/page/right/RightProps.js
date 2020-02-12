@@ -89,14 +89,13 @@ class RightProps extends React.Component {
     }, 10)
   }
   render () {
-    const { data, styles, components, useLocalImages, globalSettings, t } = this.props
+    const { data, currentComponentName, styles, useLocalImages, globalSettings, t } = this.props
     const { node } = data
     const { strokes, effects, styles: nodeStyles } = node
     const { hasEntered, fills, exportSettings, flag, isPieceSelected, detailVisible, currentStyle, textStyle } = this.state
     const { styles: fillItems } = getFillsStyle(fills)
     const { styles: strokeItems } = getFillsStyle(strokes)
     const { styles: effectItems } = getEffectsStyle(effects)
-    const master = components.find(c => c.id===node.componentId)
     const code = getCode(node, fillItems, strokeItems, effectItems, textStyle, globalSettings)
     const styledCode = Prism.highlight(code, Prism.languages.css, 'css')
     return (
@@ -112,12 +111,6 @@ class RightProps extends React.Component {
               <ColorFormatSelect/>
             </h5>
           </div>
-          {
-            node.type==='GROUP' &&
-            <div className="props-section">
-              <h5 className="section-title section-name">{t('group type')}</h5>
-            </div>
-          }
           {/* position and size */}
           <div className="props-section props-basic">
             <h5 className="section-title">{t('position and spacing')}</h5>
@@ -137,12 +130,15 @@ class RightProps extends React.Component {
             </div>
           </div>
           {
-            node.type==='INSTANCE' && master &&
+            node.type==='GROUP' &&
             <div className="props-section">
-              <h5 className="section-title">{t('component')}</h5>
-              <div className="section-items">
-                { master.name }
-              </div>
+              <h5 className="section-title section-name">{t('group type')}</h5>
+            </div>
+          }
+          {
+            currentComponentName &&
+            <div className="props-section">
+              <h5 className="section-title section-name">{t('component')}: { currentComponentName }</h5>
             </div>
           }
           {/* font */}

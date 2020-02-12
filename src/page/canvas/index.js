@@ -16,6 +16,7 @@ class Canvas extends React.Component {
     pageRect: {},
     componentIndex: '',
     componentId: '',
+    currentComponentName: '',
     selectedRect: null,
     selectedIndex: null,
     hoveredRect: null,
@@ -28,6 +29,7 @@ class Canvas extends React.Component {
     this.setState({
       componentIndex: '',
       componentId: '',
+      currentComponentName: '',
       selectedRect: null,
       selectedIndex: null,
       hoveredRect: null,
@@ -54,12 +56,21 @@ class Canvas extends React.Component {
     this.setState({ frameStyle })
   }
   onSelect = (rect, index) => {
-    const { spacePressed, onSelect } =this.props
+    const { spacePressed, onSelect, components } =this.props
     if (spacePressed) return
     const { rects } = this.state
     const { index: componentIndex, componentId } = findParentComponent(index, rect, rects)
-    onSelect && onSelect(rect)
-    this.setState({ selectedRect: rect, selectedIndex: index, componentIndex, componentId})
+    const currentComponent = components.find(({id}) => id===componentId)
+    const currentComponentName =  rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
+
+    onSelect && onSelect(rect, currentComponentName)
+    this.setState({
+      selectedRect: rect,
+      selectedIndex: index,
+      componentIndex,
+      componentId,
+      currentComponentName
+    })
   }
   onHover = (rect, index) => {
     const { pageRect, selectedRect } = this.state
@@ -97,9 +108,8 @@ class Canvas extends React.Component {
     }
   }
 	render () {
-    const { id, size, useLocalImages, images, globalSettings, components } = this.props
-    const { rects, pageRect, frameStyle, selectedIndex, componentId, hoveredIndex, componentIndex, markData, isChanging } = this.state
-    const currentComponent = components.find(({id}) => id===componentId)
+    const { id, size, useLocalImages, images, globalSettings } = this.props
+    const { rects, pageRect, frameStyle, selectedIndex, hoveredIndex, componentIndex, currentComponentName, markData, isChanging } = this.state
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className="mark-layers" style={frameStyle}>
@@ -113,7 +123,6 @@ class Canvas extends React.Component {
               return (
                 <div
                   key={index}
-                  title={rect.componentIds}
                   className={cn(
                     "layer",
                     ...clazz,
@@ -134,7 +143,7 @@ class Canvas extends React.Component {
                 >
                   {
                     isComponent && componentIndex===index &&
-                    <div className="layer-component">{ currentComponent ? currentComponent.name : rect.node.name}</div>
+                    <div className="layer-component">{ currentComponentName }</div>
                   }
                   <div className="layer-sizing layer-width">{ formattedNumber(rect.actualWidth, globalSettings) }</div>
                   <div className="layer-sizing layer-height">{ formattedNumber(rect.actualHeight, globalSettings) }</div>
