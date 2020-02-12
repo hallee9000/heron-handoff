@@ -13,7 +13,7 @@ import { trimFilePath } from 'utils/helper'
 import './header.scss'
 
 class Header extends React.Component {
-  framercnLogo = createRef()
+  figmacnLogo = createRef()
   logo = createRef()
   state = {
     loaderWidth: 0,
@@ -28,7 +28,7 @@ class Header extends React.Component {
     await handleIndex(zip, data, pagedFrames, () => { this.setLoader(3, t('dealing with', {name: 'index.html'})) })
     await handleJs(zip, () => { this.setLoader(8, t('dealing with', {name: 'Js'})) })
     await handleIcoAndCSS(zip, () => { this.setLoader(12, t('dealing with', {name: 'CSS'})) })
-    await handleLogo(zip, this.framercnLogo.current.src, () => { this.setLoader(14, t('dealing with', {name: 'figmacn-logo'})) })
+    await handleLogo(zip, this.figmacnLogo.current.src, () => { this.setLoader(14, t('dealing with', {name: 'figmacn-logo'})) })
     await handleLogo(zip, this.logo.current.src, () => { this.setLoader(16, t('dealing with', {name: 'logo'})) })
     await handleFramesAndComponents(zip, images, (index, name, length) => {
       this.setLoader(18+(index+1)*Math.floor(36/length), t('generating', {name}))
@@ -84,12 +84,12 @@ class Header extends React.Component {
           <ChevronLeft size={24}/>
         </span>
         <a
-          className={cn('header-framercn-logo', {'hide': logoHidden})}
+          className={cn('header-figmacn-logo', {'hide': logoHidden})}
           href="https://figmacn.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="framercn logo" ref={this.framercnLogo}/>
+          <img src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="figmacn logo" ref={this.figmacnLogo}/>
         </a>
         <div className={cn('header-divider', {'hide': logoHidden})}/>
         <a

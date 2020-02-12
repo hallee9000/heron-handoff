@@ -13,7 +13,7 @@ import { walkFile, getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
 import './entry.scss'
 
 class Entry extends React.Component {
-  framercnLogo = createRef()
+  figmacnLogo = createRef()
   logo = createRef()
   state = {
     currentStep: 0,
@@ -81,7 +81,7 @@ class Entry extends React.Component {
       <div className="app-entry">
         <div className="entry-container">
           <div className="entry-logo">
-            <img className="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="framercn logo" ref={this.framercnLogo}/>
+            <img className="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="figmacn logo" ref={this.figmacnLogo}/>
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
           {
@@ -105,7 +105,7 @@ class Entry extends React.Component {
                 data={data}
                 pagedFrames={pagedFrames}
                 logo={this.logo}
-                framercnLogo={this.framercnLogo}
+                figmacnLogo={this.figmacnLogo}
                 onFinished={onDataGot}
                 onDownloaded={this.handleDownloaded}
               />
