@@ -67,7 +67,7 @@ export const findParentComponent = (currentIndex, rect, rects) => {
   if (currentIsComponent && rect.componentIds.split(',').length>1) {
     index--
   }
-  while (index && rect.componentIds) {
+  while (index > -1 && rect.componentIds) {
     const { type, componentId } = rects[index].node
     if (type==='COMPONENT' || type==='INSTANCE') {
       return { index, componentId }

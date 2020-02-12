@@ -24,10 +24,14 @@
       }
       &.component{
         border-color: $component-color;
+        border-style: dotted;
       }
       &.selected{
         border: 1px solid $mark-selected;
         opacity: 1;
+      }
+      &.component.selected{
+        border-color: $component-color;
       }
       &.selected.hovered{
         .layer-sizing{
