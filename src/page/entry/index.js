@@ -81,7 +81,7 @@ class Entry extends React.Component {
       <div className="app-entry">
         <div className="entry-container">
           <div className="entry-logo">
-            <img class="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="framercn logo" ref={this.framercnLogo}/>
+            <img className="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="framercn logo" ref={this.framercnLogo}/>
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
           {
