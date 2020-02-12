@@ -14,16 +14,24 @@ export const toFixed = num =>
 export const generateRects = (nodes, docRect) => {
   let index = 0
   const rects = []
-  const step = (nodes) => {
+  const step = (nodes, parentComponentId) => {
     nodes.map(node => {
       const nbb = node.absoluteBoundingBox
       if (node.visible===false) {
-        return 1
+        // eslint-disable-next-line
+        return
       } else {
         const top = (nbb.y - docRect.y)
         const left = (nbb.x - docRect.x)
         const width = nbb.width
         const height = nbb.height
+        const isComponent = node.type==='COMPONENT' || node.type==='INSTANCE'
+        const isGroup = node.type==='GROUP'
+        const clazz = []
+        isComponent && clazz.push('component')
+        isGroup && clazz.push('group')
+        const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
+        const componentIds = [parentComponentId, nativeId].filter(id => id).join()
         rects.push({
           index: index++,
           top: top,
@@ -35,21 +43,38 @@ export const generateRects = (nodes, docRect) => {
           actualWidth: toFixed(nbb.width),
           actualHeight: toFixed(nbb.height),
           title: node.name,
-          clazz: [
-            node.type==='COMPONENT' || node.type==='INSTANCE' ? 'component' : '',
-            node.type==='GROUP' ? 'group' : ''
-          ],
+          isComponent,
+          componentIds,
+          clazz,
           node
         })
         if (node.children) {
-          step(node.children)
+          step(node.children, componentIds)
         }
-        return 1
+        // eslint-disable-next-line
+        return
       }
     })
   }
   step(nodes)
   return rects
+}
+
+// go back to find it's component when selected
+export const findParentComponent = (currentIndex, rect, rects) => {
+  let index = currentIndex
+  const currentIsComponent = rect.node.type === 'COMPONENT' || rect.node.type === 'INSTANCE'
+  if (currentIsComponent && rect.componentIds.split(',').length>1) {
+    index--
+  }
+  while (index && rect.componentIds) {
+    const { type, componentId } = rects[index].node
+    if (type==='COMPONENT' || type==='INSTANCE') {
+      return { index, componentId }
+    }
+    index--
+  }
+  return {}
 }
 
 // get Bound of Frame

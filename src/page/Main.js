@@ -59,6 +59,7 @@ export default class Main extends React.Component {
             useLocalImages={isMock || isLocal}
             images={images}
             canvasData={canvasData}
+            components={components}
             id={id}
             propsDissolved={propsDissolved}
             onSelect={this.handleSelectElement}

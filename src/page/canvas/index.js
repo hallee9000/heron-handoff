@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
+import { toPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
 import { formattedNumber } from 'utils/style'
 import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
@@ -14,6 +14,8 @@ class Canvas extends React.Component {
     isLoading: false,
     rects: [],
     pageRect: {},
+    componentIndex: '',
+    componentId: '',
     selectedRect: null,
     selectedIndex: null,
     hoveredRect: null,
@@ -24,6 +26,8 @@ class Canvas extends React.Component {
   }
   resetMark = () => {
     this.setState({
+      componentIndex: '',
+      componentId: '',
       selectedRect: null,
       selectedIndex: null,
       hoveredRect: null,
@@ -50,11 +54,12 @@ class Canvas extends React.Component {
     this.setState({ frameStyle })
   }
   onSelect = (rect, index) => {
-    const { spacePressed } =this.props
+    const { spacePressed, onSelect } =this.props
     if (spacePressed) return
-    const { onSelect } = this.props
+    const { rects } = this.state
+    const { index: componentIndex, componentId } = findParentComponent(index, rect, rects)
     onSelect && onSelect(rect)
-    this.setState({ selectedRect: rect, selectedIndex: index})
+    this.setState({ selectedRect: rect, selectedIndex: index, componentIndex, componentId})
   }
   onHover = (rect, index) => {
     const { pageRect, selectedRect } = this.state
@@ -92,8 +97,9 @@ class Canvas extends React.Component {
     }
   }
 	render () {
-    const { id, size, useLocalImages, images, globalSettings } = this.props
-    const { rects, pageRect, frameStyle, selectedIndex, hoveredIndex, markData, isChanging } = this.state
+    const { id, size, useLocalImages, images, globalSettings, components } = this.props
+    const { rects, pageRect, frameStyle, selectedIndex, componentId, hoveredIndex, componentIndex, markData, isChanging } = this.state
+    const currentComponent = components.find(({id}) => id===componentId)
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className="mark-layers" style={frameStyle}>
@@ -103,14 +109,19 @@ class Canvas extends React.Component {
           }
           {
             rects.map((rect, index) => {
-              const { top, left, width, height } = rect
+              const { top, left, width, height, clazz, isComponent } = rect
               return (
                 <div
                   key={index}
+                  title={rect.componentIds}
                   className={cn(
                     "layer",
-                    ...rect.clazz,
-                    {selected: selectedIndex===index, hovered: hoveredIndex===index}
+                    ...clazz,
+                    {
+                      'selected': selectedIndex===index,
+                      'hovered': hoveredIndex===index,
+                      'current-component': componentIndex===index
+                    }
                   )}
                   style={{
                     top: toPercentage(top/pageRect.height),
@@ -121,6 +132,10 @@ class Canvas extends React.Component {
                   onClick={() => this.onSelect(rect, index)}
                   onMouseOver={() => this.onHover(rect, index)}
                 >
+                  {
+                    isComponent && componentIndex===index &&
+                    <div className="layer-component">{ currentComponent ? currentComponent.name : rect.node.name}</div>
+                  }
                   <div className="layer-sizing layer-width">{ formattedNumber(rect.actualWidth, globalSettings) }</div>
                   <div className="layer-sizing layer-height">{ formattedNumber(rect.actualHeight, globalSettings) }</div>
                 </div>

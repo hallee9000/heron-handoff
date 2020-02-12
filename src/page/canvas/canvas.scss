@@ -1,3 +1,5 @@
+@import "~assets/tokens.scss";
+
 .container-mark{
   position: relative;
   img{
@@ -10,20 +12,21 @@
     height: 100%;
     .layer{
       position: absolute;
-      border: 1px solid #FF3366;
+      border: 1px solid $mark-hovered;
       opacity: 0;
       transition: 0.2s opacity;
-      &.hovered{
+      &.hovered,
+      &.current-component{
         opacity: 1;
       }
       &.group{
         border-style: dotted;
       }
       &.component{
-        border-color: #8d77fc;
+        border-color: $component-color;
       }
       &.selected{
-        border: 1px solid #2ca7fb;
+        border: 1px solid $mark-selected;
         opacity: 1;
       }
       &.selected.hovered{
@@ -31,12 +34,21 @@
           display: block;
         }
       }
+      &-component{
+        position: absolute;
+        top: -19px;
+        left: -1px;
+        width: max-content;
+        padding: 0 6px;
+        color: $white-85;
+        background-color: $component-color;
+      }
       &-sizing{
         display: none;
         position: absolute;
         padding: 0 6px;
         border-radius: 2px;
-        background: #2ca7fb;
+        background: $mark-selected;
         font-size: 12px;
       }
       &-width{

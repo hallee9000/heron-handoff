@@ -88,6 +88,7 @@ export const getStyleItems = (node, key) =>
 export const isAllImageFill = fills =>
   fills.filter(fill => fill.type === 'IMAGE').length === fills.length
 
+// walk file
 export const walkFile = fileData => {
   const { styles, components } = fileData
   const finalStyles = {}
