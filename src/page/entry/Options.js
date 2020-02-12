@@ -42,8 +42,8 @@ class Options extends React.Component {
       await handleIndex(zip, data, pagedFrames, () => { this.setPercentage(2, t('dealing with', {name: 'index.html'})) })
       await handleJs(zip, () => { this.setPercentage(6, t('dealing with', {name: 'Js'})) })
       await handleIcoAndCSS(zip, () => { this.setPercentage(12, t('dealing with', {name: 'CSS'})) })
-      await handleLogo(zip, figmacnLogo.current.src, () => { this.setPercentage(14, t('dealing with', {name: 'figmacn-logo'})) })
-      await handleLogo(zip, logo.current.src, () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
+      await handleLogo(zip, figmacnLogo.current.src, 'figmacn-logo.svg',  () => { this.setPercentage(14, t('dealing with', {name: 'figmacn-logo'})) })
+      await handleLogo(zip, logo.current.src, 'logo.svg', () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
     }
     // get components and styles
     const { components, styles, exportSettings } = walkFile(data)

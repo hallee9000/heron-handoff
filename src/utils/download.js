@@ -45,10 +45,10 @@ export const handleIcoAndCSS = async (zip, onStart) => {
 }
 
 // generate logo.svg
-export const handleLogo = async (zip, logoSrc, onStart) => {
+export const handleLogo = async (zip, logoSrc, fileName='logo.svg', onStart) => {
   onStart && onStart()
   const logoData = await getBufferData(logoSrc)
-  zip.file('logo.svg', logoData, {base64: true})
+  zip.file(fileName, logoData, {base64: true})
 }
 
 // generate frame and component images

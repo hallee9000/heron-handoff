@@ -28,8 +28,8 @@ class Header extends React.Component {
     await handleIndex(zip, data, pagedFrames, () => { this.setLoader(3, t('dealing with', {name: 'index.html'})) })
     await handleJs(zip, () => { this.setLoader(8, t('dealing with', {name: 'Js'})) })
     await handleIcoAndCSS(zip, () => { this.setLoader(12, t('dealing with', {name: 'CSS'})) })
-    await handleLogo(zip, this.figmacnLogo.current.src, () => { this.setLoader(14, t('dealing with', {name: 'figmacn-logo'})) })
-    await handleLogo(zip, this.logo.current.src, () => { this.setLoader(16, t('dealing with', {name: 'logo'})) })
+    await handleLogo(zip, this.figmacnLogo.current.src, 'figmacn-logo.svg', () => { this.setLoader(14, t('dealing with', {name: 'figmacn-logo'})) })
+    await handleLogo(zip, this.logo.current.src, 'logo.svg', () => { this.setLoader(16, t('dealing with', {name: 'logo'})) })
     await handleFramesAndComponents(zip, images, (index, name, length) => {
       this.setLoader(18+(index+1)*Math.floor(36/length), t('generating', {name}))
     })
