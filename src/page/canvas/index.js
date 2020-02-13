@@ -123,7 +123,6 @@ class Canvas extends React.Component {
               return (
                 <div
                   key={index}
-                  id={rect.componentIds}
                   className={cn(
                     "layer",
                     ...clazz,
