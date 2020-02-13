@@ -31,7 +31,9 @@
     "offline mode": "offline mode",
     "offline mode description": "default to generate offline zip, uncheck it to generate online mark.",
     "use high quality": "use high quality images",
-    "use high quality description": "default to fetch high quality images, uncheck it if you think it's slow."
+    "use high quality description": "default to fetch high quality images, uncheck it if you think it's slow.",
+    "slow tip": "Whiy it's too slow?",
+    "slow tip link": "https://github.com/leadream/figma-handoff#Why it's too slow"
   },
   "zh": {
     "paypal": "PayPal 支持",
@@ -65,6 +67,8 @@
     "offline mode": "生成离线标注",
     "offline mode description": "默认生成离线标注压缩包，取消勾选则生成在线标注，但在线标注一刷新就没了。",
     "use high quality": "使用高清图生成标注",
-    "use high quality description": "默认使用高清图，不使用高清图可以加快生成速度。"
+    "use high quality description": "默认使用高清图，不使用高清图可以加快生成速度。",
+    "slow tip": "生成速度很慢怎么办？",
+    "slow tip link": "https://github.com/leadream/figma-handoff#生成标注很慢怎么办"
   }
 }

@@ -1,54 +1,51 @@
-这个项目使用了 [Create React App](https://github.com/facebook/create-react-app) 脚手架。
+>This project is using [Create React App](https://github.com/facebook/create-react-app).
 
-## 简介
+## Introduction
 
-Figma Handoff 是一个设计交付工具，可以帮助你从 Figma 设计文件生成标注，方便开发人员查看。它是一个线上应用，通过 [Figma API](https://www.figma.com/developers/api) 获取设计数据，并生成离线或在线标注，但不会将你的数据保存至任何服务器。
+Figma Handoff is a design handoff tool that can help you generate design mark. It's useful for developers. Figma Handoff is a web app and uses [Figma API](https://www.figma.com/developers/api) to get your design data, but never saves you data in any server. 
 
-访问地址：https://figmacn.com/handoff/
+Figma Handoff supports both offline and online mode. Please visit https://figmacn.com/handoff/.
 
-你可以通过这个按钮查看 Demo。
+Click here to see a demo.
 
-![Demo 入口](./imgs/demo-entry.png)
+<img alt="Demo entry" src="./imgs/demo-entry.png" width="360"/>
 
-## 使用说明
+## Usage
 
-通过上面的链接进入之后，你需要输入要生成标注的文件地址，以及 [Access Token](https://www.figma.com/developers/api#access-tokens)，来获取你页面中的 Frame。
+Visit https://figmacn.com/handoff/ and fulfill your file link and [Access Token](https://www.figma.com/developers/api#access-tokens), then you'll get your frames in the file. **It will save your Access Token in the computer for convenience so DON'T use it in the device that are not trusted (like Net-bar).**
 
-![入口](./imgs/entry.png)
+<img alt="Entry" src="./imgs/entry.png" width="360"/>
 
-接着选择你需要生成标注的 Frame，到下一步选择图片质量和是否生成离线标注，就可以生成标注啦。**需要注意的是，Figma Handoff 只会抓取到你在每个 Page 中的第一级的 Frame，所以请不要使用 Group 将第一级的 Frame 圈在一起。**
+Select the frames you need and other options, click the button to start generate. **It only fetch frames directly in canvas so DON'T group them or they can't be recognized.**
 
-## 常见问题
-### 什么是 Access Token？
-简单来说 Access Token 就是一个访问令牌，拿着它才可以获取到你的 Figma 设计文件数据。你可以在个人设置页面生成，生成后需要立即复制出去，不然一刷新就没了。**由于拥有了 Access Token 就可以获得你所有的设计文件数据，所以请不要把它粘贴在容易暴露的地方（比如抄在手上，写在便利贴上）。**
+## FAQ
+### Why it's too slow?
+It depends on your network and file size. To speed up you can:
+- Select less frames in the second step.
+- Uncheck `use high quality images` option.
+- Use VPN and use global mode.
 
-![入口](./imgs/access-token.png)
+### What is Access Token？
+Simply say Access Token is a key to get your design data. You can generate an Access Token in the Figma setting page. **DON'T paste Access Token in somewhere that is not safe (like the computer note).**
 
-### 我的数据会被偷偷存起来吗？
-不会。Figma Handoff 通过你的 Access Token 来获取设计文件数据，所有的标注工作均在本地浏览器上完成。不过由于图片的跨域问题，生成标注所需要的图片（如 Frame 缩略图、组件缩略图和切图）要经过一个服务端程序处理一下，这个程序的代码也[开源](https://github.com/leadream/cors-anywhere)了，运行于 [Heroku](https://heroku.com/) 上。
+<img alt="Access Token" src="./imgs/access-token.png" width="360"/>
 
-为了方便使用，Figma Handoff 会将你的 Access Token 存在本地浏览器上，所以为了安全请不要在不信任的电脑上使用（比如网吧、或者你表弟的电脑）。
+### Is my design data saved saved furtively?
+No. All the work will be done inthe browser after it fetches your data from Figma server. The images (Frame thumbnails, components thumbnails) will be processed in a server at [Heroku](https://heroku.com/) and the code is open sourced [here](https://github.com/leadream/cors-anywhere).
 
-### 切图要怎么交付？
-我推荐切图由设计师完成。你只需要在 Figma 中右侧属性面板最下面的 Export 中添加切图设置，Figma Handoff 会自动获取文件中的所有带有 Export 的元素来生成切图。比如下图（这个元素名是 `thumb-up`）会生成两个切图，`thumb-up-ios@3x.png` 和 `thumb-up.svg`。
+### How to delivery sliced images?
+I recommend designers slice images. All the elements with exports in the right panel will be ecported as sliced images. For example, the settings below will export `thumb-up-ios@3x.png` and `thumb-up.svg` (this element named `thumb-up`).
 
-![](/imgs/exports.png)
+<img alt="Export settings" src="./imgs/exports.png" width="360"/>
 
-### 生成标注很慢怎么办？
-生成速度取决于文件大小和网络情况，如果太慢可以考虑：
-- 在第二步选择部分 Frame，而不是所有。
-- 在第三步取消勾选使用高清图。
-- 由于是直接访问 Figma 的数据，可以将你的梯子开启全局以加快速度。
+### Other advice?
+- Check `Clip Content` for frames directly in the canvas or it'll cause offset issue.
+<img alt="Clip Content" src="./imgs/clip-content.png" width="360"/>
+- You can use `+/-` to zoom in or out, alse click spacebar to drag canvas.
 
-### 还有啥要注意的吗？
-- 最外层 Frame 尽量都勾选 `Clip Content`，否则会引起标注错位。
-![Clip Content](./imgs/clip-content.png)
-- 除了常用的缩放移动画布，你还可以通过左下角的按钮，键盘加减号来缩放，按住空格键还可以拖拽画布。
-![画布](./imgs/canvas.png)
-- 请不要将最外层 Frame 打包成组，否则将不被识别（下图就是个错误示例）。
-![不要这样打包成组](./imgs/not-group.png)
+## Buy me a coffee
+Figma Handoff it's free and open sourced. You can donate me if you think it's useful. Thanks!
 
-## 赞赏
-这个工具目前免费且开源，如果对你有帮助的话可以赞赏支持我一下，谢谢。
+PayPal: https://paypal.me/leadream
 
-![赞赏二维码](./imgs/coffee-qrcode.jpg)
+<img alt="Donation qrcode" src="./imgs/coffee-qrcode.jpg" width="360"/>

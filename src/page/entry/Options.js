@@ -14,7 +14,7 @@ class Options extends React.Component {
     offlineMode: true,
     isLoading: false,
     percentage: 0,
-    buttonText: this.props.t('generate design mark')
+    buttonText: ''
   }
   setPercentage = (percentage, buttonText) => {
     this.setState({
@@ -180,8 +180,13 @@ class Options extends React.Component {
               disabled={isLoading}
             >
               <div className="entry-progress" style={{width: `${percentage}%`}}/>
-              <span>{ buttonText }</span>
+              <span>{ buttonText ? buttonText : t('generate design mark') }</span>
             </button>
+            <div className="help-block">
+              <a href={t('slow tip link')}target="_blank" rel="noopener noreferrer">
+                {t('slow tip')}
+              </a>
+            </div>
           </div>
         </div>
       </div>
