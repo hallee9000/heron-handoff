@@ -1,5 +1,7 @@
 >This project is using [Create React App](https://github.com/facebook/create-react-app).
 
+[中文说明](./README-CN.md)
+
 ## Introduction
 
 Figma Handoff is a design handoff tool that can help you generate design mark. It's useful for developers. Figma Handoff is a web app and uses [Figma API](https://www.figma.com/developers/api) to get your design data, but never saves you data in any server. 
