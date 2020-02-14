@@ -79,6 +79,11 @@ class Entry extends React.Component {
     const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded } = this.state
     return (
       <div className="app-entry">
+        <div className="entry-producthunt">
+          <a href="https://www.producthunt.com/posts/figma-handoff?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-figma-handoff" target="_blank" rel="noopener noreferrer">
+            <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=184379&theme=light" alt="Figma Handoff - A Figma handoff tool, generate design mark for developers. | Product Hunt Embed" />
+          </a>
+        </div>
         <div className="entry-container">
           <div className="entry-logo">
             <img className="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="figmacn logo" ref={this.figmacnLogo}/>

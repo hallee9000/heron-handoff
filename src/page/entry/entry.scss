@@ -6,6 +6,16 @@
   align-items: center;
   justify-content: center;
   background: $black-0;
+  .entry-producthunt{
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    width: 180px;
+    height: 39px;
+    img{
+      width: 100%;
+    }
+  }
   .entry-container{
     padding: 60px 0;
     .entry-logo{
