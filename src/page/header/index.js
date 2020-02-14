@@ -140,7 +140,7 @@ class Header extends React.Component {
               </span>
             </Overlay>
           }
-          <a title={t('help')} href="https://github.com/leadream/figma-handoff#简介" target="_blank" rel="noopener noreferrer">
+          <a title={t('help')} href={t('help link')} target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
           {
