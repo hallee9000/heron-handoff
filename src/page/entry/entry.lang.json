@@ -32,7 +32,7 @@
     "offline mode description": "default to generate offline zip, uncheck it to generate online mark.",
     "use high quality": "use high quality images",
     "use high quality description": "default to fetch high quality images, uncheck it if you think it's slow.",
-    "slow tip": "Whiy it's too slow?",
+    "slow tip": "Why it's too slow?",
     "slow tip link": "https://github.com/leadream/figma-handoff#why-its-too-slow"
   },
   "zh": {

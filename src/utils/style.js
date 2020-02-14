@@ -143,6 +143,9 @@ export const getDiamondGradient = fill => ({
 })
 
 export const getFillsStyle = fills => {
+  if (!fills) {
+    return { styles:[] }
+  }
   let type = ''
   const styles = fills
     .filter(({visible}) => visible!==false)
@@ -192,6 +195,9 @@ export const getShadowEffect = effect => ({
   })
 
 export const getEffectsStyle = effects => {
+  if (!effects) {
+    return { styles:[] }
+  }
   let type = ''
   const styles = effects
     .filter(({visible}) => visible!==false)
