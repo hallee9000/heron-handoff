@@ -136,6 +136,12 @@ class RightProps extends React.Component {
             </div>
           }
           {
+            node.type==='SLICE' &&
+            <div className="props-section">
+              <h5 className="section-title section-name">{t('slice type')}</h5>
+            </div>
+          }
+          {
             currentComponentName &&
             <div className="props-section">
               <h5 className="section-title section-name">{t('component')}: { currentComponentName }</h5>
