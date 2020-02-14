@@ -80,6 +80,7 @@ class Frames extends React.Component {
               frame =>
                 <li
                   key={frame.id}
+                  title={frame.name}
                   className={cn({selected: frameId===frame.id})}
                   onClick={() => this.handleFrameSelect(frame.id)}
                 >
@@ -88,7 +89,6 @@ class Frames extends React.Component {
                     style={{
                       backgroundImage: getUrlImage(frame.id, useLocalImages, images)
                     }}
-                    title={frame.name}
                   />
                   <span>{frame.name}</span>
                 </li>
