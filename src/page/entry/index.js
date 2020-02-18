@@ -89,6 +89,9 @@ class Entry extends React.Component {
             <img className="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="figmacn logo" ref={this.figmacnLogo}/>
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
+          <div className="entry-demo">
+            <a onClick={this.gotoDemo} href="/"><Eye size={14}/> {t('demo')}</a>
+          </div>
           {
             !isDownloaded &&
             <div className={cn('entry-block', {hide: coffeeVisible})}>
@@ -145,9 +148,6 @@ class Entry extends React.Component {
             </Tooltip>
             <Tooltip overlay={t('buy me a coffee')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" onClick={this.toggleCoffee} href="/"><Coffee size={14}/></a>
-            </Tooltip>
-            <Tooltip overlay={t('demo')} placement="top" align={{offset: [0, 3]}}>
-              <a className="footer-item" onClick={this.gotoDemo} href="/"><Eye size={14}/></a>
             </Tooltip>
           </div>
         </div>

@@ -24,6 +24,12 @@
         width: 120px;
       }
     }
+    .entry-demo{
+      text-align: center;
+      svg{
+        vertical-align: middle;
+      }
+    }
     .entry-block{
       width: 360px;
       >[class^=entry-]{
