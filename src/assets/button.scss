@@ -27,6 +27,7 @@
   }
   &:disabled {
     text-decoration: none;
+    cursor: not-allowed;
   }
   >svg{
     display: block;

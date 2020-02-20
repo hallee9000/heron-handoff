@@ -7,7 +7,7 @@ import { getFileName } from 'utils/helper'
 import './export-item.scss'
 
 export default ({exportSetting, useLocalImages, index}) => {
-  const [ isDownloading, setDownloading ] = useState(false)
+  const [ isDownloading, setDownloading ] = useState(true)
   const { image } = exportSetting
   const name = getFileName(exportSetting, useLocalImages ? index : undefined)
   const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
@@ -28,7 +28,7 @@ export default ({exportSetting, useLocalImages, index}) => {
       href={imageUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn('export-item', {'exports-item-downloading': isDownloading})}
+      className={cn('export-item', {'export-item-downloading': isDownloading})}
       onClick={e => handleSave(e, image, name)}
     >
       <div style={{backgroundImage: `url(${imageUrl})`}}/>
