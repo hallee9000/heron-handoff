@@ -28,8 +28,10 @@ class Entry extends React.Component {
     const fileData = await getMockFile()
     // get components and styles
     const { components, styles, exportSettings } = walkFile(fileData)
-    const { onDataGot } = this.props
+    const { onDataGot, onComponentsOptionChange } = this.props
     const pagedFrames = getSelectedPagedFrames(getPagedFrames(fileData))
+    // demo has components list
+    onComponentsOptionChange && onComponentsOptionChange(false)
     onDataGot && onDataGot(fileData, components, styles, exportSettings, pagedFrames)
   }
   switchStep = (step, key, data, fileKey) => {
@@ -75,7 +77,7 @@ class Entry extends React.Component {
     // this.gotoDemo()
   }
   render() {
-    const { onDataGot, t } = this.props
+    const { onDataGot, onComponentsOptionChange, t } = this.props
     const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded } = this.state
     return (
       <div className="app-entry">
@@ -115,6 +117,7 @@ class Entry extends React.Component {
                 logo={this.logo}
                 figmacnLogo={this.figmacnLogo}
                 onFinished={onDataGot}
+                onComponentsOptionChange={onComponentsOptionChange}
                 onDownloaded={this.handleDownloaded}
               />
             </div>

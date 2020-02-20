@@ -11,6 +11,7 @@ import { handleIndex, handleJs, handleIcoAndCSS, handleLogo } from 'utils/downlo
 class Options extends React.Component {
   state = {
     useHighQuality: true,
+    notIncludeComponents: true,
     offlineMode: true,
     isLoading: false,
     percentage: 0,
@@ -24,30 +25,38 @@ class Options extends React.Component {
   }
   handleOptionChange = e => {
     const { name, checked } = e.target
+    const { onComponentsOptionChange } = this.props
     this.setState({
       [name]: checked
+    }, () => {
+      const { notIncludeComponents } = this.state
+      onComponentsOptionChange && onComponentsOptionChange(notIncludeComponents)
     })
   }
   handleSubmit = async e => {
     e.preventDefault()
-    const { fileKey, data, pagedFrames, figmacnLogo, logo, onDownloaded, t } = this.props
+    const { fileKey, data: fileData, pagedFrames, figmacnLogo, logo, onDownloaded, t } = this.props
     const frames = getFlattedFrames(pagedFrames, false)
-    const { offlineMode } = this.state
+    const { notIncludeComponents, offlineMode } = this.state
     const zip = offlineMode ? (new JSZip()) : null
 
     this.setState({ isLoading: true })
     this.setPercentage(0, t('fetching data'))
 
     if (zip) {
-      await handleIndex(zip, data, pagedFrames, () => { this.setPercentage(2, t('dealing with', {name: 'index.html'})) })
+      await handleIndex(
+        zip,
+        { fileData, pagedFrames, notIncludeComponents },
+        () => { this.setPercentage(2, t('dealing with', {name: 'index.html'})) }
+      )
       await handleJs(zip, () => { this.setPercentage(6, t('dealing with', {name: 'Js'})) })
       await handleIcoAndCSS(zip, () => { this.setPercentage(12, t('dealing with', {name: 'CSS'})) })
       await handleLogo(zip, figmacnLogo.current.src, 'figmacn-logo.svg',  () => { this.setPercentage(14, t('dealing with', {name: 'figmacn-logo'})) })
       await handleLogo(zip, logo.current.src, 'logo.svg', () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
     }
     // get components and styles
-    const { components, styles, exportSettings } = walkFile(data)
-    const imageIds = frames.concat(components.map(({id, name}) => ({id, name})))
+    const { components, styles, exportSettings } = walkFile(fileData)
+    const imageIds = notIncludeComponents ? frames : frames.concat(components.map(({id, name}) => ({id, name})))
     // get or download frames and components
     const images = zip ?
       await this.downloadFramesAndComponentsImages(fileKey, imageIds, zip, (index, name, length) => {
@@ -64,7 +73,7 @@ class Options extends React.Component {
     })
     if (zip) {
       // generate zip
-      const documentName = data.name
+      const documentName = fileData.name
       this.setPercentage(98, 'generating zip')
       zip.generateAsync({type: 'blob'})
         .then(content => {
@@ -75,7 +84,7 @@ class Options extends React.Component {
           }, 400)
         })
     } else {
-      this.onFinished(data, components, styles, exportings, pagedFrames, images )
+      this.onFinished(fileData, components, styles, exportings, pagedFrames, images)
     }
   }
   getFramesAndComponentsImages = async (fileKey, imageIds, onStart) => {
@@ -156,7 +165,7 @@ class Options extends React.Component {
   }
   render() {
     const { formVisible, t } = this.props
-    const { useHighQuality, offlineMode, isLoading, buttonText, percentage } = this.state
+    const { useHighQuality, notIncludeComponents, offlineMode, isLoading, buttonText, percentage } = this.state
     return (
       <div className="entry-options">
         <Title step={3} content={t('other options')} hasBottom={formVisible}/>
@@ -166,6 +175,12 @@ class Options extends React.Component {
               <input name="offlineMode" type="checkbox" checked={offlineMode} onChange={this.handleOptionChange}/>{t('offline mode')}
             </label>
             <div className="help-block">{t('offline mode description')}</div>
+          </div>
+          <div className="form-item">
+            <label>
+              <input name="notIncludeComponents" type="checkbox" checked={notIncludeComponents} onChange={this.handleOptionChange}/>{t('not include components')}
+            </label>
+            <div className="help-block">{t('not include components description')}</div>
           </div>
           <div className="form-item">
             <label>

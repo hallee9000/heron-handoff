@@ -11,8 +11,9 @@ import './app.scss'
 class App extends React.Component {
   constructor(props) {
     super(props)
-    let data = {}, components = [], styles = {}, exportSettings = {}, pagedFrames = {}, isLocal = false, entryVisible
-    const { FILE_DATA, PAGED_FRAMES } = window
+    let data = {}, components = [], styles = {}, exportSettings = {}, pagedFrames = {},
+      isLocal = false, ignoreComponents = true, entryVisible
+    const { FILE_DATA, PAGED_FRAMES, IGNORE_COMPONENTS } = window
     if (FILE_DATA) {
       // local data (offline mode)
       data = FILE_DATA
@@ -22,6 +23,7 @@ class App extends React.Component {
       exportSettings = parsedData.exportSettings
       pagedFrames = PAGED_FRAMES
       isLocal = true
+      ignoreComponents = IGNORE_COMPONENTS
       entryVisible = false
     } else {
       entryVisible = true
@@ -29,6 +31,7 @@ class App extends React.Component {
     this.state = {
       isLocal,
       isMock: false,
+      ignoreComponents,
       entryVisible,
       data,
       components,
@@ -66,6 +69,9 @@ class App extends React.Component {
       isMock: !imagesData
     })
   }
+  handleComponentsOptionChange = ignoreComponents => {
+    this.setState({ ignoreComponents })
+  }
   getNames = (frameName, pageName) => {
     const { data } = this.state
     this.setState({
@@ -85,7 +91,7 @@ class App extends React.Component {
   }
   render () {
     const {
-      entryVisible, isLocal, isMock, data, components, styles,
+      entryVisible, isLocal, isMock, ignoreComponents, data, components, styles,
       exportSettings, images, pagedFrames, names, globalSettings
     } = this.state
     return (
@@ -97,6 +103,7 @@ class App extends React.Component {
             pagedFrames={pagedFrames}
             exportSettings={exportSettings}
             isMock={isMock}
+            ignoreComponents={ignoreComponents}
             isLocal={isLocal}
             onBack={this.handleBack}
             {...names}
@@ -107,12 +114,14 @@ class App extends React.Component {
           <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
             <Entry
               onDataGot={this.handleDataGot}
+              onComponentsOptionChange={this.handleComponentsOptionChange}
             />
           </SettingsContext.Provider> :
           <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
             <Main
               isLocal={isLocal}
               isMock={isMock}
+              ignoreComponents={ignoreComponents}
               data={data}
               components={components}
               styles={styles}

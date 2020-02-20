@@ -21,6 +21,9 @@
   }
   .left-sider-list{
     height: calc(100% - 34px);
+    &.without-tab{
+      height: 100%;
+    }
     .list-pages{
       padding: 12px;
     }

@@ -21,11 +21,14 @@ class Header extends React.Component {
     isExported: false
   }
   handleDownload = async () => {
-    const { data, images, exportSettings, pagedFrames, documentName, t } = this.props
+    const { data: fileData, images, ignoreComponents, exportSettings, pagedFrames, documentName, t } = this.props
     const zip = new JSZip()
     
-    
-    await handleIndex(zip, data, pagedFrames, () => { this.setLoader(3, t('dealing with', {name: 'index.html'})) })
+    await handleIndex(
+      zip,
+      { fileData, pagedFrames, ignoreComponents },
+      () => { this.setLoader(3, t('dealing with', {name: 'index.html'})) }
+    )
     await handleJs(zip, () => { this.setLoader(8, t('dealing with', {name: 'Js'})) })
     await handleIcoAndCSS(zip, () => { this.setLoader(12, t('dealing with', {name: 'CSS'})) })
     await handleLogo(zip, this.figmacnLogo.current.src, 'figmacn-logo.svg', () => { this.setLoader(14, t('dealing with', {name: 'figmacn-logo'})) })

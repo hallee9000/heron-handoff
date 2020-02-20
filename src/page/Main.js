@@ -44,7 +44,7 @@ export default class Main extends React.Component {
     this.setState({ elementData: null })
   }
   render () {
-    const { documentName, components, styles, exportSettings, images, pagedFrames, isMock, isLocal } = this.props
+    const { documentName, components, styles, exportSettings, images, pagedFrames, isMock, ignoreComponents, isLocal } = this.props
     const { id, canvasData, elementData, currentComponentName, propsDissolved } = this.state
     return (
       <div className="app-main">
@@ -53,6 +53,7 @@ export default class Main extends React.Component {
           images={images}
           pagedFrames={pagedFrames}
           components={components}
+          ignoreComponents={ignoreComponents}
           onFrameOrComponentChange={this.handleSelectFrameOrComponent}
         />
         {
