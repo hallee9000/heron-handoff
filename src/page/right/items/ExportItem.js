@@ -7,7 +7,7 @@ import { getFileName } from 'utils/helper'
 import './export-item.scss'
 
 export default ({exportSetting, useLocalImages, index}) => {
-  const [ isDownloading, setDownloading ] = useState(true)
+  const [ isDownloading, setDownloading ] = useState(false)
   const { image } = exportSetting
   const name = getFileName(exportSetting, useLocalImages ? index : undefined)
   const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
