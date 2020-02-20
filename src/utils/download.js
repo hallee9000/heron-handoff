@@ -9,8 +9,7 @@ export const handleIndex = async (zip, data, onStart) => {
   indexSourceCode = indexSourceCode
     .replace('PAGED_FRAMES=""', `PAGED_FRAMES = ${JSON.stringify(pagedFrames)}`)
     .replace('FILE_DATA=""', `FILE_DATA = ${JSON.stringify(fileData)}`)
-    .replace('IGNORE_COMPONENTS=true', `IGNORE_COMPONENTS = ${notIncludeComponents}`)
-
+    .replace('IGNORE_COMPONENTS=1', `IGNORE_COMPONENTS = ${notIncludeComponents}`)
   zip.file('index.html', indexSourceCode)
 }
 
