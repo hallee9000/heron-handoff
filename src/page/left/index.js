@@ -19,12 +19,12 @@ class LeftSider extends React.Component {
     onFrameOrComponentChange && onFrameOrComponentChange(itemId, pageId)
   }
   render () {
-    const { components, ignoreComponents, useLocalImages, images, pagedFrames, t } = this.props
+    const { components, includeComponents, useLocalImages, images, pagedFrames, t } = this.props
     const { tabIndex } = this.state
     return (
       <div className="main-left-sider">
         {
-          !ignoreComponents &&
+          includeComponents &&
           <ul className="left-sider-tabs">
             <li
               className={cn({selected: tabIndex===0})}
@@ -36,7 +36,7 @@ class LeftSider extends React.Component {
             >{t('components')}</li>
           </ul>
         }
-        <div className={cn('left-sider-list', {'without-tab': ignoreComponents})}>
+        <div className={cn('left-sider-list', {'without-tab': !includeComponents})}>
           <Frames
             visible={tabIndex===0}
             pagedFrames={pagedFrames}
@@ -45,7 +45,7 @@ class LeftSider extends React.Component {
             onFrameChange={this.onItemChange}
           />
           {
-            !ignoreComponents &&
+            includeComponents &&
             <Components
               visible={tabIndex===1}
               components={components}

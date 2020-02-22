@@ -11,8 +11,8 @@ import { handleIndex, handleJs, handleIcoAndCSS, handleLogo } from 'utils/downlo
 class Options extends React.Component {
   state = {
     useHighQuality: true,
-    notIncludeComponents: true,
-    offlineMode: true,
+    includeComponents: false,
+    onlineMode: false,
     isLoading: false,
     percentage: 0,
     buttonText: ''
@@ -29,16 +29,16 @@ class Options extends React.Component {
     this.setState({
       [name]: checked
     }, () => {
-      const { notIncludeComponents } = this.state
-      onComponentsOptionChange && onComponentsOptionChange(notIncludeComponents)
+      const { includeComponents } = this.state
+      onComponentsOptionChange && onComponentsOptionChange(includeComponents)
     })
   }
   handleSubmit = async e => {
     e.preventDefault()
     const { fileKey, data: fileData, pagedFrames, figmacnLogo, logo, onDownloaded, t } = this.props
     const frames = getFlattedFrames(pagedFrames, false)
-    const { notIncludeComponents, offlineMode } = this.state
-    const zip = offlineMode ? (new JSZip()) : null
+    const { includeComponents, onlineMode } = this.state
+    const zip = onlineMode ? null : (new JSZip())
 
     this.setState({ isLoading: true })
     this.setPercentage(0, t('fetching data'))
@@ -46,7 +46,7 @@ class Options extends React.Component {
     if (zip) {
       await handleIndex(
         zip,
-        { fileData, pagedFrames, notIncludeComponents },
+        { fileData, pagedFrames, includeComponents },
         () => { this.setPercentage(2, t('dealing with', {name: 'index.html'})) }
       )
       await handleJs(zip, () => { this.setPercentage(6, t('dealing with', {name: 'Js'})) })
@@ -56,7 +56,7 @@ class Options extends React.Component {
     }
     // get components and styles
     const { components, styles, exportSettings } = walkFile(fileData)
-    const imageIds = notIncludeComponents ? frames : frames.concat(components.map(({id, name}) => ({id, name})))
+    const imageIds = includeComponents ? frames.concat(components.map(({id, name}) => ({id, name}))) : frames
     // get or download frames and components
     const images = zip ?
       await this.downloadFramesAndComponentsImages(fileKey, imageIds, zip, (index, name, length) => {
@@ -165,22 +165,22 @@ class Options extends React.Component {
   }
   render() {
     const { formVisible, t } = this.props
-    const { useHighQuality, notIncludeComponents, offlineMode, isLoading, buttonText, percentage } = this.state
+    const { useHighQuality, includeComponents, onlineMode, isLoading, buttonText, percentage } = this.state
     return (
       <div className="entry-options">
         <Title step={3} content={t('other options')} hasBottom={formVisible}/>
         <div className={cn('form entry-form', {'form-visible': formVisible})}>
           <div className="form-item">
             <label>
-              <input name="offlineMode" type="checkbox" checked={offlineMode} onChange={this.handleOptionChange}/>{t('offline mode')}
+              <input name="onlineMode" type="checkbox" checked={onlineMode} onChange={this.handleOptionChange}/>{t('online mode')}
             </label>
-            <div className="help-block">{t('offline mode description')}</div>
+            <div className="help-block">{t('online mode description')}</div>
           </div>
           <div className="form-item">
             <label>
-              <input name="notIncludeComponents" type="checkbox" checked={notIncludeComponents} onChange={this.handleOptionChange}/>{t('not include components')}
+              <input name="includeComponents" type="checkbox" checked={includeComponents} onChange={this.handleOptionChange}/>{t('include components')}
             </label>
-            <div className="help-block">{t('not include components description')}</div>
+            <div className="help-block">{t('include components description')}</div>
           </div>
           <div className="form-item">
             <label>

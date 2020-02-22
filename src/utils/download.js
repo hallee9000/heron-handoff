@@ -3,13 +3,13 @@ import { withCors, getSourceCode, getBufferData } from 'api'
 
 // generate index.html
 export const handleIndex = async (zip, data, onStart) => {
-  const { fileData, pagedFrames, notIncludeComponents } = data
+  const { fileData, pagedFrames, includeComponents } = data
   onStart && onStart()
   let indexSourceCode = await getSourceCode(window.location.href)
   indexSourceCode = indexSourceCode
     .replace('PAGED_FRAMES=""', `PAGED_FRAMES = ${JSON.stringify(pagedFrames)}`)
     .replace('FILE_DATA=""', `FILE_DATA = ${JSON.stringify(fileData)}`)
-    .replace('IGNORE_COMPONENTS=1', `IGNORE_COMPONENTS = ${notIncludeComponents}`)
+    .replace('INCLUDE_COMPONENTS=0', `INCLUDE_COMPONENTS = ${includeComponents}`)
   zip.file('index.html', indexSourceCode)
 }
 

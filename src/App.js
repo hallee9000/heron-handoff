@@ -12,8 +12,8 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     let data = {}, components = [], styles = {}, exportSettings = {}, pagedFrames = {},
-      isLocal = false, ignoreComponents = true, entryVisible
-    const { FILE_DATA, PAGED_FRAMES, IGNORE_COMPONENTS } = window
+      isLocal = false, includeComponents = false, entryVisible
+    const { FILE_DATA, PAGED_FRAMES, INCLUDE_COMPONENTS } = window
     if (FILE_DATA) {
       // local data (offline mode)
       data = FILE_DATA
@@ -23,7 +23,7 @@ class App extends React.Component {
       exportSettings = parsedData.exportSettings
       pagedFrames = PAGED_FRAMES
       isLocal = true
-      ignoreComponents = IGNORE_COMPONENTS
+      includeComponents = INCLUDE_COMPONENTS
       entryVisible = false
     } else {
       entryVisible = true
@@ -31,7 +31,7 @@ class App extends React.Component {
     this.state = {
       isLocal,
       isMock: false,
-      ignoreComponents,
+      includeComponents,
       entryVisible,
       data,
       components,
@@ -69,8 +69,8 @@ class App extends React.Component {
       isMock: !imagesData
     })
   }
-  handleComponentsOptionChange = ignoreComponents => {
-    this.setState({ ignoreComponents })
+  handleComponentsOptionChange = includeComponents => {
+    this.setState({ includeComponents })
   }
   getNames = (frameName, pageName) => {
     const { data } = this.state
@@ -91,7 +91,7 @@ class App extends React.Component {
   }
   render () {
     const {
-      entryVisible, isLocal, isMock, ignoreComponents, data, components, styles,
+      entryVisible, isLocal, isMock, includeComponents, data, components, styles,
       exportSettings, images, pagedFrames, names, globalSettings
     } = this.state
     return (
@@ -103,7 +103,7 @@ class App extends React.Component {
             pagedFrames={pagedFrames}
             exportSettings={exportSettings}
             isMock={isMock}
-            ignoreComponents={ignoreComponents}
+            includeComponents={includeComponents}
             isLocal={isLocal}
             onBack={this.handleBack}
             {...names}
@@ -121,7 +121,7 @@ class App extends React.Component {
             <Main
               isLocal={isLocal}
               isMock={isMock}
-              ignoreComponents={ignoreComponents}
+              includeComponents={includeComponents}
               data={data}
               components={components}
               styles={styles}

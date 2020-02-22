@@ -31,7 +31,7 @@ class Entry extends React.Component {
     const { onDataGot, onComponentsOptionChange } = this.props
     const pagedFrames = getSelectedPagedFrames(getPagedFrames(fileData))
     // demo has components list
-    onComponentsOptionChange && onComponentsOptionChange(false)
+    onComponentsOptionChange && onComponentsOptionChange(true)
     onDataGot && onDataGot(fileData, components, styles, exportSettings, pagedFrames)
   }
   switchStep = (step, key, data, fileKey) => {

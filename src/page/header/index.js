@@ -21,12 +21,12 @@ class Header extends React.Component {
     isExported: false
   }
   handleDownload = async () => {
-    const { data: fileData, images, ignoreComponents, exportSettings, pagedFrames, documentName, t } = this.props
+    const { data: fileData, images, includeComponents, exportSettings, pagedFrames, documentName, t } = this.props
     const zip = new JSZip()
     
     await handleIndex(
       zip,
-      { fileData, pagedFrames, ignoreComponents },
+      { fileData, pagedFrames, includeComponents },
       () => { this.setLoader(3, t('dealing with', {name: 'index.html'})) }
     )
     await handleJs(zip, () => { this.setLoader(8, t('dealing with', {name: 'Js'})) })
