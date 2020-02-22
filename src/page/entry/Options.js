@@ -1,12 +1,13 @@
 import React from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
+import { HelpCircle } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import Title from './Title'
 import { getImage, getImages, withCors, getBufferData } from 'api'
 import { trimFilePath, walkFile, asyncForEach, getFileName, getFlattedFrames } from 'utils/helper'
 import { handleIndex, handleJs, handleIcoAndCSS, handleLogo } from 'utils/download'
+import Title from './Title'
 
 class Options extends React.Component {
   state = {
@@ -177,8 +178,12 @@ class Options extends React.Component {
             <div className="help-block">{t('online mode description')}</div>
           </div>
           <div className="form-item">
-            <label>
-              <input name="includeComponents" type="checkbox" checked={includeComponents} onChange={this.handleOptionChange}/>{t('include components')}
+            <label className="options-label">
+              <input name="includeComponents" type="checkbox" checked={includeComponents} onChange={this.handleOptionChange}/>
+              <span>{t('include components')}</span>
+              <a href={t('include components link')} target="_blank" rel="noopener noreferrer">
+                <HelpCircle size={12}/>
+              </a>
             </label>
             <div className="help-block">{t('include components description')}</div>
           </div>
@@ -198,7 +203,7 @@ class Options extends React.Component {
               <span>{ buttonText ? buttonText : t('generate design mark') }</span>
             </button>
             <div className="help-block">
-              <a href={t('slow tip link')}target="_blank" rel="noopener noreferrer">
+              <a href={t('slow tip link')} target="_blank" rel="noopener noreferrer">
                 {t('slow tip')}
               </a>
             </div>

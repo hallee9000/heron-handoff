@@ -73,6 +73,13 @@
       .entry-options{
         label{
           cursor: pointer;
+          &.options-label{
+            a{
+              position: relative;
+              top: 2px;
+              margin-left: 4px;
+            }
+          }
         }
         .btn-generate{
           position: relative;

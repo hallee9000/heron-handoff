@@ -98,7 +98,10 @@ class Canvas extends React.Component {
     if (this.props.propsDissolved && (this.props.propsDissolved !== prevProps.propsDissolved)) {
       this.resetMark()
     }
-    if (this.props.id !== prevProps.id) {
+    const { id, useLocalImages, images } = this.props
+    const imgUrl = getImage(id, useLocalImages, images)
+    const prevImgUrl = getImage(prevProps.id, useLocalImages, images)
+    if (this.props.id !== prevProps.id && imgUrl!==prevImgUrl) {
       this.setState({ isChanging: true })
       this.resetMark()
       this.generateMark()

@@ -35,6 +35,17 @@ Simply say Access Token is a key to get your design data. You can generate an Ac
 ### Is my design data saved saved furtively?
 No. All the work will be done inthe browser after it fetches your data from Figma server. The images (Frame thumbnails, components thumbnails) will be processed in a server at [Heroku](https://heroku.com/) and the code is open sourced [here](https://github.com/leadream/cors-anywhere).
 
+### What does "export components list" mean?
+Figma Handoff will find out all the master components in this file and list them in left pannel if you check this option. This will make mark exporting longer because it'll fetch all components' images. We recommend you to place all master components in an independent page so you don't need to export components list.
+
+<img alt="master components in a page" src="./imgs/with-components-page.jpg" width="360"/>
+
+**✅ master components in a page**
+
+<img alt="master components in your design" src="./imgs/without-components-page.jpg" width="360"/>
+
+**❌ master components in your design**
+
 ### How to delivery sliced images?
 I recommend designers slice images. All the elements with exports in the right panel will be ecported as sliced images. For example, the settings below will export `thumb-up-ios@3x.png` and `thumb-up.svg` (this element named `thumb-up`).
 

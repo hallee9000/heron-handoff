@@ -37,11 +37,21 @@ Figma Handoff 是一个设计交付工具，可以帮助你从 Figma 设计文�
 ### 我的数据会被偷偷存起来吗？
 不会。Figma Handoff 通过你的 Access Token 来获取设计文件数据，所有的标注工作均在本地浏览器上完成。不过由于图片的跨域问题，生成标注所需要的图片（如 Frame 缩略图、组件缩略图和切图）要经过一个服务端程序处理一下，这个程序的代码也[开源](https://github.com/leadream/cors-anywhere)了，运行于 [Heroku](https://heroku.com/) 上。
 
+### “导出组件列表”是什么意思？
+如果你勾选了此选项，Figma Handoff 会自动查找到该文件中所有的 Master 组件，并在左侧生成一个组件列表。这样的话会额外获取组件图片，从而导致生成标注时间变长，因此推荐你将所有 Master 组件统一放在一个 Page 中，而不要放在设计图中，这样就不需要额外导出组件列表了。
+
+<img alt="Master 组件单独放在一个 Page 中" src="./imgs/with-components-page.jpg" width="360"/>
+
+**✅ Master 组件单独放在一个 Page 中**
+
+<img alt="Master 组件混在设计中" src="./imgs/without-components-page.jpg" width="360"/>
+
+**❌ Master 组件混在设计中**
+
 ### 切图要怎么交付？
 我推荐切图由设计师完成。你只需要在 Figma 中右侧属性面板最下面的 Export 中添加切图设置，Figma Handoff 会自动识别文件中的所有带有 Export 的元素来生成切图。比如下图（这个元素名是 `thumb-up`）会生成两个切图，`thumb-up-ios@3x.png` 和 `thumb-up.svg`。
 
 <img alt="切图设置" src="./imgs/exports.png" width="360"/>
-
 
 ### 还有啥要注意的吗？
 - 画布中第一级 Frame 尽量都勾选 `Clip Content`，否则会引起标注错位。
