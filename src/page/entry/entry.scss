@@ -180,5 +180,19 @@
         }
       }
     }
+    .entry-social{
+      padding-top: 100px;
+      h5{
+        margin: 0;
+        margin-bottom: 6px;
+      }
+      .social-item{
+        margin-bottom: 6px;
+        cursor: pointer;
+        svg{
+          vertical-align: middle;
+        }
+      }
+    }
   }
 }

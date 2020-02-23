@@ -1,9 +1,10 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { GitHub, Coffee, Eye, DollarSign, Package, X } from 'react-feather'
+import { GitHub, Coffee, Eye, DollarSign, Package, Mail, Link2, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import SettingsContext from 'contexts/SettingsContext'
+import { WithCopy } from 'components/utilities'
 import Basic from './Basic'
 import FramesSelect from './FramesSelect'
 import Options from './Options'
@@ -152,6 +153,19 @@ class Entry extends React.Component {
             <Tooltip overlay={t('buy me a coffee')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" onClick={this.toggleCoffee} href="/"><Coffee size={14}/></a>
             </Tooltip>
+          </div>
+          <div className="entry-social">
+            <h5>联系我</h5>
+            <div className="social-item">
+              <WithCopy text="leadream4@gmail.com">
+                <Mail size={14}/> leadream4@gmail.com
+              </WithCopy>
+            </div>
+            <div className="social-item">
+              <a href="https://juuun.io" target="_blank" rel="noopener noreferrer">
+                <Link2 size={14}/> https://juuun.io
+              </a>
+            </div>
           </div>
         </div>
       </div>
