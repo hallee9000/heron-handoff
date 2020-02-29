@@ -56,7 +56,7 @@ class Options extends React.Component {
       await handleLogo(zip, logo.current.src, 'logo.svg', () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
     }
     // get components and styles
-    const { components, styles, exportSettings } = walkFile(fileData)
+    const { components, styles, exportSettings } = walkFile(fileData, frames)
     const imageIds = includeComponents ? frames.concat(components.map(({id, name}) => ({id, name}))) : frames
     // get or download frames and components
     const images = zip ?

@@ -89,13 +89,18 @@ export const isAllImageFill = fills =>
   fills.filter(fill => fill.type === 'IMAGE').length === fills.length
 
 // walk file
-export const walkFile = fileData => {
+export const walkFile = (fileData, frames) => {
+  const framesIds = frames ? frames.map(({id}) => id) : null
   const { styles, components } = fileData
   const finalStyles = {}
   const finalComponents = [], exportSettings = []
-  const step = (nodes) => {
+  let currentFrameId = ''
+  const step = (nodes, father) => {
     // eslint-disable-next-line
     nodes.map(node => {
+      if (father && father.type==='CANVAS' && node.type==='FRAME') {
+        currentFrameId=node.id
+      }
       // handle style
       if (node.styles) {
         // eslint-disable-next-line
@@ -116,18 +121,20 @@ export const walkFile = fileData => {
       }
       // handle exports
       if (node.visible!==false && node.exportSettings && node.exportSettings.length) {
-        // eslint-disable-next-line
-        node.exportSettings.map(setting => {
-          exportSettings.push({
-            id: node.id,
-            name: node.name.replace(/\//g, '-'),
-            ...setting
+        if (!framesIds || (framesIds && framesIds.indexOf(currentFrameId)>-1)) {
+          // eslint-disable-next-line
+          node.exportSettings.map(setting => {
+            exportSettings.push({
+              id: node.id,
+              name: node.name.replace(/\//g, '-'),
+              ...setting
+            })
           })
-        })
+        }
       }
       // walk in
       if (node.children) {
-        step(node.children)
+        step(node.children, node)
       }
     })
   }
