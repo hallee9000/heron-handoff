@@ -4,6 +4,7 @@ import cn from 'classnames'
 import { HelpCircle, Copy } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import TextItems from './items/TextItems'
+import PieceWithCopy from './PieceWithCopy'
 import StyleReference from './StyleReference'
 import { WithCopy } from 'components/utilities'
 import { getTextStyle } from 'utils/style'
@@ -66,14 +67,12 @@ class FontPanel extends React.Component {
               textTable.length===0 ?
               <span>{ node.characters }</span> :
               textTable.map((piece, index) =>
-                <WithCopy
+                <PieceWithCopy
                   key={index}
                   text={piece.text}
                   className={cn('box-piece', {'selected': selected===index})}
-                  callback={() => this.switchPiece(piece, index)}
-                >
-                  { piece.text }
-                </WithCopy>
+                  onClick={() => this.switchPiece(piece, index)}
+                />
               )
             }
           </div>

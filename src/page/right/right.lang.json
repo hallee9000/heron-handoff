@@ -28,7 +28,7 @@
     "code": "Code",
     "exported images": "Exported images",
     "text": "Text Style",
-    "multiple text styles tip": "This text contains multiple styles, click every piece to get detail.",
+    "multiple text styles tip": "This text contains multiple styles, click every piece to get detail, double click to copy text fragment.",
     "multiple text styles": "Multiple text styles"
   },
   "zh": {
@@ -60,7 +60,7 @@
     "code": "参考代码",
     "exported images": "切图",
     "text": "文字样式",
-    "multiple text styles tip": "这段文本里面有多种样式，点击对应文字片段来查看不同的样式属性。",
+    "multiple text styles tip": "这段文本里面有多种样式，点击对应文字片段来查看不同的样式属性，双击可以复制文字片段。",
     "multiple text styles": "多样式文本"
   }
 }
