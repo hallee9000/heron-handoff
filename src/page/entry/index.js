@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { GitHub, Coffee, Eye, DollarSign, Package, Mail, Link2, X } from 'react-feather'
+import { GitHub, Coffee, DollarSign, Package, Mail, Link2, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import SettingsContext from 'contexts/SettingsContext'
 import { WithCopy } from 'components/utilities'
@@ -93,7 +93,12 @@ class Entry extends React.Component {
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
           </div>
           <div className="entry-demo">
-            <a onClick={this.gotoDemo} href="/"><Eye size={14}/> {t('demo')}</a>
+            <button
+              className="btn btn-white-o btn-round"
+              onClick={this.gotoDemo}
+            >
+              {t('demo')}
+            </button>
           </div>
           {
             !isDownloaded &&

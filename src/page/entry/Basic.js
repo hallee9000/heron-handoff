@@ -184,6 +184,7 @@ class Basic extends React.Component {
               onClick={this.handleSubmit}
               disabled={isLoading}
             >
+              <span>{t('next step')}</span>
               {
                 isLoading ?
                 <Loader size={16} className="motion-loading"/> :

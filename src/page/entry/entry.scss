@@ -26,9 +26,6 @@
     }
     .entry-demo{
       text-align: center;
-      svg{
-        vertical-align: middle;
-      }
     }
     .entry-block{
       width: 360px;
@@ -42,8 +39,16 @@
           display: block;
         }
       }
-      .btn-round{
-        padding: 5px 7px;
+      .form-item-right{
+        display: flex;
+        justify-content: flex-end;
+        .btn-round{
+          display: flex;
+          align-items: center;
+          >span{
+            margin-right: 4px;
+          }
+        }
       }
       .entry-basic{
         .basic-abstract{

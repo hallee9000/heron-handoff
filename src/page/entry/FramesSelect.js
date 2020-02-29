@@ -188,6 +188,7 @@ class FramesSelect extends React.Component {
               className="btn btn-lg btn-primary btn-round"
               onClick={this.handleSubmit}
             >
+              <span>{t('next step')}</span>
               <ArrowDown size={16}/>
             </button>
           </div>
