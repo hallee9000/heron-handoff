@@ -1,11 +1,12 @@
 {
   "en": {
+    "no exports": "No image slice",
     "downloading images": "downloading images ……",
     "dealing with": "dealing with {{name}}",
     "compressing files": "compressing files ……",
     "downloaded": "downloaded!",
     "tab style": "Style",
-    "tab slice": "Slice",
+    "tab slice": "Image Slice",
     "download all" : "download all",
     "fill type": "Fill",
     "text type": "Text",
@@ -32,6 +33,7 @@
     "multiple text styles": "Multiple text styles"
   },
   "zh": {
+    "no exports": "没有切图",
     "downloading images": "开始下载图片……",
     "dealing with": "正在处理 {{name}} ……",
     "compressing files": "正在压缩文件……",

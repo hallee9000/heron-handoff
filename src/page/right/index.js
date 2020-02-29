@@ -124,7 +124,7 @@ class RightSider extends React.Component {
           </ul>
           <ul className={cn('exports-list', {'hide': tabIndex!==1})}>
             {
-              !useLocalImages &&
+              !useLocalImages && !!exportSettings.length &&
               <li
                 className={cn('exports-list-download-all', {'is-downloading': percentage})}
                 onClick={this.handleDownloadAll}
@@ -134,6 +134,7 @@ class RightSider extends React.Component {
               </li>
             }
             {
+              exportSettings.length ?
               exportSettings
                 .map((exportSetting, index) =>
                   <li key={index}>
@@ -143,7 +144,8 @@ class RightSider extends React.Component {
                       index={index}
                     />
                   </li>
-                )
+                ) :
+              <li className="list-empty">{t('no exports')}</li>
             }
           </ul>
         </div>

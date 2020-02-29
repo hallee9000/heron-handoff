@@ -80,6 +80,10 @@
           z-index: 0;
         }
       }
+      .list-empty{
+        padding: 12px;
+        color: $white-36;
+      }
     }
   }
   &.has-mask{

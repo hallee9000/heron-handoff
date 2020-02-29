@@ -98,8 +98,8 @@ export const walkFile = (fileData, frames) => {
   const step = (nodes, father) => {
     // eslint-disable-next-line
     nodes.map(node => {
-      if (father && father.type==='CANVAS' && node.type==='FRAME') {
-        currentFrameId=node.id
+      if (father && father.type==='CANVAS') {
+        currentFrameId = node.type==='FRAME' ? node.id : ''
       }
       // handle style
       if (node.styles) {
