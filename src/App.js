@@ -3,7 +3,7 @@ import SettingsContext from 'contexts/SettingsContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
-import { walkFile, getGlobalSettings, setGlobalSettings } from 'utils/helper'
+import { walkFile, getFlattedFrames, getGlobalSettings, setGlobalSettings } from 'utils/helper'
 import { DEFAULT_SETTINGS } from 'utils/const'
 import 'assets/base.scss'
 import './app.scss'
@@ -14,10 +14,11 @@ class App extends React.Component {
     let data = {}, components = [], styles = {}, exportSettings = {}, pagedFrames = {},
       isLocal = false, includeComponents = false, entryVisible
     const { FILE_DATA, PAGED_FRAMES, INCLUDE_COMPONENTS } = window
+    const frames = getFlattedFrames(PAGED_FRAMES)
     if (FILE_DATA) {
       // local data (offline mode)
       data = FILE_DATA
-      const parsedData = walkFile(data)
+      const parsedData = walkFile(data, frames)
       components = parsedData.components
       styles = parsedData.styles
       exportSettings = parsedData.exportSettings

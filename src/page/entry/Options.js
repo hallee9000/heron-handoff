@@ -37,7 +37,7 @@ class Options extends React.Component {
   handleSubmit = async e => {
     e.preventDefault()
     const { fileKey, data: fileData, pagedFrames, figmacnLogo, logo, onDownloaded, t } = this.props
-    const frames = getFlattedFrames(pagedFrames, false)
+    const frames = getFlattedFrames(pagedFrames)
     const { includeComponents, onlineMode } = this.state
     const zip = onlineMode ? null : (new JSZip())
 
