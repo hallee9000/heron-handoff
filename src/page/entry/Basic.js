@@ -172,7 +172,7 @@ class Basic extends React.Component {
               tokenMessage ?
               <div className="help-block">{ tokenMessage }</div> :
               <div className="help-block">
-                <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener noreferrer">
+                <a href={t('access token link')} target="_blank" rel="noopener noreferrer">
                   {t('what is access token')}
                 </a>
               </div>
