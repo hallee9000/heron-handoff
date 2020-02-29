@@ -11,6 +11,7 @@ import Options from './Options'
 import LangSetting from './LangSetting'
 import { getMockFile } from 'api'
 import { walkFile, getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
+import { reportEvent } from 'utils/gtag'
 import './entry.scss'
 
 class Entry extends React.Component {
@@ -26,6 +27,7 @@ class Entry extends React.Component {
   }
   gotoDemo = async e => {
     e && e.preventDefault()
+    reportEvent('view_demo', 'handoff_entry')
     const fileData = await getMockFile()
     // get components and styles
     const { components, styles, exportSettings } = walkFile(fileData)
