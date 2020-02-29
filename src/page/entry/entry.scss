@@ -185,10 +185,17 @@
       h5{
         margin: 0;
         margin-bottom: 6px;
+        color: $white-16;
       }
       .social-item{
         margin-bottom: 6px;
         cursor: pointer;
+        >span,>a{
+          color: $white-36;
+          &:hover{
+            opacity: 0.85;
+          }
+        }
         svg{
           vertical-align: middle;
         }
