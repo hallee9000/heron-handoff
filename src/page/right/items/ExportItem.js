@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Download, ExternalLink, Loader } from 'react-feather'
 import cn from 'classnames'
 import { saveAs } from 'file-saver'
-import { getBlobData } from 'api'
+import { getBlobData, withCors } from 'api'
 import { getFileName } from 'utils/helper'
 import './export-item.scss'
 
@@ -16,7 +16,7 @@ export default ({exportSetting, useLocalImages, index}) => {
     if (!useLocalImages) {
       e.preventDefault()
       setDownloading(true)
-      getBlobData(`https://figma-handoff-cors.herokuapp.com/${url}`)
+      getBlobData(withCors(url))
         .then(blob => {
           saveAs(blob, name)
           setDownloading(false)

@@ -41,6 +41,7 @@ class Options extends React.Component {
     const frames = getFlattedFrames(pagedFrames)
     const { includeComponents, onlineMode } = this.state
     reportEvent('start_export', 'handoff_entry', `${onlineMode ? 'online' : 'offline'}_mode`)
+    console.time('export')
     const zip = onlineMode ? null : (new JSZip())
 
     this.setState({ isLoading: true })
@@ -82,6 +83,7 @@ class Options extends React.Component {
         .then(content => {
           saveAs(content, `${trimFilePath(documentName)}.zip`)
           this.setPercentage(100, 'marked zip downloaded')
+          console.timeEnd('export')
           reportEvent('export_success', 'handoff_entry', 'offline_mode')
           setTimeout(() => {
             onDownloaded && onDownloaded()

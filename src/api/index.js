@@ -2,6 +2,7 @@ import { urlWithParams } from 'utils/helper'
 
 export const baseUrl = 'https://api.figma.com/v1'
 export const corsUrl = 'https://figma-handoff-cors.herokuapp.com/'
+// export const corsUrl = 'https://wtfyw.now.sh/api/cors/'
 
 export const withCors = url => corsUrl+url
 
@@ -138,10 +139,11 @@ export const getBlobData = url =>
     })
 
 // get buffer data
-export const getBufferData = url =>
-  fetch(url)
+export const getBufferData = url => {
+  return fetch(url)
     .then(response => response.arrayBuffer())
     .catch(error => {
       console.dir(error)
       return { err: error }
     })
+}
