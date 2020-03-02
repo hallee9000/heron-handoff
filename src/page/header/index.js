@@ -1,7 +1,7 @@
 import React, { Fragment, createRef } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
-import { Download, Settings, HelpCircle, ChevronLeft } from 'react-feather'
+import { Download, Settings, HelpCircle, MessageCircle, ChevronLeft } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import SettingsContext from 'contexts/SettingsContext'
@@ -145,6 +145,9 @@ class Header extends React.Component {
           }
           <a title={t('help')} href={t('help link')} target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
+          </a>
+          <a title={t('feedback')} href={t('feedback link')} target="_blank" rel="noopener noreferrer">
+            <MessageCircle size={14}/>
           </a>
           {
             this.hasNames() && !isLocal && !isMock &&

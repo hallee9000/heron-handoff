@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { GitHub, Coffee, DollarSign, Package, Mail, Link2, X } from 'react-feather'
+import { GitHub, Coffee, MessageCircle, DollarSign, Package, Mail, Link2, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import SettingsContext from 'contexts/SettingsContext'
 import { WithCopy } from 'components/utilities'
@@ -155,10 +155,17 @@ class Entry extends React.Component {
             </SettingsContext.Consumer>
             <span className="footer-stretch"/>
             <Tooltip overlay={t('github')} placement="top" align={{offset: [0, 3]}}>
-              <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer"><GitHub size={14}/></a>
+              <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer">
+                <GitHub size={14}/>
+              </a>
             </Tooltip>
             <Tooltip overlay={t('buy me a coffee')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" onClick={this.toggleCoffee} href="/"><Coffee size={14}/></a>
+            </Tooltip>
+            <Tooltip overlay={t('feedback')} placement="top" align={{offset: [0, 3]}}>
+              <a className="footer-item" href={t('feedback link')} target="_blank" rel="noopener noreferrer">
+                <MessageCircle size={14}/>
+              </a>
             </Tooltip>
           </div>
           <div className="entry-social">

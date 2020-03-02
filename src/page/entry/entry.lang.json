@@ -2,6 +2,8 @@
   "en": {
     "paypal": "PayPal Support",
     "buy me a coffee": "buy me a coffee",
+    "feedback": "Feedback",
+    "feedback link": "https://github.com/leadream/figma-handoff/issues",
     "github": "GitHub source code",
     "demo": "View Demo",
     "congratulation title": "Marked zip downloaded!",
@@ -43,6 +45,8 @@
   "zh": {
     "paypal": "PayPal 支持",
     "buy me a coffee": "请我喝杯咖啡",
+    "feedback": "在线反馈",
+    "feedback link": "https://support.qq.com/products/131052",
     "github": "GitHub 源码",
     "demo": "查看 Demo",
     "congratulation title": "离线标注已生成并下载！",
