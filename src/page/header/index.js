@@ -80,7 +80,7 @@ class Header extends React.Component {
   render () {
     const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack, t } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
-    const logoHidden = this.hasNames() && !isLocal
+    const logoHidden = this.hasNames()
     return (
       <header className="app-header">
         <span className={cn('header-back', {'hide': !logoHidden})} onClick={onBack}>
@@ -96,7 +96,7 @@ class Header extends React.Component {
         </a>
         <div className={cn('header-divider', {'hide': logoHidden})}/>
         <a
-          className={cn('header-logo', {'hide': logoHidden})}
+          className={cn('header-logo', {'hide': logoHidden && !isLocal})}
           href="https://figmacn.com/handoff/"
           target="_blank"
           rel="noopener noreferrer"
