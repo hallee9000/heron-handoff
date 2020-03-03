@@ -1,6 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
+import StickyBox from 'react-sticky-box'
 import { ArrowDown, ChevronDown } from 'react-feather'
 import Title from './Title'
 import { getPagedFrames, getSelectedPagedFrames, getFlattedFrames } from 'utils/helper'
@@ -141,8 +142,8 @@ class FramesSelect extends React.Component {
                     const { isCollapsed, name, frames, checked } = pagedFrames[pageId]
                     return !frames.length ?
                     null :
-                    <ul key={pageId} className={cn('frames-page', {'frames-page-collapsed': isCollapsed})}>
-                      <li className="frames-header">
+                    <div key={pageId} className={cn('frames-page', {'frames-page-collapsed': isCollapsed})}>
+                      <StickyBox className="frames-header">
                         <span className="header-caret" onClick={() => this.handleCollapse(pageId)}><ChevronDown size={14}/></span>
                         <label>
                           <input
@@ -153,8 +154,8 @@ class FramesSelect extends React.Component {
                           />
                           { name }{ this.getCheckedRatio(frames) }
                         </label>
-                      </li>
-                      <li className="frames-items" style={{height: 24*frames.length}}>
+                      </StickyBox>
+                      <div className="frames-items" style={{height: 24*frames.length}}>
                         {
                           frames.map(({id, name, checked}, index) =>
                             <label key={index} className="frames-item">
@@ -168,8 +169,8 @@ class FramesSelect extends React.Component {
                             </label>
                           )
                         }
-                      </li>
-                    </ul>
+                      </div>
+                    </div>
                   })
               }
             </div>

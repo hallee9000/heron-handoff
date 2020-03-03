@@ -2,7 +2,7 @@
 
 .entry-selection{
   .selection-frames{
-    height: 144px;
+    height: 240px;
     background: $black;
     border-radius: 2px;
     overflow: auto;
@@ -20,6 +20,8 @@
       .frames-header{
         display: flex;
         align-items: center;
+        background: $black;
+        border-bottom: 1px solid $black-0;
         transition: background 0.2s;
         &:hover{
           background: $black-1;
