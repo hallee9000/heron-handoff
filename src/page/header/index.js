@@ -83,7 +83,7 @@ class Header extends React.Component {
     const logoHidden = this.hasNames()
     return (
       <header className="app-header">
-        <span className={cn('header-back', {'hide': !logoHidden})} onClick={onBack}>
+        <span className={cn('header-back', {'hide': !logoHidden || isLocal})} onClick={onBack}>
           <ChevronLeft size={24}/>
         </span>
         <a
