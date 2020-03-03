@@ -4,6 +4,8 @@
 
 ## Introduction
 
+<img alt="Overview" src="./imgs/overview.png"/>
+
 Figma Handoff is a design handoff tool that can help you generate design mark. It's useful for developers. Figma Handoff is a web app and uses [Figma API](https://www.figma.com/developers/api) to get your design data, but never saves you data in any server. 
 
 Figma Handoff supports both offline and online mode. Please visit https://figmacn.com/handoff/.
@@ -38,11 +40,11 @@ No. All the work will be done inthe browser after it fetches your data from Figm
 ### What does "export components list" mean?
 Figma Handoff will find out all the master components in this file and list them in left pannel if you check this option. This will make mark exporting longer because it'll fetch all components' images. We recommend you to place all master components in an independent page so you don't need to export components list.
 
-<img alt="master components in a page" src="./imgs/with-components-page.jpg" width="360"/>
+<img alt="master components in a page" src="./imgs/with-components-page.jpg"/>
 
 **✅ master components in a page**
 
-<img alt="master components in your design" src="./imgs/without-components-page.jpg" width="360"/>
+<img alt="master components in your design" src="./imgs/without-components-page.jpg"/>
 
 **❌ master components in your design**
 

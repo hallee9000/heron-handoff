@@ -4,6 +4,8 @@
 
 ## 简介
 
+<img alt="概览" src="./imgs/overview.png"/>
+
 Figma Handoff 是一个设计交付工具，可以帮助你从 Figma 设计文件生成标注，方便开发人员查看。它是一个线上应用，通过 [Figma API](https://www.figma.com/developers/api) 获取设计数据，并生成离线或在线标注，但不会将你的数据保存至任何服务器。
 
 访问地址：https://figmacn.com/handoff/
@@ -40,11 +42,11 @@ Figma Handoff 是一个设计交付工具，可以帮助你从 Figma 设计文�
 ### “导出组件列表”是什么意思？
 如果你勾选了此选项，Figma Handoff 会自动查找到该文件中所有的 Master 组件，并在左侧生成一个组件列表。这样的话会额外获取组件图片，从而导致生成标注时间变长，因此推荐你将所有 Master 组件统一放在一个 Page 中，而不要放在设计图中，这样就不需要额外导出组件列表了。
 
-<img alt="Master 组件单独放在一个 Page 中" src="./imgs/with-components-page.jpg" width="360"/>
+<img alt="Master 组件单独放在一个 Page 中" src="./imgs/with-components-page.jpg"/>
 
 **✅ Master 组件单独放在一个 Page 中**
 
-<img alt="Master 组件混在设计中" src="./imgs/without-components-page.jpg" width="360"/>
+<img alt="Master 组件混在设计中" src="./imgs/without-components-page.jpg"/>
 
 **❌ Master 组件混在设计中**
 
