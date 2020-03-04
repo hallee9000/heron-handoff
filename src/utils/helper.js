@@ -43,7 +43,7 @@ export const getPagedFrames = data => {
           checked: true,
           name: page.name,
           frames: page.children
-            .filter(frame => frame.type==='FRAME')
+            .filter(frame => frame.type==='FRAME' && frame.visible!==false)
             .map(({id, name}) => ({id, name, checked: true}))
         }
       })
