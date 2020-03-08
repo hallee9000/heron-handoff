@@ -14,13 +14,27 @@ export const toFixed = num =>
 export const generateRects = (nodes, docRect) => {
   let index = 0
   const rects = []
-  const step = (nodes, parentComponentId) => {
+  const step = (nodes, parentId, parentComponentId) => {
+    let maskParentId = ''
     nodes.map(node => {
+      console.log(node)
+      if (node.isMask) {
+        maskParentId = parentId
+      }
       const nbb = node.absoluteBoundingBox
       if (node.visible===false) {
         // eslint-disable-next-line
         return
+      } else if (
+        parentId===maskParentId && !node.isMask &&
+        node.type!=='FRAME' &&  node.type!=='COMPONENT' && node.type!=='INSTANCE'
+      ) {
+        // eslint-disable-next-line
+        return
       } else {
+        if (maskParentId && (node.type==='FRAME' ||  node.type==='COMPONENT' || node.type==='INSTANCE')) {
+          maskParentId = ''
+        }
         const top = (nbb.y - docRect.y)
         const left = (nbb.x - docRect.x)
         const width = nbb.width
@@ -49,7 +63,7 @@ export const generateRects = (nodes, docRect) => {
           node
         })
         if (node.children) {
-          step(node.children, componentIds)
+          step(node.children, node.id, componentIds)
         }
         // eslint-disable-next-line
         return

@@ -130,6 +130,12 @@ class RightProps extends React.Component {
             </div>
           </div>
           {
+            node.isMask &&
+            <div className="props-section">
+              <h5 className="section-title section-name">{t('mask')}</h5>
+            </div>
+          }
+          {
             node.type==='GROUP' &&
             <div className="props-section">
               <h5 className="section-title section-name">{t('group type')}</h5>
