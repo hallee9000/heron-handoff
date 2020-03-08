@@ -169,7 +169,7 @@ class Entry extends React.Component {
             </Tooltip>
           </div>
           <div className="entry-social">
-            <h5>联系我</h5>
+            <h5>{t('contact me')}</h5>
             <div className="social-item">
               <WithCopy text="leadream4@gmail.com">
                 <Mail size={14}/> leadream4@gmail.com

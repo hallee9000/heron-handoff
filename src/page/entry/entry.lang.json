@@ -40,7 +40,8 @@
     "use high quality": "use high quality images",
     "use high quality description": "default to fetch high quality images, uncheck it if you think it's slow.",
     "slow tip": "Why it's too slow?",
-    "slow tip link": "https://github.com/leadream/figma-handoff#why-its-too-slow"
+    "slow tip link": "https://github.com/leadream/figma-handoff#why-its-too-slow",
+    "contact me": "Contact me"
   },
   "zh": {
     "paypal": "PayPal 支持",
@@ -83,6 +84,7 @@
     "use high quality": "使用高清图生成标注",
     "use high quality description": "默认使用高清图，如果生成速度太慢可以取消勾选。",
     "slow tip": "生成速度很慢怎么办？",
-    "slow tip link": "https://github.com/leadream/figma-handoff/blob/master/README-CN.md#生成标注很慢怎么办"
+    "slow tip link": "https://github.com/leadream/figma-handoff/blob/master/README-CN.md#生成标注很慢怎么办",
+    "contact me": "联系我"
   }
 }
