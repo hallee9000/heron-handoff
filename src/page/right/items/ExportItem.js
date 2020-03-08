@@ -11,12 +11,15 @@ export default ({exportSetting, useLocalImages, index}) => {
   const { image } = exportSetting
   const name = getFileName(exportSetting, useLocalImages ? index : undefined)
   const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
+  const { protocol } = window.location
+  const isHttpServer = /^http/.test(protocol)
 
-  const handleSave = (e, url, name) => {
-    if (!useLocalImages) {
+  const handleSave = (e, name) => {
+    if (isHttpServer) {
       e.preventDefault()
       setDownloading(true)
-      getBlobData(withCors(url))
+      const imgUrl = useLocalImages ? imageUrl : withCors(imageUrl)
+      getBlobData(imgUrl)
         .then(blob => {
           saveAs(blob, name)
           setDownloading(false)
@@ -29,14 +32,14 @@ export default ({exportSetting, useLocalImages, index}) => {
       target="_blank"
       rel="noopener noreferrer"
       className={cn('export-item', {'export-item-downloading': isDownloading})}
-      onClick={e => handleSave(e, image, name)}
+      onClick={e => handleSave(e, name)}
     >
       <div style={{backgroundImage: `url(${imageUrl})`}}/>
       <span>{ name }</span>
       {
         isDownloading ?
         <Loader size={14} className="motion-loading"/> :
-        (useLocalImages ? <ExternalLink size={14}/> : <Download size={14}/>)
+        (isHttpServer ? <Download size={14}/> : <ExternalLink size={14}/>)
       }
     </a>
 }

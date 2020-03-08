@@ -52,7 +52,7 @@ class RightSider extends React.Component {
   handleDownloadAll = async () => {
     const { percentage } = this.state
     if (percentage!==0) return
-    const { exportSettings, documentName, t } = this.props
+    const { useLocalImages, exportSettings, documentName, t } = this.props
     const zip = new JSZip()
     const length = exportSettings.length
     const folderName = `${documentName.replace(/\//g, '-')}-exports`
@@ -61,7 +61,8 @@ class RightSider extends React.Component {
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
       const imgName = getFileName(exportSetting, index)
-      const imgData = await getBufferData(withCors(exportSetting.image))
+      const imgUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : withCors((exportSetting.image))
+      const imgData = await getBufferData(imgUrl)
       this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))
       exportsFolder.file(imgName, imgData, {base64: true})
     })
@@ -89,6 +90,7 @@ class RightSider extends React.Component {
   render () {
     const { useLocalImages, styles, exportSettings, hasMask, t } = this.props
     const { maskVisible, tabIndex, detailVisible, currentStyle, percentage, progressText } = this.state
+    const { protocol } = window.location
     return (
       <div className={cn('main-right-sider', {'has-mask': hasMask})}>
         <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>
@@ -124,7 +126,7 @@ class RightSider extends React.Component {
           </ul>
           <ul className={cn('exports-list', {'hide': tabIndex!==1})}>
             {
-              !useLocalImages && !!exportSettings.length &&
+              /^http/.test(protocol) && !!exportSettings.length &&
               <li
                 className={cn('exports-list-download-all', {'is-downloading': percentage})}
                 onClick={this.handleDownloadAll}
@@ -134,7 +136,7 @@ class RightSider extends React.Component {
               </li>
             }
             {
-              exportSettings.length ?
+              !!exportSettings.length ?
               exportSettings
                 .map((exportSetting, index) =>
                   <li key={index}>
