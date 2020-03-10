@@ -14,6 +14,7 @@ export const toFixed = num =>
 export const generateRects = (nodes, docRect) => {
   let index = 0
   const rects = []
+  let exportIds = []
   const step = (nodes, parentId, parentComponentId) => {
     let maskParentId = ''
     nodes.map(node => {
@@ -47,6 +48,9 @@ export const generateRects = (nodes, docRect) => {
         isGroup && clazz.push('group')
         const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
         const componentIds = [parentComponentId, nativeId].filter(id => id).join()
+        if (node.exportSettings && node.exportSettings.length) {
+          exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
+        }
         rects.push({
           index: index++,
           top: top,
@@ -72,7 +76,7 @@ export const generateRects = (nodes, docRect) => {
     })
   }
   step(nodes)
-  return rects
+  return {rects, exportIds}
 }
 
 // go back to find it's component when selected

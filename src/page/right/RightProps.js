@@ -26,12 +26,14 @@ class RightProps extends React.Component {
     textStyle: {}
   }
   getExportSettings = () => {
-    const { data, exportSettings } = this.props
+    const { data, exportSettings, currentIndex, currentExportIds } = this.props
     this.setState({
       exportSettings: exportSettings ?
         exportSettings
           .map((exportSetting, index) => ({...exportSetting, index}))
-          .filter(({id}) => id===data.node.id) :
+          .filter(({id}) =>
+            currentIndex===0 ? currentExportIds.indexOf(id)>-1 : id===data.node.id
+          ) :
         []
     })
   }

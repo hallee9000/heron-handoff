@@ -11,9 +11,12 @@ export default class Main extends React.Component {
     this.state = {
       canvasData: null,
       id: '',
+      // selected layer index
+      currentIndex: '',
       elementData: null,
       currentComponentName: '',
-      propsDissolved: true
+      propsDissolved: true,
+      exportIds: []
     }
   }
   handleSelectFrameOrComponent = (currentId, pageId) => {
@@ -30,22 +33,32 @@ export default class Main extends React.Component {
     onNamesChange && onNamesChange(canvasData.name, currentPage.name)
     this.handleDeselect()
   }
-  handleSelectElement = (elementData, currentComponentName) => {
+  handleSelectElement = (elementData, currentComponentName, index) => {
     this.setState({
       elementData,
       currentComponentName,
-      propsDissolved: false
+      propsDissolved: false,
+      currentIndex: index
     })
   }
+  handleGetExports = (exportIds) => {
+    this.setState({ exportIds })
+  }
   handleDeselect = () => {
-    this.setState({ propsDissolved: true })
+    this.setState({
+      propsDissolved: true,
+      currentIndex: ''
+    })
   }
   handleDissolveEnd = () => {
     this.setState({ elementData: null })
   }
   render () {
-    const { documentName, components, styles, exportSettings, images, pagedFrames, isMock, includeComponents, isLocal } = this.props
-    const { id, canvasData, elementData, currentComponentName, propsDissolved } = this.state
+    const {
+      documentName, components, styles, exportSettings, images,
+      pagedFrames, isMock, includeComponents, isLocal
+    } = this.props
+    const { id, canvasData, exportIds, elementData, currentIndex, currentComponentName, propsDissolved } = this.state
     return (
       <div className="app-main">
         <LeftSider
@@ -67,6 +80,7 @@ export default class Main extends React.Component {
             propsDissolved={propsDissolved}
             onSelect={this.handleSelectElement}
             onDeselect={this.handleDeselect}
+            onGetExports={this.handleGetExports}
           />
         }
         <div className="main-right">
@@ -86,6 +100,8 @@ export default class Main extends React.Component {
               styles={styles}
               components={components}
               exportSettings={exportSettings}
+              currentExportIds={exportIds}
+              currentIndex={currentIndex}
               dissolved={propsDissolved}
               onDissolveEnd={this.handleDissolveEnd}
             />

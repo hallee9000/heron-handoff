@@ -38,9 +38,10 @@ class Canvas extends React.Component {
     })
   }
   generateMark = () => {
-    const { canvasData } = this.props
+    const { canvasData, onGetExports } = this.props
     const { absoluteBoundingBox: pageRect } = canvasData
-    const rects = generateRects([canvasData], pageRect)
+    const { rects, exportIds } = generateRects([canvasData], pageRect)
+    onGetExports && onGetExports(exportIds)
     this.setState({ rects, pageRect })
   }
   getBound = () => {
@@ -63,7 +64,7 @@ class Canvas extends React.Component {
     const currentComponent = components.find(({id}) => id===componentId)
     const currentComponentName =  rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
 
-    onSelect && onSelect(rect, currentComponentName)
+    onSelect && onSelect(rect, currentComponentName, index)
     this.setState({
       selectedRect: rect,
       selectedIndex: index,
