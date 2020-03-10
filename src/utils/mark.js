@@ -18,25 +18,24 @@ export const generateRects = (nodes, docRect) => {
   const step = (nodes, parentId, parentComponentId) => {
     let maskParentId = ''
     nodes.map(node => {
+      // deal with mask
       if (node.isMask) {
+        // mask element start
         maskParentId = parentId
+      } else if (maskParentId && (node.type==='FRAME' ||  node.type==='COMPONENT' || node.type==='INSTANCE')) {
+        // masked elements stop
+        maskParentId = ''
+      } else if (parentId===maskParentId && !node.isMask) {
+        // elements of maskParentId, should jump out
+        // eslint-disable-next-line
+        return
       }
+
       const nbb = node.absoluteBoundingBox
       if (node.visible===false) {
         // eslint-disable-next-line
         return
-      } else if (
-        parentId===maskParentId && !node.isMask &&
-        // Frame/Component/Instance can't be masked
-        node.type!=='FRAME' &&  node.type!=='COMPONENT' && node.type!=='INSTANCE'
-      ) {
-        // eslint-disable-next-line
-        return
       } else {
-        if (maskParentId && (node.type==='FRAME' ||  node.type==='COMPONENT' || node.type==='INSTANCE')) {
-          // masked elements stop
-          maskParentId = ''
-        }
         const top = (nbb.y - docRect.y)
         const left = (nbb.x - docRect.x)
         const width = nbb.width
