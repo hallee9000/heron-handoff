@@ -116,7 +116,7 @@ class Canvas extends React.Component {
     const { rects, pageRect, frameStyle, selectedIndex, hoveredIndex, componentIndex, currentComponentName, markData, isChanging } = this.state
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
-        <div className="mark-layers" style={frameStyle}>
+        <div className={cn('mark-layers', {'mark-layers-first-selected': selectedIndex===0})} style={frameStyle}>
           {
             selectedIndex!==null && (selectedIndex!==hoveredIndex) &&
             <Ruler rulerData={markData.rulerData}/>

@@ -10,6 +10,12 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    &-first-selected{
+      .layer.has-exports{
+        opacity: 1;
+        background-color: rgba($color: $mark-hovered, $alpha: 0.16);
+      }
+    }
     .layer{
       position: absolute;
       border: 1px solid $mark-hovered;

@@ -43,12 +43,14 @@ export const generateRects = (nodes, docRect) => {
         const height = nbb.height
         const isComponent = node.type==='COMPONENT' || node.type==='INSTANCE'
         const isGroup = node.type==='GROUP'
+        const hasExports = node.exportSettings && node.exportSettings.length
         const clazz = []
         isComponent && clazz.push('component')
         isGroup && clazz.push('group')
+        hasExports && clazz.push('has-exports')
         const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
         const componentIds = [parentComponentId, nativeId].filter(id => id).join()
-        if (node.exportSettings && node.exportSettings.length) {
+        if (hasExports) {
           exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
         }
         rects.push({
