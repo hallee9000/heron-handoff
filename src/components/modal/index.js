@@ -4,25 +4,18 @@ import cn from 'classnames'
 import { X } from 'react-feather'
 import './modal.scss'
 
-export default class Modal extends React.Component {
-  state = { visible: true }
-  toggleVisible = () => {
-    const { visible } = this.state
-    this.setState({visible: !visible})
-  }
-  render() {
-    const { children, visible: PropsVisible } = this.props
-    const { visible } = this.state
-    return ReactDOM.createPortal(
-      <div className={cn('modal-overlay', {'modal-hidden': !(PropsVisible || visible)})}>
-        <div className="modal">
-          { children }
-          <div className="modal-close" onClick={this.onClose}>
-            <X size={20}/>
-          </div>
+export default ({children, visible, onClose}) =>
+  ReactDOM.createPortal(
+    <div
+      className={cn('modal-overlay', {'modal-hidden': !visible})}
+      onClick={onClose}
+    >
+      <div className="modal">
+        { children }
+        <div className="modal-close" onClick={onClose}>
+          <X size={20}/>
         </div>
-      </div>,
-      document.getElementById('modal')
-    )
-  }
-}
+      </div>
+    </div>,
+    document.getElementById('modal')
+  )

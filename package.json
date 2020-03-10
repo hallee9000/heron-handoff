@@ -8,6 +8,7 @@
     "file-saver": "^2.0.2",
     "i18next": "^19.1.0",
     "jszip": "^3.2.2",
+    "marked": "^0.8.0",
     "node-sass": "^4.13.0",
     "prismjs": "^1.19.0",
     "rc-input-number": "^4.5.3",

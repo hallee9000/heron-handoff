@@ -107,6 +107,7 @@ class App extends React.Component {
             includeComponents={includeComponents}
             isLocal={isLocal}
             onBack={this.handleBack}
+            entryVisible={entryVisible}
             {...names}
           />
         </SettingsContext.Provider>

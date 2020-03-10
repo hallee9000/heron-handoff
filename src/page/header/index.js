@@ -1,12 +1,13 @@
 import React, { Fragment, createRef } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
-import { Download, Settings, HelpCircle, MessageCircle, ChevronLeft } from 'react-feather'
+import { Download, FileText, Settings, HelpCircle, MessageCircle, ChevronLeft } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import SettingsContext from 'contexts/SettingsContext'
 import Overlay from './Overlay'
 import GlobalSettings from './Settings'
+import Changelog from './Changelog'
 import Exported from './Exported'
 import { handleIndex, handleJs, handleIcoAndCSS, handleLogo, handleFramesAndComponents, handleExports } from 'utils/download'
 import { trimFilePath } from 'utils/helper'
@@ -78,7 +79,7 @@ class Header extends React.Component {
     })
   }
   render () {
-    const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack, t } = this.props
+    const { entryVisible, isLocal, isMock, documentName, pageName, frameName, isComponent, onBack, t } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
     const logoHidden = this.hasNames()
     return (
@@ -146,6 +147,21 @@ class Header extends React.Component {
           <a title={t('help')} href={t('help link')} target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
+          {
+            entryVisible &&
+            <Overlay
+              trigger={['click']}
+              overlay={<Changelog/>}
+              align={{
+                offset: [30, -10]
+              }}
+              overlayClassName="header-overlay header-overlay-changelog"
+            >
+              <span title={t('changelog')}>
+                <FileText size={14}/>
+              </span>
+            </Overlay>
+          }
           <a title={t('feedback')} href={t('feedback link')} target="_blank" rel="noopener noreferrer">
             <MessageCircle size={14}/>
           </a>

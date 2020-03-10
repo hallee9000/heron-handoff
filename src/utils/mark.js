@@ -17,7 +17,6 @@ export const generateRects = (nodes, docRect) => {
   const step = (nodes, parentId, parentComponentId) => {
     let maskParentId = ''
     nodes.map(node => {
-      console.log(node)
       if (node.isMask) {
         maskParentId = parentId
       }
@@ -27,12 +26,14 @@ export const generateRects = (nodes, docRect) => {
         return
       } else if (
         parentId===maskParentId && !node.isMask &&
+        // Frame/Component/Instance can't be masked
         node.type!=='FRAME' &&  node.type!=='COMPONENT' && node.type!=='INSTANCE'
       ) {
         // eslint-disable-next-line
         return
       } else {
         if (maskParentId && (node.type==='FRAME' ||  node.type==='COMPONENT' || node.type==='INSTANCE')) {
+          // masked elements stop
           maskParentId = ''
         }
         const top = (nbb.y - docRect.y)

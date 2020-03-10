@@ -97,6 +97,20 @@
       right: 15px!important;
     }
   }
+  &-changelog{
+    .rc-tooltip-arrow{
+      right: 45px!important;
+    }
+    h2{
+      margin: 0;
+      margin-bottom: 12px;
+    }
+    .changelog-content{
+      h2{
+        margin-bottom: 8px;
+      }
+    }
+  }
   &-exported{
     .rc-tooltip-arrow{
       right: 9px!important;
