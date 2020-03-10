@@ -102,12 +102,15 @@
       right: 45px!important;
     }
     h2{
-      margin: 0;
+      margin-top: 0;
       margin-bottom: 12px;
     }
     .changelog-content{
+      max-height: 500px;
+      overflow: auto;
       h2{
-        margin-bottom: 8px;
+        margin-top: 12px;
+        margin-bottom: 4px;
       }
     }
   }
