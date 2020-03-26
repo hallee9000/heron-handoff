@@ -45,6 +45,7 @@ export const getPagedFrames = data => {
           frames: page.children
             .filter(frame => frame.type==='FRAME' && frame.visible!==false)
             .map(({id, name}) => ({id, name, checked: true}))
+            .reverse()
         }
       })
   }
