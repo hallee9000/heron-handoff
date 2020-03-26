@@ -106,6 +106,7 @@ export default function (Canvas) {
       }
     }
     handleKeyboard = () => {
+      const { onDeselect } = this.props
       window.onkeydown = e => {
         // space key pressed
         if(e.keyCode === 32) {
@@ -119,6 +120,10 @@ export default function (Canvas) {
         // when - pressed
         if(e.keyCode === 189) {
           this.onStep(-1)
+        }
+        // when ESC pressed
+        if(e.keyCode === 27) {
+          onDeselect && onDeselect()
         }
       }
       window.onkeyup = e => {
