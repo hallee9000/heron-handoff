@@ -1,4 +1,6 @@
 import React, { createRef }  from 'react'
+import cn from 'classnames'
+import Tooltip from 'rc-tooltip'
 import { Plus, Minus } from 'react-feather'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
@@ -25,7 +27,8 @@ export default function (Canvas) {
         isDragging: false,
         spacePressed: false,
         originX: 0,
-        originY: 0
+        originY: 0,
+        quickZoomVisible: false
       }
     }
     initializeCanvas = (needResetSizeAndPosition) => {
@@ -83,14 +86,20 @@ export default function (Canvas) {
         Math.min(0, Math.max(containerHeight-initialHeight*scale, pos))
     }
     getSize = (scale, initialSize) => initialSize ? scale*initialSize : initialSize
-    onStep = increment => {
+    onStep = (increment, isDirect = false) => {
       const { containerWidth, containerHeight, initialWidth, initialHeight, scale, minScale } = this.state
       // every step changes 25%
-      const currentScale = Math.max(minScale, Math.min(4, scale + increment*0.25))
+      const currentScale = Math.max(minScale, Math.min(4, isDirect ? increment : (scale + increment*0.25)))
       this.setState({
         scale: currentScale,
         posX: (containerWidth - initialWidth*currentScale)/2,
         posY: (containerHeight - initialHeight*currentScale)/2
+      })
+    }
+    toggleQuickZoom = () => {
+      const { quickZoomVisible } = this.state
+      this.setState({
+        quickZoomVisible: !quickZoomVisible
       })
     }
     calculateStaringOrigins = e => {
@@ -235,7 +244,7 @@ export default function (Canvas) {
     }
     render () {
       const { width, height } = this.getOffsetSize()
-      const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state
+      const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging, quickZoomVisible } = this.state
       const style = {
         top: posY,
         left: posX,
@@ -245,9 +254,24 @@ export default function (Canvas) {
       return (
         <div ref={this.container} className="main-canvas">
           <div className="canvas-steper">
-            <span className="steper-minus" onClick={() => this.onStep(-1)}><Minus size={14}/></span>
-            <span className="steper-percentage">{ (scale*100).toFixed() }%</span>
-            <span className="steper-plus" onClick={() => this.onStep(1)}><Plus size={14}/></span>
+            <span className="steper-button steper-minus" onClick={() => this.onStep(-1)}><Minus size={14}/></span>
+            <Tooltip
+              trigger={['click']}
+              overlayStyle={{width: 96}}
+              placement="top"
+              transitionName="rc-tooltip-slide"
+              overlay={
+                <ul className="steper-quick">
+                  <li onClick={() => this.onStep(4, true)}>400%</li>
+                  <li onClick={() => this.onStep(3, true)}>300%</li>
+                  <li onClick={() => this.onStep(2, true)}>200%</li>
+                  <li onClick={() => this.onStep(1, true)}>100%</li>
+                </ul>
+              }
+            >
+              <span className="steper-percentage">{ (scale*100).toFixed() }%</span>
+            </Tooltip>
+            <span className="steper-button steper-plus" onClick={() => this.onStep(1)}><Plus size={14}/></span>
           </div>
           <div
             ref={this.canvas}

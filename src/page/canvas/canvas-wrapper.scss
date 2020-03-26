@@ -8,14 +8,21 @@
     position: absolute;
     bottom: 16px;
     left: 16px;
+    width: 96px;
     height: 26px;
     border-radius: 13px;
     background: #363945;
+    cursor: pointer;
     z-index: 1;
-    overflow: hidden;
-    .steper-minus, .steper-plus{
+    .steper-button{
       padding: 6px;
-      cursor: pointer;
+      transition: 0.2s background;
+      &.steper-minus{
+        border-radius: 13px 0 0 13px;
+      }
+      &.steper-plus{
+        border-radius: 0 13px 13px 0;
+      }
       svg{
         display: block;
       }
@@ -24,7 +31,14 @@
       }
     }
     .steper-percentage{
+      height: 26px;
       padding: 6px;
+      line-height: 14px;
+      transition: 0.2s background;
+      flex: 1;
+      &:hover{
+        background: #222531;
+      }
     }
   }
   .canvas-container{
@@ -35,5 +49,27 @@
     padding: 60px;
     background: #111421;
     transition: none;
+  }
+}
+
+.rc-tooltip{
+  .rc-tooltip-inner{
+    padding: 0!important;
+    border-radius: 6px!important;
+    overflow: hidden;
+    .steper-quick{
+      background: #363945;
+      &-visible{
+        display: block;
+      }
+      >li{
+        padding: 6px 12px;
+        cursor: pointer;
+        transition: 0.2s background;
+        &:hover{
+          background: #222531;
+        }
+      }
+    }
   }
 }
