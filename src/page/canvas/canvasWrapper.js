@@ -1,5 +1,4 @@
 import React, { createRef }  from 'react'
-import cn from 'classnames'
 import Tooltip from 'rc-tooltip'
 import { Plus, Minus } from 'react-feather'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
@@ -27,8 +26,7 @@ export default function (Canvas) {
         isDragging: false,
         spacePressed: false,
         originX: 0,
-        originY: 0,
-        quickZoomVisible: false
+        originY: 0
       }
     }
     initializeCanvas = (needResetSizeAndPosition) => {
@@ -96,12 +94,6 @@ export default function (Canvas) {
         posY: (containerHeight - initialHeight*currentScale)/2
       })
     }
-    toggleQuickZoom = () => {
-      const { quickZoomVisible } = this.state
-      this.setState({
-        quickZoomVisible: !quickZoomVisible
-      })
-    }
     calculateStaringOrigins = e => {
       // remember the starting origin
       const canvas = this.canvas.current
@@ -117,18 +109,16 @@ export default function (Canvas) {
     handleKeyboard = () => {
       const { onDeselect } = this.props
       window.onkeydown = e => {
+        const isCmdOrCtrl = navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey
         // space key pressed
         if(e.keyCode === 32) {
           e.preventDefault()
           this.setState({ spacePressed: true })
         }
-        // when + pressed
-        if(e.keyCode === 187) {
-          this.onStep(1)
-        }
-        // when - pressed
-        if(e.keyCode === 189) {
-          this.onStep(-1)
+        // when (Cmd/Ctrl +) or (Cmd/Ctrl -) pressed
+        if ((e.keyCode === 187 || e.keyCode === 189) && isCmdOrCtrl) {
+          e.preventDefault()
+          this.onStep(e.keyCode === 187 ? 1 : -1)
         }
         // when ESC pressed
         if(e.keyCode === 27) {
@@ -244,7 +234,7 @@ export default function (Canvas) {
     }
     render () {
       const { width, height } = this.getOffsetSize()
-      const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging, quickZoomVisible } = this.state
+      const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
         top: posY,
         left: posX,
