@@ -63,9 +63,15 @@ class Settings extends Component {
     i18n.changeLanguage(value)
     onSettingsChange('language', value)
   }
+  changeExportsSetting = e => {
+    const { onSettingsChange } = this.props
+    const { checked } = e.target
+    this.setState({showAllExports: checked})
+    onSettingsChange('showAllExports', checked)
+  }
   render () {
     const { t } = this.props
-    const { platform, resolution, unit, remBase, language } = this.state
+    const { platform, resolution, unit, remBase, language, showAllExports } = this.state
     const baseVisible = platform===0 && (unit===3 || unit===4)
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
@@ -148,6 +154,15 @@ class Settings extends Component {
             <option value="en">English</option>
             <option value="zh">中文</option>
           </select>
+        </div>
+      </div>
+      <div className="form">
+        <div className="form-item settings-title">其他</div>
+        <div className="form-item">
+          <label>
+            <input name="showAllExports" type="checkbox" checked={showAllExports} onChange={this.changeExportsSetting}/>
+            {t('show all exports')}
+          </label>
         </div>
       </div>
     </div>

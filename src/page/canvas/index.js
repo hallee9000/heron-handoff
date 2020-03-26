@@ -114,9 +114,11 @@ class Canvas extends React.Component {
 	render () {
     const { id, size, useLocalImages, images, globalSettings } = this.props
     const { rects, pageRect, frameStyle, selectedIndex, hoveredIndex, componentIndex, currentComponentName, markData, isChanging } = this.state
+    const { showAllExports } = globalSettings
+    const exportsVisible = selectedIndex===0 && showAllExports
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
-        <div className={cn('mark-layers', {'mark-layers-first-selected': selectedIndex===0})} style={frameStyle}>
+        <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
           {
             selectedIndex!==null && (selectedIndex!==hoveredIndex) &&
             <Ruler rulerData={markData.rulerData}/>

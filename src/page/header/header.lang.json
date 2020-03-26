@@ -24,7 +24,8 @@
     "miniprogram": " (Wechat MiniProgram)",
     "(r)em base": "(R)em base",
     "(r)em base placeholder": "please fulfill (r)em base",
-    "language": "Language"
+    "language": "Language",
+    "show all exports": "show all exports while outer frame selected"
   },
   "zh": {
     "dealing with": "开始处理 {{name}} ……",
@@ -51,6 +52,7 @@
     "miniprogram": "（微信小程序）",
     "(r)em base": "(R)em 基准",
     "(r)em base placeholder": "请填写基准值",
-    "language": "语言"
+    "language": "语言",
+    "show all exports": "在选择最外层时显示所有切图"
   }
 }

@@ -52,7 +52,8 @@ export const DEFAULT_SETTINGS = {
   unit: 2,
   remBase: 14,
   colorFormat: 0,
-  language: 'zh'
+  language: 'zh',
+  showAllExports: true
 }
 
 export const PLATFORMS = [ 'Web', 'iOS', 'Android' ]
