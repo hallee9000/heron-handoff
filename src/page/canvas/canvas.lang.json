@@ -1,0 +1,18 @@
+{
+  "en": {
+    "tips": "Tips",
+    "zoom": "Pinch or scroll to zoom",
+    "drag": "Press space or middle key of mouse to drag",
+    "zoom step": "Press Cmd +/- (Ctrl in Windows) to zoom",
+    "exports": "Select outer frame to show all exports",
+    "deselect": "Press ESC to deselect element"
+  },
+  "zh": {
+    "tips": "小提示",
+    "zoom": "两指捏放或滚动鼠标滚轮进行缩放",
+    "drag": "按住鼠标中键或空格键可以拖拽画布",
+    "zoom step": "按 Cmd +/- （Windows 下 Ctrl）放大缩小",
+    "exports": "选中最外层查看所有切图",
+    "deselect": "按 ESC 可取消选择元素"
+  }
+}

@@ -1,6 +1,7 @@
 import React, { createRef }  from 'react'
 import Tooltip from 'rc-tooltip'
-import { Plus, Minus } from 'react-feather'
+import { withTranslation } from 'react-i18next'
+import { Plus, Minus, HelpCircle } from 'react-feather'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
 
@@ -233,6 +234,7 @@ export default function (Canvas) {
       window.onkeyup = null
     }
     render () {
+      const { t } = this.props
       const { width, height } = this.getOffsetSize()
       const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
@@ -247,11 +249,12 @@ export default function (Canvas) {
             <span className="steper-button steper-minus" onClick={() => this.onStep(-1)}><Minus size={14}/></span>
             <Tooltip
               trigger={['click']}
+              overlayClassName="canvas-tooltip"
               overlayStyle={{width: 96}}
               placement="top"
               transitionName="rc-tooltip-slide"
               overlay={
-                <ul className="steper-quick">
+                <ul className="tooltip-quick-zoom">
                   <li onClick={() => this.onStep(4, true)}>400%</li>
                   <li onClick={() => this.onStep(3, true)}>300%</li>
                   <li onClick={() => this.onStep(2, true)}>200%</li>
@@ -263,6 +266,29 @@ export default function (Canvas) {
             </Tooltip>
             <span className="steper-button steper-plus" onClick={() => this.onStep(1)}><Plus size={14}/></span>
           </div>
+          <Tooltip
+              trigger={['click']}
+              overlayClassName="canvas-tooltip"
+              overlayStyle={{width: 266}}
+              placement="top"
+              transitionName="rc-tooltip-slide"
+              overlay={
+                <ul className="tooltip-help">
+                  <li>
+                    <h3><span role="img" aria-label="Tips">💡</span> {t('tips')}</h3>
+                  </li>
+                  <li>1. {t('zoom')}</li>
+                  <li>2. {t('drag')}</li>
+                  <li>3. {t('zoom step')}</li>
+                  <li>4. {t('exports')}</li>
+                  <li>5. {t('deselect')}</li>
+                </ul>
+              }
+            >
+            <span className="canvas-help">
+              <HelpCircle size={16}/>
+            </span>
+          </Tooltip>
           <div
             ref={this.canvas}
             className="canvas-container"
@@ -279,5 +305,5 @@ export default function (Canvas) {
       )
     }
   }
-  return CanvasWrapper
+  return withTranslation('canvas')(CanvasWrapper)
 }

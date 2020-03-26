@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { getGlobalSettings } from 'utils/helper'
-import { entry, left, right, rightItems, utilities, header } from './lang'
+import { entry, left, right, rightItems, utilities, canvas, header } from './lang'
 
 const { language } = getGlobalSettings() || {}
 // the translations
@@ -13,6 +13,7 @@ const resources = {
     'right': right.en,
     'right.items': rightItems.en,
     'utilities': utilities.en,
+    'canvas': canvas.en,
     'header': header.en
   },
   zh: {
@@ -21,6 +22,7 @@ const resources = {
     'right': right.zh,
     'right.items': rightItems.zh,
     'utilities': utilities.zh,
+    'canvas': canvas.zh,
     'header': header.zh
   }
 }
