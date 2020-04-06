@@ -11,21 +11,26 @@ import './app.scss'
 class App extends React.Component {
   constructor(props) {
     super(props)
-    let data = {}, components = [], styles = {}, exportSettings = {}, pagedFrames = {},
+    let data = {}, components = [], styles = {}, exportSettings = [], pagedFrames = {},
       isLocal = false, includeComponents = false, entryVisible
     const { FILE_DATA, PAGED_FRAMES, INCLUDE_COMPONENTS } = window
     const frames = getFlattedFrames(PAGED_FRAMES)
+    // local data (offline mode)
     if (FILE_DATA) {
-      // local data (offline mode)
       data = FILE_DATA
-      const parsedData = walkFile(data, frames)
-      components = parsedData.components
-      styles = parsedData.styles
-      exportSettings = parsedData.exportSettings
-      pagedFrames = PAGED_FRAMES
-      isLocal = true
-      includeComponents = INCLUDE_COMPONENTS
-      entryVisible = false
+      // exported from plugin
+      if (FILE_DATA.isFromPlugin) {
+
+      } else {
+        const parsedData = walkFile(data, frames, INCLUDE_COMPONENTS)
+        components = parsedData.components
+        styles = parsedData.styles
+        exportSettings = parsedData.exportSettings
+        pagedFrames = PAGED_FRAMES
+        isLocal = true
+        includeComponents = INCLUDE_COMPONENTS
+        entryVisible = false
+      }
     } else {
       entryVisible = true
     }

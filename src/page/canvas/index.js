@@ -57,11 +57,11 @@ class Canvas extends React.Component {
     this.setState({ frameStyle })
   }
   onSelect = (rect, index) => {
-    const { spacePressed, onSelect, components } =this.props
+    const { spacePressed, onSelect, includeComponents, components } =this.props
     if (spacePressed) return
     const { rects } = this.state
     const { index: componentIndex, componentId } = findParentComponent(index, rect, rects)
-    const currentComponent = components.find(({id}) => id===componentId)
+    const currentComponent = includeComponents ? components.find(({id}) => id===componentId) : components[componentId]
     const currentComponentName =  rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
 
     onSelect && onSelect(rect, currentComponentName, index)

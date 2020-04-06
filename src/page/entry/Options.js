@@ -35,19 +35,10 @@ class Options extends React.Component {
       onComponentsOptionChange && onComponentsOptionChange(includeComponents)
     })
   }
-  handleSubmit = async e => {
-    e.preventDefault()
-    const { fileKey, data: fileData, pagedFrames, figmacnLogo, logo, onDownloaded, t } = this.props
-    const frames = getFlattedFrames(pagedFrames)
-    const { includeComponents, onlineMode } = this.state
-    reportEvent('start_export', 'handoff_entry', `${onlineMode ? 'online' : 'offline'}_mode`)
-    console.time('export')
-    const zip = onlineMode ? null : (new JSZip())
-
-    this.setState({ isLoading: true })
-    this.setPercentage(0, t('fetching data'))
-
+  handleHTMLAndAssets = async zip => {
     if (zip) {
+      const { data: fileData, pagedFrames, figmacnLogo, logo, t } = this.props
+      const { includeComponents } = this.state
       await handleIndex(
         zip,
         { fileData, pagedFrames, includeComponents },
@@ -58,9 +49,9 @@ class Options extends React.Component {
       await handleLogo(zip, figmacnLogo.current.src, 'figmacn-logo.svg',  () => { this.setPercentage(14, t('dealing with', {name: 'figmacn-logo'})) })
       await handleLogo(zip, logo.current.src, 'logo.svg', () => { this.setPercentage(16, t('dealing with', {name: 'logo'})) })
     }
-    // get components and styles
-    const { components, styles, exportSettings } = walkFile(fileData, frames)
-    const imageIds = includeComponents ? frames.concat(components.map(({id, name}) => ({id, name}))) : frames
+  }
+  handleImagesDownloading = async (zip, exportSettings, imageIds) => {
+    const { fileKey, t } = this.props
     // get or download frames and components
     const images = zip ?
       await this.downloadFramesAndComponentsImages(fileKey, imageIds, zip, (index, name, length) => {
@@ -75,6 +66,23 @@ class Options extends React.Component {
       const step = Math.floor(32/length)
       this.setPercentage(60+step*(index+1), t('fetching', {name}))
     })
+    return {images, exportings}
+  }
+  handleSubmit = async e => {
+    e.preventDefault()
+    const { data: fileData, pagedFrames, onDownloaded, t } = this.props
+    const frames = getFlattedFrames(pagedFrames)
+    const { includeComponents, onlineMode } = this.state
+    reportEvent('start_export', 'handoff_entry', `${onlineMode ? 'online' : 'offline'}_mode`)
+    const zip = onlineMode ? null : (new JSZip())
+    const { components, styles, exportSettings } = walkFile(fileData, frames, includeComponents)
+    const imageIds = includeComponents ? frames.concat(components.map(({id, name}) => ({id, name}))) : frames
+
+    this.setState({ isLoading: true })
+    this.setPercentage(0, t('fetching data'))
+    await this.handleHTMLAndAssets(zip)
+    const { images, exportings } = await this.handleImagesDownloading(zip, exportSettings, imageIds)
+
     if (zip) {
       // generate zip
       const documentName = fileData.name
@@ -83,7 +91,6 @@ class Options extends React.Component {
         .then(content => {
           saveAs(content, `${trimFilePath(documentName)}.zip`)
           this.setPercentage(100, 'marked zip downloaded')
-          console.timeEnd('export')
           reportEvent('export_success', 'handoff_entry', 'offline_mode')
           setTimeout(() => {
             onDownloaded && onDownloaded()

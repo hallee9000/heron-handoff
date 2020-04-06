@@ -75,6 +75,7 @@ export default class Main extends React.Component {
             useLocalImages={isMock || isLocal}
             images={images}
             canvasData={canvasData}
+            includeComponents={includeComponents}
             components={components}
             id={id}
             propsDissolved={propsDissolved}
@@ -98,7 +99,6 @@ export default class Main extends React.Component {
               data={elementData}
               currentComponentName={currentComponentName}
               styles={styles}
-              components={components}
               exportSettings={exportSettings}
               currentExportIds={exportIds}
               currentIndex={currentIndex}

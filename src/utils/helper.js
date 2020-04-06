@@ -90,11 +90,11 @@ export const isAllImageFill = fills =>
   fills.filter(fill => fill.type === 'IMAGE').length === fills.length
 
 // walk file
-export const walkFile = (fileData, frames) => {
+export const walkFile = (fileData, frames, includeComponents) => {
   const framesIds = frames ? frames.map(({id}) => id) : null
   const { styles, components } = fileData
   const finalStyles = {}
-  const finalComponents = [], exportSettings = []
+  const finalComponents = includeComponents ? [] : components, exportSettings = []
   let currentFrameId = ''
   const step = (nodes, father) => {
     // eslint-disable-next-line
@@ -117,7 +117,7 @@ export const walkFile = (fileData, frames) => {
         })
       }
       // handle component
-      if (node.type==='COMPONENT') {
+      if (includeComponents && node.type==='COMPONENT') {
         finalComponents.push({...node, description: components[node.id].description})
       }
       // handle exports
@@ -139,7 +139,10 @@ export const walkFile = (fileData, frames) => {
       }
     })
   }
+
+  // start to walk
   step(fileData.document.children)
+
   return { styles: formatStyles(finalStyles), components: finalComponents, exportSettings }
 }
 

@@ -30,7 +30,7 @@ class Entry extends React.Component {
     reportEvent('view_demo', 'handoff_entry')
     const fileData = await getMockFile()
     // get components and styles
-    const { components, styles, exportSettings } = walkFile(fileData)
+    const { components, styles, exportSettings } = walkFile(fileData, null, true)
     const { onDataGot, onComponentsOptionChange } = this.props
     const pagedFrames = getSelectedPagedFrames(getPagedFrames(fileData))
     // demo has components list
