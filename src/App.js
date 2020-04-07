@@ -18,19 +18,14 @@ class App extends React.Component {
     // local data (offline mode)
     if (FILE_DATA) {
       data = FILE_DATA
-      // exported from plugin
-      if (FILE_DATA.isFromPlugin) {
-
-      } else {
-        const parsedData = walkFile(data, frames, INCLUDE_COMPONENTS)
-        components = parsedData.components
-        styles = parsedData.styles
-        exportSettings = parsedData.exportSettings
-        pagedFrames = PAGED_FRAMES
-        isLocal = true
-        includeComponents = INCLUDE_COMPONENTS
-        entryVisible = false
-      }
+      const parsedData = walkFile(data, frames, INCLUDE_COMPONENTS)
+      components = parsedData.components
+      styles = parsedData.styles
+      exportSettings = parsedData.exportSettings
+      pagedFrames = PAGED_FRAMES
+      isLocal = true
+      includeComponents = INCLUDE_COMPONENTS
+      entryVisible = false
     } else {
       entryVisible = true
     }

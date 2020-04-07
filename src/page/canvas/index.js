@@ -61,8 +61,15 @@ class Canvas extends React.Component {
     if (spacePressed) return
     const { rects } = this.state
     const { index: componentIndex, componentId } = findParentComponent(index, rect, rects)
-    const currentComponent = includeComponents ? components.find(({id}) => id===componentId) : components[componentId]
-    const currentComponentName =  rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
+    const currentComponent = includeComponents ?
+      components.find(({id}) => id===componentId) :
+      (
+        // from plugin
+        Array.isArray(components) ?
+        components.find(({id}) => id===componentId) :
+        components[componentId]
+      )
+    const currentComponentName = rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
 
     onSelect && onSelect(rect, currentComponentName, index)
     this.setState({

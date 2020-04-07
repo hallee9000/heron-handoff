@@ -4,8 +4,13 @@ import { DEFAULT_SETTINGS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, CO
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
-export const getRGBAObj = color =>
-  ({r: (color.r*255).toFixed(), g: (color.g*255).toFixed(), b: (color.b*255).toFixed(), alpha: toFixed(color.a)})
+export const polyfillAlpha = alpha =>
+  typeof alpha!=='number' ? 1 : alpha
+
+export const getRGBAObj = color => {
+  const alpha = polyfillAlpha(color.a)
+  return ({r: (color.r*255).toFixed(), g: (color.g*255).toFixed(), b: (color.b*255).toFixed(), alpha: toFixed(alpha)})
+}
 
 export const getColor = color =>
   Color(getRGBAObj(color))
@@ -18,8 +23,11 @@ export const getRGB = color => {
     .join(', ')
 }
 
-export const getCSSRGBA = color =>
-  `rgba(${Object.keys(getRGBAObj(color)).map(key => getRGBAObj(color)[key]).join(',')})`
+export const getCSSRGBA = color => {
+  const colorObject = getRGBAObj(color)
+  const keys = Object.keys(colorObject)
+  return `rgba(${keys.map(key => colorObject[key]).join(',')})`
+}
 
 export const getCSSHEX = color =>
   getColor(color).hex()
@@ -64,7 +72,7 @@ export const getStops = stops =>
     hexa: getCSSHEXA(stop.color),
     rgba: getCSSRGBA(stop.color),
     hsla: getCSSHSLA(stop.color),
-    alpha: toFixed(stop.color.a)
+    alpha: toFixed(polyfillAlpha(stop.color.a))
   }))
 
 // default RGBA
@@ -73,7 +81,10 @@ export const stopsToBackground = (stops, colorFormat=2, separator=', ') =>
     formattedColor(colorFormat, stop) + ' ' + stop.position
   ).join(separator)
 
-export const getGradientDegree = positions => {
+export const getGradientDegreeFromMatrix = gradientTransform =>
+  toFixed(Math.atan2(-gradientTransform[1][0], gradientTransform[0][0]) * (180 / Math.PI)) + '°'
+
+export const getGradientDegreeFromPositions = positions => {
   const offsetX = positions[1].x-positions[0].x
   const offsetY = positions[1].y-positions[0].y
   const a = Math.atan2(offsetY, offsetX)
@@ -87,11 +98,17 @@ export const getGradientDegree = positions => {
   return toFixed(angle) + '°'
 }
 
+export const getGradientDegree = fill =>
+  fill.gradientHandlePositions ?
+  getGradientDegreeFromPositions(fill.gradientHandlePositions) :
+  // from plugin
+  getGradientDegreeFromMatrix(fill.gradientTransform)
+
 export const getSolidColor = fill => ({
   codeTemplate: '{{color}}',
   css: getCSSRGBA(fill.color),
   opacity: getOpacity(fill.opacity),
-  alpha: toFixed(fill.color.a),
+  alpha: toFixed(polyfillAlpha(fill.color.a)),
   hex: getCSSHEX(fill.color),
   hexa: getCSSHEXA(fill.color),
   rgba: getCSSRGBA(fill.color),
@@ -105,7 +122,7 @@ export const getLinearGradient = fill => ({
   opacity: getOpacity(fill.opacity),
   type: 'Linear',
   stops: getStops(fill.gradientStops),
-  angle: getGradientDegree(fill.gradientHandlePositions)
+  angle: getGradientDegree(fill)
 })
 
 export const getRadialGradient = fill => ({
@@ -114,7 +131,7 @@ export const getRadialGradient = fill => ({
   opacity: getOpacity(fill.opacity),
   type: 'Radial',
   stops: getStops(fill.gradientStops),
-  angle: getGradientDegree(fill.gradientHandlePositions)
+  angle: getGradientDegree(fill)
 })
 
 export const getAngularGradient = fill => ({
@@ -123,7 +140,7 @@ export const getAngularGradient = fill => ({
   opacity: getOpacity(fill.opacity),
   type: 'Angular',
   stops: getStops(fill.gradientStops),
-  angle: getGradientDegree(fill.gradientHandlePositions)
+  angle: getGradientDegree(fill)
 })
 
 export const getDiamondCodeTemplate = () => {
@@ -139,7 +156,7 @@ export const getDiamondGradient = fill => ({
   opacity: getOpacity(fill.opacity),
   type: 'Diamond',
   stops: getStops(fill.gradientStops),
-  angle: getGradientDegree(fill.gradientHandlePositions)
+  angle: getGradientDegree(fill)
 })
 
 export const getFillsStyle = fills => {
@@ -191,7 +208,7 @@ export const getShadowEffect = effect => ({
     hexa: getCSSHEXA(effect.color),
     rgba: getCSSRGBA(effect.color),
     hsla: getCSSHSLA(effect.color),
-    alpha: toFixed(effect.color.a)
+    alpha: toFixed(polyfillAlpha(effect.color.a))
   })
 
 export const getEffectsStyle = effects => {
@@ -283,27 +300,43 @@ export const getEffectsCSSObject = (
   return style
 }
 
-export const getTextStyle = textItems => {
+export const getLineHeight = textItems => {
+  const { lineHeightPx, lineHeightPercentFontSize, lineHeight, lineHeightUnit } = textItems
+  let finalLineHeight
+  if (typeof lineHeightPx === 'number') {
+    finalLineHeight =
+      lineHeightUnit==='PIXELS' ?
+      lineHeightPx :
+      (lineHeightUnit==='INTRINSIC_%' ? 'normal' : toFixed((lineHeightPercentFontSize || 100)/100))
+  } else {
+    // from plugin
+    finalLineHeight =
+      lineHeightUnit==='PIXELS' ?
+      lineHeight :
+      (lineHeightUnit==='AUTO' ? 'normal' : toFixed((lineHeight || 100)/100))
+  }
+  return finalLineHeight
+}
+
+export const getTextStyle = (textItems, isInPropPanel) => {
   const {
     fontFamily, fontWeight, fontSize, textDecoration,
-    letterSpacing, textAlignHorizontal, lineHeightPx,
-    lineHeightPercentFontSize, lineHeightUnit
+    letterSpacing, lineHeightUnit,
+    textAlignHorizontal
   } = textItems
   const decorations = { 'UNDERLINE': 'underline', 'STRIKETHROUGH': 'line-through' }
-  const lineHeight =
-    lineHeightUnit==='PIXELS' ?
-    lineHeightPx :
-    (lineHeightUnit==='INTRINSIC_%' ? 'normal' : toFixed((lineHeightPercentFontSize || 100)/100))
-  return {
+  const lineHeight = getLineHeight(textItems)
+  const textStyle = {
     fontFamily,
     fontWeight,
     fontSize,
     lineHeight,
     lineHeightUnit,
     letterSpacing,
-    textAlign: textAlignHorizontal.toLowerCase(),
     textDecoration: decorations[textDecoration]
   }
+  isInPropPanel && (textStyle.textAlign = textAlignHorizontal.toLowerCase())
+  return textStyle
 }
 
 export const getTextIcon = textStyle => {

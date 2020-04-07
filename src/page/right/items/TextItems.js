@@ -18,9 +18,6 @@ const TextItems = ({flag, items, globalSettings, t, i18n}) => {
       <CopiableInput isQuiet labelWidth={labelWidth} label={t('font size')} value={ formattedNumber(items.fontSize, globalSettings) }/>
     </li>
     <li className="text-item">
-      <CopiableInput isQuiet labelWidth={labelWidth} label={t('text align')} value={ items.textAlign }/>
-    </li>
-    <li className="text-item">
       <CopiableInput isQuiet labelWidth={labelWidth} label={t('letter spacing')} value={ formattedNumber(items.letterSpacing, globalSettings) }/>
     </li>
     <li className="text-item">
@@ -39,6 +36,12 @@ const TextItems = ({flag, items, globalSettings, t, i18n}) => {
       items.textDecoration &&
       <li className="text-item">
         <CopiableInput isQuiet labelWidth={labelWidth} label={t('text decoration')} value={ items.textDecoration }/>
+      </li>
+    }
+    {
+      items.textAlign &&
+      <li className="text-item">
+        <CopiableInput isQuiet labelWidth={labelWidth} label={t('text align')} value={ items.textAlign }/>
       </li>
     }
   </ul>

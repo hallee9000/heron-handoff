@@ -15,16 +15,18 @@ class FontPanel extends React.Component {
   constructor(props) {
     super(props)
     const { onGetStyle } = props
-    const textStyle = getTextStyle(props.node.style)
+    const textStyle = getTextStyle(props.node.style, true)
+    // from plugin
+    const textTable = props.node.textTable || getTextTable(props.node)
     this.state = {
-      textTable: getTextTable(props.node),
+      textTable,
       selected: null,
       style: textStyle
     }
     onGetStyle && onGetStyle(textStyle)
   }
   switchPiece = (piece, index) => {
-    const textStyle = getTextStyle(piece)
+    const textStyle = getTextStyle(piece, true)
     this.setState({
       selected: index,
       style: textStyle

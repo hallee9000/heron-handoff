@@ -92,10 +92,12 @@ export const isAllImageFill = fills =>
 // walk file
 export const walkFile = (fileData, frames, includeComponents) => {
   const framesIds = frames ? frames.map(({id}) => id) : null
-  const { styles, components } = fileData
+  // from plugin
+  const { styles, components, isFromPlugin } = fileData
   const finalStyles = {}
   const finalComponents = includeComponents ? [] : components, exportSettings = []
   let currentFrameId = ''
+
   const step = (nodes, father) => {
     // eslint-disable-next-line
     nodes.map(node => {
@@ -103,7 +105,7 @@ export const walkFile = (fileData, frames, includeComponents) => {
         currentFrameId = node.type==='FRAME' ? node.id : ''
       }
       // handle style
-      if (node.styles) {
+      if (node.styles && !isFromPlugin) {
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
@@ -117,11 +119,11 @@ export const walkFile = (fileData, frames, includeComponents) => {
         })
       }
       // handle component
-      if (includeComponents && node.type==='COMPONENT') {
+      if (!isFromPlugin && includeComponents && node.type==='COMPONENT') {
         finalComponents.push({...node, description: components[node.id].description})
       }
       // handle exports
-      if (node.visible!==false && node.exportSettings && node.exportSettings.length) {
+      if (!isFromPlugin && node.visible!==false && node.exportSettings && node.exportSettings.length) {
         if (!framesIds || (framesIds && framesIds.indexOf(currentFrameId)>-1)) {
           // eslint-disable-next-line
           node.exportSettings.map(setting => {
@@ -142,8 +144,12 @@ export const walkFile = (fileData, frames, includeComponents) => {
 
   // start to walk
   step(fileData.document.children)
-
-  return { styles: formatStyles(finalStyles), components: finalComponents, exportSettings }
+  
+  return {
+    styles: isFromPlugin ? fileData.styles : formatStyles(finalStyles),
+    components: isFromPlugin ? fileData.components : finalComponents,
+    exportSettings: isFromPlugin ? fileData.exportSettings : exportSettings
+  }
 }
 
 export const getFileName = (exportSetting, index) => {
