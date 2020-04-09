@@ -367,7 +367,7 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
     return ''
   }
   if (styles[type.toUpperCase()] && nodeStyles[type]) {
-    return styles[type.toUpperCase()].find(({id}) => id===nodeStyles[type])
+    return styles[type.toUpperCase()].find(({id}) => id===nodeStyles[type]) || null
   } else {
     return ''
   }
