@@ -105,7 +105,7 @@ export const walkFile = (fileData, frames, includeComponents) => {
         currentFrameId = node.type==='FRAME' ? node.id : ''
       }
       // handle style
-      if (node.styles && !isFromPlugin) {
+      if (node.styles) {
         // eslint-disable-next-line
         Object.keys(node.styles).map(styleType => {
           const id = node.styles[styleType]
@@ -119,11 +119,11 @@ export const walkFile = (fileData, frames, includeComponents) => {
         })
       }
       // handle component
-      if (!isFromPlugin && includeComponents && node.type==='COMPONENT') {
+      if (includeComponents && node.type==='COMPONENT') {
         finalComponents.push({...node, description: components[node.id].description})
       }
       // handle exports
-      if (!isFromPlugin && node.visible!==false && node.exportSettings && node.exportSettings.length) {
+      if (node.visible!==false && node.exportSettings && node.exportSettings.length) {
         if (!framesIds || (framesIds && framesIds.indexOf(currentFrameId)>-1)) {
           // eslint-disable-next-line
           node.exportSettings.map(setting => {
@@ -143,7 +143,9 @@ export const walkFile = (fileData, frames, includeComponents) => {
   }
 
   // start to walk
-  step(fileData.document.children)
+  if (!isFromPlugin) {
+    step(fileData.document.children)
+  }
   
   return {
     styles: isFromPlugin ? fileData.styles : formatStyles(finalStyles),
