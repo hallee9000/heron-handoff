@@ -407,6 +407,7 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
       code += 'background: ' + fillItems
         .map(fill => getFillCSSCode(fill, colorFormat))
         .join()
+        +';\n'
     }
   }
 
