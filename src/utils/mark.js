@@ -68,7 +68,8 @@ export const generateRects = (nodes, docRect) => {
           clazz,
           node
         })
-        if (node.children) {
+        // if boolean, don't continue
+        if (node.children && node.type!=='BOOLEAN_OPERATION') {
           step(node.children, node.id, componentIds)
         }
         // eslint-disable-next-line
