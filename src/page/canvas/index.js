@@ -56,6 +56,43 @@ class Canvas extends React.Component {
     }
     this.setState({ frameStyle })
   }
+  getLayerBoundStyle = rect => {
+    const { pageRect } = this.state
+    const { top, left, width, height } = rect.maskedBound || rect
+    return {
+      top: toPercentage(top/pageRect.height),
+      left: toPercentage(left/pageRect.width),
+      width: toPercentage(width/pageRect.width),
+      height: toPercentage(height/pageRect.height)
+    }
+  }
+  getMaskedLayerHoveredBoundStyle = type => {
+    const { pageRect, hoveredRect, selectedRect } = this.state
+    const { top, left, width, height } = type==='selected' ? selectedRect : hoveredRect
+    return {
+      top: toPercentage(top/pageRect.height),
+      left: toPercentage(left/pageRect.width),
+      width: toPercentage(width/pageRect.width),
+      height: toPercentage(height/pageRect.height)
+    }
+  }
+  getActiveAndMaskedType = index => {
+    const { selectedIndex, selectedRect, hoveredIndex, hoveredRect } = this.state
+    if (index===selectedIndex && selectedRect.maskedBound) {
+      return 'selected'
+    } else if (index===hoveredIndex && hoveredRect.maskedBound) {
+      return 'hovered'
+    }
+    return false
+  }
+  selectMask = rect => {
+    if (!rect.maskedBound) {
+      return
+    }
+    const { rects } = this.state
+    const { maskIndex } = rect.maskedBound
+    this.onSelect(rects[maskIndex], maskIndex)
+  }
   onSelect = (rect, index) => {
     const { spacePressed, onSelect, includeComponents, components } =this.props
     if (spacePressed) return
@@ -120,7 +157,8 @@ class Canvas extends React.Component {
   }
 	render () {
     const { id, size, useLocalImages, images, globalSettings } = this.props
-    const { rects, pageRect, frameStyle, selectedIndex, hoveredIndex, componentIndex, currentComponentName, markData, isChanging } = this.state
+    const { rects, frameStyle, selectedIndex, hoveredIndex,
+      componentIndex, currentComponentName, markData, isChanging } = this.state
     const { showAllExports } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
 		return (
@@ -132,7 +170,11 @@ class Canvas extends React.Component {
           }
           {
             rects.map((rect, index) => {
-              const { top, left, width, height, clazz, isComponent } = rect
+              const { clazz, isComponent } = rect
+              const activeAndMaskedType = this.getActiveAndMaskedType(index)
+              const style = !!activeAndMaskedType ?
+                this.getMaskedLayerHoveredBoundStyle(activeAndMaskedType) :
+                this.getLayerBoundStyle(rect)
               return (
                 <div
                   key={index}
@@ -145,13 +187,9 @@ class Canvas extends React.Component {
                       'current-component': componentIndex===index
                     }
                   )}
-                  style={{
-                    top: toPercentage(top/pageRect.height),
-                    left: toPercentage(left/pageRect.width),
-                    width: toPercentage(width/pageRect.width),
-                    height: toPercentage(height/pageRect.height)
-                  }}
+                  style={style}
                   onClick={() => this.onSelect(rect, index)}
+                  onDoubleClick={() => this.selectMask(rect)}
                   onMouseOver={() => this.onHover(rect, index)}
                 >
                   {

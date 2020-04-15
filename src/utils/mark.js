@@ -17,64 +17,69 @@ export const generateRects = (nodes, docRect) => {
   let exportIds = []
   const step = (nodes, parentId, parentComponentId) => {
     let maskParentId = ''
+    let maskbb = {}
+    let maskIndex
+    // start looping
     nodes.map(node => {
+      const nbb = node.absoluteBoundingBox
+      let maskedElementBound = null
       // deal with mask
       if (node.isMask) {
-        // mask element start
+        // mask start
         maskParentId = parentId
+        maskbb = node.absoluteBoundingBox
+        maskIndex = index
       } else if (maskParentId && (node.type==='FRAME' ||  node.type==='COMPONENT' || node.type==='INSTANCE')) {
-        // masked elements stop
+        // mask stop
         maskParentId = ''
       } else if (parentId===maskParentId && !node.isMask) {
-        // elements of maskParentId, should jump out
+        // elements of mask
+        // if out of mask should jump out
+        if (isOutOfMask(maskbb, nbb)) {
+          // eslint-disable-next-line
+          return
+        } else {
+          maskedElementBound = getMaskedElementBound(maskIndex, maskbb, nbb, docRect)
+        }
+      }
+
+      // don't deal with invisible element
+      if (node.visible===false) {
         // eslint-disable-next-line
         return
       }
 
-      const nbb = node.absoluteBoundingBox
-      if (node.visible===false) {
-        // eslint-disable-next-line
-        return
-      } else {
-        const top = (nbb.y - docRect.y)
-        const left = (nbb.x - docRect.x)
-        const width = nbb.width
-        const height = nbb.height
-        const isComponent = node.type==='COMPONENT' || node.type==='INSTANCE'
-        const isGroup = node.type==='GROUP'
-        const hasExports = node.exportSettings && node.exportSettings.length
-        const clazz = []
-        isComponent && clazz.push('component')
-        isGroup && clazz.push('group')
-        hasExports && clazz.push('has-exports')
-        const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
-        const componentIds = [parentComponentId, nativeId].filter(id => id).join()
-        if (hasExports) {
-          exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
-        }
-        rects.push({
-          index: index++,
-          top: top,
-          left: left,
-          bottom: top+height,
-          right: left+width,
-          width: width,
-          height: height,
-          actualWidth: toFixed(nbb.width),
-          actualHeight: toFixed(nbb.height),
-          title: node.name,
-          isComponent,
-          componentIds,
-          clazz,
-          node
-        })
-        // if boolean, don't continue
-        if (node.children && node.type!=='BOOLEAN_OPERATION') {
-          step(node.children, node.id, componentIds)
-        }
-        // eslint-disable-next-line
-        return
+      const bound = getBound(nbb, docRect)
+      const isComponent = node.type==='COMPONENT' || node.type==='INSTANCE'
+      const isGroup = node.type==='GROUP'
+      const hasExports = node.exportSettings && node.exportSettings.length
+      const clazz = []
+      isComponent && clazz.push('component')
+      isGroup && clazz.push('group')
+      hasExports && clazz.push('has-exports')
+      const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
+      const componentIds = [parentComponentId, nativeId].filter(id => id).join()
+      if (hasExports) {
+        exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
       }
+      rects.push({
+        index: index++,
+        ...bound,
+        maskedBound: maskedElementBound,
+        actualWidth: toFixed(nbb.width),
+        actualHeight: toFixed(nbb.height),
+        title: node.name,
+        isComponent,
+        componentIds,
+        clazz,
+        node
+      })
+      // if has children, not boolean and mask, then continue
+      if (node.children && node.type!=='BOOLEAN_OPERATION' && !node.isMask) {
+        step(node.children, node.id, componentIds)
+      }
+      // eslint-disable-next-line
+      return
     })
   }
   step(nodes)
@@ -96,6 +101,56 @@ export const findParentComponent = (currentIndex, rect, rects) => {
     index--
   }
   return {}
+}
+
+export const isOutOfMask = (mask, target) => {
+  // target is at left of mask
+  if (target.x + target.width<=mask.x) {
+    return true
+  }
+  // target is at right of mask
+  else if (target.x>=mask.x + mask.width) {
+    return true
+  }
+  // target is at top of mask
+  else if (target.y + target.height<=mask.y) {
+    return true
+  }
+  // target is at bottom of mask
+  else if (target.y>=mask.y + mask.height) {
+    return true
+  }
+  return false
+}
+
+export const getMaskedElementBound = (maskIndex, mask, target, docRect) => {
+  const maskBottom = mask.y+mask.height
+  const targetBottom = target.y+target.height
+  const top = (target.y<mask.y ? mask.y : target.y) - docRect.y
+  const bottom = (targetBottom>maskBottom ? maskBottom : targetBottom) - docRect.y
+  const maskRight = mask.x+mask.width
+  const targetRight = target.x+target.width
+  const left = (target.x<mask.x ? mask.x : target.x) - docRect.x
+  const right = (targetRight>maskRight ? maskRight : targetRight) - docRect.x
+  const width = right - left
+  const height = bottom - top
+
+  return { top, left, bottom, right, width, height, maskIndex }
+}
+
+export const getBound = (nodeBound, docRect) => {
+  const top = nodeBound.y - docRect.y
+  const left = nodeBound.x - docRect.x
+  const width = nodeBound.width
+  const height = nodeBound.height
+  return {
+    top,
+    left,
+    bottom: top+height,
+    right: left+width,
+    width: width,
+    height: height
+  }
 }
 
 // get Bound of Frame

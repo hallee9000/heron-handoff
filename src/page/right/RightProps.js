@@ -132,6 +132,13 @@ class RightProps extends React.Component {
             </div>
           </div>
           {
+            !!data.maskedBound &&
+            <div className="props-section">
+              <h5 className="section-title section-name">{t('masked element')}</h5>
+              <p className="section-helper">{t('masked element tip')}</p>
+            </div>
+          }
+          {
             node.isMask &&
             <div className="props-section">
               <h5 className="section-title section-name">{t('mask')}</h5>
