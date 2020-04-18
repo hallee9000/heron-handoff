@@ -85,8 +85,15 @@ class Entry extends React.Component {
     return (
       <div className="app-entry">
         <div className="entry-producthunt">
-          <a href="https://www.producthunt.com/posts/figma-handoff?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-figma-handoff" target="_blank" rel="noopener noreferrer">
-            <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=184379&theme=light" alt="Figma Handoff - A Figma handoff tool, generate design mark for developers. | Product Hunt Embed" />
+          <a
+            href="https://www.producthunt.com/posts/figma-handoff?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-figma-handoff"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=184379&theme=light"
+              alt="Figma Handoff - A Figma handoff tool, generate design mark for developers. | Product Hunt Embed"
+            />
           </a>
         </div>
         <div className="entry-container">
@@ -101,6 +108,15 @@ class Entry extends React.Component {
             >
               {t('demo')}
             </button>
+            <a
+              className="btn btn-white-o btn-round"
+              href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('use plugin')}
+              <span>{t('recommend')}</span>
+            </a>
           </div>
           {
             !isDownloaded &&

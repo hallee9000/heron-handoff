@@ -26,6 +26,21 @@
     }
     .entry-demo{
       text-align: center;
+      button{
+        margin-right: 8px;
+      }
+      a{
+        position: relative;
+        span{
+          position: absolute;
+          top: -10px;
+          left: 64px;
+          padding: 0 8px;
+          background: $primary-color;
+          border-radius: 10px;
+          color: #FFF;
+        }
+      }
     }
     .entry-block{
       width: 360px;
