@@ -113,6 +113,7 @@ class Entry extends React.Component {
               href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => reportEvent('view_plugin', 'handoff_entry')}
             >
               {t('use plugin')}
               <span>{t('recommend')}</span>
