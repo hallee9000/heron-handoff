@@ -180,7 +180,7 @@ class Entry extends React.Component {
               <a className="footer-item" onClick={this.toggleCoffee} href="/"><Coffee size={14}/></a>
             </Tooltip>
             <Tooltip overlay={t('feedback')} placement="top" align={{offset: [0, 3]}}>
-              <a className="footer-item" href={t('feedback link')} target="_blank" rel="noopener noreferrer">
+              <a className="footer-item" href="https://github.com/leadream/figma-handoff/issues" target="_blank" rel="noopener noreferrer">
                 <MessageCircle size={14}/>
               </a>
             </Tooltip>

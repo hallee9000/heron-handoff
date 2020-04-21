@@ -162,7 +162,7 @@ class Header extends React.Component {
               </span>
             </Overlay>
           }
-          <a title={t('feedback')} href={t('feedback link')} target="_blank" rel="noopener noreferrer">
+          <a title={t('feedback')} href="https://github.com/leadream/figma-handoff/issues" target="_blank" rel="noopener noreferrer">
             <MessageCircle size={14}/>
           </a>
           {
