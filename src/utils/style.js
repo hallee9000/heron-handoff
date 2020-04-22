@@ -381,7 +381,7 @@ export const formattedNumber = (number, { platform, unit, resolution, remBase },
 
 export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, globalSettings) => {
   const colorFormat = globalSettings.colorFormat || 0
-  const { opacity, cornerRadius, strokeWeight, strokeDashes } = node
+  const { opacity, cornerRadius, rectangleCornerRadii, strokeWeight, strokeDashes } = node
   let code = ''
 
   // opacity
@@ -392,6 +392,8 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
   // border-radius
   if (cornerRadius) {
     code += `border-radius: ${formattedNumber(cornerRadius, globalSettings)};\n`
+  } else if (rectangleCornerRadii) {
+    code += `border-radius: ${rectangleCornerRadii.map(r => formattedNumber(r, globalSettings)).join(' ')};\n`
   }
 
   // color or background
