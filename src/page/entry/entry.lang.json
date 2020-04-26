@@ -22,7 +22,7 @@
     "access token saved": "Access Token saved, click <1>here</1> to change",
     "access token placeholder": "your Access Token",
     "what is access token": "what is Access Token？",
-    "access token link": "https://github.com/leadream/figma-handoff#what-is-access-token",
+    "access token link": "https://figmacn.com/handoff-landing#what-is-access-token",
     "last updated at": "last updated at ",
     "select at least one frame": "please select at least one frame",
     "select all": "select all",
@@ -36,12 +36,12 @@
     "online mode": "online mode",
     "online mode description": "default to generate offline zip, check it to generate online mark.",
     "include components": "export components list",
-    "include components link": "https://github.com/leadream/figma-handoff#what-does-export-components-list-mean",
+    "include components link": "https://figmacn.com/handoff-landing#export-components-mean",
     "include components description": "default not to export components list, checking it will take more time.",
     "use high quality": "use high quality images",
     "use high quality description": "default to fetch high quality images, uncheck it if you think it's slow.",
     "slow tip": "Why it's too slow?",
-    "slow tip link": "https://github.com/leadream/figma-handoff#why-its-too-slow",
+    "slow tip link": "https://figmacn.com/handoff-landing#why-slow",
     "contact me": "Contact me"
   },
   "zh": {
@@ -67,7 +67,7 @@
     "access token saved": "Access Token 已保存，点<1>这里</1>修改",
     "access token placeholder": "请输入你的 Access Token",
     "what is access token": "什么是 Access Token？",
-    "access token link": "https://github.com/leadream/figma-handoff/blob/master/README-CN.md#什么是-access-token",
+    "access token link": "https://figmacn.com/handoff-landing#what-is-access-token",
     "last updated at": "最后更新于",
     "select at least one frame": "请至少选择一个 Frame",
     "select all": "全选",
@@ -81,12 +81,12 @@
     "online mode": "生成在线标注",
     "online mode description": "默认生成离线标注压缩包，勾选则生成在线标注，但在线标注一刷新就没了。",
     "include components": "导出组件列表",
-    "include components link": "https://github.com/leadream/figma-handoff/blob/master/README-CN.md#导出组件列表是什么意思",
+    "include components link": "https://figmacn.com/handoff-landing#export-components-mean",
     "include components description": "默认不导出组件列表，勾选后会增加导出时间。",
     "use high quality": "使用高清图生成标注",
     "use high quality description": "默认使用高清图，如果生成速度太慢可以取消勾选。",
     "slow tip": "生成速度很慢怎么办？",
-    "slow tip link": "https://github.com/leadream/figma-handoff/blob/master/README-CN.md#生成标注很慢怎么办",
+    "slow tip link": "https://figmacn.com/handoff-landing#why-slow",
     "contact me": "联系我"
   }
 }
