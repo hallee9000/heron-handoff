@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { withTranslation } from 'react-i18next'
+import { withTranslation, Trans } from 'react-i18next'
 import { HelpCircle } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
@@ -11,13 +11,15 @@ import { handleIndex, handleJs, handleIcoAndCSS, handleLogo } from 'utils/downlo
 import Title from './Title'
 
 class Options extends React.Component {
+  timeId = null
   state = {
     useHighQuality: true,
     includeComponents: false,
     onlineMode: false,
     isLoading: false,
     percentage: 0,
-    buttonText: ''
+    buttonText: '',
+    slowTipVisible: false
   }
   setPercentage = (percentage, buttonText) => {
     this.setState({
@@ -69,6 +71,11 @@ class Options extends React.Component {
     return {images, exportings}
   }
   handleSubmit = async e => {
+    this.timeId = setTimeout(() => {
+      this.setState({
+        slowTipVisible: true
+      })
+    }, 5000)
     e.preventDefault()
     const { data: fileData, pagedFrames, onDownloaded, t } = this.props
     const frames = getFlattedFrames(pagedFrames)
@@ -82,6 +89,8 @@ class Options extends React.Component {
     this.setPercentage(0, t('fetching data'))
     await this.handleHTMLAndAssets(zip)
     const { images, exportings } = await this.handleImagesDownloading(zip, exportSettings, imageIds)
+
+    clearTimeout(this.timeId)
 
     if (zip) {
       // generate zip
@@ -179,7 +188,7 @@ class Options extends React.Component {
   }
   render() {
     const { formVisible, t } = this.props
-    const { useHighQuality, includeComponents, onlineMode, isLoading, buttonText, percentage } = this.state
+    const { useHighQuality, includeComponents, onlineMode, isLoading, buttonText, percentage, slowTipVisible } = this.state
     return (
       <div className="entry-options">
         <Title step={3} content={t('other options')} hasBottom={formVisible}/>
@@ -215,11 +224,12 @@ class Options extends React.Component {
               <div className="entry-progress" style={{width: `${percentage}%`}}/>
               <span>{ buttonText ? buttonText : t('generate design mark') }</span>
             </button>
-            <div className="help-block">
-              <a href={t('slow tip link')} target="_blank" rel="noopener noreferrer">
-                {t('slow tip')}
-              </a>
-            </div>
+            {
+              slowTipVisible &&
+              <div className="help-block">
+                <Trans i18nKey="slow tip" ns="entry">Too slow? Try <a href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff" target="_blank">plugin</a>, it's fast!</Trans>
+              </div>
+            }
           </div>
         </div>
       </div>

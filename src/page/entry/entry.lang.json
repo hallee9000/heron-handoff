@@ -40,8 +40,7 @@
     "include components description": "default not to export components list, checking it will take more time.",
     "use high quality": "use high quality images",
     "use high quality description": "default to fetch high quality images, uncheck it if you think it's slow.",
-    "slow tip": "Why it's too slow?",
-    "slow tip link": "https://figmacn.com/handoff-landing#why-slow",
+    "slow tip": "Too slow? Try <1>plugin</1>, it's fast!",
     "contact me": "Contact me"
   },
   "zh": {
@@ -85,8 +84,7 @@
     "include components description": "默认不导出组件列表，勾选后会增加导出时间。",
     "use high quality": "使用高清图生成标注",
     "use high quality description": "默认使用高清图，如果生成速度太慢可以取消勾选。",
-    "slow tip": "生成速度很慢怎么办？",
-    "slow tip link": "https://figmacn.com/handoff-landing#why-slow",
+    "slow tip": "速度很慢？试试<1>插件</1>吧，插件很快！",
     "contact me": "联系我"
   }
 }
