@@ -227,7 +227,9 @@ class Options extends React.Component {
             {
               slowTipVisible &&
               <div className="help-block">
-                <Trans i18nKey="slow tip" ns="entry">Too slow? Try <a href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff" target="_blank" rel="noopener noreferrer">plugin</a>, it's fast!</Trans>
+                <Trans i18nKey="slow tip" ns="entry">
+                  Too slow? Try <a href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff" target="_blank" rel="noopener noreferrer" onClick={() => reportEvent('try_plugin', 'handoff_entry')}>plugin</a>, it's fast!
+                </Trans>
               </div>
             }
           </div>
