@@ -116,7 +116,7 @@ class Entry extends React.Component {
               onClick={() => reportEvent('view_plugin', 'handoff_entry')}
             >
               {t('use plugin')}
-              <span>{t('recommend')}</span>
+              <span className="motion-swing">{t('recommend')}</span>
             </a>
           </div>
           {
