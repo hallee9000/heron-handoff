@@ -25,25 +25,35 @@
       }
     }
     .entry-demo{
+      margin-bottom: 12px;
       text-align: center;
-      button{
-        margin-right: 8px;
+    }
+    .entry-plugin{
+      padding: 80px 0;
+      text-align: center;
+      p{
+        width: 360px;
+        text-align: left;
       }
-      a{
-        position: relative;
-        span{
-          position: absolute;
-          top: -12px;
-          left: 56px;
-          padding: 0 8px;
-          background: $primary-color;
-          border-radius: 10px;
-          color: #FFF;
+      .btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 12px auto;
+        svg{
+          margin-right: 4px;
         }
+      }
+      .plugin-still-online{
+        font-size: 12px;
       }
     }
     .entry-block{
       width: 360px;
+      .block-back{
+        display: flex;
+        align-items: center;
+      }
       >[class^=entry-]{
         padding: 15px 0;
         border-bottom: 1px solid $white-8;

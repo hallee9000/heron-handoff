@@ -121,7 +121,7 @@ class Header extends React.Component {
               loaderMessage
             }
           </span> :
-          <span className="header-pagename">Figma Handoff</span>
+          <span className="header-pagename">Juuust Handoff</span>
         }
         <div className="header-operates">
           {

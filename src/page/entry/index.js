@@ -1,10 +1,11 @@
 import React, { createRef } from 'react'
 import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { GitHub, Coffee, MessageCircle, DollarSign, Package, Mail, Link2, X } from 'react-feather'
+import { GitHub, Coffee, MessageCircle, DollarSign, Package, Mail, Link2, ArrowLeft, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
 import SettingsContext from 'contexts/SettingsContext'
 import { WithCopy } from 'components/utilities'
+import ProductHunt from './ProductHunt'
 import Basic from './Basic'
 import FramesSelect from './FramesSelect'
 import Options from './Options'
@@ -23,7 +24,8 @@ class Entry extends React.Component {
     fileKey: '',
     pagedFrames: {},
     coffeeVisible: false,
-    isDownloaded: false
+    isDownloaded: false,
+    formVisible: false
   }
   gotoDemo = async e => {
     e && e.preventDefault()
@@ -70,6 +72,14 @@ class Entry extends React.Component {
       })
     }
   }
+  toggleUsage = e => {
+    e.preventDefault()
+    const { formVisible } = this.state
+    !formVisible && reportEvent('still_use_online', 'handoff_entry')
+    this.setState({
+      formVisible: !formVisible
+    })
+  }
   handleDownloaded = () => {
     this.setState({
       isDownloaded: true,
@@ -81,22 +91,11 @@ class Entry extends React.Component {
   }
   render() {
     const { onDataGot, onComponentsOptionChange, t } = this.props
-    const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded } = this.state
+    const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded, formVisible } = this.state
     return (
       <div className="app-entry">
-        <div className="entry-producthunt">
-          <a
-            href="https://www.producthunt.com/posts/figma-handoff?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-figma-handoff"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=184379&theme=light"
-              alt="Figma Handoff - A Figma handoff tool, generate design mark for developers. | Product Hunt Embed"
-            />
-          </a>
-        </div>
         <div className="entry-container">
+          <ProductHunt/>
           <div className="entry-logo">
             <img className="hide" src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="figmacn logo" ref={this.figmacnLogo}/>
             <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
@@ -108,20 +107,28 @@ class Entry extends React.Component {
             >
               {t('demo')}
             </button>
+          </div>
+          <div className={cn('entry-plugin', {hide: coffeeVisible || formVisible})}>
+            <p>{t('use plugin description')}</p>
             <a
-              className="btn btn-white-o btn-round"
+              className="btn btn-lg btn-primary btn-round"
               href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => reportEvent('view_plugin', 'handoff_entry')}
             >
-              {t('use plugin')}
-              <span className="motion-swing">{t('recommend')}</span>
+              <Package size={16}/> {t('use plugin')}
+            </a>
+            <a className="plugin-still-online" href="/" rel="noopener noreferrer" onClick={this.toggleUsage}>
+              {t('still use online')}
             </a>
           </div>
           {
             !isDownloaded &&
-            <div className={cn('entry-block', {hide: coffeeVisible})}>
+            <div className={cn('entry-block', {hide: coffeeVisible || !formVisible})}>
+              <a className="block-back" href="/" rel="noopener noreferrer" onClick={this.toggleUsage}>
+                <ArrowLeft size={16}/> {t('back')}
+              </a>
               <Basic
                 formVisible={currentStep===0}
                 onFinished={(data, fileKey) => this.switchStep(1, 'data', data, fileKey)}
