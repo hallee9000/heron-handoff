@@ -4,8 +4,14 @@
   outline: none;
   padding: 2px 10px;
   color: $white-85;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 14px;
   transition: all 0.2s;
   background: $black-2;
+}
+
+@mixin effect {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  transform-origin: 0 0;
 }

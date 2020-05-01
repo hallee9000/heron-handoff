@@ -68,6 +68,40 @@ export const getSelectedPagedFrames = pagedFrames => {
   return finalFrames
 }
 
+export const getFrameOptions = pagedFrames => {
+  const options = []
+  Object.keys(pagedFrames)
+    // eslint-disable-next-line
+    .map(pageId => {
+      const { name, frames } = pagedFrames[pageId]
+      const checkedFrames = frames.filter(({checked}) => checked)
+      if (checkedFrames.length) {
+        options.push({
+          label: name,
+          value: pageId,
+          children: checkedFrames.map(({id, name}) => ({value: id, label: name}))
+        })
+      }
+    })
+  return options
+}
+
+export const filterFrameOptions = (frameOptions, value) => {
+  return frameOptions.map(p => {
+    const pageContainsValue = p.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+    const frameContainsValue = p.children.some(f => f.label.toLowerCase().indexOf(value.toLowerCase()) > -1)
+    if (pageContainsValue) {
+      return p
+    } else if (frameContainsValue) {
+      const targetedChildren = p.children.filter(f => f.label.toLowerCase().indexOf(value.toLowerCase()) > -1)
+      return {...p, children: targetedChildren}
+    } else {
+      return ''
+    }
+  })
+  .filter(p => !!p)
+}
+
 export const getFlattedFrames = (pagedFrames, needCheck=true) => {
   let flattedFrames = []
   Object.keys(pagedFrames)

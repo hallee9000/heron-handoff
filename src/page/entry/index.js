@@ -87,7 +87,7 @@ class Entry extends React.Component {
     })
   }
   componentDidMount () {
-    // this.gotoDemo()
+    this.gotoDemo()
   }
   render() {
     const { onDataGot, onComponentsOptionChange, t } = this.props
