@@ -2,11 +2,13 @@
   "en": {
     "pages": "Pages",
     "components": "Components",
-    "no components": "no components"
+    "no components": "no components",
+    "component placeholder": "type to filter"
   },
   "zh": {
     "pages": "页面",
     "components": "组件",
-    "no components": "没有组件"
+    "no components": "没有组件",
+    "component placeholder": "输入文字筛选"
   }
 }

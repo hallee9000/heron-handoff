@@ -28,7 +28,7 @@
       padding: 12px;
     }
     .list-items{
-      height: 100%;
+      height: calc(100% - 50px);
       overflow: auto;
       li{
         display: flex;
@@ -40,6 +40,9 @@
         transition: background 0.2s;
         &:hover{
           background: #141723;
+        }
+        &.list-item-hidden{
+          display: none;
         }
         &.selected{
           background: #303446;
@@ -55,7 +58,6 @@
         }
       }
       &.list-frames{
-        height: calc(100% - 50px);
         li{
           span{
             white-space: nowrap;
