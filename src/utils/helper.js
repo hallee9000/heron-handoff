@@ -69,20 +69,21 @@ export const getSelectedPagedFrames = pagedFrames => {
 }
 
 export const getFrameOptions = pagedFrames => {
+  console.log(pagedFrames)
   const options = []
   Object.keys(pagedFrames)
     // eslint-disable-next-line
     .map(pageId => {
       const { name, frames } = pagedFrames[pageId]
-      const checkedFrames = frames.filter(({checked}) => checked)
-      if (checkedFrames.length) {
+      if (frames.length) {
         options.push({
           label: name,
           value: pageId,
-          children: checkedFrames.map(({id, name}) => ({value: id, label: name}))
+          children: frames.map(({id, name}) => ({value: id, label: name}))
         })
       }
     })
+    console.log(options)
   return options
 }
 
