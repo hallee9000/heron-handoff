@@ -1,3 +1,5 @@
+@import '~assets/tokens.scss';
+
 .main-left-sider{
   flex-shrink: 0;
   width: 240px;
@@ -25,7 +27,19 @@
       height: 100%;
     }
     .list-filter{
+      position: relative;
       padding: 12px;
+      >.filter-clear{
+        position: absolute;
+        right: 16px;
+        top: 18px;
+        color: $white-36;
+        transition: color 0.2s;
+        cursor: pointer;
+        &:hover{
+          color: $white-65;
+        }
+      }
     }
     .list-items{
       height: calc(100% - 50px);

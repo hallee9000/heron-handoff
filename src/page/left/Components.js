@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
+import { X } from 'react-feather'
 import { withTranslation } from 'react-i18next'
 import { WithTooltip } from 'components/utilities'
 import { getUrlImage } from 'utils/helper'
@@ -21,15 +22,25 @@ class Components extends React.Component {
     onComponentChange && onComponentChange(componentId)
   }
   handleInputChange = e => {
-    const { components } = this.props
     const inputValue = e.target.value
     this.setState({
       inputValue,
-      components: components
+      components: this.defaultComponents
         .map(c =>({
           ...c,
           filterVisible: c.name.toLowerCase().indexOf(inputValue.toLowerCase())>-1
         }))
+    })
+  }
+  handleKeyDown = e => {
+    if (e.keyCode===27) {
+      this.resetInput()
+    }
+  }
+  resetInput = () => {
+    this.setState({
+      inputValue: '',
+      components: this.defaultComponents
     })
   }
   componentDidUpdate(prevProps) {
@@ -49,8 +60,13 @@ class Components extends React.Component {
             className="input"
             value={inputValue}
             onChange={this.handleInputChange}
+            onKeyDown={this.handleKeyDown}
             placeholder={t('component placeholder')}
           />
+          {
+            inputValue &&
+            <X size={14} className="filter-clear" onClick={this.resetInput}/>
+          }
         </div>
         <ul className={cn('list-items list-components', {hide: !visible})}>
           {
