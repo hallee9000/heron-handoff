@@ -69,7 +69,6 @@ export const getSelectedPagedFrames = pagedFrames => {
 }
 
 export const getFrameOptions = pagedFrames => {
-  console.log(pagedFrames)
   const options = []
   Object.keys(pagedFrames)
     // eslint-disable-next-line
@@ -83,7 +82,6 @@ export const getFrameOptions = pagedFrames => {
         })
       }
     })
-    console.log(options)
   return options
 }
 
