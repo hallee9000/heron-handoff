@@ -53,7 +53,8 @@ export const DEFAULT_SETTINGS = {
   remBase: 14,
   colorFormat: 0,
   language: 'zh',
-  showAllExports: true
+  showAllExports: true,
+  disableInspectExportInner: true
 }
 
 export const PLATFORMS = [ 'Web', 'iOS', 'Android' ]

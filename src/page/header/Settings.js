@@ -63,15 +63,15 @@ class Settings extends Component {
     i18n.changeLanguage(value)
     onSettingsChange('language', value)
   }
-  changeExportsSetting = e => {
+  changeOtherSetting = e => {
     const { onSettingsChange } = this.props
-    const { checked } = e.target
-    this.setState({showAllExports: checked})
-    onSettingsChange('showAllExports', checked)
+    const { checked, name } = e.target
+    this.setState({[name]: checked})
+    onSettingsChange(name, checked)
   }
   render () {
     const { t } = this.props
-    const { platform, resolution, unit, remBase, language, showAllExports } = this.state
+    const { platform, resolution, unit, remBase, language, showAllExports, disableInspectExportInner } = this.state
     const baseVisible = platform===0 && (unit===3 || unit===4)
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
@@ -158,11 +158,28 @@ class Settings extends Component {
       </div>
       <div className="form">
         <div className="form-item settings-title">其他</div>
-        <div className="form-item">
+        <div className="form-item form-item-checkbox">
           <label>
-            <input name="showAllExports" type="checkbox" checked={showAllExports} onChange={this.changeExportsSetting}/>
-            {t('show all exports')}
+            <input
+              name="showAllExports"
+              type="checkbox"
+              checked={showAllExports}
+              onChange={this.changeOtherSetting}
+            />
+            {t('show all exports when selecting outer')}
           </label>
+        </div>
+        <div className="form-item form-item-checkbox">
+          <label>
+            <input
+              name="disableInspectExportInner"
+              type="checkbox"
+              checked={disableInspectExportInner}
+              onChange={this.changeOtherSetting}
+            />
+            {t('exports inner selecting not allowed')}
+          </label>
+          <div className="help-block">{t('exports inner selecting not allowed tip')}</div>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ export const toFixed = num =>
   ''
 
 // generate box data
-export const generateRects = (nodes, docRect) => {
+export const generateRects = (nodes, docRect, disableInspectExportInner) => {
   let index = 0
   const rects = []
   let exportIds = []
@@ -74,10 +74,17 @@ export const generateRects = (nodes, docRect) => {
         clazz,
         node
       })
-      // if has children, not boolean and mask, then continue
-      if (node.children && node.type!=='BOOLEAN_OPERATION' && !node.isMask) {
-        step(node.children, node.id, componentIds)
+      // if has children, not boolean and mask element, then continue
+      if (
+        (disableInspectExportInner && hasExports) ||
+        !node.children ||
+        node.type==='BOOLEAN_OPERATION' ||
+        node.isMask
+      ) {
+        // eslint-disable-next-line
+        return
       }
+      step(node.children, node.id, componentIds)
       // eslint-disable-next-line
       return
     })

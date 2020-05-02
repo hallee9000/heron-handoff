@@ -47,7 +47,7 @@ class App extends React.Component {
   initializeGlobalSettings = () => {
     const localSettings = getGlobalSettings()
     if (localSettings) {
-      return localSettings
+      return {...DEFAULT_SETTINGS, ...localSettings}
     } else {
       setGlobalSettings(DEFAULT_SETTINGS)
       return DEFAULT_SETTINGS

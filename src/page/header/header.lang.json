@@ -24,7 +24,9 @@
     "(r)em base": "(R)em base",
     "(r)em base placeholder": "please fulfill (r)em base",
     "language": "Language",
-    "show all exports": "show all exports while outer frame selected"
+    "show all exports when selecting outer": "Show all exports while outer frame selected",
+    "exports inner selecting not allowed": "Don't allow to inspect in exports' inner",
+    "exports inner selecting not allowed tip": "You need to change Frame to make it work after changing this."
   },
   "zh": {
     "dealing with": "开始处理 {{name}} ……",
@@ -51,6 +53,8 @@
     "(r)em base": "(R)em 基准",
     "(r)em base placeholder": "请填写基准值",
     "language": "语言",
-    "show all exports": "在选择最外层时显示所有切图"
+    "show all exports when selecting outer": "在选择最外层时显示所有切图",
+    "exports inner selecting not allowed": "不允许选中切图（Export）内部图层",
+    "exports inner selecting not allowed tip": "更改此设置后需要切换 Frame 才生效。"
   }
 }

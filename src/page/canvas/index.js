@@ -38,9 +38,10 @@ class Canvas extends React.Component {
     })
   }
   generateMark = () => {
-    const { canvasData, onGetExports } = this.props
+    const { canvasData, onGetExports, globalSettings } = this.props
+    const { disableInspectExportInner } = globalSettings
     const { absoluteBoundingBox: pageRect } = canvasData
-    const { rects, exportIds } = generateRects([canvasData], pageRect)
+    const { rects, exportIds } = generateRects([canvasData], pageRect, disableInspectExportInner)
     onGetExports && onGetExports(exportIds)
     this.setState({ rects, pageRect })
   }
