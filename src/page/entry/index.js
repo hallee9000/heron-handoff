@@ -25,11 +25,13 @@ class Entry extends React.Component {
     pagedFrames: {},
     coffeeVisible: false,
     isDownloaded: false,
-    formVisible: false
+    formVisible: false,
+    isLoadingDemo: false
   }
   gotoDemo = async e => {
     e && e.preventDefault()
     reportEvent('view_demo', 'handoff_entry')
+    this.setState({isLoadingDemo: true})
     const fileData = await getMockFile()
     // get components and styles
     const { components, styles, exportSettings } = walkFile(fileData, null, true)
@@ -37,6 +39,7 @@ class Entry extends React.Component {
     const pagedFrames = getSelectedPagedFrames(getPagedFrames(fileData))
     // demo has components list
     onComponentsOptionChange && onComponentsOptionChange(true)
+    this.setState({isLoadingDemo: false})
     onDataGot && onDataGot(fileData, components, styles, exportSettings, pagedFrames)
   }
   switchStep = (step, key, data, fileKey) => {
@@ -91,7 +94,7 @@ class Entry extends React.Component {
   }
   render() {
     const { onDataGot, onComponentsOptionChange, t } = this.props
-    const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded, formVisible } = this.state
+    const { currentStep, data, fileKey, pagedFrames, coffeeVisible, isDownloaded, formVisible, isLoadingDemo } = this.state
     return (
       <div className="app-entry">
         <div className="entry-container">
@@ -104,8 +107,9 @@ class Entry extends React.Component {
             <button
               className="btn btn-white-o btn-round"
               onClick={this.gotoDemo}
+              disabled={isLoadingDemo}
             >
-              {t('demo')}
+              {isLoadingDemo ? t('demo loading') : t('demo')}
             </button>
           </div>
           <div className={cn('entry-plugin', {hide: coffeeVisible || formVisible})}>
