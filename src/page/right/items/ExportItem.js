@@ -10,7 +10,6 @@ export default ({exportSetting, useLocalImages, index}) => {
   const [ isDownloading, setDownloading ] = useState(false)
   const { image } = exportSetting
   const name = getFileName(exportSetting, useLocalImages ? index : undefined)
-  console.log(exportSetting, name)
   const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
   const { protocol } = window.location
   const isHttpServer = /^http/.test(protocol)
