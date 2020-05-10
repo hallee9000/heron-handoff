@@ -79,7 +79,7 @@ class Header extends React.Component {
     })
   }
   render () {
-    const { entryVisible, isLocal, isMock, documentName, pageName, frameName, isComponent, onBack, t } = this.props
+    const { isLocal, isMock, documentName, pageName, frameName, isComponent, onBack, t } = this.props
     const { loaderWidth, loaderMessage, isExported } = this.state
     const logoHidden = this.hasNames()
     return (
