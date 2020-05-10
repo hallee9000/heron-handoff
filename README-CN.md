@@ -1,6 +1,8 @@
 >这个项目使用了 [Create React App](https://github.com/facebook/create-react-app) 脚手架。
 
-**现在可以使用插件啦！点击[这里](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff)前往安装。**
+**现在可以使用插件啦！点击[这里](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff)安装。**
+
+**推荐查看[从设计到交付到开发，Juuust Handoff 食用说明](https://mp.weixin.qq.com/s/H01fw3bzR8BxcuV74TWPtw)。**
 
 [English Version](./README.md)
 
