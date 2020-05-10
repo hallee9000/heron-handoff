@@ -144,24 +144,21 @@ class Header extends React.Component {
               </span>
             </Overlay>
           }
+          <Overlay
+            trigger={['click']}
+            overlay={<Changelog/>}
+            align={{
+              offset: [30, -10]
+            }}
+            overlayClassName="header-overlay header-overlay-changelog"
+          >
+            <span title={t('changelog')}>
+              <FileText size={14}/>
+            </span>
+          </Overlay>
           <a title={t('help')} href={t('help link')} target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
-          {
-            entryVisible &&
-            <Overlay
-              trigger={['click']}
-              overlay={<Changelog/>}
-              align={{
-                offset: [30, -10]
-              }}
-              overlayClassName="header-overlay header-overlay-changelog"
-            >
-              <span title={t('changelog')}>
-                <FileText size={14}/>
-              </span>
-            </Overlay>
-          }
           <a title={t('feedback')} href="https://github.com/leadream/figma-handoff/issues" target="_blank" rel="noopener noreferrer">
             <MessageCircle size={14}/>
           </a>
