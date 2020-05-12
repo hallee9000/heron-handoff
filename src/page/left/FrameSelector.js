@@ -107,7 +107,7 @@ class FrameSelector extends React.Component {
         onPopupVisibleChange={this.handlePopupVisibleChange}
         transitionName="slide-up"
       >
-        <div className="frame-selector">
+        <div className="frame-selector" title={selectedText}>
           {
             (!inputValue || !popupVisible) &&
             <div className="frame-selector-result">{selectedText}</div>

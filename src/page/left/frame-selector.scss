@@ -12,6 +12,9 @@
     padding: 4px 11px;
     color: $white-85;
     background: $black-2;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     z-index: 0;
   }
   .input{
