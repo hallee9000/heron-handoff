@@ -17,6 +17,12 @@ jobs:
     - run: echo PUBLIC_URL=. > ./.env
     - run: echo IMAGE_INLINE_SIZE_LIMIT=100000 >> ./.env
     - run: npm run build
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v1.2.5
+      with:
+        build_dir:  build
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
     - name: Upload to COS
       uses: zkqiang/tencent-cos-action@master
       with:
@@ -25,9 +31,3 @@ jobs:
         secret_key: ${{ secrets.SECRET_KEY }}
         bucket: ${{ secrets.BUCKET }}
         region: ap-guangzhou
-    - name: GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v1.2.5
-      with:
-        build_dir:  build
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}

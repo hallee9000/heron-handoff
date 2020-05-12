@@ -98,7 +98,7 @@ class Header extends React.Component {
         <div className={cn('header-divider', {'hide': logoHidden})}/>
         <a
           className={cn('header-logo', {'hide': logoHidden && !isLocal})}
-          href="https://figmacn.com/handoff/"
+          href="https://figmacn.com/handoff-landing"
           target="_blank"
           rel="noopener noreferrer"
         >
