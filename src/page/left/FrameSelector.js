@@ -105,6 +105,7 @@ class FrameSelector extends React.Component {
         value={selectedValue}
         popupVisible={popupVisible}
         onPopupVisibleChange={this.handlePopupVisibleChange}
+        expandTrigger="hover"
         transitionName="slide-up"
       >
         <div className="frame-selector" title={selectedText}>
