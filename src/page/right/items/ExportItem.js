@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Download, ExternalLink, Loader } from 'react-feather'
 import cn from 'classnames'
 import { saveAs } from 'file-saver'
-import { getBlobData, withCors } from 'api'
+import { getBlobData } from 'api'
 import { getFileName } from 'utils/helper'
 import './export-item.scss'
 
@@ -18,7 +18,7 @@ export default ({exportSetting, useLocalImages, index}) => {
     if (isHttpServer) {
       e.preventDefault()
       setDownloading(true)
-      const imgUrl = useLocalImages ? imageUrl : withCors(imageUrl)
+      const imgUrl = useLocalImages ? imageUrl : imageUrl
       getBlobData(imgUrl)
         .then(blob => {
           saveAs(blob, name)

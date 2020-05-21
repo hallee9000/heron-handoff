@@ -5,7 +5,7 @@ import { Droplet, Image, DownloadCloud } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { getBufferData, withCors } from 'api'
+import { getBufferData } from 'api'
 import { asyncForEach, getFileName, isAllImageFill } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
 import StyleDetail from './StyleDetail'
@@ -61,7 +61,7 @@ class RightSider extends React.Component {
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
       const imgName = getFileName(exportSetting, index)
-      const imgUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : withCors((exportSetting.image))
+      const imgUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : exportSetting.image
       const imgData = await getBufferData(imgUrl)
       this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))
       exportsFolder.file(imgName, imgData, {base64: true})
