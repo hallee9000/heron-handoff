@@ -23,11 +23,11 @@ jobs:
         build_dir:  build
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-    - name: Upload to COS
-      uses: zkqiang/tencent-cos-action@master
+    - name: Deploy static to Tencent CloudBase
+      id: deployStatic
+      uses: TencentCloudBase/cloudbase-action@v1.1.1
       with:
-        args: delete -r -f / && upload -r ./build/ /
-        secret_id: ${{ secrets.SECRET_ID }}
-        secret_key: ${{ secrets.SECRET_KEY }}
-        bucket: ${{ secrets.BUCKET }}
-        region: ap-guangzhou
+        secretId: ${{ secrets.SECRET_ID }}
+        secretKey: ${{ secrets.SECRET_KEY }}
+        envId: ${{ secrets.ENV_ID }}
+        staticSrcPath: build
