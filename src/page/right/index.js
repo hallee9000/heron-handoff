@@ -6,7 +6,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { getBufferData } from 'api'
-import { asyncForEach, getFileName, isAllImageFill } from 'utils/helper'
+import { asyncForEach, isAllImageFill } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
 import StyleDetail from './StyleDetail'
 import { StyleItem, ExportItem } from './items'
@@ -60,7 +60,7 @@ class RightSider extends React.Component {
     this.setProgress(1, t('downloading images'))
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
-      const imgName = getFileName(exportSetting, index)
+      const imgName = exportSetting.rename
       const imgUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : exportSetting.image
       const imgData = await getBufferData(imgUrl)
       this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))

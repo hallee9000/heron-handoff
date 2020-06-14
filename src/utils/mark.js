@@ -52,6 +52,7 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
       const bound = getBound(nbb, docRect)
       const isComponent = node.type==='COMPONENT' || node.type==='INSTANCE'
       const isGroup = node.type==='GROUP'
+      // TODO: should in global exportSettings
       const hasExports = node.exportSettings && node.exportSettings.length
       const clazz = []
       isComponent && clazz.push('component')
