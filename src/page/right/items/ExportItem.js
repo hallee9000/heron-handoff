@@ -3,13 +3,12 @@ import { Download, ExternalLink, Loader } from 'react-feather'
 import cn from 'classnames'
 import { saveAs } from 'file-saver'
 import { getBlobData } from 'api'
-import { getFileName } from 'utils/helper'
 import './export-item.scss'
 
 export default ({exportSetting, useLocalImages, index}) => {
   const [ isDownloading, setDownloading ] = useState(false)
   const { image } = exportSetting
-  const name = getFileName(exportSetting, useLocalImages ? index : undefined)
+  const name = exportSetting.rename
   const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
   const { protocol } = window.location
   const isHttpServer = /^http/.test(protocol)
