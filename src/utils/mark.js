@@ -50,6 +50,7 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
       }
 
       const bound = getBound(nbb, docRect)
+      const isDirectFrame = index===0
       const isComponent = node.type==='COMPONENT' || node.type==='INSTANCE'
       const isGroup = node.type==='GROUP'
       // TODO: should in global exportSettings
@@ -77,7 +78,7 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
       })
       // if has children, not boolean and mask element, then continue
       if (
-        (disableInspectExportInner && hasExports) ||
+        (disableInspectExportInner && hasExports && !isDirectFrame) ||
         !node.children ||
         node.type==='BOOLEAN_OPERATION' ||
         node.isMask
