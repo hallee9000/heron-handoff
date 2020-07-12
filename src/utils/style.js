@@ -23,7 +23,8 @@ export const getRGB = color => {
     .join(', ')
 }
 
-export const getCSSRGBA = color => {
+export const getCSSRGBA = (color, opacity) => {
+  (typeof opacity === 'number') && (color.a = opacity)
   const colorObject = getRGBAObj(color)
   const keys = Object.keys(colorObject)
   return `rgba(${keys.map(key => colorObject[key]).join(',')})`
@@ -32,7 +33,8 @@ export const getCSSRGBA = color => {
 export const getCSSHEX = color =>
   getColor(color).hex()
 
-export const getCSSHEXA = color => {
+export const getCSSHEXA = (color, opacity) => {
+  (typeof opacity === 'number') && (color.a = opacity)
   const alpha = getColor(color).valpha
   const hexAlpha = ("0" + parseInt(alpha*256,10)
     .toString(16))
@@ -41,7 +43,8 @@ export const getCSSHEXA = color => {
   return  getCSSHEX(color) + hexAlpha
 }
 
-export const getCSSHSLA = color => {
+export const getCSSHSLA = (color, opacity) => {
+  (typeof opacity === 'number') && (color.a = opacity)
   const c = getColor(color).hsl().string()
   const hsl = c.split(',')
     .map((part, index) =>
@@ -112,13 +115,12 @@ export const getGradientDegree = fill =>
 
 export const getSolidColor = fill => ({
   codeTemplate: '{{color}}',
-  css: getCSSRGBA(fill.color),
-  opacity: getOpacity(fill.opacity),
+  css: getCSSRGBA(fill.color, fill.opacity),
   alpha: toFixed(polyfillAlpha(fill.color.a)),
   hex: getCSSHEX(fill.color),
-  hexa: getCSSHEXA(fill.color),
-  rgba: getCSSRGBA(fill.color),
-  hsla: getCSSHSLA(fill.color),
+  hexa: getCSSHEXA(fill.color, fill.opacity),
+  rgba: getCSSRGBA(fill.color, fill.opacity),
+  hsla: getCSSHSLA(fill.color, fill.opacity),
   type: 'Solid'
 })
 
@@ -141,7 +143,7 @@ export const getRadialGradient = fill => ({
 })
 
 export const getAngularGradient = fill => ({
-  codeTemplate: 'conic-gradient(from 0.25turn, {{stops}})',
+  codeTemplate: 'conic-gradient(from {{degree}}, {{stops}})',
   css: `conic-gradient(from 0.25turn, ${ stopsToBackground(getStops(fill.gradientStops)) })`,
   opacity: getOpacity(fill.opacity),
   type: 'Angular',

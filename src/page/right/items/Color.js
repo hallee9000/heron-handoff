@@ -9,7 +9,7 @@ const Color = ({color, colorFormat, t}) =>
     <CopiableInput
       label={<Fill size={12}/>}
       value={formattedColor(colorFormat, color)}
-      style={{width: colorFormat===0 ? 64 : 100}}
+      style={{width: colorFormat===0 ? 86 : 130}}
       title={t('color value')}
     />
     {

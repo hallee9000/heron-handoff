@@ -26,9 +26,24 @@ const FillItem = ({flag, style, globalSettings, t}) => {
         {
           isSolid ?
           <Color color={style} colorFormat={colorFormat}/> :
-          <CopiableInput label={<Degree size={12}/>} inputClass="summary-degree" value={style.angle} title={t('stop angle')}/>
+          <CopiableInput
+            label={<Degree size={12}/>}
+            inputClass="summary-degree"
+            value={style.angle}
+            title={t('stop angle')}
+            style={{width: 42}}
+          />
         }
-        <CopiableInput label={<Opacity size={12}/>} inputClass="summary-opacity" value={ style.opacity } title={t('stop opacity')}/>
+        {
+          !isSolid &&
+          <CopiableInput
+            label={<Opacity size={12}/>}
+            inputClass="summary-opacity"
+            value={ style.opacity }
+            title={t('stop opacity')}
+            style={{width: 42}}
+          />
+        }
       </InputGroup>
     </li>
     {
