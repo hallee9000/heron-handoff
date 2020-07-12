@@ -39,7 +39,12 @@ class Entry extends React.Component {
     })
   }
   componentDidMount () {
-    // this.gotoDemo()
+    const { search } = window.location
+    const urlParams = new URLSearchParams(search)
+    const isDemo = urlParams.get('demo')
+    if (isDemo) {
+      this.gotoDemo()
+    }
   }
   render() {
     const { t } = this.props
