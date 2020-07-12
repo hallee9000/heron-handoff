@@ -81,8 +81,14 @@ export const stopsToBackground = (stops, colorFormat=2, separator=', ') =>
     formattedColor(colorFormat, stop) + ' ' + stop.position
   ).join(separator)
 
-export const getGradientDegreeFromMatrix = gradientTransform =>
-  toFixed(Math.atan2(-gradientTransform[1][0], gradientTransform[0][0]) * (180 / Math.PI)) + '°'
+export const getGradientDegreeFromMatrix = gradientTransform => {
+  const angle = Math.atan2(-gradientTransform[1][0], gradientTransform[0][0]) * (180 / Math.PI)
+  if (angle >= -180 && angle <= 90) {
+    return toFixed(angle+90) + '°'
+  } else {
+    return toFixed(angle-270) + '°'
+  }
+}
 
 export const getGradientDegreeFromPositions = positions => {
   const offsetX = positions[1].x-positions[0].x
@@ -117,7 +123,7 @@ export const getSolidColor = fill => ({
 })
 
 export const getLinearGradient = fill => ({
-  codeTemplate: 'linear-gradient(to bottom, {{stops}})',
+  codeTemplate: 'linear-gradient({{degree}}, {{stops}})',
   css: `linear-gradient(to bottom, ${ stopsToBackground(getStops(fill.gradientStops)) })`,
   opacity: getOpacity(fill.opacity),
   type: 'Linear',
@@ -147,7 +153,7 @@ export const getDiamondCodeTemplate = () => {
   const directions = ['bottom right', 'bottom left', 'top left', 'top right']
   return directions
     .map(direction => `linear-gradient(to ${direction}, {{stops}}) ${direction} / 50% 50% no-repeat`)
-    .join(', ')
+    .join(', \n')
 }
 
 export const getDiamondGradient = fill => ({
@@ -188,9 +194,12 @@ export const getFillsStyle = fills => {
 }
 
 export const getFillCSSCode = (fillStyle, colorFormat=0) => {
-  const { codeTemplate } = fillStyle
+  const { codeTemplate, angle } = fillStyle
   const color = formattedColor(colorFormat, fillStyle)
   let code = codeTemplate
+  if (codeTemplate.indexOf('{{degree}}') > -1) {
+    code = code.replace(/{{degree}}/g, `${angle.replace('°', '')}deg`)
+  }
   if (codeTemplate.indexOf('{{color}}') > -1) {
     code = code.replace(/{{color}}/g, color)
   }
