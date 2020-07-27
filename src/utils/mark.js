@@ -184,13 +184,14 @@ export const getFrameBound = (strokes, strokeWeight, strokeAlign, effects) => {
     .filter(({type, visible}) => (type==='DROP_SHADOW' || type==='LAYER_BLUR') && visible!==false)
     // eslint-disable-next-line
     .map(effect => {
-      const { offset, radius } = effect
+      const { offset, radius, spread } = effect
+      const fallbackSpread = spread || 0
       const x = offset ? offset.x : 0
       const y = offset ? offset.y : 0
-      bound.top = Math.max(radius-y, bound.top, 0)
-      bound.bottom = Math.max(radius+y, bound.bottom, 0)
-      bound.left = Math.max(radius-x, bound.left, 0)
-      bound.right = Math.max(radius+x, bound.right, 0)
+      bound.top = Math.max(radius+fallbackSpread-y, bound.top, 0)
+      bound.bottom = Math.max(radius+fallbackSpread+y, bound.bottom, 0)
+      bound.left = Math.max(radius+fallbackSpread-x, bound.left, 0)
+      bound.right = Math.max(radius+fallbackSpread+x, bound.right, 0)
     })
   Object.keys(bound)
     .map(key => bound[key] += strokeBase)

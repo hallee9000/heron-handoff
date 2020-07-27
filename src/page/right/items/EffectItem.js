@@ -13,7 +13,7 @@ import './effect-item.scss'
 const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
   const colorFormat = globalSettings.colorFormat || 0
   const [isExpanded, setExpanded] = useState(false)
-  const { type, category, typeName, blur, x, y, dashedPorpertyName } = style
+  const { type, category, typeName, blur, x, y, spread, dashedPorpertyName } = style
   const code = getEffectCSSCode(style, globalSettings, colorFormat)
   return <ul key={flag} className={cn('effect-item', { 'effect-item-expanded': isExpanded })}>
     <li className="effect-summary" onClick={() => setExpanded(!isExpanded)}>
@@ -38,6 +38,9 @@ const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
         <InputGroup isQuiet>
           <CopiableInput label="X" value={ formattedNumber(x, globalSettings) } title="X"/>
           <CopiableInput label="Y" value={ formattedNumber(y, globalSettings) } title="Y"/>
+          <CopiableInput label="Spread" value={ formattedNumber(spread||0, globalSettings) } title="Spread"/>
+        </InputGroup>
+        <InputGroup isQuiet>
           <Color color={style} colorFormat={colorFormat}/>
         </InputGroup>
       </li>
