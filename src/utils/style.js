@@ -215,6 +215,7 @@ export const getShadowEffect = effect => ({
     x: effect.offset.x,
     y: effect.offset.y,
     blur: effect.radius,
+    spread: effect.spread||0,
     hex: getCSSHEX(effect.color),
     hexa: getCSSHEXA(effect.color),
     rgba: getCSSRGBA(effect.color),
@@ -239,7 +240,7 @@ export const getEffectsStyle = effects => {
             category: 'shadow',
             ...getShadowEffect(effect),
             porpertyName: 'shadow',
-            codeTemplate: `{{x}} {{y}} {{radius}} 0 {{color}}`
+            codeTemplate: `{{x}} {{y}} {{radius}} {{spread}} {{color}}`
           }
         case 'INNER_SHADOW':
           return {
@@ -248,7 +249,7 @@ export const getEffectsStyle = effects => {
             category: 'shadow',
             ...getShadowEffect(effect),
             porpertyName: 'shadow',
-            codeTemplate: `inset {{x}} {{y}} {{radius}} 0 {{color}}`
+            codeTemplate: `inset {{x}} {{y}} {{radius}} {{spread}} {{color}}`
           }
         case 'LAYER_BLUR':
           return {
@@ -278,12 +279,13 @@ export const getEffectsStyle = effects => {
 }
 
 export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=2) => {
-  const { category, codeTemplate, blur, x, y } = effectStyle
+  const { category, codeTemplate, blur, spread, x, y } = effectStyle
   let code = codeTemplate
   code = code.replace('{{radius}}', formattedNumber(blur, globalSettings))
   if (category==='shadow') {
     code = code.replace('{{x}}', formattedNumber(x, globalSettings))
     code = code.replace('{{y}}', formattedNumber(y, globalSettings))
+    code = code.replace('{{spread}}', formattedNumber(spread, globalSettings))
     code = code.replace('{{color}}', formattedColor(colorFormat, effectStyle))
   }
   return code

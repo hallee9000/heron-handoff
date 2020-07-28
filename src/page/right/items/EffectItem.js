@@ -23,14 +23,17 @@ const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
       />
       { EFFECTS[type].icon }
       <span className="summary-name">{ typeName }</span>
-      <CopiableInput
-        label={<MixEffect size={12}/>}
-        inputClass="summary-blur"
-        value={ formattedNumber(blur, globalSettings) }
-        title={t('blur')}
-        isQuiet
-        onWrapperClick={e => e.stopPropagation()}
-      />
+      {
+        category!=='shadow' &&
+        <CopiableInput
+          label={<MixEffect size={12}/>}
+          inputClass="summary-blur"
+          value={ formattedNumber(blur, globalSettings) }
+          title={t('blur')}
+          isQuiet
+          onWrapperClick={e => e.stopPropagation()}
+        />
+      }
     </li>
     {
       category==='shadow' &&
@@ -38,7 +41,10 @@ const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
         <InputGroup isQuiet>
           <CopiableInput label="X" value={ formattedNumber(x, globalSettings) } title="X"/>
           <CopiableInput label="Y" value={ formattedNumber(y, globalSettings) } title="Y"/>
-          <CopiableInput label="Spread" value={ formattedNumber(spread||0, globalSettings) } title="Spread"/>
+        </InputGroup>
+        <InputGroup isQuiet>
+          <CopiableInput label="Blur" value={ formattedNumber(blur, globalSettings) } title="Blur"/>
+          <CopiableInput label="Spread" value={ formattedNumber(spread, globalSettings) } title="Spread"/>
         </InputGroup>
         <InputGroup isQuiet>
           <Color color={style} colorFormat={colorFormat}/>

@@ -4,6 +4,9 @@
   background: #1C1F2A;
   border-radius: 2px;
   transition: background 0.2s;
+  >*{
+    flex: 1;
+  }
   .copiable-input{
     border-radius: 0;
   }
