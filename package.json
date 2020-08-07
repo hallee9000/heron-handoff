@@ -10,7 +10,7 @@
     "jszip": "^3.2.2",
     "marked": "^0.8.0",
     "node-sass": "^4.13.0",
-    "prismjs": "^1.19.0",
+    "prismjs": "^1.21.0",
     "raw.macro": "^0.3.0",
     "rc-cascader": "^1.0.1",
     "rc-input-number": "^4.5.3",
