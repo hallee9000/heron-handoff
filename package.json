@@ -9,7 +9,7 @@
     "i18next": "^19.1.0",
     "jszip": "^3.2.2",
     "marked": "^0.8.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "prismjs": "^1.19.0",
     "raw.macro": "^0.3.0",
     "rc-cascader": "^1.0.1",
