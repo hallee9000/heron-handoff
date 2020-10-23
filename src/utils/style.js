@@ -224,8 +224,8 @@ export const getShadowEffect = effect => ({
   })
 
 export const getEffectsStyle = effects => {
-  if (!effects) {
-    return { styles:[] }
+  if (!effects || effects.length===0) {
+    return { type: 'FAILED_EFFECT', styles:[] }
   }
   let type = ''
   const styles = effects

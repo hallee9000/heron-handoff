@@ -1,5 +1,5 @@
 import React from 'react'
-import { DropShadow, InnerShadow, LayerBlur, BackgroundBlur, MixEffect } from 'components/icons/style'
+import { DropShadow, InnerShadow, LayerBlur, BackgroundBlur, MixEffect, FailedEffect } from 'components/icons/style'
 import {
   SmallThin, NormalThin, LargeThin,
   SmallRegular, NormalRegular, LargeRegular,
@@ -30,6 +30,9 @@ export const EFFECTS = {
   },
   'MIX_EFFECT': {
     icon: <MixEffect size={18} className="effect-thumbnail"/>
+  },
+  'FAILED_EFFECT': {
+    icon: <FailedEffect size={18} className="effect-thumbnail"/>
   }
 }
 

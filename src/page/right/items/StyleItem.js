@@ -24,6 +24,7 @@ export default ({styles, styleName, styleType, isHoverable=true, ...props}) => {
       </a>
     case 'EFFECT':
       const { type } = getEffectsStyle(styles)
+      console.log('type', type)
       return <a className={cn('style-item style-item-effect', {'style-item-hoverable': isHoverable})} {...props}>
         <div className="item-preview">
           { EFFECTS[type].icon }
