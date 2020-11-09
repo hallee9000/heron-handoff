@@ -41,7 +41,8 @@ class App extends React.Component {
       images: {},
       names: {},
       pagedFrames,
-      globalSettings: this.initializeGlobalSettings()
+      globalSettings: this.initializeGlobalSettings(),
+      backFromDemo: false
     }
   }
   initializeGlobalSettings = () => {
@@ -87,13 +88,14 @@ class App extends React.Component {
   handleBack = () => {
     this.setState({
       entryVisible: true,
+      backFromDemo: true,
       names: {}
     })
   }
   render () {
     const {
       entryVisible, isLocal, isMock, includeComponents, data, components, styles,
-      exportSettings, images, pagedFrames, names, globalSettings
+      exportSettings, images, pagedFrames, names, globalSettings, backFromDemo
     } = this.state
     return (
       <div className="app-container">
@@ -116,6 +118,7 @@ class App extends React.Component {
             <Entry
               onDataGot={this.handleDataGot}
               onComponentsOptionChange={this.handleComponentsOptionChange}
+              backFromDemo={backFromDemo}
             />
           </SettingsContext.Provider> :
           <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>

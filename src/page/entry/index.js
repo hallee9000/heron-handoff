@@ -1,5 +1,5 @@
 import React from 'react'
-import { withTranslation, Trans } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { GitHub, Coffee, DollarSign, Package, Mail, Link2, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
@@ -39,10 +39,11 @@ class Entry extends React.Component {
     })
   }
   componentDidMount () {
+    const { backFromDemo } = this.props
     const { search } = window.location
     const urlParams = new URLSearchParams(search)
     const isDemo = urlParams.get('demo')
-    if (isDemo) {
+    if (isDemo && !backFromDemo) {
       this.gotoDemo()
     }
   }
@@ -59,9 +60,7 @@ class Entry extends React.Component {
           </div>
           <div className={cn('entry-main', {hide: coffeeVisible})}>
             <p>
-              <Trans i18nKey="use plugin description" ns="entry">
-                Juuust helps you export hand-off file. <a href="https://www.figmacn.com/handoff-landing" target="_blank" rel="noopener noreferrer" onClick={() => reportEvent('learn more', 'handoff_entry')}>learn more</a>
-              </Trans>
+              { t('use plugin description') }
             </p>
             <div className="main-buttons">
               <a
