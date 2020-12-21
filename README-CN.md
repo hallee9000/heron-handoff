@@ -1,72 +1,70 @@
->这个项目使用了 [Create React App](https://github.com/facebook/create-react-app) 脚手架。
+# Figma Juuust Handoff
 
-**现在可以使用插件啦！点击[这里](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff)安装。**
-
-**推荐查看[从设计到交付到开发，Juuust Handoff 食用说明](https://mp.weixin.qq.com/s/H01fw3bzR8BxcuV74TWPtw)。**
-
-[English Version](./README.md)
+**我正在紧锣密鼓地开发在线版 Juuust Handoff，点[这里](https://heron.design)订阅最新消息**
 
 ## 简介
 
-<img alt="概览" src="./imgs/overview.png"/>
+<img alt="Overview" src="./imgs/overview.png"/>
 
-Figma Handoff 是一个设计交付工具，可以帮助你从 Figma 设计文件生成标注，方便开发人员查看。它是一个线上应用，通过 [Figma API](https://www.figma.com/developers/api) 获取设计数据，并生成离线或在线标注，但不会将你的数据保存至任何服务器。
+Juuust Handoff 可以帮助你生成带有设计标注的文件，方便交付给开发。这个项目是设计标注模板，你需要先去[这里](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff)安装插件。
 
-访问地址：https://figmacn.com/handoff/
+更多信息你可以查看 https://figmacn.com/handoff/.
 
-你可以通过这个按钮查看 Demo。
+[点这里查看 Demo](https://figmacn.com/handoff?demo=1)
 
-<img alt="Demo 入口" src="./imgs/demo-entry-cn.png" width="360"/>
+## 使用方式
 
-## 使用说明
+### 1. 安装插件
+前往 [Juuust Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) 页面或搜索 juuust handoff 进入插件页面点击安装。
 
-通过上面的链接进入之后，你需要输入要生成标注的文件地址，以及 [Access Token](https://www.figma.com/developers/api#access-tokens)，来获取你页面中的 Frame。**为了方便，你的 Access Token 会被保存在本地浏览器上，所以为了安全请不要在不信任的电脑上使用（比如网吧、或者你表弟的电脑）。**
+<img alt="Install plugin" src="./imgs/install.png"/>
 
-<img alt="入口" src="./imgs/entry-cn.png" width="360"/>
+### 2. 在文件内打开插件
+打开一个设计文件，在画布中右击，依次选取 plugin -> Juuust Handoff，即可启动插件。
 
+<img alt="Run plugin" src="./imgs/run.png"/>
 
-接着选择你需要生成标注的 Frame，到下一步选择图片质量和是否生成离线标注，就可以生成标注啦。**需要注意的是，Figma Handoff 只会抓取到你在画布中的第一级的 Frame，所以请不要使用 Group 将第一级的 Frame 圈在一起。**
+### 3. 选择 Frame
+插件会罗列该文件所有 page 中的每一个第一级 Frame（可以理解为画板）。你可以在里面选择需要导出标注的 Frame，然后点击开始导出。
+
+下方还有一个**导出组件列表选项**，可以单独导出组件列表。如果你像我一样（如下图）把组件都放在一个 Frame 内，就不需要勾选它了。
+
+<img alt="Select frames" src="./imgs/select.png"/>
+
+### 4. 选择切图
+插件会自动识别到文件中带有 export 的图层（下图右侧面板最下方），将其罗列在切图列表中，你可以选择需要导出的切图。切图的命名会自动按照你所选择的倍数和填写的后缀命名，如果有重复会自动在末尾加数字，并用红色惊叹号特别标注。
+
+万事俱备，点击下面的按钮开始导出。
+
+<img alt="Select frames" src="./imgs/export.png"/>
+
+### 5. 查看标注文件
+在上一步点击生成设计标注之后，会导出一个压缩包文件到本地，解压后打开里面的 index.html 就可以查看标注啦。因为每一次导出标注文件都是离线的，所以如果你的设计有改动并不会自动同步，需要你重新导出。
+
+<img alt="Select frames" src="./imgs/view.png"/>
 
 ## 常见问题
-### 生成标注很慢怎么办？
-生成速度取决于文件大小和网络情况，如果太慢可以考虑：
-- 在第二步选择部分 Frame，而不是所有。
-- 在第三步取消勾选使用高清图。
-- 由于是直接访问 Figma 的数据，可以将你的梯子开启全局以加快速度。
 
-### 什么是 Access Token？
-简单来说 Access Token 就是一个访问令牌，拿着它才可以获取到你的 Figma 设计文件数据。你可以在个人设置页面生成，生成后需要立即复制出去，不然一刷新就没了。**由于拥有了 Access Token 就可以获得你所有的设计文件数据，所以请不要把它粘贴在容易暴露的地方（比如抄在手上，写在便利贴上）。**
+### 如何交付切图？
+插件只会识别每一个在右侧加了 Export 的元素，Slice 功能只是为了兼容 Sketch 导入的文件，本插件不会将其作为切图对待，所以如果 Slice 图层没有在右侧添加 Export 也不会被识别为切图。
 
-<img alt="Access Token" src="./imgs/access-token.png" width="360"/>
+此外，Main 组件添加了 Export，它的实例（Instance）不会被自动添加 Export，也不会被识别为切图。也就是说，你给文件中几个图层加了多少 Export，就会有多少切图。
 
+比如下图，会生成 `thumb-up-ios@3x.png` 和 `thumb-up.svg`（该图层名字为 `thumb-up`）两个切图。
 
-### 我的数据会被偷偷存起来吗？
-不会。Figma Handoff 通过你的 Access Token 来获取设计文件数据，所有的标注工作均在本地浏览器上完成。不过由于图片的跨域问题，生成标注所需要的图片（如 Frame 缩略图、组件缩略图和切图）要经过一个服务端程序处理一下，这个程序的代码也[开源](https://github.com/leadream/cors-anywhere)了，运行于 [Heroku](https://heroku.com/) 上。
+<img alt="Export settings" src="./imgs/exports.png" width="360"/>
 
-### “导出组件列表”是什么意思？
-如果你勾选了此选项，Figma Handoff 会自动查找到该文件中所有的 Master 组件，并在左侧生成一个组件列表。这样的话会额外获取组件图片，从而导致生成标注时间变长，因此推荐你将所有 Master 组件统一放在一个 Page 中，而不要放在设计图中，这样就不需要额外导出组件列表了。
+### 为什么有时候会错位？
+标注错位一般是由于两种原因导致的：
+1. 有一些元素进行了旋转或者翻转操作。
+2. 第一级 Frame（画板）内的元素超出了，但是 Frame 没有勾选裁切内容（Clip content）。
+目前第一种情况还无法解决，请尽量避免，第二种情况请一定要给第一级 Frame 勾选一下该选项。
 
-<img alt="Master 组件单独放在一个 Page 中" src="./imgs/with-components-page.jpg"/>
-
-**✅ Master 组件单独放在一个 Page 中**
-
-<img alt="Master 组件混在设计中" src="./imgs/without-components-page.jpg"/>
-
-**❌ Master 组件混在设计中**
-
-### 切图要怎么交付？
-我推荐切图由设计师完成。你只需要在 Figma 中右侧属性面板最下面的 Export 中添加切图设置，Figma Handoff 会自动识别文件中的所有带有 Export 的元素来生成切图。比如下图（这个元素名是 `thumb-up`）会生成两个切图，`thumb-up-ios@3x.png` 和 `thumb-up.svg`。
-
-<img alt="切图设置" src="./imgs/exports.png" width="360"/>
-
-### 还有啥要注意的吗？
-- 画布中第一级 Frame 尽量都勾选 `Clip Content`，否则会引起标注错位。
 <img alt="Clip Content" src="./imgs/clip-content.png" width="360"/>
-- 除了常用的缩放移动画布，你还可以通过左下角的按钮，键盘加减号来缩放，按住空格键还可以拖拽画布。
 
-## 赞赏
-这个工具目前免费且开源，如果对你有帮助的话可以赞赏支持我一下，谢谢。
+## 赞助捐赠
+Figma Juuust Handoff 代码全部开源，如果对你有帮助，可以扫码支持我一下。
 
-PayPal: https://paypal.me/leadream
+<img alt="Donation qrcode" src="./imgs/coffee-qrcode.jpg" width="360"/>
 
-<img alt="赞赏二维码" src="./imgs/coffee-qrcode.jpg" width="360"/>
+>该项目使用 [Create React App](https://github.com/facebook/create-react-app).

@@ -1,5 +1,4 @@
-# Juuust Figma Handoff
->This project is using [Create React App](https://github.com/facebook/create-react-app).
+# Figma Juuust Handoff
 
 **Plugin is available now! Click [here](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) to install.**
 
@@ -9,57 +8,61 @@
 
 <img alt="Overview" src="./imgs/overview.png"/>
 
-Figma Handoff is a design handoff tool that can help you generate design mark. It's useful for developers. Figma Handoff is a web app and uses [Figma API](https://www.figma.com/developers/api) to get your design data, but never saves you data in any server. 
+Juuust Handoff can help you generate offline file with design specs. It's useful for developers handoff. This project is the template you generate from, to generate handoff file You need to install [Juuust Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) first.
 
-Figma Handoff supports both offline and online mode. Please visit https://figmacn.com/handoff/.
+For more information please visit https://figmacn.com/handoff/.
 
-Click here to see a demo.
-
-<img alt="Demo entry" src="./imgs/demo-entry.png" width="360"/>
+Click [here](https://figmacn.com/handoff?demo=1) to see a demo.
 
 ## Usage
 
-Visit https://figmacn.com/handoff/ and fulfill your file link and [Access Token](https://www.figma.com/developers/api#access-tokens), then you'll get your frames in the file. **It will save your Access Token in the computer for convenience so DON'T use it in the device that are not trusted (like Net-bar).**
+### 1. Install plugin
+Visit [Juuust Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) in Figma and click install.
 
-<img alt="Entry" src="./imgs/entry.png" width="360"/>
+<img alt="Install plugin" src="./imgs/install.png"/>
 
-Select the frames you need and other options, click the button to start generate. **It only fetch frames directly in canvas so DON'T group them or they can't be recognized.**
+### 2. Run plugin in a file
+Open a file in Figma, right click and select plugin -> Juuust Handoff to run it.
+
+<img alt="Run plugin" src="./imgs/run.png"/>
+
+### 3. Select and export
+This plugin will recognize every top-level frame in the canvas and now you can select what you want.
+
+Checking `Export components list` option will generate a list of components in the left panel of design specs. You don't need to check it if you just put all components in a page like below.
+
+<img alt="Select frames" src="./imgs/select.png"/>
+
+### 4. Select exports
+The plugin will recognize all layers with export property. You need to select the images you want to export. The repeated images will be renamed and mark as a red symbol.
+
+Just hit the generating button when everything is done.
+
+<img alt="Select frames" src="./imgs/export.png"/>
+
+### 5. View design specs
+You will get a zip file after seconds. Upzip it and open index.html. Now you can view design specs. Send this zip to developers to handoff.
+
+<img alt="Select frames" src="./imgs/view.png"/>
 
 ## FAQ
-### Why it's too slow?
-It depends on your network and file size. To speed up you can:
-- Select less frames in the second step.
-- Uncheck `use high quality images` option.
-- Use VPN and use global mode.
 
-### What is Access Token？
-Simply say Access Token is a key to get your design data. You can generate an Access Token in the Figma setting page. **DON'T paste Access Token in somewhere that is not safe (like the computer note).**
+### How to deliver sliced images?
+All the elements with exports in the right panel will be exported as sliced images. Note that slice layers without export property will not be exported, and also instance will not inherit export form main component.
 
-<img alt="Access Token" src="./imgs/access-token.png" width="360"/>
-
-### Is my design data saved saved furtively?
-No. All the work will be done inthe browser after it fetches your data from Figma server. The images (Frame thumbnails, components thumbnails) will be processed in a server at [Heroku](https://heroku.com/) and the code is open sourced [here](https://github.com/leadream/cors-anywhere).
-
-### What does "export components list" mean?
-Figma Handoff will find out all the master components in this file and list them in left pannel if you check this option. This will make mark exporting longer because it'll fetch all components' images. We recommend you to place all master components in an independent page so you don't need to export components list.
-
-<img alt="master components in a page" src="./imgs/with-components-page.jpg"/>
-
-**✅ master components in a page**
-
-<img alt="master components in your design" src="./imgs/without-components-page.jpg"/>
-
-**❌ master components in your design**
-
-### How to delivery sliced images?
-I recommend designers slice images. All the elements with exports in the right panel will be ecported as sliced images. For example, the settings below will export `thumb-up-ios@3x.png` and `thumb-up.svg` (this element named `thumb-up`).
+For example, this settings below will export `thumb-up-ios@3x.png` and `thumb-up.svg` (this element named `thumb-up`).
 
 <img alt="Export settings" src="./imgs/exports.png" width="360"/>
 
-### Other advice?
-- Check `Clip Content` for frames directly in the canvas or it'll cause offset issue.
+### Why there are offsets in design specs?
+
+There are two reasons for offset:
+1. Some layers are flipped or transformed.
+2. Layers overflow from top-level frame but `clip content` not checked.
+
+I'm look into the first situation but you can check `clip content` for the second situation.
+
 <img alt="Clip Content" src="./imgs/clip-content.png" width="360"/>
-- You can use `+/-` to zoom in or out, alse click spacebar to drag canvas.
 
 ## Buy me a coffee
 Figma Handoff it's free and open sourced. You can donate me if you think it's useful. Thanks!
@@ -67,3 +70,5 @@ Figma Handoff it's free and open sourced. You can donate me if you think it's us
 PayPal: https://paypal.me/leadream
 
 <img alt="Donation qrcode" src="./imgs/coffee-qrcode.jpg" width="360"/>
+
+>This project is using [Create React App](https://github.com/facebook/create-react-app).
