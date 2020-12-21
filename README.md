@@ -1,3 +1,4 @@
+# Juuust Figma Handoff
 >This project is using [Create React App](https://github.com/facebook/create-react-app).
 
 **Plugin is available now! Click [here](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) to install.**
