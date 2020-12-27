@@ -386,10 +386,10 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
   }
 }
 
-export const formattedNumber = (number, { platform, unit, resolution, remBase }, withoutUnit=false) => {
+export const formattedNumber = (number, { platform, unit, resolution, remBase, numberFormat }, withoutUnit=false) => {
   const scaledNumber = number*resolutions[platform][resolution].value
   const finalNumber = unit===4 ? number/remBase : scaledNumber
-  return toFixed(finalNumber) + (withoutUnit ? '' : UNITS[unit])
+  return toFixed(finalNumber, numberFormat) + (withoutUnit ? '' : UNITS[unit])
 }
 
 export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, globalSettings) => {

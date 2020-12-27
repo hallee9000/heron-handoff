@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withTranslation } from 'react-i18next'
 import InputNumber from "rc-input-number"
-import { PLATFORMS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS } from 'utils/const'
+import { PLATFORMS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, NUMBER_FORMATS } from 'utils/const'
 import './settings.scss'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
@@ -56,25 +56,11 @@ class Settings extends Component {
       }
     }
   }
-  changeLanguage = e => {
-    const { onSettingsChange, i18n } = this.props
-    const { value } = e.target
-    this.setState({language: value})
-    i18n.changeLanguage(value)
-    onSettingsChange('language', value)
-  }
-  changeOtherSetting = e => {
-    const { onSettingsChange } = this.props
-    const { checked, name } = e.target
-    this.setState({[name]: checked})
-    onSettingsChange(name, checked)
-  }
   render () {
     const { t } = this.props
-    const { platform, resolution, unit, remBase, language, showAllExports, disableInspectExportInner } = this.state
+    const { platform, resolution, unit, remBase, numberFormat } = this.state
     const baseVisible = platform===0 && (unit===3 || unit===4)
-    return <div className="settings">
-      <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
+    return (
       <div className="form">
         <div className="form-item settings-title">{t('settings mark')}</div>
         <div className="form-item form-item-horizontal">
@@ -146,43 +132,25 @@ class Settings extends Component {
             />
           </div>
         }
-      </div>
-      <div className="form">
-        <div className="form-item settings-title">{t('language')}</div>
-        <div className="form-item">
-          <select name="language" className="input" value={language} onChange={this.changeLanguage}>
-            <option value="en">English</option>
-            <option value="zh">中文</option>
+        <div className="form-item form-item-horizontal">
+          <label htmlFor="rem-base" className="item-label">{t('number format')}</label>
+          <select
+            name="numberFormat"
+            className="input"
+            value={numberFormat}
+            onChange={this.handleChange}
+          >
+            {
+              NUMBER_FORMATS.map((numberFormat, index) =>
+                <option key={index} value={index}>
+                  {t(numberFormat)}
+                </option>
+              )
+            }
           </select>
         </div>
       </div>
-      <div className="form">
-        <div className="form-item settings-title">其他</div>
-        <div className="form-item form-item-checkbox">
-          <label>
-            <input
-              name="showAllExports"
-              type="checkbox"
-              checked={showAllExports}
-              onChange={this.changeOtherSetting}
-            />
-            {t('show all exports when selecting outer')}
-          </label>
-        </div>
-        <div className="form-item form-item-checkbox">
-          <label>
-            <input
-              name="disableInspectExportInner"
-              type="checkbox"
-              checked={disableInspectExportInner}
-              onChange={this.changeOtherSetting}
-            />
-            {t('exports inner selecting not allowed')}
-          </label>
-          <div className="help-block">{t('exports inner selecting not allowed tip')}</div>
-        </div>
-      </div>
-    </div>
+    )
   }
 }
 

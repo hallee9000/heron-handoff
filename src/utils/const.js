@@ -48,12 +48,12 @@ export const TEXTS = {
   'large-bold': <LargeBold size={16} className="text-thumbnail"/>
 }
 
-
 export const DEFAULT_SETTINGS = {
   platform: 0,
   resolution: 0,
   unit: 2,
   remBase: 14,
+  numberFormat: 0,
   colorFormat: 0,
   language: 'zh',
   showAllExports: true,
@@ -112,6 +112,8 @@ export const ANDROID_DENSITY = [
     value: 1/4
   }
 ]
+
+export const NUMBER_FORMATS = [ 'retain 2', 'rounded integer', 'floored integer', 'ceiled integer']
 
 export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx' ]
 

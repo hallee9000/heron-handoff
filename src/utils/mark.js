@@ -5,10 +5,29 @@ export const toPercentage = num => `${num*100}%`
 export const px2number = str => str.replace('px', '') - 0
 
 // 0.2637378 -> 0.26, 8 -> 8
-export const toFixed = num =>
-  typeof num==='number' ?
-  (Math.round(num)===num ? num : (num.toFixed(2) - 0)) :
-  ''
+export const toFixed = (num, numberFormat=0) => {
+  // 非数字
+  if (typeof num!=='number') {
+    return ''
+  }
+  // 整数原样返回
+  if (Math.round(num)===num) {
+    return num
+  }
+  // 非整数
+  switch(numberFormat) {
+    case 0:
+      return (num.toFixed(2) - 0)
+    case 1:
+      return Math.round(num)
+    case 2:
+      return Math.floor(num)
+    case 3:
+      return Math.ceil(num)
+    default:
+      return (num.toFixed(2) - 0)
+  }
+}
 
 // generate box data
 export const generateRects = (nodes, docRect, disableInspectExportInner) => {
