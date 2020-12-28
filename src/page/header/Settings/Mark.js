@@ -60,6 +60,7 @@ class Settings extends Component {
     const { t } = this.props
     const { platform, resolution, unit, remBase, numberFormat } = this.state
     const baseVisible = platform===0 && (unit===3 || unit===4)
+    const unitMaps = [[2, 3, 4, 5], [0, 2], [1, 2]] // [Web, iOS, Android]
     return (
       <div className="form">
         <div className="form-item settings-title">{t('settings mark')}</div>
@@ -99,23 +100,20 @@ class Settings extends Component {
         </div>
         <div className="form-item form-item-horizontal">
           <label htmlFor="unit" className="item-label">{t('unit')}</label>
-          {
-            platform===0 ?
-            <select
-              name="unit"
-              className="input"
-              placeholder={t('unit placeholder')}
-              value={unit}
-              onChange={this.handleChange}
-            >
-              {
-                UNITS.map((unit, index) =>
-                  index>1 && <option key={index} value={index}>{ unit }{ unit==='rpx' && t('miniprogram') }</option>
-                )
-              }
-            </select>  :
-            <input name="unit" className="input" readOnly value={UNITS[platform===1 ? 0 : 1]}/>
-          }
+          <select
+            name="unit"
+            className="input"
+            placeholder={t('unit placeholder')}
+            value={unit}
+            onChange={this.handleChange}
+          >
+            {
+              unitMaps[platform]
+              .map(index =>
+                <option key={index} value={index}>{ UNITS[index] }{ UNITS[index]==='rpx' && t('miniprogram') }</option>
+              )
+            }
+          </select>
         </div>
         {
           baseVisible &&

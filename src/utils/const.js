@@ -90,25 +90,25 @@ export const IOS_DENSITY = [
 
 export const ANDROID_DENSITY = [
   {
-    label: 'ldpi',
+    label: 'ldpi (4/3)',
     value: 4/3
   }, {
     label: 'mdpi',
     value: 1
   }, {
-    label: 'tvdpi',
+    label: 'tvdpi (3/4)',
     value: 3/4
   }, {
-    label: 'hdpi',
+    label: 'hdpi (2/3)',
     value: 2/3
   }, {
-    label: 'xhdpi',
+    label: 'xhdpi (1/2)',
     value: 1/2
   }, {
-    label: 'xxhdpi',
+    label: 'xxhdpi (1/3)',
     value: 1/3
   }, {
-    label: 'xxxhdpi',
+    label: 'xxxhdpi (1/4)',
     value: 1/4
   }
 ]
