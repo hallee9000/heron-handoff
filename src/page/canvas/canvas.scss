@@ -35,6 +35,10 @@
       &.selected{
         border: 1px solid $mark-selected;
         opacity: 1;
+        &.has-exports{
+          opacity: 1;
+          background-color: rgba($color: $mark-hovered, $alpha: 0.16);
+        }
       }
       &.component.selected{
         border-color: $component-color;
