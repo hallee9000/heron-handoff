@@ -57,7 +57,9 @@ export const DEFAULT_SETTINGS = {
   colorFormat: 0,
   language: 'zh',
   showAllExports: true,
-  disableInspectExportInner: false
+  disableInspectExportInner: false,
+  leftCollapse: false,
+  rightCollapse: false
 }
 
 export const PLATFORMS = [ 'Web', 'iOS', 'Android' ]

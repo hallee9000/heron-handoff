@@ -1,7 +1,8 @@
 .main-canvas{
   position: relative;
-  width: calc(100% - 160px);
+  flex: 1;
   overflow: hidden;
+  background-color: #111421;
   .canvas-help{
     position: absolute;
     bottom: 16px;

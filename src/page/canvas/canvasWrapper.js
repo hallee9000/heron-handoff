@@ -2,6 +2,7 @@ import React, { createRef }  from 'react'
 import Tooltip from 'rc-tooltip'
 import { withTranslation } from 'react-i18next'
 import { Plus, Minus, HelpCircle } from 'react-feather'
+import { withGlobalSettings } from 'contexts/SettingsContext'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
 
@@ -176,6 +177,7 @@ export default function (Canvas) {
       canvas.addEventListener('wheel', (e) => {
         e.preventDefault()
         const { initialWidth, initialHeight, posX, posY, scale, minScale } = this.state
+        const { leftCollapse } = this.props.globalSettings
         if (e.ctrlKey) {
           // startZoomimg
           this.calculateStaringOrigins(e)
@@ -183,7 +185,7 @@ export default function (Canvas) {
           const currentScale = Math.min(4, Math.max(minScale, scale - e.deltaY * 0.01))
           const currentWidth = currentScale*initialWidth
           const currentHeight = currentScale*initialHeight
-          const currentPosX = (e.clientX - 240) - currentWidth*originX
+          const currentPosX = (e.clientX - (leftCollapse ? 0 : 240)) - currentWidth*originX
           const currentPosY = (e.clientY - 40) - currentHeight*originY
           // zoom
           this.setState({
@@ -217,6 +219,12 @@ export default function (Canvas) {
       })
     }
     componentDidUpdate (prevProps) {
+      // resize when sider collapse changed
+      const { siderCollapseFlag } = this.props
+      const { siderCollapseFlag: prevSiderCollapseFlag } = prevProps
+      if (prevSiderCollapseFlag!==siderCollapseFlag) {
+        this.handleResize()
+      }
       if (prevProps.id !== this.props.id) {
         this.initializeCanvas(true)
       }
@@ -305,5 +313,5 @@ export default function (Canvas) {
       )
     }
   }
-  return withTranslation('canvas')(CanvasWrapper)
+  return withTranslation('canvas')(withGlobalSettings(CanvasWrapper))
 }

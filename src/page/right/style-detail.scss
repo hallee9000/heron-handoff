@@ -1,4 +1,4 @@
-.sider-detail{
+.style-detail{
   position: absolute;
   top: 0;
   left: 100%;
@@ -6,6 +6,7 @@
   height: 100%;
   overflow: auto;
   transition: transform 0.2s;
+  background: #222531;
   &-visible{
     transform: translateX(-100%);
   }
@@ -26,37 +27,39 @@
       flex: 1;
     }
   }
-  .detail-preview{
-    position: relative;
-    height: 120px;
-    >div{
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+  .detail-main {
+    height: calc(100% - 36px);
+    overflow: auto;
+    .detail-preview{
+      position: relative;
+      height: 120px;
+      >div{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .preview-bg{
+        background-color: #FFF;
+      }
     }
-    .preview-bg{
-      background-color: #FFF;
+    .detail-name{
+      padding: 12px;
+      >h5{
+        margin: 0;
+        margin-bottom: 6px;
+      }
+      .copiable-input + .copiable-input{
+        margin-bottom: 6px;
+      }
     }
-  }
-  .detail-name{
-    padding: 12px;
-    >h5{
-      margin: 0;
-      margin-bottom: 6px;
-    }
-    .copiable-input + .copiable-input{
-      margin-bottom: 6px;
-    }
-  }
-  .detail-properties{
-    padding: 12px;
-    >h5{
-      margin: 0;
-      margin-bottom: 8px;
-    }
-    .properties-items{
+    .detail-properties{
+      padding: 12px;
+      >h5{
+        margin: 0;
+        margin-bottom: 8px;
+      }
     }
   }
 }

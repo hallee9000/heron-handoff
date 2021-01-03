@@ -141,7 +141,9 @@ class Canvas extends React.Component {
     this.generateMark()
   }
   componentDidUpdate(prevProps) {
-    if (this.props.propsDissolved && (this.props.propsDissolved !== prevProps.propsDissolved)) {
+    const { elementData } = this.props
+    // reset mark when no element selected
+    if (!elementData && (elementData !== prevProps.elementData)) {
       this.resetMark()
     }
     const { id, useLocalImages, images } = this.props

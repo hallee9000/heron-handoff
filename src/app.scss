@@ -4,6 +4,9 @@ html, body, #root {
   width: 100%;
   height: 100%;
 }
+body {
+  overscroll-behavior-x: none;
+}
 .app-container{
   display: flex;
   flex-direction: column;

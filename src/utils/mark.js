@@ -83,18 +83,21 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
       if (hasExports) {
         exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
       }
-      rects.push({
-        index: index++,
-        ...bound,
-        maskedBound: maskedElementBound,
-        actualWidth: toFixed(nbb.width),
-        actualHeight: toFixed(nbb.height),
-        title: node.name,
-        isComponent,
-        componentIds,
-        clazz,
-        node
-      })
+      // ignore group
+      if (!isGroup) {
+        rects.push({
+          index: index++,
+          ...bound,
+          maskedBound: maskedElementBound,
+          actualWidth: toFixed(nbb.width),
+          actualHeight: toFixed(nbb.height),
+          title: node.name,
+          isComponent,
+          componentIds,
+          clazz,
+          node
+        })
+      }
       // if has children, not boolean and mask element, then continue
       if (
         (disableInspectExportInner && hasExports && !isDirectFrame) ||

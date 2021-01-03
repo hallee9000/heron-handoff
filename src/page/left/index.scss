@@ -1,0 +1,134 @@
+@import '~assets/tokens.scss';
+
+.main-left{
+  position: relative;
+  width: 240px;
+  transition: width 0.2s;
+  &.collapsed {
+    width: 0;
+  }
+  .left-toggle {
+    outline: none;
+    position: absolute;
+    right: -16px;
+    top: 18px;
+    width: 16px;
+    height: 32px;
+    padding: 0;
+    color: $white-65;
+    background-color:  #363945;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    vertical-align: middle;
+    transition: all 0.2s;
+    cursor: pointer;
+    z-index: 1000;
+    &:hover{
+      color: #FFF;
+      background: #222531;
+    }
+  }
+  .left-sider {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 240px;
+    height: 100%;
+    flex-shrink: 0;
+    background: #222531;
+    .left-sider-tabs{
+      display: flex;
+      justify-content: space-around;
+      padding: 0 12px;
+      border-bottom: 1px solid #383941;
+      li{
+        padding: 8px 0;
+        font-size: 12px;
+        opacity: 0.65;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        &:hover, &.selected{
+          opacity: 1;
+          border-color: #FFF;
+        }
+      }
+    }
+    .left-sider-list{
+      height: calc(100% - 34px);
+      &.without-tab{
+        height: 100%;
+      }
+      .list-filter{
+        position: relative;
+        padding: 12px;
+        >.filter-clear{
+          position: absolute;
+          right: 16px;
+          top: 18px;
+          color: $white-36;
+          transition: color 0.2s;
+          cursor: pointer;
+          &:hover{
+            color: $white-65;
+          }
+        }
+      }
+      .list-items{
+        height: calc(100% - 50px);
+        overflow: auto;
+        li{
+          display: flex;
+          align-items: center;
+          padding: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background 0.2s;
+          &:hover{
+            background: #141723;
+          }
+          &.list-item-hidden{
+            display: none;
+          }
+          &.selected{
+            background: #303446;
+          }
+          .item-thumbnail{
+            width: 46px;
+            height: 46px;
+            margin-right: 6px;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-color: #111421;
+          }
+        }
+        &.list-frames{
+          li{
+            span{
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .item-thumbnail{
+              flex: 0 0 46px;
+            }
+          }
+        }
+        &.list-components{
+          li{
+            span{
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .item-thumbnail{
+              flex: 0 0 46px;
+              border: 1px solid #8d77fc;
+            }
+          }
+        }
+      }
+    }
+  }
+}

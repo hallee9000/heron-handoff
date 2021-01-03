@@ -4,13 +4,13 @@ import { getStyleById } from 'utils/style'
 import StyleItem from './items/StyleItem'
 import './style-reference.scss'
 
-export default ({styleItems, styles, nodeStyles, type, onShowDetail}) => {
+export default ({styleItems, styles, nodeStyles, type, onShowStyleDetail}) => {
   const styleReference = getStyleById(styles, nodeStyles, type)
   const styleType = type==='stoke' ? 'FILL' : type.toUpperCase()
   return  styleReference &&
     <span
       className="title-reference"
-      onClick={() => onShowDetail && onShowDetail(styleType, nodeStyles[type])}
+      onClick={() => onShowStyleDetail && onShowStyleDetail(styleType, nodeStyles[type])}
     >
       <StyleItem
         styles={styleItems}

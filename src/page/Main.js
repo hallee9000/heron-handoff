@@ -1,7 +1,6 @@
 import React from 'react'
-import LeftSider from './left'
-import RightSider from './right'
-import RightProps from './right/RightProps'
+import LeftPanel from './left'
+import RightPanels from './right'
 import Canvas from './canvas'
 import './main.scss'
 
@@ -14,8 +13,10 @@ export default class Main extends React.Component {
       // selected layer index
       currentIndex: '',
       elementData: null,
+      hasElementSelected: false,
       currentComponentName: '',
-      propsDissolved: true,
+      siderCollapseFlag: false,
+      siderCollapsePlacement: '',
       exportIds: []
     }
   }
@@ -36,9 +37,9 @@ export default class Main extends React.Component {
   handleSelectElement = (elementData, currentComponentName, index) => {
     this.setState({
       elementData,
+      currentIndex: index,
       currentComponentName,
-      propsDissolved: false,
-      currentIndex: index
+      hasElementSelected: true
     })
   }
   handleGetExports = (exportIds) => {
@@ -46,28 +47,46 @@ export default class Main extends React.Component {
   }
   handleDeselect = () => {
     this.setState({
-      propsDissolved: true,
+      hasElementSelected: false
+    })
+  }
+  handlePropsPanelLeave = () => {
+    this.setState({
+      elementData: null,
       currentIndex: ''
     })
   }
-  handleDissolveEnd = () => {
-    this.setState({ elementData: null })
+  handleSiderTransitionEnd = placement => {
+    const { siderCollapseFlag } = this.state
+    this.setState({
+      siderCollapseFlag: !siderCollapseFlag
+    })
   }
   render () {
     const {
       documentName, components, styles, exportSettings, images,
       pagedFrames, isMock, includeComponents, isLocal
     } = this.props
-    const { id, canvasData, exportIds, elementData, currentIndex, currentComponentName, propsDissolved } = this.state
+    const {
+      id,
+      canvasData,
+      exportIds,
+      elementData,
+      currentIndex,
+      currentComponentName,
+      hasElementSelected,
+      siderCollapseFlag
+    } = this.state
     return (
       <div className="app-main">
-        <LeftSider
+        <LeftPanel
           useLocalImages={isMock || isLocal}
           images={images}
           pagedFrames={pagedFrames}
           components={components}
           includeComponents={includeComponents}
           onFrameOrComponentChange={this.handleSelectFrameOrComponent}
+          onSiderTransitionEnd={() => this.handleSiderTransitionEnd('left')}
         />
         {
           canvasData &&
@@ -78,35 +97,26 @@ export default class Main extends React.Component {
             includeComponents={includeComponents}
             components={components}
             id={id}
-            propsDissolved={propsDissolved}
+            elementData={elementData}
             onSelect={this.handleSelectElement}
             onDeselect={this.handleDeselect}
             onGetExports={this.handleGetExports}
+            siderCollapseFlag={siderCollapseFlag}
           />
         }
-        <div className="main-right">
-          <RightSider
-            useLocalImages={isMock || isLocal}
-            styles={styles}
-            exportSettings={exportSettings}
-            hasMask={!propsDissolved}
-            documentName={documentName}
-          />
-          {
-            elementData &&
-            <RightProps
-              useLocalImages={isMock || isLocal}
-              data={elementData}
-              currentComponentName={currentComponentName}
-              styles={styles}
-              exportSettings={exportSettings}
-              currentExportIds={exportIds}
-              currentIndex={currentIndex}
-              dissolved={propsDissolved}
-              onDissolveEnd={this.handleDissolveEnd}
-            />
-          }
-        </div>
+        <RightPanels
+          useLocalImages={isMock || isLocal}
+          styles={styles}
+          exportSettings={exportSettings}
+          documentName={documentName}
+          elementData={elementData}
+          currentComponentName={currentComponentName}
+          currentExportIds={exportIds}
+          currentIndex={currentIndex}
+          hasElementSelected={hasElementSelected}
+          onPropsPanelLeave={this.handlePropsPanelLeave}
+          onSiderTransitionEnd={() => this.handleSiderTransitionEnd('right')}
+        />
       </div>
     )
   }

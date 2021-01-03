@@ -1,35 +1,18 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import cn from 'classnames'
-import { withTranslation } from 'react-i18next'
-import { Droplet, Image, DownloadCloud } from 'react-feather'
-import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
-import { withGlobalSettings } from 'contexts/SettingsContext'
-import { getBufferData } from 'api'
-import { asyncForEach, isAllImageFill } from 'utils/helper'
-import { STYLE_TYPES } from 'utils/const'
+import SettingsContext, { withGlobalSettings } from 'contexts/SettingsContext'
+import { CollapseButton } from 'components/utilities'
+import RightStyles from './RightStyles'
+import RightProps from './RightProps'
 import StyleDetail from './StyleDetail'
-import { StyleItem, ExportItem } from './items'
-import './right-sider.scss'
+import './index.scss'
 
-class RightSider extends React.Component {
+class Right extends React.Component {
   state = {
-    maskVisible: false,
-    tabIndex: 0,
     detailVisible: false,
-    currentStyle: {},
-    percentage: 0,
-    progressText: ''
-  }
-  handleTransitionEnd = () => {
-    const { hasMask } = this.props
-    if (!hasMask) {
-      this.setState({maskVisible: false})
-    }
-  }
-  openDetail = style => {
-    this.setState({currentStyle: style})
-    this.toggleDetail()
+    styleDetail: {},
+    // the state of properties panel: leaved, entering, entered, leaving
+    propsPanelState: 'leaved'
   }
   toggleDetail = () => {
     const { detailVisible } = this.state
@@ -37,128 +20,100 @@ class RightSider extends React.Component {
       detailVisible: !detailVisible
     })
   }
-  changeTab = index => {
-    const { tabIndex } = this.state
-    if (tabIndex!==index) {
-      this.setState({tabIndex: index})
-    }
+  openStyleDetail = styleDetail => {
+    this.setState({ styleDetail })
+    this.toggleDetail()
   }
-  setProgress = (percentage, progressText) => {
-    this.setState({
-      percentage,
-      progressText
-    })
-  }
-  handleDownloadAll = async () => {
-    const { percentage } = this.state
-    if (percentage!==0) return
-    const { useLocalImages, exportSettings, documentName, t } = this.props
-    const zip = new JSZip()
-    const length = exportSettings.length
-    const folderName = `${documentName.replace(/\//g, '-')}-exports`
-    const exportsFolder = zip.folder(folderName)
-    this.setProgress(1, t('downloading images'))
-
-    await asyncForEach(exportSettings, async (exportSetting, index) => {
-      const imgName = exportSetting.rename
-      const imgUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : exportSetting.image
-      const imgData = await getBufferData(imgUrl)
-      this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))
-      exportsFolder.file(imgName, imgData, {base64: true})
-    })
-
-    this.setProgress(96, t('compressing files'))
-    zip.generateAsync({type: 'blob'})
-      .then(content => {
-        saveAs(content, `${folderName}.zip`)
-        this.setProgress(100, t('downloaded'))
-        const timer = setTimeout(() => {
-          this.setProgress(0, '')
-          clearTimeout(timer)
-        }, 800)
+  handlePropsPanelAnimationEnd = () => {
+    const { onPropsPanelLeave } = this.props
+    const { propsPanelState: currentState } = this.state
+    if (currentState==='entering' || currentState==='leaving') {
+      this.setState({
+        propsPanelState: currentState==='entering' ? 'entered' : 'leaved'
+      }, () => {
+        // tell canvas when props panel leaved
+        this.state.propsPanelState==='leaved' && onPropsPanelLeave()
       })
+    }
   }
   componentDidUpdate (prevProps) {
-    if (this.props.hasMask && !prevProps.hasMask) {
-      this.setState({maskVisible: true})
+    const { hasElementSelected } = this.props
+    // an element selected
+    if (!prevProps.hasElementSelected && hasElementSelected) {
+      this.setState({propsPanelState: 'starting'})
+      setTimeout(() => {
+        this.setState({propsPanelState: 'entering'})
+      }, 10)
+    }
+    // an element deselected
+    if (prevProps.hasElementSelected && !hasElementSelected) {
+      this.setState({propsPanelState: 'leaving'})
     }
   }
-  componentDidMount() {
-    // const { styles } = this.props
-    // this.openDetail(styles.EFFECT[4])
-  }
   render () {
-    const { useLocalImages, styles, exportSettings, hasMask, t } = this.props
-    const { maskVisible, tabIndex, detailVisible, currentStyle, percentage, progressText } = this.state
-    const { protocol } = window.location
+    const {
+      useLocalImages,
+      styles,
+      elementData,
+      exportSettings,
+      documentName,
+      currentComponentName,
+      currentExportIds,
+      currentIndex,
+      onSiderTransitionEnd,
+      globalSettings
+    } = this.props
+    const { rightCollapse } = globalSettings
+    const { propsPanelState, detailVisible, styleDetail } = this.state
     return (
-      <div className={cn('main-right-sider', {'has-mask': hasMask})}>
-        <div className={cn('sider-mask', {'mask-hidden': !maskVisible})} onTransitionEnd={this.handleTransitionEnd}/>
-        <div className={cn('sider-styles', {'sider-styles-visible': !detailVisible})}>
-          <ul className="styles-tabs">
-            <li className={cn({'selected': tabIndex===0})} onClick={() => this.changeTab(0)}><Droplet size={14}/>{t('tab style')}</li>
-            <li className={cn({'selected': tabIndex===1})} onClick={() => this.changeTab(1)}><Image size={14}/>{t('tab slice')}</li>
-          </ul>
-          <ul className={cn('styles-list', {'hide': tabIndex!==0})}>
-            {
-              Object.keys(styles).map(key =>
-                key!=='GRID' &&
-                <Fragment key={key}>
-                  <li className="list-title">{ t(STYLE_TYPES[key]) }</li>
-                  {
-                    styles[key] &&
-                    styles[key]
-                      .filter(style => key==='FILL' ? !isAllImageFill(style.items) : true)
-                      .map((style, index) =>
-                        <li key={index}>
-                          <StyleItem
-                            styles={style.items}
-                            styleName={style.name}
-                            styleType={style.styleType}
-                            onClick={() => this.openDetail(style)}
-                          />
-                        </li>
-                      )
-                  }
-                </Fragment>
-              )
-            }
-          </ul>
-          <ul className={cn('exports-list', {'hide': tabIndex!==1})}>
-            {
-              /^http/.test(protocol) && !!exportSettings.length &&
-              <li
-                className={cn('exports-list-download-all', {'is-downloading': percentage})}
-                onClick={this.handleDownloadAll}
-              >
-                <span>{ progressText || t('download all') }</span> { !percentage && <DownloadCloud size={14}/> }
-                <div className="download-all-progress" style={{width: `${percentage}%`}}/>
-              </li>
-            }
-            {
-              !!exportSettings.length ?
-              exportSettings
-                .map((exportSetting, index) =>
-                  <li key={index}>
-                    <ExportItem
-                      exportSetting={exportSetting}
-                      useLocalImages={useLocalImages}
-                      index={index}
-                    />
-                  </li>
-                ) :
-              <li className="list-empty">{t('no exports')}</li>
-            }
-          </ul>
+      <div
+        className={cn('main-right', { collapsed: rightCollapse })}
+        onTransitionEnd={onSiderTransitionEnd}
+      >
+        <SettingsContext.Consumer>
+          {({globalSettings, changeGlobalSettings}) => (
+            <CollapseButton
+              placement="right"
+              globalSettings={globalSettings}
+              changeGlobalSettings={changeGlobalSettings}
+            />
+          )}
+        </SettingsContext.Consumer>
+        <div className={cn('right-pannels', {'right-pannels-out': detailVisible})}>
+          <RightStyles
+            useLocalImages={useLocalImages}
+            styles={styles}
+            exportSettings={exportSettings}
+            documentName={documentName}
+            propsPanelState={propsPanelState}
+            onShowDetail={this.openStyleDetail}
+          />
+          {
+            elementData &&
+            <RightProps
+              useLocalImages={useLocalImages}
+              elementData={elementData}
+              currentComponentName={currentComponentName}
+              styles={styles}
+              exportSettings={exportSettings}
+              currentExportIds={currentExportIds}
+              currentIndex={currentIndex}
+              propsPanelState={propsPanelState}
+              onPropsPanelTransitionEnd={this.handlePropsPanelAnimationEnd}
+              detailVisible={detailVisible}
+              onCloseDetail={this.toggleDetail}
+              onShowDetail={this.openStyleDetail}
+            />
+          }
+          <StyleDetail
+            visible={detailVisible}
+            onBack={this.toggleDetail}
+            style={styleDetail}
+          />
         </div>
-        <StyleDetail
-          visible={detailVisible}
-          onBack={this.toggleDetail}
-          style={currentStyle}
-        />
       </div>
     )
   }
 }
 
-export default withTranslation('right')(withGlobalSettings(RightSider))
+export default withGlobalSettings(Right)

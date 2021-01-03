@@ -1,0 +1,104 @@
+@import '~assets/tokens.scss';
+
+.right-styles{
+  height: 100%;
+  background: #222531;
+  transition: transform 0.2s;
+  .styles-mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($color: #101321, $alpha: 0.8);
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.2s;
+    &.mask-starting{
+      display: block;
+    }
+    &.mask-entering,
+    &.mask-entered {
+      display: block;
+      opacity: 1;
+    }
+    &.mask-leaving{
+      display: block;
+      opacity: 0;
+    }
+    &.mask-leaved{
+      display: none;
+    }
+  }
+  .styles-tabs{
+    display: flex;
+    border-bottom: 1px solid #383941;
+    li{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      font-size: 12px;
+      opacity: 0.65;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      &:hover, &.selected{
+        opacity: 1;
+        border-color: #FFF;
+      }
+      svg{
+        margin-right: 5px;
+      }
+    }
+  }
+  .styles-list{
+    height: calc(100% - 36px);
+    overflow: auto;
+    padding-bottom: 12px;
+    .list-title{
+      padding: 6px 12px;
+      color: $white-85;
+    }
+  }
+  .styles-exports{
+    height: calc(100% - 36px);
+    overflow: auto;
+    .exports-download-all{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 6px 12px;
+      color: $white-65;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+      &.is-downloading{
+        justify-content: flex-start;
+      }
+      &:hover{
+        color: $white-85;
+        background: #141723;
+      }
+      svg{
+        margin-left: 6px;
+      }
+      span{
+        position: relative;
+        z-index: 1;
+      }
+      .download-all-progress{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background-color: #2f3446;
+        z-index: 0;
+      }
+    }
+    .exports-empty{
+      padding: 12px;
+      color: $white-36;
+    }
+  }
+}

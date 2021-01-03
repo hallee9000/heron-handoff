@@ -43,7 +43,7 @@ class FontPanel extends React.Component {
     }
   }
   render() {
-    const { node, styles, propsSider, onShowDetail, t } = this.props
+    const { node, styles, propsSider, onShowStyleDetail, t } = this.props
     const { textTable, selected, style } = this.state
     return (
       <div className="props-section props-text">
@@ -56,7 +56,7 @@ class FontPanel extends React.Component {
               styles={styles}
               nodeStyles={node.styles}
               type="text"
-              onShowDetail={onShowDetail}
+              onShowStyleDetail={onShowStyleDetail}
             />
           }
         </h5>

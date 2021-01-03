@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next'
 import { FileText, Settings, HelpCircle, MessageCircle, ChevronLeft } from 'react-feather'
 import SettingsContext from 'contexts/SettingsContext'
 import Overlay from './Overlay'
-import GlobalSettings from './Settings'
+import MarkSettings from './Settings'
 import Changelog from './Changelog'
 import './header.scss'
 
@@ -58,7 +58,7 @@ class Header extends React.Component {
               overlay={
                 <SettingsContext.Consumer>
                   {({globalSettings, changeGlobalSettings}) => (
-                    <GlobalSettings
+                    <MarkSettings
                       globalSettings={globalSettings}
                       onSettingsChange={changeGlobalSettings}
                     />
