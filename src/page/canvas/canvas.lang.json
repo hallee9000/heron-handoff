@@ -15,6 +15,6 @@
     "zoom step": "按 Cmd +/-（Windows 下 Ctrl +/-）放大缩小",
     "exports": "选中最外层查看所有切图",
     "deselect": "按 ESC 可取消选择元素",
-    "hide siders": "按 Cmd \\（Windows 下 Ctrl \\）隐藏左右侧边栏"
+    "hide siders": "按 Cmd \\（Windows 下 Ctrl \\）隐藏左右侧边"
   }
 }

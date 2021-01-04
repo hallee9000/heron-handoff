@@ -1,13 +1,14 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { getGlobalSettings } from 'utils/helper'
-import { entry, left, right, rightItems, utilities, canvas, header } from './lang'
+import { common, entry, left, right, rightItems, utilities, canvas, header } from './lang'
 
 const { language } = getGlobalSettings() || {}
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {
   en: {
+    'common': common.en,
     'entry': entry.en,
     'left': left.en,
     'right': right.en,
@@ -17,6 +18,7 @@ const resources = {
     'header': header.en
   },
   zh: {
+    'common': common.zh,
     'entry': entry.zh,
     'left': left.zh,
     'right': right.zh,

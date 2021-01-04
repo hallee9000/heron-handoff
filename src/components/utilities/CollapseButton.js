@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { withTranslation } from 'react-i18next'
 import { ChevronsLeft, ChevronsRight } from 'react-feather'
 import cn from 'classnames'
 import './collapse-button.scss'
 
-export default ({placement='left', globalSettings, changeGlobalSettings}) => {
+const CollapseButton = ({placement='left', globalSettings, changeGlobalSettings, t}) => {
   const isLeft = placement==='left'
   const {leftCollapse, rightCollapse} = globalSettings
   const [collapsed, setCollapsed] = useState(isLeft ? leftCollapse : rightCollapse)
   // changed by outside actions, like shortcuts
   useEffect(() => {
     setCollapsed(isLeft ? leftCollapse : rightCollapse)
-  }, [leftCollapse, rightCollapse])
+  }, [isLeft, leftCollapse, rightCollapse])
 
   const toggleCollapse = () => {
     setCollapsed(!collapsed)
@@ -20,6 +21,7 @@ export default ({placement='left', globalSettings, changeGlobalSettings}) => {
     <button
       className={cn('collapse-button', `collapse-button-${placement}`)}
       onClick={toggleCollapse}
+      title={t(`hide ${placement} sider`)}
     >
       {
         collapsed ?
@@ -29,3 +31,5 @@ export default ({placement='left', globalSettings, changeGlobalSettings}) => {
     </button>
   )
 }
+
+export default withTranslation('common')(CollapseButton)
