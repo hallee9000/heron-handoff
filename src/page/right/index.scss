@@ -8,6 +8,17 @@
   transition: width 0.2s;
   &.collapsed {
     width: 0;
+    .collapse-button {
+      display: block;
+    }
+  }
+  .collapse-button {
+    display: none;
+  }
+  &:hover {
+    .collapse-button {
+      display: block;
+    }
   }
   .right-pannels {
     position: relative;

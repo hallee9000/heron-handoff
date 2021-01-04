@@ -6,26 +6,16 @@
   transition: width 0.2s;
   &.collapsed {
     width: 0;
+    .collapse-button {
+      display: block;
+    }
   }
-  .left-toggle {
-    outline: none;
-    position: absolute;
-    right: -16px;
-    top: 18px;
-    width: 16px;
-    height: 32px;
-    padding: 0;
-    color: $white-65;
-    background-color:  #363945;
-    border: none;
-    border-radius: 0 6px 6px 0;
-    vertical-align: middle;
-    transition: all 0.2s;
-    cursor: pointer;
-    z-index: 1000;
-    &:hover{
-      color: #FFF;
-      background: #222531;
+  .collapse-button {
+    display: none;
+  }
+  &:hover {
+    .collapse-button {
+      display: block;
     }
   }
   .left-sider {

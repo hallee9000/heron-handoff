@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChevronsLeft, ChevronsRight } from 'react-feather'
 import cn from 'classnames'
 import './collapse-button.scss'
@@ -7,6 +7,11 @@ export default ({placement='left', globalSettings, changeGlobalSettings}) => {
   const isLeft = placement==='left'
   const {leftCollapse, rightCollapse} = globalSettings
   const [collapsed, setCollapsed] = useState(isLeft ? leftCollapse : rightCollapse)
+  // changed by outside actions, like shortcuts
+  useEffect(() => {
+    setCollapsed(isLeft ? leftCollapse : rightCollapse)
+  }, [leftCollapse, rightCollapse])
+
   const toggleCollapse = () => {
     setCollapsed(!collapsed)
     changeGlobalSettings(isLeft ? 'leftCollapse' : 'rightCollapse', !collapsed)

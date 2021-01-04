@@ -112,6 +112,27 @@ export default function (Canvas) {
       const { onDeselect } = this.props
       window.onkeydown = e => {
         const isCmdOrCtrl = navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey
+        console.log(e.keyCode)
+        // show percentage distance
+        if (e.altKey) {
+          console.log('Percentage')
+          if (isCmdOrCtrl) {
+            console.log('Percentage of root frame')
+          }
+        }
+        // when (Cmd/Ctrl \) pressed, siders collapsed
+        if ((e.keyCode === 220) && isCmdOrCtrl) {
+          e.preventDefault()
+          const { globalSettings, changeGlobalSettings } = this.props
+          const { leftCollapse, rightCollapse } = globalSettings
+          if (leftCollapse || rightCollapse) {
+            changeGlobalSettings('leftCollapse', false)
+            changeGlobalSettings('rightCollapse', false)
+          } else {
+            changeGlobalSettings('leftCollapse', true)
+            changeGlobalSettings('rightCollapse', true)
+          }
+        }
         // space key pressed
         if(e.keyCode === 32) {
           e.preventDefault()
@@ -290,6 +311,7 @@ export default function (Canvas) {
                   <li>3. {t('zoom step')}</li>
                   <li>4. {t('exports')}</li>
                   <li>5. {t('deselect')}</li>
+                  <li>6. {t('hide siders')}</li>
                 </ul>
               }
             >

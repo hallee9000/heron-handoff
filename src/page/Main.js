@@ -1,4 +1,5 @@
 import React from 'react'
+import SettingsContext from 'contexts/SettingsContext'
 import LeftPanel from './left'
 import RightPanels from './right'
 import Canvas from './canvas'
@@ -23,7 +24,6 @@ export default class Main extends React.Component {
   handleSelectFrameOrComponent = (currentId, pageId) => {
     const { data, components, onNamesChange } = this.props
     const { id } = this.state
-    // console.log('current:', id, 'new:', currentId)
     if (id===currentId) return
     const currentPage = pageId ? data.document.children.find(({id}) => id===pageId) : {}
     const canvasData = (pageId ? currentPage.children : components).find(({id}) => id===currentId)
@@ -56,7 +56,7 @@ export default class Main extends React.Component {
       currentIndex: ''
     })
   }
-  handleSiderTransitionEnd = placement => {
+  handleSiderTransitionEnd = () => {
     const { siderCollapseFlag } = this.state
     this.setState({
       siderCollapseFlag: !siderCollapseFlag
@@ -86,23 +86,29 @@ export default class Main extends React.Component {
           components={components}
           includeComponents={includeComponents}
           onFrameOrComponentChange={this.handleSelectFrameOrComponent}
-          onSiderTransitionEnd={() => this.handleSiderTransitionEnd('left')}
+          onSiderTransitionEnd={this.handleSiderTransitionEnd}
         />
         {
           canvasData &&
-          <Canvas
-            useLocalImages={isMock || isLocal}
-            images={images}
-            canvasData={canvasData}
-            includeComponents={includeComponents}
-            components={components}
-            id={id}
-            elementData={elementData}
-            onSelect={this.handleSelectElement}
-            onDeselect={this.handleDeselect}
-            onGetExports={this.handleGetExports}
-            siderCollapseFlag={siderCollapseFlag}
-          />
+          <SettingsContext.Consumer>
+            {({globalSettings, changeGlobalSettings}) => (
+              <Canvas
+                useLocalImages={isMock || isLocal}
+                images={images}
+                canvasData={canvasData}
+                includeComponents={includeComponents}
+                components={components}
+                id={id}
+                elementData={elementData}
+                onSelect={this.handleSelectElement}
+                onDeselect={this.handleDeselect}
+                onGetExports={this.handleGetExports}
+                siderCollapseFlag={siderCollapseFlag}
+                globalSettings={globalSettings}
+                changeGlobalSettings={changeGlobalSettings}
+              />
+            )}
+          </SettingsContext.Consumer>
         }
         <RightPanels
           useLocalImages={isMock || isLocal}
@@ -115,7 +121,7 @@ export default class Main extends React.Component {
           currentIndex={currentIndex}
           hasElementSelected={hasElementSelected}
           onPropsPanelLeave={this.handlePropsPanelLeave}
-          onSiderTransitionEnd={() => this.handleSiderTransitionEnd('right')}
+          onSiderTransitionEnd={this.handleSiderTransitionEnd}
         />
       </div>
     )

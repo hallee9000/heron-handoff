@@ -32,6 +32,7 @@ class LeftPanel extends React.Component {
         <SettingsContext.Consumer>
           {({globalSettings, changeGlobalSettings}) => (
             <CollapseButton
+              placement="left"
               globalSettings={globalSettings}
               changeGlobalSettings={changeGlobalSettings}
             />
