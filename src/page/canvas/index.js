@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { toPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
+import { toPercentage, toMarkPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
 import { formattedNumber } from 'utils/style'
 import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
@@ -23,7 +23,9 @@ class Canvas extends React.Component {
     hoveredIndex: null,
     markData: {},
     frameStyle: {},
-    isChanging: false
+    isChanging: false,
+    closedCommonParent: null,
+    closedCommonParentPath: ''
   }
   resetMark = () => {
     this.setState({
@@ -34,7 +36,9 @@ class Canvas extends React.Component {
       selectedIndex: null,
       hoveredRect: null,
       hoveredIndex: null,
-      markData: {}
+      markData: {},
+      closedCommonParent: null,
+      closedCommonParentPath: ''
     })
   }
   generateMark = () => {
@@ -86,6 +90,50 @@ class Canvas extends React.Component {
     }
     return false
   }
+  getClosedCommonParent = (hoveredRect, selectedRect) => {
+    const { rects } = this.state
+    if (!hoveredRect || !selectedRect) {
+      return { closedCommonParentPath: [], closedCommonParent: null }
+    }
+    if (hoveredRect.index===selectedRect.index) {
+      let closedCommonParent
+      if (hoveredRect.index===0) {
+        closedCommonParent = hoveredRect
+      } else {
+        const indexedPaths = [...hoveredRect.paths]
+        indexedPaths.pop()
+        closedCommonParent = rects.filter(({paths}) => paths.join('-')===indexedPaths.join('-'))[0]
+      }
+      return { closedCommonParentPath: closedCommonParent.paths, closedCommonParent }
+    }
+    const closedCommonParentPath = []
+    const hoveredPaths = hoveredRect.paths
+    const selectedPaths = selectedRect.paths
+    const sortedPaths = [hoveredPaths, selectedPaths].sort((a, b) => a.length - b.length)
+    const [shorterOne, longerOne] = sortedPaths
+    let i = 0
+    while (i < shorterOne.length) {
+      if (shorterOne[i]===longerOne[i]) {
+        closedCommonParentPath.push(shorterOne[i])
+      } else {
+        break
+      }
+      i++
+    }
+    const closedCommonParent = rects.filter(({paths}) => paths.join('-')===closedCommonParentPath.join('-'))[0]
+    return { closedCommonParentPath, closedCommonParent }
+  }
+  isPercentageHighlight = (rect, index) => {
+    const { percentageMode } = this.props
+    const { closedCommonParentPath } = this.state
+    if (percentageMode==='auto') {
+      return closedCommonParentPath===rect.paths.join('-')
+    }
+    if (percentageMode==='root') {
+      return index===0
+    }
+    return false
+  }
   selectMask = rect => {
     if (!rect.maskedBound) {
       return
@@ -110,6 +158,13 @@ class Canvas extends React.Component {
     const currentComponentName = rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
 
     onSelect && onSelect(rect, currentComponentName, index)
+
+    const { hoveredIndex, hoveredRect } = this.state
+    if (hoveredIndex===index) {
+      const { closedCommonParentPath, closedCommonParent } = this.getClosedCommonParent(hoveredRect, rect)
+      this.setState({ closedCommonParentPath: closedCommonParentPath.join('-'), closedCommonParent })
+    }
+
     this.setState({
       selectedRect: rect,
       selectedIndex: index,
@@ -121,17 +176,22 @@ class Canvas extends React.Component {
   onHover = (rect, index) => {
     const { pageRect, selectedRect } = this.state
     const markData = calculateMarkData(selectedRect, rect, pageRect)
+    const { closedCommonParentPath, closedCommonParent } = this.getClosedCommonParent(rect, selectedRect)
     this.setState({
       hoveredRect: rect,
       hoveredIndex: index,
-      markData
+      markData,
+      closedCommonParentPath: closedCommonParentPath.join('-'),
+      closedCommonParent
     })
   }
   onLeave = () => {
     this.setState({
       hoveredRect: null,
       hoveredIndex: null,
-      markData: {}
+      markData: {},
+      closedCommonParentPath: '',
+      closedCommonParent: null
     })
   }
   handleImgLoaded = () => {
@@ -159,11 +219,22 @@ class Canvas extends React.Component {
     }
   }
 	render () {
-    const { id, size, useLocalImages, images, globalSettings } = this.props
-    const { rects, frameStyle, selectedIndex, hoveredIndex,
-      componentIndex, currentComponentName, markData, isChanging } = this.state
+    const { id, size, useLocalImages, images, percentageMode, globalSettings } = this.props
+    const {
+      rects,
+      frameStyle,
+      selectedIndex,
+      hoveredIndex,
+      componentIndex,
+      currentComponentName,
+      markData,
+      isChanging,
+      pageRect,
+      closedCommonParent
+    } = this.state
     const { showAllExports } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
+    console.log(rects.map(({title, paths}) => ({title, paths: paths.join('-')})))
 		return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
@@ -187,7 +258,8 @@ class Canvas extends React.Component {
                     {
                       'selected': selectedIndex===index,
                       'hovered': hoveredIndex===index,
-                      'current-component': componentIndex===index
+                      'current-component': componentIndex===index,
+                      'percentage-highlight': this.isPercentageHighlight(rect, index)
                     }
                   )}
                   style={style}
@@ -199,15 +271,39 @@ class Canvas extends React.Component {
                     isComponent && componentIndex===index &&
                     <div className="layer-component">{ currentComponentName }</div>
                   }
-                  <div className="layer-sizing layer-width">{ formattedNumber(rect.actualWidth, globalSettings) }</div>
-                  <div className="layer-sizing layer-height">{ formattedNumber(rect.actualHeight, globalSettings) }</div>
+                  <div className="layer-sizing layer-width">
+                    {
+                      !!percentageMode && closedCommonParent ? (
+                        percentageMode==='auto' ?
+                        toMarkPercentage(rect.actualWidth/closedCommonParent.width) :
+                        toMarkPercentage(rect.actualWidth/pageRect.width)
+                      ) :
+                      formattedNumber(rect.actualWidth, globalSettings)
+                    }
+                  </div>
+                  <div className="layer-sizing layer-height">
+                    {
+                      !!percentageMode && closedCommonParent ? (
+                        percentageMode==='auto' ?
+                        toMarkPercentage(rect.actualHeight/closedCommonParent.height) :
+                        toMarkPercentage(rect.actualHeight/pageRect.height)
+                      ) :
+                      formattedNumber(rect.actualHeight, globalSettings)
+                    }
+                  </div>
                 </div>
               )
             })
           }
           {
             selectedIndex!==hoveredIndex &&
-            <Distance distanceData={markData.distanceData} globalSettings={globalSettings}/>
+            <Distance
+              distanceData={markData.distanceData}
+              globalSettings={globalSettings}
+              percentageMode={percentageMode}
+              pageRect={pageRect}
+              closedCommonParent={closedCommonParent}
+            />
           }
         </div>
         <img

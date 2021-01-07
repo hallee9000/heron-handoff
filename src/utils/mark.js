@@ -1,6 +1,9 @@
 // 0.32 -> 32%
 export const toPercentage = num => `${num*100}%`
 
+// avoid so many numbers after point
+export const toMarkPercentage = num => `${(num*100).toFixed(1)}%`
+
 // '100px' -> 100
 export const px2number = str => str.replace('px', '') - 0
 
@@ -34,10 +37,11 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
   let index = 0
   const rects = []
   let exportIds = []
-  const step = (nodes, parentId, parentComponentId) => {
+  const step = (nodes, parentId, parentComponentId, parentPaths) => {
     let maskParentId = ''
     let maskbb = {}
     let maskIndex
+    let innerIndex = 0
     // start looping
     nodes.map(node => {
       const nbb = node.absoluteBoundingBox
@@ -80,24 +84,25 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
       hasExports && clazz.push('has-exports')
       const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
       const componentIds = [parentComponentId, nativeId].filter(id => id).join()
+      const currentPaths = !parentPaths ? [innerIndex] : [...parentPaths, innerIndex]
       if (hasExports) {
         exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
       }
-      // ignore group
-      if (!isGroup) {
-        rects.push({
-          index: index++,
-          ...bound,
-          maskedBound: maskedElementBound,
-          actualWidth: toFixed(nbb.width),
-          actualHeight: toFixed(nbb.height),
-          title: node.name,
-          isComponent,
-          componentIds,
-          clazz,
-          node
-        })
-      }
+      rects.push({
+        // position in every level
+        paths: currentPaths,
+        index: index++,
+        ...bound,
+        maskedBound: maskedElementBound,
+        actualWidth: toFixed(nbb.width),
+        actualHeight: toFixed(nbb.height),
+        title: node.name,
+        isComponent,
+        componentIds,
+        clazz,
+        node
+      })
+      innerIndex++
       // if has children, not boolean and mask element, then continue
       if (
         (disableInspectExportInner && hasExports && !isDirectFrame) ||
@@ -108,7 +113,7 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
         // eslint-disable-next-line
         return
       }
-      step(node.children, node.id, componentIds)
+      step(node.children, node.id, componentIds, currentPaths)
       // eslint-disable-next-line
       return
     })

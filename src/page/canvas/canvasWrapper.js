@@ -3,7 +3,7 @@ import Tooltip from 'rc-tooltip'
 import { withTranslation } from 'react-i18next'
 import { Plus, Minus, HelpCircle } from 'react-feather'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { withGlobalContextConsumer } from 'contexts/GlobalContext'
+import { isCmdOrCtrl } from 'utils/helper'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
 
@@ -29,7 +29,12 @@ export default function (Canvas) {
         isDragging: false,
         spacePressed: false,
         originX: 0,
-        originY: 0
+        originY: 0,
+        // if show percentage in marks
+        // '': not show percentage
+        // 'auto': based on common parent
+        // 'root': based on root frame
+        percentageMode: ''
       }
     }
     initializeCanvas = (needResetSizeAndPosition) => {
@@ -110,20 +115,16 @@ export default function (Canvas) {
       }
     }
     handleKeyboard = () => {
-      // , globalData, changeGlobalData
       const { onDeselect } = this.props
       window.onkeydown = e => {
-        const isCmdOrCtrl = navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey
-        // show percentage distance
-        // if (e.altKey) {
-        //   changeGlobalData('percentageMode', true)
-        //   console.log(globalData)
-        //   if (isCmdOrCtrl) {
-        //     console.log('Percentage of root frame')
-        //   }
-        // }
+        // show percentage distances and spaces
+        if (isCmdOrCtrl(e)) {
+          this.setState({percentageMode: 'root'})
+        } else if (e.altKey) {
+          this.setState({percentageMode: 'auto'})
+        }
         // when (Cmd/Ctrl \) pressed, siders collapsed
-        if ((e.keyCode === 220) && isCmdOrCtrl) {
+        if ((e.keyCode === 220) && isCmdOrCtrl(e)) {
           e.preventDefault()
           const { globalSettings, changeGlobalSettings } = this.props
           const { leftCollapse, rightCollapse } = globalSettings
@@ -141,7 +142,7 @@ export default function (Canvas) {
           this.setState({ spacePressed: true })
         }
         // when (Cmd/Ctrl +) or (Cmd/Ctrl -) pressed
-        if ((e.keyCode === 187 || e.keyCode === 189) && isCmdOrCtrl) {
+        if ((e.keyCode === 187 || e.keyCode === 189) && isCmdOrCtrl(e)) {
           e.preventDefault()
           this.onStep(e.keyCode === 187 ? 1 : -1)
         }
@@ -151,6 +152,14 @@ export default function (Canvas) {
         }
       }
       window.onkeyup = e => {
+        // exit percentage mode
+        if (isCmdOrCtrl(e)) {
+          this.setState({percentageMode: 'root'})
+        } else if (e.altKey) {
+          this.setState({percentageMode: 'auto'})
+        } else {
+          this.setState({percentageMode: ''})
+        }
         // space key up
         if(e.keyCode === 32) {
           e.preventDefault()
@@ -267,7 +276,7 @@ export default function (Canvas) {
     render () {
       const { t } = this.props
       const { width, height } = this.getOffsetSize()
-      const { initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state
+      const { percentageMode, initialWidth, initialHeight, frameBound, posX, posY, scale, spacePressed, isDragging } = this.state
       const style = {
         top: posY,
         left: posX,
@@ -328,6 +337,7 @@ export default function (Canvas) {
           >
             <Canvas
               {...this.props}
+              percentageMode={percentageMode}
               spacePressed={spacePressed}
               frameBound={frameBound}
               size={{width: width*scale, height: height*scale}}
@@ -337,5 +347,5 @@ export default function (Canvas) {
       )
     }
   }
-  return withTranslation('canvas')(withGlobalSettings(withGlobalContextConsumer(CanvasWrapper)))
+  return withTranslation('canvas')(withGlobalSettings(CanvasWrapper))
 }

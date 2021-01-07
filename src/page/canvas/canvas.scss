@@ -39,6 +39,9 @@
           opacity: 1;
           background-color: rgba($color: $mark-hovered, $alpha: 0.16);
         }
+        &.group{
+          border-style: dotted;
+        }
       }
       &.component.selected{
         border-color: $component-color;
@@ -47,6 +50,11 @@
         .layer-sizing{
           display: block;
         }
+      }
+      &.percentage-highlight {
+        opacity: 1;
+        border-color: rgba($color: $primary-color, $alpha: 0.36);
+        background-color: rgba($color: $primary-color, $alpha: 0.06);
       }
       &-component{
         position: absolute;

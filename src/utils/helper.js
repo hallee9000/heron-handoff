@@ -9,6 +9,8 @@ export const throttle = (fn, delay) => {
  	}
 }
 
+export const isCmdOrCtrl = e => navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey
+
 export const getFileKey = pageUrl => {
   if (!/^https:\/\/(www.)?figma.com\/file\//.test(pageUrl)) {
     return ''
