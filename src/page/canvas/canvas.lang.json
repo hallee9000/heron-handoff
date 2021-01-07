@@ -3,18 +3,20 @@
     "tips": "Tips",
     "zoom": "Pinch or scroll to zoom",
     "drag": "Press space or middle key of mouse to drag",
-    "zoom step": "Press Cmd +/- (Ctrl +/- in Windows) to zoom",
-    "exports": "Select outer frame to show all exports",
+    "zoom step": "Press Cmd +/- (Ctrl +/-) to zoom",
+    "percentage": "Press Option (Alt) to see percenatge, press Cmd (Ctrl) to see percenatge based on root frame",
     "deselect": "Press ESC to deselect element",
-    "hide siders": "Press Cmd \\ (Ctrl \\ in Windows) to hide siders"
+    "hide siders": "Press Cmd \\ (Ctrl \\) to hide siders",
+    "exports": "Select outer frame to show all exports"
   },
   "zh": {
     "tips": "小提示",
     "zoom": "两指捏放或滚动鼠标滚轮进行缩放",
     "drag": "按住鼠标中键或空格键可以拖拽画布",
-    "zoom step": "按 Cmd +/-（Windows 下 Ctrl +/-）放大缩小",
-    "exports": "选中最外层查看所有切图",
+    "zoom step": "按 Cmd +/-（Ctrl +/-）放大缩小",
+    "percentage": "按 Option (Alt) 查看百分比，按 Cmd (Ctrl) 查看基于最外层 Frame 的百分比",
     "deselect": "按 ESC 可取消选择元素",
-    "hide siders": "按 Cmd \\（Windows 下 Ctrl \\）隐藏左右侧边"
+    "hide siders": "按 Cmd \\（Ctrl \\）隐藏左右侧边",
+    "exports": "选中最外层查看所有切图"
   }
 }

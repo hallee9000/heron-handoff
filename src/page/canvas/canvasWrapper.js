@@ -320,9 +320,10 @@ export default function (Canvas) {
                   <li>1. {t('zoom')}</li>
                   <li>2. {t('drag')}</li>
                   <li>3. {t('zoom step')}</li>
-                  <li>4. {t('exports')}</li>
+                  <li>4. {t('percentage')}</li>
                   <li>5. {t('deselect')}</li>
                   <li>6. {t('hide siders')}</li>
+                  <li>7. {t('exports')}</li>
                 </ul>
               }
             >
