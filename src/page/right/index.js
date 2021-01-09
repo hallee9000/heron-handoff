@@ -66,7 +66,6 @@ class Right extends React.Component {
     } = this.props
     const { rightCollapse } = globalSettings
     const { propsPanelState, detailVisible, styleDetail } = this.state
-    console.log(elementData)
     return (
       <div
         className={cn('main-right', { collapsed: rightCollapse })}

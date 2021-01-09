@@ -16,10 +16,17 @@ class FrameSelector extends React.Component {
   }
   handleCascaderChange = (value, selectedOptions) => {
     const { onSelected } = this.props
+    const { frameOptions } = this.state
+    let selectedValue = value, selectedText = selectedOptions.map(o => o.label).join(' / ')
+    if (value.length===1) {
+      const selectedFrame = frameOptions.find(o => o.value===value[0]).children[0]
+      selectedValue.push(selectedFrame.value)
+      selectedText = [selectedText, selectedFrame.label].join(' / ')
+    }
     this.setState({
       activeValue: null,
-      selectedValue: value,
-      selectedText: selectedOptions.map(o => o.label).join(' / ')
+      selectedValue,
+      selectedText
     })
     onSelected(...value)
   }
@@ -101,6 +108,7 @@ class FrameSelector extends React.Component {
       <Cascader
         options={frameOptions}
         onChange={this.handleCascaderChange}
+        changeOnSelect={true}
         expandIcon={<ChevronRight size={14}/>}
         value={selectedValue}
         popupVisible={popupVisible}
