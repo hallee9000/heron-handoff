@@ -48,6 +48,7 @@ class Right extends React.Component {
     // an element deselected
     if (prevProps.hasElementSelected && !hasElementSelected) {
       this.setState({propsPanelState: 'leaving'})
+      this.state.detailVisible && this.toggleDetail()
     }
   }
   render () {
@@ -65,6 +66,7 @@ class Right extends React.Component {
     } = this.props
     const { rightCollapse } = globalSettings
     const { propsPanelState, detailVisible, styleDetail } = this.state
+    console.log(elementData)
     return (
       <div
         className={cn('main-right', { collapsed: rightCollapse })}

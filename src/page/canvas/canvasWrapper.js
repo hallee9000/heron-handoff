@@ -6,7 +6,6 @@ import { withGlobalSettings } from 'contexts/SettingsContext'
 import { isCmdOrCtrl } from 'utils/helper'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
-
 import './canvas-wrapper.scss'
 
 export default function (Canvas) {
@@ -307,26 +306,26 @@ export default function (Canvas) {
             <span className="steper-button steper-plus" onClick={() => this.onStep(1)}><Plus size={14}/></span>
           </div>
           <Tooltip
-              trigger={['click']}
-              overlayClassName="canvas-tooltip"
-              overlayStyle={{width: 266}}
-              placement="top"
-              transitionName="rc-tooltip-slide"
-              overlay={
-                <ul className="tooltip-help">
-                  <li>
-                    <h3><span role="img" aria-label="Tips">💡</span> {t('tips')}</h3>
-                  </li>
-                  <li>1. {t('zoom')}</li>
-                  <li>2. {t('drag')}</li>
-                  <li>3. {t('zoom step')}</li>
-                  <li>4. {t('percentage')}</li>
-                  <li>5. {t('deselect')}</li>
-                  <li>6. {t('hide siders')}</li>
-                  <li>7. {t('exports')}</li>
-                </ul>
-              }
-            >
+            trigger={['click']}
+            overlayClassName="canvas-tooltip"
+            overlayStyle={{width: 266}}
+            placement="top"
+            transitionName="rc-tooltip-slide"
+            overlay={
+              <ul className="tooltip-help">
+                <li>
+                  <h3><span role="img" aria-label="Tips">💡</span> {t('tips')}</h3>
+                </li>
+                <li>1. {t('zoom')}</li>
+                <li>2. {t('drag')}</li>
+                <li>3. {t('zoom step')}</li>
+                <li>4. {t('percentage')}</li>
+                <li>5. {t('deselect')}</li>
+                <li>6. {t('hide siders')}</li>
+                <li>7. {t('exports')}</li>
+              </ul>
+            }
+          >
             <span className="canvas-help">
               <HelpCircle size={16}/>
             </span>

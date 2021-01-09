@@ -1,11 +1,11 @@
 import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { toPercentage, toMarkPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
-import { formattedNumber } from 'utils/style'
+import { toPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
 import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
+import Dimension from './Dimension'
 import Ruler from './Ruler'
 import './canvas.scss'
 
@@ -125,12 +125,12 @@ class Canvas extends React.Component {
   }
   isPercentageHighlight = (rect, index) => {
     const { percentageMode } = this.props
-    const { closedCommonParentPath } = this.state
+    const { closedCommonParentPath, selectedRect, hoveredRect } = this.state
     if (percentageMode==='auto') {
       return closedCommonParentPath===rect.paths.join('-')
     }
     if (percentageMode==='root') {
-      return index===0
+      return index===0 && selectedRect && hoveredRect
     }
     return false
   }
@@ -218,7 +218,7 @@ class Canvas extends React.Component {
       this.getBound()
     }
   }
-	render () {
+  render () {
     const { id, size, useLocalImages, images, percentageMode, globalSettings } = this.props
     const {
       rects,
@@ -234,8 +234,7 @@ class Canvas extends React.Component {
     } = this.state
     const { showAllExports } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
-    console.log(rects.map(({title, paths}) => ({title, paths: paths.join('-')})))
-		return (
+    return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
           {
@@ -271,26 +270,18 @@ class Canvas extends React.Component {
                     isComponent && componentIndex===index &&
                     <div className="layer-component">{ currentComponentName }</div>
                   }
-                  <div className="layer-sizing layer-width">
-                    {
-                      !!percentageMode && closedCommonParent ? (
-                        percentageMode==='auto' ?
-                        toMarkPercentage(rect.actualWidth/closedCommonParent.width) :
-                        toMarkPercentage(rect.actualWidth/pageRect.width)
-                      ) :
-                      formattedNumber(rect.actualWidth, globalSettings)
-                    }
-                  </div>
-                  <div className="layer-sizing layer-height">
-                    {
-                      !!percentageMode && closedCommonParent ? (
-                        percentageMode==='auto' ?
-                        toMarkPercentage(rect.actualHeight/closedCommonParent.height) :
-                        toMarkPercentage(rect.actualHeight/pageRect.height)
-                      ) :
-                      formattedNumber(rect.actualHeight, globalSettings)
-                    }
-                  </div>
+                  {
+                    ['width', 'height'].map(whichSide =>
+                      <Dimension
+                        key={whichSide}
+                        whichSide={whichSide}
+                        actualSize={whichSide==='width' ? rect.actualWidth : rect.actualHeight}
+                        percentageMode={percentageMode}
+                        closedCommonParent={closedCommonParent}
+                        pageRect={pageRect}
+                      />
+                    )
+                  }
                 </div>
               )
             })
@@ -318,7 +309,7 @@ class Canvas extends React.Component {
         />
       </div>
     )
-	}
+  }
 }
 
 export default canvasWrapper(withGlobalSettings(Canvas))
