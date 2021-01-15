@@ -5,10 +5,10 @@ import { saveAs } from 'file-saver'
 import { getBlobData } from 'api'
 import './export-item.scss'
 
-export default ({exportSetting, useLocalImages, index}) => {
+export default ({exportSetting, useLocalImages}) => {
   const [ isDownloading, setDownloading ] = useState(false)
   const { image } = exportSetting
-  const name = exportSetting.rename
+  const name = exportSetting.fileName
   const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
   const { protocol } = window.location
   const isHttpServer = /^http/.test(protocol)
