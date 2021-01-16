@@ -14,18 +14,18 @@ class App extends React.Component {
     super(props)
     let data = {}, components = [], styles = {}, exportSettings = [], pagedFrames = {},
       isLocal = false, includeComponents = false, entryVisible
-    const { FILE_DATA, PAGED_FRAMES, INCLUDE_COMPONENTS } = window
+    const { FILE_DATA, PAGED_FRAMES, SETTINGS } = window
     const frames = getFlattedFrames(PAGED_FRAMES)
     // local data (offline mode)
     if (FILE_DATA) {
       data = FILE_DATA
-      const parsedData = walkFile(data, frames, INCLUDE_COMPONENTS)
+      const parsedData = walkFile(data, frames)
       components = parsedData.components
       styles = parsedData.styles
       exportSettings = parsedData.exportSettings
       pagedFrames = PAGED_FRAMES
       isLocal = true
-      includeComponents = INCLUDE_COMPONENTS
+      includeComponents = SETTINGS.includeComponents
       entryVisible = false
     } else {
       entryVisible = true
