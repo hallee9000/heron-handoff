@@ -42,17 +42,18 @@ class App extends React.Component {
       images: {},
       names: {},
       pagedFrames,
-      globalSettings: this.initializeGlobalSettings(),
+      globalSettings: this.initializeGlobalSettings(SETTINGS),
       backFromDemo: false
     }
   }
-  initializeGlobalSettings = () => {
+  initializeGlobalSettings = (SETTINGS) => {
     const localSettings = getGlobalSettings()
     if (localSettings) {
       return {...DEFAULT_SETTINGS, ...localSettings}
     } else {
-      setGlobalSettings(DEFAULT_SETTINGS)
-      return DEFAULT_SETTINGS
+      const globalSettings = {...DEFAULT_SETTINGS, ...SETTINGS}
+      setGlobalSettings(globalSettings)
+      return globalSettings
     }
   }
   setSettings = (name, value) => {

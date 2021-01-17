@@ -258,7 +258,7 @@ export const trimFilePath = filePath =>
   filePath.replace(/\//g, '-').replace(/:/g, '-')
 
 export const getGlobalSettings = () =>
-  JSON.parse(window.localStorage.getItem('globalSettings'))
+  JSON.parse(window.localStorage.getItem('heronHandoff.settings'))
 
 export const setGlobalSettings = (...args) => {
   let globalSettings
@@ -266,12 +266,12 @@ export const setGlobalSettings = (...args) => {
   if (argsLength===1) {
     const [ settings ] = args
     globalSettings = JSON.stringify(settings)
-    window.localStorage.setItem('globalSettings', globalSettings)
+    window.localStorage.setItem('heronHandoff.settings', globalSettings)
   } else {
     const [ name, value, callback ] = args
     const localSettings = getGlobalSettings()
     globalSettings = {...localSettings, [name]: value}
-    window.localStorage.setItem('globalSettings', JSON.stringify(globalSettings))
+    window.localStorage.setItem('heronHandoff.settings', JSON.stringify(globalSettings))
     callback && callback(globalSettings)
   }
 }

@@ -40,7 +40,7 @@ class LeftPanel extends React.Component {
         </SettingsContext.Consumer>
         <div className="left-sider">
           {
-            includeComponents &&
+            !!includeComponents &&
             <ul className="left-sider-tabs">
               <li
                 className={cn({selected: tabIndex===0})}
@@ -61,7 +61,7 @@ class LeftPanel extends React.Component {
               onFrameChange={this.onItemChange}
             />
             {
-              includeComponents &&
+              !!includeComponents &&
               <Components
                 visible={tabIndex===1}
                 components={components}

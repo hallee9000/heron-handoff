@@ -49,6 +49,7 @@ export const TEXTS = {
 }
 
 export const DEFAULT_SETTINGS = {
+  convention: 1,
   platform: 0,
   resolution: 0,
   unit: 2,
