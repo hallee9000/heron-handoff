@@ -23,21 +23,21 @@ jobs:
         build_dir:  build
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-    # - name: Deploy static to Tencent COS
-    #   uses: TencentCloud/cos-action@v1
-    #   with:
-    #     secret_id: ${{ secrets.SECRET_ID }}
-    #     secret_key: ${{ secrets.SECRET_KEY }}
-    #     cos_bucket: ${{ secrets.COS_BUCKET }}
-    #     cos_region: ${{ secrets.COS_REGION }}
-    #     local_path: build
-    #     remote_path: /
-    #     clean: true
-    # - name: Deploy static to Tencent CloudBase
-    #   id: deployStatic
-    #   uses: TencentCloudBase/cloudbase-action@v1.1.1
-    #   with:
-    #     secretId: ${{ secrets.SECRET_ID }}
-    #     secretKey: ${{ secrets.SECRET_KEY }}
-    #     envId: ${{ secrets.ENV_ID }}
-    #     staticSrcPath: build
+    - name: Deploy static to Tencent COS
+      uses: TencentCloud/cos-action@v1
+      with:
+        secret_id: ${{ secrets.SECRET_ID }}
+        secret_key: ${{ secrets.SECRET_KEY }}
+        cos_bucket: ${{ secrets.COS_BUCKET }}
+        cos_region: ${{ secrets.COS_REGION }}
+        local_path: build
+        remote_path: /
+        clean: true
+    - name: Deploy static to Tencent CloudBase
+      id: deployStatic
+      uses: TencentCloudBase/cloudbase-action@v1.1.1
+      with:
+        secretId: ${{ secrets.SECRET_ID }}
+        secretKey: ${{ secrets.SECRET_KEY }}
+        envId: ${{ secrets.ENV_ID }}
+        staticSrcPath: build
