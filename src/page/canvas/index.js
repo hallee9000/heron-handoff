@@ -22,7 +22,6 @@ class Canvas extends React.Component {
     hoveredRect: null,
     hoveredIndex: null,
     markData: {},
-    frameStyle: {},
     isChanging: false,
     closedCommonParent: null,
     closedCommonParentPath: ''
@@ -59,7 +58,7 @@ class Canvas extends React.Component {
       height: toPercentage(pageRect.height/(pageRect.height+top+bottom)),
       width: toPercentage(pageRect.width/(pageRect.width+left+right))
     }
-    this.setState({ frameStyle })
+    return frameStyle
   }
   getLayerBoundStyle = rect => {
     const { pageRect } = this.state
@@ -214,15 +213,11 @@ class Canvas extends React.Component {
       this.resetMark()
       this.generateMark()
     }
-    if (this.props.frameBound.top !== prevProps.frameBound.top) {
-      this.getBound()
-    }
   }
   render () {
     const { id, size, useLocalImages, images, percentageMode, globalSettings } = this.props
     const {
       rects,
-      frameStyle,
       selectedIndex,
       hoveredIndex,
       componentIndex,
@@ -234,6 +229,7 @@ class Canvas extends React.Component {
     } = this.state
     const { showAllExports } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
+    const frameStyle = this.getBound()
     return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>

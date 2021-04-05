@@ -22,17 +22,8 @@ class Header extends React.Component {
           <ChevronLeft size={24}/>
         </span>
         <a
-          className={cn('header-figmacn-logo', {'hide': logoHidden})}
-          href="https://figmacn.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src={`${process.env.PUBLIC_URL}/figmacn-logo.svg`} alt="figmacn logo" ref={this.figmacnLogo}/>
-        </a>
-        <div className={cn('header-divider', {'hide': logoHidden})}/>
-        <a
           className={cn('header-logo', {'hide': logoHidden && !isLocal})}
-          href="https://figmacn.com/handoff"
+          href="https://heron.design"
           target="_blank"
           rel="noopener noreferrer"
         >
