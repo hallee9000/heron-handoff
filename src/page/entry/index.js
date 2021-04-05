@@ -65,7 +65,7 @@ class Entry extends React.Component {
             <div className="main-buttons">
               <a
                 className="btn btn-lg btn-primary btn-round"
-                href="https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff"
+                href="https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => reportEvent('view_plugin', 'handoff_entry')}

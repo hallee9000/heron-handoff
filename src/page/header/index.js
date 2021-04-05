@@ -40,7 +40,7 @@ class Header extends React.Component {
             }
             {frameName}
           </span> :
-          <span className="header-pagename">Juuust Handoff</span>
+          <span className="header-pagename">Heron Handoff</span>
         }
         <div className="header-operates">
           {

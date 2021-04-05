@@ -1,12 +1,12 @@
-# Figma Juuust Handoff
+# Figma Heron Handoff
 
-**我正在紧锣密鼓地开发在线版 Juuust Handoff，点[这里](https://heron.design)订阅最新消息**
+**我正在紧锣密鼓地开发在线版 Heron Handoff，点[这里](https://heron.design)订阅最新消息**
 
 ## 简介
 
 <img alt="Overview" src="./imgs/overview.png"/>
 
-Juuust Handoff 可以帮助你生成带有设计标注的文件，方便交付给开发。这个项目是设计标注模板，你需要先去[这里](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff)安装插件。
+Heron Handoff 可以帮助你生成带有设计标注的文件，方便交付给开发。这个项目是设计标注模板，你需要先去[这里](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff)安装插件。
 
 更多信息你可以查看 https://figmacn.com/handoff/.
 
@@ -15,12 +15,12 @@ Juuust Handoff 可以帮助你生成带有设计标注的文件，方便交付�
 ## 使用方式
 
 ### 1. 安装插件
-前往 [Juuust Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) 页面或搜索 juuust handoff 进入插件页面点击安装。
+前往 [Heron Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) 页面或搜索 Heron handoff 进入插件页面点击安装。
 
 <img alt="Install plugin" src="./imgs/install.png"/>
 
 ### 2. 在文件内打开插件
-打开一个设计文件，在画布中右击，依次选取 plugin -> Juuust Handoff，即可启动插件。
+打开一个设计文件，在画布中右击，依次选取 plugin -> Heron Handoff，即可启动插件。
 
 <img alt="Run plugin" src="./imgs/run.png"/>
 
@@ -63,7 +63,7 @@ Juuust Handoff 可以帮助你生成带有设计标注的文件，方便交付�
 <img alt="Clip Content" src="./imgs/clip-content.png" width="360"/>
 
 ## 赞助捐赠
-Figma Juuust Handoff 代码全部开源，如果对你有帮助，可以扫码支持我一下。
+Figma Heron Handoff 代码全部开源，如果对你有帮助，可以扫码支持我一下。
 
 <img alt="Donation qrcode" src="./imgs/coffee-qrcode.jpg" width="360"/>
 

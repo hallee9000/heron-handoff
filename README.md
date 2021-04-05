@@ -1,6 +1,6 @@
-# Figma Juuust Handoff
+# Figma Heron Handoff
 
-**Plugin is available now! Click [here](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) to install.**
+**Plugin is available now! Click [here](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) to install.**
 
 [中文说明](./README-CN.md)
 
@@ -8,7 +8,7 @@
 
 <img alt="Overview" src="./imgs/overview.png"/>
 
-Juuust Handoff can help you generate offline file with design specs. It's useful for developers handoff. This project is the template you generate from, to generate handoff file You need to install [Juuust Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) first.
+Heron Handoff can help you generate offline file with design specs. It's useful for developers handoff. This project is the template you generate from, to generate handoff file You need to install [Heron Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) first.
 
 For more information please visit https://figmacn.com/handoff/.
 
@@ -17,12 +17,12 @@ Click [here](https://figmacn.com/handoff?demo=1) to see a demo.
 ## Usage
 
 ### 1. Install plugin
-Visit [Juuust Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Juuust-Handoff) in Figma and click install.
+Visit [Heron Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) in Figma and click install.
 
 <img alt="Install plugin" src="./imgs/install.png"/>
 
 ### 2. Run plugin in a file
-Open a file in Figma, right click and select plugin -> Juuust Handoff to run it.
+Open a file in Figma, right click and select plugin -> Heron Handoff to run it.
 
 <img alt="Run plugin" src="./imgs/run.png"/>
 
