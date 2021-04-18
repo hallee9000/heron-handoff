@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { toPercentage } from 'utils/mark'
 import './ruler.scss'
 
-export default ({rulerData}) =>
+const Ruler = ({rulerData}) =>
   (rulerData && rulerData.length) ?
   <Fragment>
     {
@@ -20,3 +20,5 @@ export default ({rulerData}) =>
     }
   </Fragment> :
   null
+
+export default Ruler

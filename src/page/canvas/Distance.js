@@ -3,7 +3,7 @@ import { toPercentage, toMarkPercentage } from 'utils/mark'
 import { formattedNumber } from 'utils/style'
 import './distance.scss'
 
-export default ({
+const Distance = ({
   distanceData,
   globalSettings,
   percentageMode,
@@ -39,3 +39,5 @@ export default ({
     }
   </Fragment> :
   null
+
+export default Distance

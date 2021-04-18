@@ -5,7 +5,7 @@ import { EFFECTS, TEXTS } from 'utils/const'
 import FillPreview from './Preview'
 import './style-item.scss'
 
-export default ({styles, styleName, styleType, isHoverable=true, ...props}) => {
+const StyleItem = ({styles, styleName, styleType, isHoverable=true, ...props}) => {
   switch (styleType) {
     case 'FILL':
       const { styles: fillItems } = getFillsStyle(styles)
@@ -41,3 +41,5 @@ export default ({styles, styleName, styleType, isHoverable=true, ...props}) => {
       return ''
   }
 }
+
+export default StyleItem

@@ -8,7 +8,7 @@ import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
 import './canvas-wrapper.scss'
 
-export default function (Canvas) {
+function canvasWrapper (Canvas) {
   class CanvasWrapper extends React.Component {
     constructor (props) {
       super(props)
@@ -349,3 +349,5 @@ export default function (Canvas) {
   }
   return withTranslation('canvas')(withGlobalSettings(CanvasWrapper))
 }
+
+export default canvasWrapper

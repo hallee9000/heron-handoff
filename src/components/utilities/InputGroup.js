@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'classnames'
 import './input-group.scss'
 
-export default ({ children, className, isQuiet=false, onWrapperClick }) => {
+const InputGroup = ({ children, className, isQuiet=false, onWrapperClick }) => {
   return <span
     className={
       cn(
@@ -16,3 +16,5 @@ export default ({ children, className, isQuiet=false, onWrapperClick }) => {
     { children }
   </span>
 }
+
+export default InputGroup

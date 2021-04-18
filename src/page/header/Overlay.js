@@ -1,7 +1,7 @@
 import React from 'react'
 import Tooltip from 'rc-tooltip'
 
-export default ({ children, ...props }) =>
+const Overlay = ({ children, ...props }) =>
   <Tooltip
     trigger={['click']}
     overlayStyle={{width: 320}}
@@ -14,3 +14,5 @@ export default ({ children, ...props }) =>
   >
     { children }
   </Tooltip>
+
+export default Overlay

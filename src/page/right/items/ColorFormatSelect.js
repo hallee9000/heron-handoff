@@ -20,7 +20,7 @@ const ColorFormatSelect = ({ globalSettings, onColorFormatChange }) => {
   </select>
 }
 
-export default () =>
+const ColorSelector = () =>
   <SettingsContext.Consumer>
     {({globalSettings, changeGlobalSettings}) => (
       <ColorFormatSelect
@@ -29,3 +29,5 @@ export default () =>
       />
     )}
   </SettingsContext.Consumer>
+
+export default ColorSelector

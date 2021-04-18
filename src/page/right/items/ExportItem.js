@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver'
 import { getBlobData } from 'api'
 import './export-item.scss'
 
-export default ({exportSetting, useLocalImages}) => {
+const ExportItem = ({exportSetting, useLocalImages}) => {
   const [ isDownloading, setDownloading ] = useState(false)
   const { image } = exportSetting
   const name = exportSetting.fileName
@@ -42,3 +42,5 @@ export default ({exportSetting, useLocalImages}) => {
       }
     </a>
 }
+
+export default ExportItem

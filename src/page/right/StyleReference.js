@@ -4,7 +4,7 @@ import { getStyleById } from 'utils/style'
 import StyleItem from './items/StyleItem'
 import './style-reference.scss'
 
-export default ({styleItems, styles, nodeStyles, type, onShowStyleDetail}) => {
+const StyleReference = ({styleItems, styles, nodeStyles, type, onShowStyleDetail}) => {
   const styleReference = getStyleById(styles, nodeStyles, type)
   const styleType = type==='stoke' ? 'FILL' : type.toUpperCase()
   return  styleReference &&
@@ -21,3 +21,5 @@ export default ({styleItems, styles, nodeStyles, type, onShowStyleDetail}) => {
       <ArrowRight size={14}/>
     </span>
 }
+
+export default StyleReference

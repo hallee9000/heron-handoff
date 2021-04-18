@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default () =>
+const ProductHunt = () =>
   <div className="entry-producthunt">
     <a
       href="https://www.producthunt.com/posts/figma-handoff?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-figma-handoff"
@@ -13,3 +13,5 @@ export default () =>
       />
     </a>
   </div>
+
+export default ProductHunt
