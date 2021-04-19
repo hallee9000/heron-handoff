@@ -15,6 +15,9 @@ public/indexLocal.html
 /build
 /dist
 
+# stats
+stats.html
+
 # misc
 .DS_Store
 .env

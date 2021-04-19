@@ -7,42 +7,65 @@ import resolve from '@rollup/plugin-node-resolve';
 import image from '@rollup/plugin-image'
 import visualizer from 'rollup-plugin-visualizer';
 import alias from '@rollup/plugin-alias';
-import json from '@rollup/plugin-json'
+import json from '@rollup/plugin-json';
+import copy from 'rollup-plugin-copy';
+import { uglify } from 'rollup-plugin-uglify';
+import replace from '@rollup/plugin-replace';
 import pkg from './package.json';
 
+process.env.NODE_ENV = 'production';
+
+const resolveFile = function(filePath) {
+  return path.join(__dirname, filePath)
+}
+
 export default {
-  input: './src/Canvas.js',
+  input: './src/lib/index.js',
   output: [
     {
+      sourcemap: 'inline',
       file: pkg.main,
-      format: 'cjs'
-    },
-    {
-      file: pkg.module,
-      format: 'esm'
+      format: 'cjs',
+      exports: 'named'
     }
   ],
+  external: ['react', 'react-dom'],
   plugins: [
     alias({
       entries: {
-        '~assets/tokens.scss': path.resolve(__dirname, 'src/assets/tokens.scss'),
-        assets: path.resolve(__dirname, 'src/assets'),
-        components: path.resolve(__dirname, 'src/components'),
-        utils: path.resolve(__dirname, 'src/utils'),
-        contexts: path.resolve(__dirname, 'src/contexts'),
-        page: path.resolve(__dirname, 'src/page'),
-        api: path.resolve(__dirname, 'src/api')
+        '~assets/tokens.scss': resolveFile('src/assets/tokens.scss'),
+        assets: resolveFile('src/assets'),
+        components: resolveFile('src/components'),
+        utils: resolveFile('src/utils'),
+        contexts: resolveFile('src/contexts'),
+        page: resolveFile('src/page'),
+        api: resolveFile('src/api')
       }
     }),
     external(),
     json(),
+    copy({
+      targets: [
+        { src: resolveFile('src/lib/index.d.ts'), dest: resolveFile('dist') }
+      ]
+    }),
     postcss(),
     babel({
       exclude: 'node_modules/**'
     }),
-    resolve(),
+    resolve({
+      preferBuiltins: true,
+      mainFields: ['browser']
+    }),
     commonjs(),
     image(),
+    uglify(),
+    replace({
+      preventAssignment: true,
+      values: {
+        'process.env.NODE_ENV': JSON.stringify( 'production' )
+      }
+    }),
     visualizer()
   ]
 };

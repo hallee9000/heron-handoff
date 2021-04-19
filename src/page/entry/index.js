@@ -12,6 +12,8 @@ import { walkFile, getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
 import { reportEvent } from 'utils/gtag'
 import './entry.scss'
 
+import qrcode from './qrcode.jpg'
+
 class Entry extends React.Component {
   state = {
     coffeeVisible: false,
@@ -83,7 +85,7 @@ class Entry extends React.Component {
           </div>
           <div className={cn('entry-coffee', {hide: !coffeeVisible})}>
             <X size={36} className="coffee-close" onClick={this.toggleCoffee}/>
-            <img src={require('./qrcode.jpg')} alt="coffee qrcode"/>
+            <img src={qrcode} alt="coffee qrcode"/>
             <div className="coffee-or">Or</div>
             <a href="https://paypal.me/leadream" target="_blank" rel="noopener noreferrer"><DollarSign size={12}/> {t('paypal')}</a>
           </div>

@@ -11,6 +11,8 @@ import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
 import './font-panel.scss'
 
+import multipleStylesImage from './multi-styles.gif'
+
 class FontPanel extends React.Component {
   constructor(props) {
     super(props)
@@ -85,7 +87,7 @@ class FontPanel extends React.Component {
               overlay={
                 () =>
                   <Fragment>
-                    <img src={require('./multi-styles.gif')} alt="multi-styles tutorial"/>
+                    <img src={multipleStylesImage} alt="multi-styles tutorial"/>
                     <p>{t('multiple text styles tip')}</p>
                   </Fragment>
               }
