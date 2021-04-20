@@ -2,7 +2,7 @@ import path from 'path'
 import babel from 'rollup-plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import external from 'rollup-plugin-peer-deps-external';
-import postcss from 'rollup-plugin-postcss';
+import scss from 'rollup-plugin-scss';
 import resolve from '@rollup/plugin-node-resolve';
 import image from '@rollup/plugin-image'
 import visualizer from 'rollup-plugin-visualizer';
@@ -33,7 +33,6 @@ export default {
   plugins: [
     alias({
       entries: {
-        '~assets/tokens.scss': resolveFile('src/assets/tokens.scss'),
         assets: resolveFile('src/assets'),
         components: resolveFile('src/components'),
         utils: resolveFile('src/utils'),
@@ -49,7 +48,7 @@ export default {
         { src: resolveFile('src/lib/index.d.ts'), dest: resolveFile('dist') }
       ]
     }),
-    postcss(),
+    scss(),
     babel({
       exclude: 'node_modules/**'
     }),

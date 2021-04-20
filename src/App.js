@@ -12,20 +12,27 @@ import './app.scss'
 class App extends React.Component {
   constructor(props) {
     super(props)
-    let data = {}, components = [], styles = {}, exportSettings = [], pagedFrames = {},
-      isLocal = false, includeComponents = false, entryVisible
+
     const { FILE_DATA, PAGED_FRAMES, SETTINGS } = window
-    const frames = getFlattedFrames(PAGED_FRAMES)
+    let data = FILE_DATA || props.fileData || {},
+        pagedFrames = PAGED_FRAMES || props.pagedFrames || {},
+        settings = SETTINGS || props.settings || {},
+        components = [],
+        styles = {},
+        exportSettings = [],
+        isLocal = false,
+        includeComponents = false,
+        entryVisible
+
     // local data (offline mode)
-    if (FILE_DATA) {
-      data = FILE_DATA
+    if (FILE_DATA || props.isModule) {
+      const frames = getFlattedFrames(pagedFrames)
       const parsedData = walkFile(data, frames)
       components = parsedData.components
       styles = parsedData.styles
       exportSettings = parsedData.exportSettings
-      pagedFrames = PAGED_FRAMES
       isLocal = true
-      includeComponents = SETTINGS.includeComponents
+      includeComponents = !!settings.includeComponents
       entryVisible = false
     } else {
       entryVisible = true
