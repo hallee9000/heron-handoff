@@ -8,7 +8,7 @@ import { WithCopy } from 'components/utilities'
 import ProductHunt from './ProductHunt'
 import LangSetting from './LangSetting'
 import { getMockFile } from 'api'
-import { walkFile, getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
+import { getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
 import { reportEvent } from 'utils/gtag'
 import './entry.scss'
 
@@ -25,7 +25,7 @@ class Entry extends React.Component {
     this.setState({isLoadingDemo: true})
     const fileData = await getMockFile()
     // get components and styles
-    const { components, styles, exportSettings } = walkFile(fileData, null, true)
+    const { components, styles, exportSettings } = fileData
     const { onDataGot, onComponentsOptionChange } = this.props
     const pagedFrames = getSelectedPagedFrames(getPagedFrames(fileData))
     // demo has components list

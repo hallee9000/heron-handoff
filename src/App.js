@@ -4,7 +4,7 @@ import { withGlobalContextProvider } from 'contexts/GlobalContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
-import { walkFile, getFlattedFrames, getGlobalSettings, setGlobalSettings } from 'utils/helper'
+import { getGlobalSettings, setGlobalSettings } from 'utils/helper'
 import { DEFAULT_SETTINGS } from 'utils/const'
 import 'assets/base.scss'
 import './app.scss'
@@ -21,18 +21,14 @@ class App extends React.Component {
         styles = {},
         exportSettings = [],
         isLocal = false,
-        includeComponents = false,
         entryVisible
 
-    // local data (offline mode)
+    // local data (offline mode) or as module
     if (FILE_DATA || props.isModule) {
-      const frames = getFlattedFrames(pagedFrames)
-      const parsedData = walkFile(data, frames)
-      components = parsedData.components
-      styles = parsedData.styles
-      exportSettings = parsedData.exportSettings
+      components = data.components
+      styles = data.styles
+      exportSettings = data.exportSettings
       isLocal = true
-      includeComponents = !!settings.includeComponents
       entryVisible = false
     } else {
       entryVisible = true
@@ -40,7 +36,7 @@ class App extends React.Component {
     this.state = {
       isLocal,
       isMock: false,
-      includeComponents,
+      includeComponents: !!settings.includeComponents,
       entryVisible,
       data,
       components,
