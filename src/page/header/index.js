@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
 import { FileText, Settings, HelpCircle, MessageCircle, ChevronLeft } from 'react-feather'
 import SettingsContext from 'contexts/SettingsContext'
@@ -14,21 +13,24 @@ class Header extends React.Component {
     return !!(pageName && frameName)
   }
   render () {
-    const { isLocal, documentName, pageName, frameName, isComponent, onBack, t } = this.props
-    const logoHidden = this.hasNames()
+    const { mode, documentName, pageName, frameName, isComponent, onBack, t } = this.props
+    const logoVisible = mode==='local' ? true : !this.hasNames()
     return (
       <header className="app-header">
-        <span className={cn('header-back', {'hide': !logoHidden || isLocal})} onClick={onBack}>
-          <ChevronLeft size={24}/>
-        </span>
-        <a
-          className={cn('header-logo', {'hide': logoHidden && !isLocal})}
-          href="https://heron.design"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
-        </a>
+        {
+          logoVisible ?
+          <a
+            className="header-logo"
+            href="https://heron.design"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={`${process.env.PUBLIC_URL}/logo.svg`} alt="logo" ref={this.logo}/>
+          </a> :
+          <span className="header-back" onClick={onBack}>
+            <ChevronLeft size={24}/>
+          </span>
+        }
         <span className="header-filename">{documentName}</span>
         <span className="header-space"/>
         {

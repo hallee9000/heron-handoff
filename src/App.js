@@ -9,42 +9,30 @@ import { DEFAULT_SETTINGS } from 'utils/const'
 import 'assets/base.scss'
 import './app.scss'
 
+// 2 modes: local and online
 class App extends React.Component {
   constructor(props) {
     super(props)
-
+    // const { isModule, fileData, exportSettings, pagedFrames, settings } = props
     const { FILE_DATA, PAGED_FRAMES, SETTINGS } = window
+    const mode = !!FILE_DATA ? 'local' : 'online'
+    const isMock = !props.isModule
     let data = FILE_DATA || props.fileData || {},
         pagedFrames = PAGED_FRAMES || props.pagedFrames || {},
-        settings = SETTINGS || props.settings || {},
-        components = [],
-        styles = {},
-        exportSettings = [],
-        isLocal = false,
-        entryVisible
+        settings = SETTINGS || props.settings || {}
 
-    // local data (offline mode) or as module
-    if (FILE_DATA || props.isModule) {
-      components = data.components
-      styles = data.styles
-      exportSettings = data.exportSettings
-      isLocal = true
-      entryVisible = false
-    } else {
-      entryVisible = true
-    }
     this.state = {
-      isLocal,
-      isMock: false,
-      includeComponents: !!settings.includeComponents,
-      entryVisible,
+      mode,
+      isMock,
       data,
-      components,
-      styles,
-      exportSettings,
-      images: {},
-      names: {},
       pagedFrames,
+      components: data.components || [],
+      styles: data.styles || {},
+      exportSettings: data.exportSettings || props.exportSettings || [],
+      includeComponents: isMock ? true : !!settings.includeComponents,
+      // if local not show entry, if online depends on if mock
+      entryVisible: mode==='local' ? false : isMock,
+      names: {},
       globalSettings: this.initializeGlobalSettings(SETTINGS),
       backFromDemo: false
     }
@@ -64,16 +52,14 @@ class App extends React.Component {
       this.setState({ globalSettings })
     })
   }
-  handleDataGot = (fileData, components, styles, exportSettings, pagedFrames, imagesData) => {
+  handleDataGot = (fileData, components, styles, exportSettings, pagedFrames) => {
     this.setState({
       entryVisible: false,
       data: fileData,
       components,
       styles,
       exportSettings,
-      pagedFrames,
-      images: imagesData,
-      isMock: !imagesData
+      pagedFrames
     })
   }
   handleComponentsOptionChange = includeComponents => {
@@ -91,29 +77,28 @@ class App extends React.Component {
     })
   }
   handleBack = () => {
-    this.setState({
-      entryVisible: true,
-      backFromDemo: true,
-      names: {}
-    })
+    const { onHeaderBack } = this.props
+    if (onHeaderBack) {
+      onHeaderBack()
+    } else {
+      this.setState({
+        entryVisible: true,
+        backFromDemo: true,
+        names: {}
+      })
+    }
   }
   render () {
     const {
-      entryVisible, isLocal, isMock, includeComponents, data, components, styles,
-      exportSettings, images, pagedFrames, names, globalSettings, backFromDemo
+      entryVisible, mode, isMock, includeComponents, data, components, styles, images,
+      exportSettings, pagedFrames, names, globalSettings, backFromDemo
     } = this.state
     return (
       <div className="app-container">
         <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
           <Header
-            data={data}
-            images={images}
-            pagedFrames={pagedFrames}
-            isMock={isMock}
-            includeComponents={includeComponents}
-            isLocal={isLocal}
+            mode={mode}
             onBack={this.handleBack}
-            entryVisible={entryVisible}
             {...names}
           />
         </SettingsContext.Provider>
@@ -128,7 +113,7 @@ class App extends React.Component {
           </SettingsContext.Provider> :
           <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
             <Main
-              isLocal={isLocal}
+              mode={mode}
               isMock={isMock}
               includeComponents={includeComponents}
               data={data}
