@@ -53,7 +53,8 @@ class Right extends React.Component {
   }
   render () {
     const {
-      useLocalImages,
+      mode,
+      isMock,
       styles,
       elementData,
       exportSettings,
@@ -66,6 +67,7 @@ class Right extends React.Component {
     } = this.props
     const { rightCollapse } = globalSettings
     const { propsPanelState, detailVisible, styleDetail } = this.state
+
     return (
       <div
         className={cn('main-right', { collapsed: rightCollapse })}
@@ -82,7 +84,8 @@ class Right extends React.Component {
         </SettingsContext.Consumer>
         <div className={cn('right-pannels', {'right-pannels-out': detailVisible})}>
           <RightStyles
-            useLocalImages={useLocalImages}
+            mode={mode}
+            isMock={isMock}
             styles={styles}
             exportSettings={exportSettings}
             documentName={documentName}
@@ -92,7 +95,8 @@ class Right extends React.Component {
           {
             elementData &&
             <RightProps
-              useLocalImages={useLocalImages}
+              mode={mode}
+              isMock={isMock}
               elementData={elementData}
               currentComponentName={currentComponentName}
               styles={styles}

@@ -34,7 +34,8 @@ class App extends React.Component {
       entryVisible: mode==='local' ? false : isMock,
       names: {},
       globalSettings: this.initializeGlobalSettings(SETTINGS),
-      backFromDemo: false
+      backFromDemo: false,
+      images: {}
     }
   }
   initializeGlobalSettings = (SETTINGS) => {

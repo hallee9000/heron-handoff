@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
 import FrameSelector from './FrameSelector'
-import { getUrlImage } from 'utils/helper'
+// import { getUrlImage } from 'utils/helper'
 
 class Frames extends React.Component {
   constructor (props) {
@@ -50,7 +50,7 @@ class Frames extends React.Component {
     }
   }
   render () {
-    const { pagedFrames, visible, useLocalImages, images } = this.props
+    const { pagedFrames, visible, mode, isMock } = this.props
     const { frames, pageId, frameId } = this.state
     return (
       <Fragment>
@@ -75,7 +75,7 @@ class Frames extends React.Component {
                   <div
                     className="item-thumbnail"
                     style={{
-                      backgroundImage: getUrlImage(frame.id, useLocalImages, images)
+                      backgroundImage: getBackgroundImageUrl(frame, mode, isMock)
                     }}
                   />
                   <span>{frame.name}</span>
@@ -86,6 +86,16 @@ class Frames extends React.Component {
       </Fragment>
     )
   }
+}
+
+function getImage (item, mode, isMock) {
+  return (mode==='local' || isMock) ?
+    `${process.env.PUBLIC_URL}/data/${item.id.replace(/:/g, '-')}.png` :
+    item.image.url
+}
+
+function getBackgroundImageUrl (item, mode, isMock) {
+  return `url(${getImage(item, mode, isMock)})`
 }
 
 export default withTranslation('left')(Frames)

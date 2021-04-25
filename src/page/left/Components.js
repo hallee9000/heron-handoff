@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { X } from 'react-feather'
 import { withTranslation } from 'react-i18next'
 import { WithTooltip } from 'components/utilities'
-import { getUrlImage } from 'utils/helper'
+// import { getUrlImage } from 'utils/helper'
 
 class Components extends React.Component {
   defaultComponents = this.props.components.map(c =>({...c, filterVisible: true}))
@@ -51,7 +51,7 @@ class Components extends React.Component {
     }
   }
   render () {
-    const { visible, useLocalImages, images, t } = this.props
+    const { visible, mode, isMock, t } = this.props
     const { inputValue, components, selectedIndex } = this.state
     return (
       <Fragment>
@@ -86,7 +86,7 @@ class Components extends React.Component {
                     <div
                       className="item-thumbnail"
                       style={{
-                        backgroundImage: getUrlImage(component.id, useLocalImages, images)
+                        backgroundImage: getBackgroundImageUrl(component, mode, isMock)
                       }}
                     />
                     <span>{component.name}</span>
@@ -99,6 +99,16 @@ class Components extends React.Component {
       </Fragment>
     )
   }
+}
+
+function getImage (item, mode, isMock) {
+  return (mode==='local' || isMock) ?
+    `${process.env.PUBLIC_URL}/data/${item.id.replace(/:/g, '-')}.png` :
+    item.image.url
+}
+
+function getBackgroundImageUrl (item, mode, isMock) {
+  return `url(${getImage(item, mode, isMock)})`
 }
 
 export default withTranslation('left')(Components)

@@ -31,6 +31,7 @@ export default class Main extends React.Component {
       id: currentId,
       canvasData
     })
+    
     onNamesChange && onNamesChange(canvasData.name, currentPage.name)
     this.handleDeselect()
   }
@@ -64,8 +65,8 @@ export default class Main extends React.Component {
   }
   render () {
     const {
-      documentName, components, styles, exportSettings, images,
-      pagedFrames, isMock, includeComponents, isLocal
+      documentName, components, styles, exportSettings,
+      pagedFrames, mode, isMock, includeComponents
     } = this.props
     const {
       id,
@@ -80,8 +81,8 @@ export default class Main extends React.Component {
     return (
       <div className="app-main">
         <LeftPanel
-          useLocalImages={isMock || isLocal}
-          images={images}
+          mode={mode}
+          isMock={isMock}
           pagedFrames={pagedFrames}
           components={components}
           includeComponents={includeComponents}
@@ -93,8 +94,9 @@ export default class Main extends React.Component {
           <SettingsContext.Consumer>
             {({globalSettings, changeGlobalSettings}) => (
               <Canvas
-                useLocalImages={isMock || isLocal}
-                images={images}
+                mode={mode}
+                isMock={isMock}
+                pagedFrames={pagedFrames}
                 canvasData={canvasData}
                 includeComponents={includeComponents}
                 components={components}
@@ -111,7 +113,8 @@ export default class Main extends React.Component {
           </SettingsContext.Consumer>
         }
         <RightPanels
-          useLocalImages={isMock || isLocal}
+          mode={mode}
+          isMock={isMock}
           styles={styles}
           exportSettings={exportSettings}
           documentName={documentName}

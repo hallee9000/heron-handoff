@@ -32,7 +32,7 @@ class RightSider extends React.Component {
   handleDownloadAll = async () => {
     const { percentage } = this.state
     if (percentage!==0) return
-    const { useLocalImages, exportSettings, documentName, t } = this.props
+    const { mode, isMock, exportSettings, documentName, t } = this.props
     const zip = new JSZip()
     const length = exportSettings.length
     const folderName = `${documentName.replace(/\//g, '-')}-exports`
@@ -40,8 +40,9 @@ class RightSider extends React.Component {
     this.setProgress(1, t('downloading images'))
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
-      const imgName = exportSetting.rename
-      const imgUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : exportSetting.image
+      const imgName = exportSetting.fileName
+      const useRelativeImage = mode==='local' || isMock
+      const imgUrl = useRelativeImage ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : exportSetting.image.url
       const imgData = await getBufferData(imgUrl)
       this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))
       exportsFolder.file(imgName, imgData, {base64: true})
@@ -62,7 +63,8 @@ class RightSider extends React.Component {
     // const { styles } = this.props
   }
   render () {
-    const { useLocalImages, styles, exportSettings, propsPanelState, onShowDetail, t } = this.props
+    const { mode, isMock, styles, exportSettings, propsPanelState, onShowDetail, t } = this.props
+    const useRelativeImage = mode==='local' || isMock
     const { tabIndex, percentage, progressText } = this.state
     const { protocol } = window.location
     return (
@@ -117,7 +119,7 @@ class RightSider extends React.Component {
                   <li key={index}>
                     <ExportItem
                       exportSetting={exportSetting}
-                      useLocalImages={useLocalImages}
+                      useRelativeImage={useRelativeImage}
                       index={index}
                     />
                   </li>

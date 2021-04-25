@@ -159,7 +159,7 @@ export async function asyncForEach(array, callback) {
 export const getImage = (id, useLocalImages, images) =>
   useLocalImages ?
   `${process.env.PUBLIC_URL}/data/${id.replace(/:/g, '-')}.png` :
-  images[id].url
+  (images[id] ? images[id].url : '')
 
 export const getUrlImage = (id, useLocalImages, images) =>
   `url(${getImage(id, useLocalImages, images)})`

@@ -21,7 +21,7 @@ class LeftPanel extends React.Component {
     onFrameOrComponentChange && onFrameOrComponentChange(itemId, pageId)
   }
   render () {
-    const { components, includeComponents, useLocalImages, images, pagedFrames, globalSettings, onSiderTransitionEnd, t } = this.props
+    const { components, includeComponents, mode, isMock, pagedFrames, globalSettings, onSiderTransitionEnd, t } = this.props
     const { leftCollapse } = globalSettings
     const { tabIndex } = this.state
     return (
@@ -56,8 +56,8 @@ class LeftPanel extends React.Component {
             <Frames
               visible={tabIndex===0}
               pagedFrames={pagedFrames}
-              useLocalImages={useLocalImages}
-              images={images}
+              mode={mode}
+              isMock={isMock}
               onFrameChange={this.onItemChange}
             />
             {
@@ -65,8 +65,8 @@ class LeftPanel extends React.Component {
               <Components
                 visible={tabIndex===1}
                 components={components}
-                useLocalImages={useLocalImages}
-                images={images}
+                mode={mode}
+                isMock={isMock}
                 onComponentChange={this.onItemChange}
               />
             }

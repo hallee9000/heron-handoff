@@ -5,11 +5,11 @@ import { saveAs } from 'file-saver'
 import { getBlobData } from 'api'
 import './export-item.scss'
 
-const ExportItem = ({exportSetting, useLocalImages}) => {
+const ExportItem = ({exportSetting, useRelativeImage}) => {
   const [ isDownloading, setDownloading ] = useState(false)
   const { image } = exportSetting
   const name = exportSetting.fileName
-  const imageUrl = useLocalImages ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image
+  const imageUrl = useRelativeImage ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image.url
   const { protocol } = window.location
   const isHttpServer = /^http/.test(protocol)
 
@@ -17,8 +17,7 @@ const ExportItem = ({exportSetting, useLocalImages}) => {
     if (isHttpServer) {
       e.preventDefault()
       setDownloading(true)
-      const imgUrl = useLocalImages ? imageUrl : imageUrl
-      getBlobData(imgUrl)
+      getBlobData(imageUrl)
         .then(blob => {
           saveAs(blob, name)
           setDownloading(false)

@@ -2,12 +2,22 @@ import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { toPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
-import { getImage } from 'utils/helper'
+// import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
 import Dimension from './Dimension'
 import Ruler from './Ruler'
 import './canvas.scss'
+
+function getImage (item, mode, isMock) {
+  return (mode==='local' || isMock) ?
+    `${process.env.PUBLIC_URL}/data/${item.id.replace(/:/g, '-')}.png` :
+    item.image.url
+}
+
+function getBackgroundImageUrl (item, mode, isMock) {
+  return `url(${getImage(item, mode, isMock)})`
+}
 
 class Canvas extends React.Component {
   state = {
@@ -205,9 +215,9 @@ class Canvas extends React.Component {
     if (!elementData && (elementData !== prevProps.elementData)) {
       this.resetMark()
     }
-    const { id, useLocalImages, images } = this.props
-    const imgUrl = getImage(id, useLocalImages, images)
-    const prevImgUrl = getImage(prevProps.id, useLocalImages, images)
+    const { id, mode, isMock } = this.props
+    const imgUrl = getImage(curentFrame, mode, isMock)
+    const prevImgUrl = getImage(prevProps.id, mode, isMock)
     if (this.props.id !== prevProps.id && imgUrl!==prevImgUrl) {
       this.setState({ isChanging: true })
       this.resetMark()
