@@ -11,29 +11,6 @@ export const throttle = (fn, delay) => {
 
 export const isCmdOrCtrl = e => navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey
 
-export const getFileKey = pageUrl => {
-  if (!/^https:\/\/(www.)?figma.com\/file\//.test(pageUrl)) {
-    return ''
-  }
-  const parser = document.createElement('a')
-  parser.href = pageUrl
-  return parser.pathname.replace('/file/', '').replace(/\/.*/,'')
-}
-
-export const getUrlParameter = name => {
-  // eslint-disable-next-line
-  const tempName = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  const regex = new RegExp('[\\?&]' + tempName + '=([^&#]*)');
-  const results = regex.exec(window.location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
-
-export const urlWithParams = (url, data) => {
-  const urlObj = new URL(url)
-  Object.keys(data).forEach(key => urlObj.searchParams.append(key, data[key]))
-  return urlObj
-}
-
 export const getPagedFrames = data => {
   let pagedFrames = {}
   if (data.document && data.document.children) {
@@ -156,13 +133,17 @@ export async function asyncForEach(array, callback) {
   }
 }
 
-export const getImage = (id, useLocalImages, images) =>
-  useLocalImages ?
-  `${process.env.PUBLIC_URL}/data/${id.replace(/:/g, '-')}.png` :
-  (images[id] ? images[id].url : '')
+export function getImageUrl (item, mode, isMock) {
+  console.log(item)
+  const fileName = item.fileName ? `exports/${item.fileName}` : `${item.id.replace(/:/g, '-')}.png`
+  return (mode==='local' || isMock) ?
+    `${process.env.PUBLIC_URL}/data/${fileName}` :
+    item.image.url
+}
 
-export const getUrlImage = (id, useLocalImages, images) =>
-  `url(${getImage(id, useLocalImages, images)})`
+export function getBackgroundImageUrl (item, mode, isMock) {
+  return `url(${getImageUrl(item, mode, isMock)})`
+}
 
 export const onInputClick = (e, callback) => {
   const input = e.target

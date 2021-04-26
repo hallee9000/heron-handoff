@@ -9,6 +9,7 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      currentImageUrl: '',
       canvasData: null,
       id: '',
       // selected layer index
@@ -21,7 +22,7 @@ export default class Main extends React.Component {
       exportIds: []
     }
   }
-  handleSelectFrameOrComponent = (currentId, pageId) => {
+  handleSelectFrameOrComponent = (currentId, currentImageUrl, pageId) => {
     const { data, components, onNamesChange } = this.props
     const { id } = this.state
     if (id===currentId) return
@@ -29,6 +30,7 @@ export default class Main extends React.Component {
     const canvasData = (pageId ? currentPage.children : components).find(({id}) => id===currentId)
     this.setState({
       id: currentId,
+      currentImageUrl,
       canvasData
     })
     
@@ -70,6 +72,7 @@ export default class Main extends React.Component {
     } = this.props
     const {
       id,
+      currentImageUrl,
       canvasData,
       exportIds,
       elementData,
@@ -96,7 +99,7 @@ export default class Main extends React.Component {
               <Canvas
                 mode={mode}
                 isMock={isMock}
-                pagedFrames={pagedFrames}
+                currentImageUrl={currentImageUrl}
                 canvasData={canvasData}
                 includeComponents={includeComponents}
                 components={components}

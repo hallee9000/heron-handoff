@@ -2,22 +2,11 @@ import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { toPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
-// import { getImage } from 'utils/helper'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
 import Dimension from './Dimension'
 import Ruler from './Ruler'
 import './canvas.scss'
-
-function getImage (item, mode, isMock) {
-  return (mode==='local' || isMock) ?
-    `${process.env.PUBLIC_URL}/data/${item.id.replace(/:/g, '-')}.png` :
-    item.image.url
-}
-
-function getBackgroundImageUrl (item, mode, isMock) {
-  return `url(${getImage(item, mode, isMock)})`
-}
 
 class Canvas extends React.Component {
   state = {
@@ -215,17 +204,15 @@ class Canvas extends React.Component {
     if (!elementData && (elementData !== prevProps.elementData)) {
       this.resetMark()
     }
-    const { id, mode, isMock } = this.props
-    const imgUrl = getImage(curentFrame, mode, isMock)
-    const prevImgUrl = getImage(prevProps.id, mode, isMock)
-    if (this.props.id !== prevProps.id && imgUrl!==prevImgUrl) {
+    const { id, currentImageUrl } = this.props
+    if (id !== prevProps.id && currentImageUrl!==prevProps.currentImageUrl) {
       this.setState({ isChanging: true })
       this.resetMark()
       this.generateMark()
     }
   }
   render () {
-    const { id, size, useLocalImages, images, percentageMode, globalSettings } = this.props
+    const { currentImageUrl, size, percentageMode, globalSettings } = this.props
     const {
       rects,
       selectedIndex,
@@ -304,7 +291,7 @@ class Canvas extends React.Component {
           }
         </div>
         <img
-          src={getImage(id, useLocalImages, images)}
+          src={currentImageUrl}
           alt="frame"
           style={{
             width: size.width,

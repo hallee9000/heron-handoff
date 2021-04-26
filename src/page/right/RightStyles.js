@@ -6,12 +6,12 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { withGlobalSettings } from 'contexts/SettingsContext'
 import { getBufferData } from 'api'
-import { asyncForEach, isAllImageFill } from 'utils/helper'
+import { asyncForEach, isAllImageFill, getImageUrl } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
 import { StyleItem, ExportItem } from './items'
 import './right-styles.scss'
 
-class RightSider extends React.Component {
+class RightStyles extends React.Component {
   state = {
     tabIndex: 0,
     percentage: 0,
@@ -41,8 +41,7 @@ class RightSider extends React.Component {
 
     await asyncForEach(exportSettings, async (exportSetting, index) => {
       const imgName = exportSetting.fileName
-      const useRelativeImage = mode==='local' || isMock
-      const imgUrl = useRelativeImage ? `${process.env.PUBLIC_URL}/data/exports/${imgName}` : exportSetting.image.url
+      const imgUrl = getImageUrl(exportSetting, mode, isMock)
       const imgData = await getBufferData(imgUrl)
       this.setProgress((index+1)*Math.floor(90/length), t('dealing with', {name: imgName}))
       exportsFolder.file(imgName, imgData, {base64: true})
@@ -64,7 +63,6 @@ class RightSider extends React.Component {
   }
   render () {
     const { mode, isMock, styles, exportSettings, propsPanelState, onShowDetail, t } = this.props
-    const useRelativeImage = mode==='local' || isMock
     const { tabIndex, percentage, progressText } = this.state
     const { protocol } = window.location
     return (
@@ -118,8 +116,9 @@ class RightSider extends React.Component {
                 .map((exportSetting, index) =>
                   <li key={index}>
                     <ExportItem
+                      mode={mode}
+                      isMock={isMock}
                       exportSetting={exportSetting}
-                      useRelativeImage={useRelativeImage}
                       index={index}
                     />
                   </li>
@@ -132,4 +131,4 @@ class RightSider extends React.Component {
   }
 }
 
-export default withTranslation('right')(withGlobalSettings(RightSider))
+export default withTranslation('right')(withGlobalSettings(RightStyles))

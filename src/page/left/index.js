@@ -16,12 +16,19 @@ class LeftPanel extends React.Component {
     if (tabIndex===index) return
     this.setState({ tabIndex: index })
   }
-  onItemChange = (itemId, pageId) => {
-    const { onFrameOrComponentChange } = this.props
-    onFrameOrComponentChange && onFrameOrComponentChange(itemId, pageId)
-  }
+
   render () {
-    const { components, includeComponents, mode, isMock, pagedFrames, globalSettings, onSiderTransitionEnd, t } = this.props
+    const {
+      components,
+      includeComponents,
+      mode,
+      isMock,
+      pagedFrames,
+      globalSettings,
+      onSiderTransitionEnd,
+      onFrameOrComponentChange,
+      t
+    } = this.props
     const { leftCollapse } = globalSettings
     const { tabIndex } = this.state
     return (
@@ -58,7 +65,7 @@ class LeftPanel extends React.Component {
               pagedFrames={pagedFrames}
               mode={mode}
               isMock={isMock}
-              onFrameChange={this.onItemChange}
+              onFrameChange={onFrameOrComponentChange}
             />
             {
               !!includeComponents &&
@@ -67,7 +74,7 @@ class LeftPanel extends React.Component {
                 components={components}
                 mode={mode}
                 isMock={isMock}
-                onComponentChange={this.onItemChange}
+                onComponentChange={onFrameOrComponentChange}
               />
             }
           </div>

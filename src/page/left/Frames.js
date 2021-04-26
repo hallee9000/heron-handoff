@@ -2,51 +2,58 @@ import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
 import FrameSelector from './FrameSelector'
-// import { getUrlImage } from 'utils/helper'
+import { getImageUrl, getBackgroundImageUrl } from 'utils/helper'
 
 class Frames extends React.Component {
   constructor (props) {
     super(props)
     const { onFrameChange } = props
     const pageId = Object.keys(props.pagedFrames)[0]
-    const { frames, frameId } = this.getDefaultFrame(pageId)
+    const { frames, frameId, frameImageUrl } = this.getFrameMeta(pageId)
     this.state = {
       pageId,
       frames,
-      frameId
+      frameId,
+      frameImageUrl
     }
-    onFrameChange(frameId, pageId)
+    onFrameChange(frameId, frameImageUrl, pageId)
   }
-  getDefaultFrame = (pageId) => {
-    const { pagedFrames } = this.props
+  getFrameMeta = (pageId, frameId) => {
+    const { pagedFrames, mode, isMock } = this.props
     const { frames } = pagedFrames[pageId]
+    const currentFrame = frameId ? frames.find(({id}) => id===frameId) : frames[0]
+    const frameImageUrl = getImageUrl(currentFrame, mode, isMock)
     return {
       frames,
-      frameId: frames[0].id
+      frameId: currentFrame.id,
+      frameImageUrl
     }
   }
   handlePageChange = (pageId, frameId) => {
     const { onFrameChange } = this.props
+    const { frameImageUrl, frames } = this.getFrameMeta(pageId, frameId)
     this.setState({
       pageId,
       frameId,
-      frames: this.getDefaultFrame(pageId).frames
+      frames,
+      frameImageUrl
     }, () => {
-      onFrameChange(frameId, pageId)
+      onFrameChange(frameId, frameImageUrl, pageId)
     })
   }
   handleFrameSelect = frameId => {
     const { onFrameChange } = this.props
     const { pageId } = this.state
+    const { frameImageUrl } = this.getFrameMeta(pageId, frameId)
     this.setState({ frameId })
-    onFrameChange(frameId, pageId)
+    onFrameChange(frameId, frameImageUrl, pageId)
   }
   componentDidUpdate(prevProps) {
     const { onFrameChange } = this.props
-    const { pageId, frameId } = this.state
+    const { pageId, frameId, frameImageUrl } = this.state
     // when tab changing
     if (this.props.visible && (this.props.visible !== prevProps.visible)) {
-      onFrameChange(frameId, pageId)
+      onFrameChange(frameId, frameImageUrl, pageId)
     }
   }
   render () {
@@ -86,16 +93,6 @@ class Frames extends React.Component {
       </Fragment>
     )
   }
-}
-
-function getImage (item, mode, isMock) {
-  return (mode==='local' || isMock) ?
-    `${process.env.PUBLIC_URL}/data/${item.id.replace(/:/g, '-')}.png` :
-    item.image.url
-}
-
-function getBackgroundImageUrl (item, mode, isMock) {
-  return `url(${getImage(item, mode, isMock)})`
 }
 
 export default withTranslation('left')(Frames)

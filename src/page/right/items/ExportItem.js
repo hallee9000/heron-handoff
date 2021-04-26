@@ -3,13 +3,13 @@ import { Download, ExternalLink, Loader } from 'react-feather'
 import cn from 'classnames'
 import { saveAs } from 'file-saver'
 import { getBlobData } from 'api'
+import { getImageUrl } from 'utils/helper'
 import './export-item.scss'
 
-const ExportItem = ({exportSetting, useRelativeImage}) => {
+const ExportItem = ({exportSetting, mode, isMock}) => {
   const [ isDownloading, setDownloading ] = useState(false)
-  const { image } = exportSetting
   const name = exportSetting.fileName
-  const imageUrl = useRelativeImage ? `${process.env.PUBLIC_URL}/data/exports/${name}` : image.url
+  const imageUrl = getImageUrl(exportSetting, mode, isMock)
   const { protocol } = window.location
   const isHttpServer = /^http/.test(protocol)
 

@@ -70,7 +70,8 @@ class RightProps extends React.Component {
       elementData,
       currentComponentName,
       styles,
-      useLocalImages,
+      mode,
+      isMock,
       globalSettings,
       onPropsPanelTransitionEnd,
       propsPanelState,
@@ -273,8 +274,9 @@ class RightProps extends React.Component {
                 exportSettings.map((exportSetting, index) =>
                   <li key={index}>
                     <ExportItem
+                      mode={mode}
+                      isMock={isMock}
                       exportSetting={exportSetting}
-                      useLocalImages={useLocalImages}
                       index={exportSetting.index}
                     />
                   </li>

@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { X } from 'react-feather'
 import { withTranslation } from 'react-i18next'
 import { WithTooltip } from 'components/utilities'
-// import { getUrlImage } from 'utils/helper'
+import { getImageUrl, getBackgroundImageUrl } from 'utils/helper'
 
 class Components extends React.Component {
   defaultComponents = this.props.components.map(c =>({...c, filterVisible: true}))
@@ -13,13 +13,14 @@ class Components extends React.Component {
     selectedIndex: 0
   }
   handleComponentSelect = (index, componentId) => {
-    const { onComponentChange } = this.props
+    const { onComponentChange, mode, isMock } = this.props
+    const componentImageUrl = getImageUrl(this.defaultComponents[index], mode, isMock)
     this.setState({
       inputValue: '',
       components: this.defaultComponents,
       selectedIndex: index
     })
-    onComponentChange && onComponentChange(componentId)
+    onComponentChange && onComponentChange(componentId, componentImageUrl)
   }
   handleInputChange = e => {
     const inputValue = e.target.value
@@ -99,16 +100,6 @@ class Components extends React.Component {
       </Fragment>
     )
   }
-}
-
-function getImage (item, mode, isMock) {
-  return (mode==='local' || isMock) ?
-    `${process.env.PUBLIC_URL}/data/${item.id.replace(/:/g, '-')}.png` :
-    item.image.url
-}
-
-function getBackgroundImageUrl (item, mode, isMock) {
-  return `url(${getImage(item, mode, isMock)})`
 }
 
 export default withTranslation('left')(Components)

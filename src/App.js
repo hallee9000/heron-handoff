@@ -33,9 +33,8 @@ class App extends React.Component {
       // if local not show entry, if online depends on if mock
       entryVisible: mode==='local' ? false : isMock,
       names: {},
-      globalSettings: this.initializeGlobalSettings(SETTINGS),
-      backFromDemo: false,
-      images: {}
+      globalSettings: this.initializeGlobalSettings(settings),
+      backFromDemo: false
     }
   }
   initializeGlobalSettings = (SETTINGS) => {
@@ -91,7 +90,7 @@ class App extends React.Component {
   }
   render () {
     const {
-      entryVisible, mode, isMock, includeComponents, data, components, styles, images,
+      entryVisible, mode, isMock, includeComponents, data, components, styles,
       exportSettings, pagedFrames, names, globalSettings, backFromDemo
     } = this.state
     return (
@@ -121,7 +120,6 @@ class App extends React.Component {
               components={components}
               styles={styles}
               exportSettings={exportSettings}
-              images={images}
               pagedFrames={pagedFrames}
               onNamesChange={this.getNames}
               {...names}
