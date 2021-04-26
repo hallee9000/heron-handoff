@@ -134,7 +134,6 @@ export async function asyncForEach(array, callback) {
 }
 
 export function getImageUrl (item, mode, isMock) {
-  console.log(item)
   const fileName = item.fileName ? `exports/${item.fileName}` : `${item.id.replace(/:/g, '-')}.png`
   return (mode==='local' || isMock) ?
     `${process.env.PUBLIC_URL}/data/${fileName}` :
