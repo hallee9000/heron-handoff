@@ -227,6 +227,7 @@ class Canvas extends React.Component {
     const { showAllExports } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
     const frameStyle = this.getBound()
+    // console.log(rects.map(({componentIds}) => componentIds))
     return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
