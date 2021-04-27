@@ -48,7 +48,9 @@ export default {
         { src: resolveFile('src/lib/index.d.ts'), dest: resolveFile('dist') }
       ]
     }),
-    scss(),
+    scss({
+      outputStyle: 'compressed'
+    }),
     babel({
       exclude: 'node_modules/**'
     }),

@@ -59,11 +59,13 @@ export default class Main extends React.Component {
       currentIndex: ''
     })
   }
-  handleSiderTransitionEnd = () => {
-    const { siderCollapseFlag } = this.state
-    this.setState({
-      siderCollapseFlag: !siderCollapseFlag
-    })
+  handleSiderTransitionEnd = e => {
+    if (e.propertyName==='width') {
+      const { siderCollapseFlag } = this.state
+      this.setState({
+        siderCollapseFlag: !siderCollapseFlag
+      })
+    }
   }
   render () {
     const {
@@ -97,8 +99,6 @@ export default class Main extends React.Component {
           <SettingsContext.Consumer>
             {({globalSettings, changeGlobalSettings}) => (
               <Canvas
-                mode={mode}
-                isMock={isMock}
                 currentImageUrl={currentImageUrl}
                 canvasData={canvasData}
                 includeComponents={includeComponents}

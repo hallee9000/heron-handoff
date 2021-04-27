@@ -213,7 +213,7 @@ function canvasWrapper (Canvas) {
           // startZoomimg
           this.calculateStaringOrigins(e)
           const { originX, originY } = this.state
-          const currentScale = Math.min(4, Math.max(minScale, scale - e.deltaY * 0.01))
+          const currentScale = Math.min(4, Math.max(minScale, scale - e.deltaY * 0.05))
           const currentWidth = currentScale*initialWidth
           const currentHeight = currentScale*initialHeight
           const currentPosX = (e.clientX - (leftCollapse ? 0 : 240)) - currentWidth*originX

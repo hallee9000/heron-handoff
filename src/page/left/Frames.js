@@ -45,7 +45,7 @@ class Frames extends React.Component {
     const { onFrameChange } = this.props
     const { pageId } = this.state
     const { frameImageUrl } = this.getFrameMeta(pageId, frameId)
-    this.setState({ frameId })
+    this.setState({ frameId, frameImageUrl })
     onFrameChange(frameId, frameImageUrl, pageId)
   }
   componentDidUpdate(prevProps) {
