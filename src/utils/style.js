@@ -376,13 +376,18 @@ export const getStyle = (type, styles) => {
 }
 
 export const getStyleById = (styles, nodeStyles, type='fill') => {
-  if (!nodeStyles) {
-    return ''
+  const localStyles = styles[type.toUpperCase()]
+  const selfStyle = nodeStyles && nodeStyles[type]
+  if (!selfStyle) {
+    return null
   }
-  if (styles[type.toUpperCase()] && nodeStyles[type]) {
-    return styles[type.toUpperCase()].find(({id}) => id===nodeStyles[type]) || null
+  const localStyle = localStyles ? localStyles.find(({id}) => id===selfStyle.id) : null
+  if (localStyle) {
+    // local style
+    return localStyle
   } else {
-    return ''
+    // remote style
+    return selfStyle
   }
 }
 

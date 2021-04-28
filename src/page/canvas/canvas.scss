@@ -22,8 +22,11 @@
       opacity: 0;
       transition: 0.2s opacity;
       &.hovered,
-      &.current-component{
+      &.closest-component {
         opacity: 1;
+      }
+      &.component-inspect-disabled {
+        background-color: rgba($color: $component-color, $alpha: 0.16);
       }
       &.group{
         border-style: dotted;

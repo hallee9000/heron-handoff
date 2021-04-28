@@ -37,9 +37,8 @@ class Canvas extends React.Component {
   }
   generateMark = () => {
     const { canvasData, onGetExports, globalSettings } = this.props
-    const { disableInspectExportInner } = globalSettings
     const { absoluteBoundingBox: pageRect } = canvasData
-    const { rects, exportIds } = generateRects([canvasData], pageRect, disableInspectExportInner)
+    const { rects, exportIds } = generateRects([canvasData], pageRect, globalSettings)
     onGetExports && onGetExports(exportIds)
     this.setState({ rects, pageRect })
   }
@@ -159,7 +158,7 @@ class Canvas extends React.Component {
     const { closestComponentIndex } = rect
     const closestComponent = this.getClosestComponent(closestComponentIndex)
     onSelect && onSelect(rect, index, closestComponent)
-console.log(closestComponentIndex, closestComponent)
+
     const { hoveredIndex, hoveredRect } = this.state
     if (hoveredIndex===index) {
       const { closedCommonParentPath, closedCommonParent } = this.getClosedCommonParent(hoveredRect, rect)
@@ -226,7 +225,7 @@ console.log(closestComponentIndex, closestComponent)
       pageRect,
       closedCommonParent
     } = this.state
-    const { showAllExports } = globalSettings
+    const { showAllExports, disableInspectInComponent } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
     const frameStyle = this.getBound()
     return (
@@ -252,7 +251,8 @@ console.log(closestComponentIndex, closestComponent)
                     {
                       'selected': selectedIndex===index,
                       'hovered': hoveredIndex===index,
-                      'current-component': closestComponentIndex===index,
+                      'closest-component': closestComponentIndex===index,
+                      'component-inspect-disabled': disableInspectInComponent && isComponent,
                       'percentage-highlight': this.isPercentageHighlight(rect, index)
                     }
                   )}

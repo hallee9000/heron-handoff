@@ -24,7 +24,7 @@ class Settings extends Component {
   }
   render () {
     const { t, globalSettings, onSettingsChange } = this.props
-    const { language, showAllExports, disableInspectExportInner } = this.state
+    const { language, showAllExports, disableInspectExportInner, disableInspectInComponent } = this.state
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
       <Mark
@@ -63,7 +63,19 @@ class Settings extends Component {
             />
             {t('exports inner selecting not allowed')}
           </label>
-          <div className="help-block">{t('exports inner selecting not allowed tip')}</div>
+          <div className="help-block">{t('refresh to make it work tip')}</div>
+        </div>
+        <div className="form-item form-item-checkbox">
+          <label>
+            <input
+              name="disableInspectInComponent"
+              type="checkbox"
+              checked={disableInspectInComponent}
+              onChange={this.changeOtherSetting}
+            />
+            {t('disable inspect in component')}
+          </label>
+          <div className="help-block">{t('refresh to make it work tip')}</div>
         </div>
       </div>
     </div>

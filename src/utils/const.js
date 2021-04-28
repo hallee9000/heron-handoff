@@ -59,6 +59,7 @@ export const DEFAULT_SETTINGS = {
   language: 'zh',
   showAllExports: true,
   disableInspectExportInner: false,
+  disableInspectInComponent: false,
   leftCollapse: false,
   rightCollapse: false
 }

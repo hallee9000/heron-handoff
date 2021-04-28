@@ -44,9 +44,9 @@ class RightProps extends React.Component {
       isPieceSelected: pieceIndex!==null
     })
   }
-  handleStyleDetailShow = (type, selectedId) => {
+  handleStyleDetailShow = (type, style) => {
     const { styles, onShowDetail } = this.props
-    const styleDetail = styles[type].find(({id}) => selectedId===id)
+    const styleDetail = styles[type].find(({id}) => style.id===id)
     onShowDetail(styleDetail)
   }
   componentDidUpdate(prevProps) {

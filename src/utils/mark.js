@@ -33,7 +33,8 @@ export const toFixed = (num, numberFormat=0) => {
 }
 
 // generate box data
-export const generateRects = (nodes, docRect, disableInspectExportInner) => {
+export const generateRects = (nodes, docRect, globalSettings) => {
+  const { disableInspectExportInner, disableInspectInComponent } = globalSettings
   let index = 0
   const rects = []
   let exportIds = []
@@ -126,7 +127,8 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
         (disableInspectExportInner && hasExports && !isDirectFrame) ||
         !node.children ||
         node.type==='BOOLEAN_OPERATION' ||
-        node.isMask
+        node.isMask ||
+        (isComponent && disableInspectInComponent)
       ) {
         // eslint-disable-next-line
         return
