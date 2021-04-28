@@ -59,7 +59,7 @@ class Right extends React.Component {
       elementData,
       exportSettings,
       documentName,
-      currentComponentName,
+      closestComponent,
       currentExportIds,
       currentIndex,
       onSiderTransitionEnd,
@@ -98,7 +98,7 @@ class Right extends React.Component {
               mode={mode}
               isMock={isMock}
               elementData={elementData}
-              currentComponentName={currentComponentName}
+              closestComponent={closestComponent}
               styles={styles}
               exportSettings={exportSettings}
               currentExportIds={currentExportIds}

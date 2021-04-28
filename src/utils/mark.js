@@ -37,7 +37,7 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
   let index = 0
   const rects = []
   let exportIds = []
-  const step = (nodes, parentId, parentComponentId, parentPaths) => {
+  const step = (nodes, parentId, parentComponentIndex, parentPaths) => {
     let maskParentId = ''
     let maskbb = {}
     let maskIndex
@@ -78,16 +78,34 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
       const isGroup = node.type==='GROUP'
       // TODO: should in global exportSettings
       const hasExports = node.exportSettings && node.exportSettings.length
+
       const clazz = []
       isComponent && clazz.push('component')
       isGroup && clazz.push('group')
       hasExports && clazz.push('has-exports')
-      const nativeId = node.type==='COMPONENT' ? node.id : node.componentId
-      const componentIds = [parentComponentId, nativeId].filter(id => id).join()
+
       const currentPaths = !parentPaths ? [innerIndex] : [...parentPaths, innerIndex]
       if (hasExports) {
         exportIds = exportIds.concat(node.exportSettings.map(() => node.id))
       }
+
+      // find closest component to highlight
+      let closestComponentIndex
+      if (node.type==='COMPONENT') {
+        closestComponentIndex = index
+      } else if (node.type==='INSTANCE') {
+        const { name } = node.mainComponent
+        // privte component, use it's closest component
+        if (name.startsWith('_') || name.startsWith('.')) {
+          // private instance directly in design, no parent component wrapped
+          closestComponentIndex = parentComponentIndex || index
+        } else {
+          closestComponentIndex = index
+        }
+      } else  {
+        closestComponentIndex = parentComponentIndex
+      }
+
       rects.push({
         // position in every level
         paths: currentPaths,
@@ -98,7 +116,7 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
         actualHeight: toFixed(nbb.height),
         title: node.name,
         isComponent,
-        componentIds,
+        closestComponentIndex,
         clazz,
         node
       })
@@ -113,30 +131,13 @@ export const generateRects = (nodes, docRect, disableInspectExportInner) => {
         // eslint-disable-next-line
         return
       }
-      step(node.children, node.id, componentIds, currentPaths)
+      step(node.children, node.id, closestComponentIndex, currentPaths)
       // eslint-disable-next-line
       return
     })
   }
   step(nodes)
   return {rects, exportIds}
-}
-
-// go back to find it's component when selected
-export const findParentComponent = (currentIndex, rect, rects) => {
-  let index = currentIndex
-  const currentIsComponent = rect.node.type === 'COMPONENT' || rect.node.type === 'INSTANCE'
-  if (currentIsComponent && rect.componentIds.split(',').length>1) {
-    index--
-  }
-  while (index > -1 && rect.componentIds) {
-    const { type, componentId } = rects[index].node
-    if (type==='COMPONENT' || type==='INSTANCE') {
-      return { index, componentId }
-    }
-    index--
-  }
-  return {}
 }
 
 export const isOutOfMask = (mask, target) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
-import { toPercentage, generateRects, calculateMarkData, findParentComponent } from 'utils/mark'
+import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
 import Dimension from './Dimension'
@@ -13,9 +13,6 @@ class Canvas extends React.Component {
     isLoading: false,
     rects: [],
     pageRect: {},
-    componentIndex: '',
-    componentId: '',
-    currentComponentName: '',
     selectedRect: null,
     selectedIndex: null,
     hoveredRect: null,
@@ -27,9 +24,8 @@ class Canvas extends React.Component {
   }
   resetMark = () => {
     this.setState({
-      componentIndex: '',
-      componentId: '',
-      currentComponentName: '',
+      closestComponentIndex: undefined,
+      closestComponent: null,
       selectedRect: null,
       selectedIndex: null,
       hoveredRect: null,
@@ -140,23 +136,30 @@ class Canvas extends React.Component {
     const { maskIndex } = rect.maskedBound
     this.onSelect(rects[maskIndex], maskIndex)
   }
-  onSelect = (rect, index) => {
-    const { spacePressed, onSelect, includeComponents, components } =this.props
-    if (spacePressed) return
+  // get closest parent component to highlight
+  getClosestComponent = (closestComponentIndex) => {
     const { rects } = this.state
-    const { index: componentIndex, componentId } = findParentComponent(index, rect, rects)
-    const currentComponent = includeComponents ?
-      components.find(({id}) => id===componentId) :
-      (
-        // from plugin
-        Array.isArray(components) ?
-        components.find(({id}) => id===componentId) :
-        components[componentId]
-      )
-    const currentComponentName = rect.componentIds ? (currentComponent ? currentComponent.name : rects[componentIndex].node.name) : ''
-
-    onSelect && onSelect(rect, currentComponentName, index)
-
+    const hasIndex = closestComponentIndex!==undefined
+    let closestComponent
+    if (hasIndex) {
+      const { node } = rects[closestComponentIndex]
+      if (node.type==='COMPONENT') {
+        closestComponent = { name: node.name, description: node.description }
+      } else {
+        closestComponent = { name: node.mainComponent.name, description: node.mainComponent.description }
+      }
+    } else {
+      closestComponent = null
+    }
+    return closestComponent
+  }
+  onSelect = (rect, index) => {
+    const { spacePressed, onSelect } =this.props
+    if (spacePressed) return
+    const { closestComponentIndex } = rect
+    const closestComponent = this.getClosestComponent(closestComponentIndex)
+    onSelect && onSelect(rect, index, closestComponent)
+console.log(closestComponentIndex, closestComponent)
     const { hoveredIndex, hoveredRect } = this.state
     if (hoveredIndex===index) {
       const { closedCommonParentPath, closedCommonParent } = this.getClosedCommonParent(hoveredRect, rect)
@@ -166,9 +169,8 @@ class Canvas extends React.Component {
     this.setState({
       selectedRect: rect,
       selectedIndex: index,
-      componentIndex,
-      componentId,
-      currentComponentName
+      closestComponentIndex,
+      closestComponent
     })
   }
   onHover = (rect, index) => {
@@ -215,10 +217,10 @@ class Canvas extends React.Component {
     const { currentImageUrl, size, percentageMode, globalSettings } = this.props
     const {
       rects,
+      closestComponentIndex,
+      closestComponent,
       selectedIndex,
       hoveredIndex,
-      componentIndex,
-      currentComponentName,
       markData,
       isChanging,
       pageRect,
@@ -227,7 +229,6 @@ class Canvas extends React.Component {
     const { showAllExports } = globalSettings
     const exportsVisible = selectedIndex===0 && showAllExports
     const frameStyle = this.getBound()
-    // console.log(rects.map(({componentIds}) => componentIds))
     return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
@@ -251,7 +252,7 @@ class Canvas extends React.Component {
                     {
                       'selected': selectedIndex===index,
                       'hovered': hoveredIndex===index,
-                      'current-component': componentIndex===index,
+                      'current-component': closestComponentIndex===index,
                       'percentage-highlight': this.isPercentageHighlight(rect, index)
                     }
                   )}
@@ -261,8 +262,8 @@ class Canvas extends React.Component {
                   onMouseOver={() => this.onHover(rect, index)}
                 >
                   {
-                    isComponent && componentIndex===index &&
-                    <div className="layer-component">{ currentComponentName }</div>
+                    isComponent && closestComponentIndex===index &&
+                    <div className="layer-component">{ closestComponent.name }</div>
                   }
                   {
                     ['width', 'height'].map(whichSide =>

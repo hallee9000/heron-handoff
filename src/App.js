@@ -29,7 +29,7 @@ class App extends React.Component {
       components: data.components || [],
       styles: data.styles || {},
       exportSettings: data.exportSettings || props.exportSettings || [],
-      includeComponents: isMock ? true : !!settings.includeComponents,
+      includeComponents: (mode!=='local' && isMock) ? true : !!settings.includeComponents,
       // if local not show entry, if online depends on if mock
       entryVisible: mode==='local' ? false : isMock,
       names: {},

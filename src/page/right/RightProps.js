@@ -68,7 +68,7 @@ class RightProps extends React.Component {
   render () {
     const {
       elementData,
-      currentComponentName,
+      closestComponent,
       styles,
       mode,
       isMock,
@@ -142,9 +142,13 @@ class RightProps extends React.Component {
           </div>
         }
         {
-          currentComponentName &&
+          closestComponent &&
           <div className="props-section">
-            <h5 className="section-title section-name">{t('component')}: { currentComponentName }</h5>
+            <h5 className="section-title section-name">{t('component')}: { closestComponent.name }</h5>
+            {
+              closestComponent.description &&
+              <p className="section-helper">{ closestComponent.description }</p>
+            }
           </div>
         }
         {/* font */}

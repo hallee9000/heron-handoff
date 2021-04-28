@@ -16,7 +16,7 @@ export default class Main extends React.Component {
       currentIndex: '',
       elementData: null,
       hasElementSelected: false,
-      currentComponentName: '',
+      closestComponent: null,
       siderCollapseFlag: false,
       siderCollapsePlacement: '',
       exportIds: []
@@ -37,11 +37,11 @@ export default class Main extends React.Component {
     onNamesChange && onNamesChange(canvasData.name, currentPage.name)
     this.handleDeselect()
   }
-  handleSelectElement = (elementData, currentComponentName, index) => {
+  handleSelectElement = (elementData, index, closestComponent) => {
     this.setState({
       elementData,
       currentIndex: index,
-      currentComponentName,
+      closestComponent,
       hasElementSelected: true
     })
   }
@@ -79,7 +79,7 @@ export default class Main extends React.Component {
       exportIds,
       elementData,
       currentIndex,
-      currentComponentName,
+      closestComponent,
       hasElementSelected,
       siderCollapseFlag
     } = this.state
@@ -101,8 +101,6 @@ export default class Main extends React.Component {
               <Canvas
                 currentImageUrl={currentImageUrl}
                 canvasData={canvasData}
-                includeComponents={includeComponents}
-                components={components}
                 id={id}
                 elementData={elementData}
                 onSelect={this.handleSelectElement}
@@ -122,7 +120,7 @@ export default class Main extends React.Component {
           exportSettings={exportSettings}
           documentName={documentName}
           elementData={elementData}
-          currentComponentName={currentComponentName}
+          closestComponent={closestComponent}
           currentExportIds={exportIds}
           currentIndex={currentIndex}
           hasElementSelected={hasElementSelected}
