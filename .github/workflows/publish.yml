@@ -1,0 +1,21 @@
+name: deploy-to-pages
+
+on:
+  push: tags
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - run: npm install
+    - run: echo PUBLIC_URL=. > ./.env
+    - run: echo IMAGE_INLINE_SIZE_LIMIT=100000 >> ./.env
+    - run: npm run build:npm
+    - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+    - run: yarn publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
