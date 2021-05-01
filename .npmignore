@@ -1,10 +1,10 @@
 .github
-build
+/build
 stats.html
-imgs
-node_modules
-public
-src
+/imgs
+/node_modules
+/public
+/src
 .env
 yarn-error.log
 yarn.lock
