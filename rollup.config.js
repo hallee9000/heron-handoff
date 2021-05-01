@@ -13,17 +13,18 @@ import { uglify } from 'rollup-plugin-uglify';
 import replace from '@rollup/plugin-replace';
 import pkg from './package.json';
 
-process.env.NODE_ENV = 'production';
+const mode = process.env.NODE_ENV || 'development'
+const isProduction = mode==='production'
 
 const resolveFile = function(filePath) {
   return path.join(__dirname, filePath)
 }
 
-export default {
+const config = {
   input: './src/lib/index.js',
   output: [
     {
-      sourcemap: 'inline',
+      sourcemap: isProduction ? 'inline' : false,
       file: pkg.main,
       format: 'cjs',
       exports: 'named'
@@ -49,7 +50,7 @@ export default {
       ]
     }),
     scss({
-      outputStyle: 'compressed'
+      outputStyle: isProduction ? 'compressed' : 'compact'
     }),
     babel({
       exclude: 'node_modules/**'
@@ -60,13 +61,18 @@ export default {
     }),
     commonjs(),
     image(),
-    uglify(),
     replace({
       preventAssignment: true,
       values: {
-        'process.env.NODE_ENV': JSON.stringify( 'production' )
+        'process.env.NODE_ENV': JSON.stringify(mode)
       }
     }),
     visualizer()
   ]
 };
+
+if (isProduction) {
+  config.plugins.push(uglify())
+}
+
+export default config

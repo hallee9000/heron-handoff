@@ -43,7 +43,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:npm": "rollup -c"
+    "watch:npm": "rollup -c -w",
+    "build:npm": "rollup -c --environment NODE_ENV:production"
   },
   "eslintConfig": {
     "extends": "react-app"
