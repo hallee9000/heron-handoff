@@ -43,6 +43,86 @@ Heron Handoff 可以帮助你生成带有设计标注的文件，方便交付给
 
 <img alt="Select frames" src="./imgs/view.png"/>
 
+## 作为模块导入
+此应用已被发布至 [NPM](https://www.npmjs.com/package/heron-handoff)，如果你想基于此做二次开发也可以直接从 NPM 导入这个模块。
+
+首先，安装模块。
+
+```bash
+yarn add heron-handoff
+```
+
+接着，导入模块并配置属性。
+
+```jsx
+import Canvas from 'heron-handoff'
+
+const settings = {
+  convention: 1,
+  exportWebP: false,
+  includeComponents: false,
+  language: "zh",
+  platform: 1,
+  remBase: 16,
+  resolution: 0,
+  unit: 2
+}
+const pagedFrames = {
+  "755:1494": {
+    "name": "Plugin",
+    "frames": [
+      {
+        "id": "2590:442",
+        "name": "settings",
+        "image": {
+          "url": "/mock/2590-442.png"
+        }
+      }
+    ]
+  },
+  "755:1493": {
+    "name": "Dashboard",
+    "frames": [
+      {
+        "id": "2941:26",
+        "name": "file detail",
+        "image": {
+          "url": "/mock/2941-26.png"
+        }
+      }
+    ]
+  }
+}
+const exportSettings = [{
+  contentsOnly: true,
+  fileName: "icon@2x.png",
+  format: "PNG",
+  id: "I2590:136;2731:1",
+  image: {url: "/mock/exports/icon@2x.png"},
+  name: "icon",
+  suffix: ""
+}]
+const fileData = {
+  name: 'Handoff design',
+  document: {},
+  styles: {}
+}
+
+export default function () {
+  return (
+    <Canvas
+      pagedFrames={pagedFrames}
+      fileData={fileData}
+      exportSettings={exportSettings}
+      settings={settings}
+      onHeaderBack={() => { console.log('Back icon clicked.') }}
+    />
+  )
+}
+```
+
+这些属性的数据是从 [heron-handoff-plugin](https://github.com/leadream/figma-juuust-handoff-plugin) 导入的，你可以参考其源码来配置你的属性。
+
 ## 常见问题
 
 ### 如何交付切图？

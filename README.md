@@ -45,6 +45,86 @@ You will get a zip file after seconds. Upzip it and open index.html. Now you can
 
 <img alt="Select frames" src="./imgs/view.png"/>
 
+## As a module
+It's published to [NPM](https://www.npmjs.com/package/heron-handoff) so you can install it as a react module if you want to develop based on it.
+
+First at first, install it.
+
+```bash
+yarn add heron-handoff
+```
+
+Then import and configure it.
+
+```jsx
+import Canvas from 'heron-handoff'
+
+const settings = {
+  convention: 1,
+  exportWebP: false,
+  includeComponents: false,
+  language: "zh",
+  platform: 1,
+  remBase: 16,
+  resolution: 0,
+  unit: 2
+}
+const pagedFrames = {
+  "755:1494": {
+    "name": "Plugin",
+    "frames": [
+      {
+        "id": "2590:442",
+        "name": "settings",
+        "image": {
+          "url": "/mock/2590-442.png"
+        }
+      }
+    ]
+  },
+  "755:1493": {
+    "name": "Dashboard",
+    "frames": [
+      {
+        "id": "2941:26",
+        "name": "file detail",
+        "image": {
+          "url": "/mock/2941-26.png"
+        }
+      }
+    ]
+  }
+}
+const exportSettings = [{
+  contentsOnly: true,
+  fileName: "icon@2x.png",
+  format: "PNG",
+  id: "I2590:136;2731:1",
+  image: {url: "/mock/exports/icon@2x.png"},
+  name: "icon",
+  suffix: ""
+}]
+const fileData = {
+  name: 'Handoff design',
+  document: {},
+  styles: {}
+}
+
+export default function () {
+  return (
+    <Canvas
+      pagedFrames={pagedFrames}
+      fileData={fileData}
+      exportSettings={exportSettings}
+      settings={settings}
+      onHeaderBack={() => { console.log('Back icon clicked.') }}
+    />
+  )
+}
+```
+
+The props is exported from [heron-handoff-plugin](https://github.com/leadream/figma-juuust-handoff-plugin).
+
 ## FAQ
 
 ### How to deliver sliced images?
