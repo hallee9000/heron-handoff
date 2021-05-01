@@ -1,7 +1,9 @@
-name: deploy-to-pages
+name: publish-to-npm
 
 on:
-  push: tags
+  push:
+    tags:
+      - V*
 
 jobs:
   deploy:
