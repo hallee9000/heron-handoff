@@ -3,7 +3,7 @@ import { I18nextProvider } from 'react-i18next'
 import i18n from '../i18n'
 import App from '../App'
 
-function Canvas ({pagedFrames, fileData, exportSettings, settings, onHeaderBack}) {
+function Canvas ({pagedFrames, fileData, exportSettings, settings, onHeaderBack, onFrameChange}) {
   useEffect(() => {
     document.body.classList.add('heron-handoff')
     return () => {
@@ -19,6 +19,7 @@ function Canvas ({pagedFrames, fileData, exportSettings, settings, onHeaderBack}
         exportSettings={exportSettings}
         settings={settings}
         onHeaderBack={onHeaderBack}
+        onFrameChange={onFrameChange}
       />
     </I18nextProvider>
   )

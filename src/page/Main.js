@@ -23,7 +23,7 @@ export default class Main extends React.Component {
     }
   }
   handleSelectFrameOrComponent = (currentId, currentImageUrl, pageId) => {
-    const { data, components, onNamesChange } = this.props
+    const { data, components, onNamesChange, onFrameChange } = this.props
     const { id } = this.state
     if (id===currentId) return
     const currentPage = pageId ? data.document.children.find(({id}) => id===pageId) : {}
@@ -35,6 +35,7 @@ export default class Main extends React.Component {
     })
     
     onNamesChange && onNamesChange(canvasData.name, currentPage.name)
+    onFrameChange && onFrameChange(currentId)
     this.handleDeselect()
   }
   handleSelectElement = (elementData, index, closestComponent) => {

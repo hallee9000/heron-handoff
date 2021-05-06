@@ -89,6 +89,7 @@ class App extends React.Component {
     }
   }
   render () {
+    const { onFrameChange } = this.props
     const {
       entryVisible, mode, isMock, includeComponents, data, components, styles,
       exportSettings, pagedFrames, names, globalSettings, backFromDemo
@@ -122,6 +123,7 @@ class App extends React.Component {
               exportSettings={exportSettings}
               pagedFrames={pagedFrames}
               onNamesChange={this.getNames}
+              onFrameChange={onFrameChange}
               {...names}
             />
           </SettingsContext.Provider>
