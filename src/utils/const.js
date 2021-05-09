@@ -60,6 +60,7 @@ export const DEFAULT_SETTINGS = {
   showAllExports: true,
   disableInspectExportInner: false,
   disableInspectInComponent: false,
+  notShowStyleProperties: false,
   leftCollapse: false,
   rightCollapse: false
 }

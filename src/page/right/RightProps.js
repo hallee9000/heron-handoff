@@ -9,6 +9,7 @@ import { getFillsStyle, getEffectsStyle, formattedNumber, getCode } from 'utils/
 import { toFixed } from 'utils/mark'
 import { ColorFormatSelect, FillItem, EffectItem, ExportItem } from './items'
 import StyleReference from './StyleReference'
+import StyleMeta from './StyleMeta'
 import FontPanel from './FontPanel'
 import './right-props.scss'
 
@@ -49,6 +50,10 @@ class RightProps extends React.Component {
     const styleDetail = styles[type].find(({id}) => style.id===id)
     onShowDetail(styleDetail)
   }
+  styleMetaVisible = (nodeStyles, type) => {
+    const { globalSettings } = this.props
+    return globalSettings.notShowStyleProperties && nodeStyles && nodeStyles[type]
+  }
   componentDidUpdate(prevProps) {
     const { elementData, detailVisible, onCloseDetail } = this.props
     // switch selected element
@@ -85,6 +90,7 @@ class RightProps extends React.Component {
     const { styles: effectItems } = getEffectsStyle(effects)
     const code = getCode(node, fillItems, strokeItems, effectItems, textStyle, globalSettings)
     const styledCode = Prism.highlight(code, Prism.languages.css, 'css')
+
     return (
       <div
         className={cn('right-props', `right-props-${propsPanelState}`)}
@@ -157,6 +163,8 @@ class RightProps extends React.Component {
           <FontPanel
             node={node}
             styles={styles}
+            nodeStyles={nodeStyles}
+            stylePropertiesVisible={this.styleMetaVisible(nodeStyles, 'text')}
             propsSider={this.propsSider.current}
             onSwitch={this.handleTextChange}
             onGetStyle={this.handleStyleGot}
@@ -180,15 +188,22 @@ class RightProps extends React.Component {
                 />
               }
             </h5>
-            <ul className="section-items">
-              {
-                fillItems.map((fillStyle, index) =>
-                  <li className="item-block" key={index}>
-                    <FillItem flag={flag} style={fillStyle}/>
-                  </li>
-                )
-              }
-            </ul>
+            {
+              this.styleMetaVisible(nodeStyles, 'fill') ?
+              <StyleMeta
+                nodeStyles={nodeStyles}
+                type="fill"
+              /> :
+              <ul className="section-items">
+                {
+                  fillItems.map((fillStyle, index) =>
+                    <li className="item-block" key={index}>
+                      <FillItem flag={flag} style={fillStyle}/>
+                    </li>
+                  )
+                }
+              </ul>
+            }
           </div>
         }
         {/* strokes */}
@@ -205,26 +220,35 @@ class RightProps extends React.Component {
                 onShowStyleDetail={this.handleStyleDetailShow}
               />
             </h5>
-            <ul className="section-items">
-              {
-                strokeItems.map((strokeStyle, index) =>
-                  <li className="item-block" key={index}>
-                    <FillItem flag={flag} style={strokeStyle}/>
-                  </li>
-                )
-              }
-            </ul>
-            <InputGroup>
-              <CopiableInput label={t('stroke weight')} value={ formattedNumber(node.strokeWeight, globalSettings) }/>
-              {
-                node.strokeDashes &&
-                <CopiableInput
-                  label={t('stroke dash')}
-                  value={ node.strokeDashes.map(dash => formattedNumber(dash, globalSettings, true)).join() }
-                />
-              }
-              <CopiableInput label={t('stroke position')} value={ node.strokeAlign.toLowerCase() }/>
-            </InputGroup>
+            {
+              this.styleMetaVisible(nodeStyles, 'stroke') ?
+              <StyleMeta
+                nodeStyles={nodeStyles}
+                type="stroke"
+              /> :
+              <>
+                <ul className="section-items">
+                  {
+                    strokeItems.map((strokeStyle, index) =>
+                      <li className="item-block" key={index}>
+                        <FillItem flag={flag} style={strokeStyle}/>
+                      </li>
+                    )
+                  }
+                </ul>
+                <InputGroup>
+                  <CopiableInput label={t('stroke weight')} value={ formattedNumber(node.strokeWeight, globalSettings) }/>
+                  {
+                    node.strokeDashes &&
+                    <CopiableInput
+                      label={t('stroke dash')}
+                      value={ node.strokeDashes.map(dash => formattedNumber(dash, globalSettings, true)).join() }
+                    />
+                  }
+                  <CopiableInput label={t('stroke position')} value={ node.strokeAlign.toLowerCase() }/>
+                </InputGroup>
+              </>
+            }
           </div>
         }
         {/* effects */}
@@ -241,15 +265,22 @@ class RightProps extends React.Component {
                 onShowStyleDetail={this.handleStyleDetailShow}
               />
             </h5>
-            <ul className="section-items">
-              {
-                effectItems.map((effectStyle, index) =>
-                  <li className="item-block" key={index}>
-                    <EffectItem flag={flag} style={effectStyle} nodeType={node.type}/>
-                  </li>
-                )
-              }
-            </ul>
+            {
+              this.styleMetaVisible(nodeStyles, 'effect') ?
+              <StyleMeta
+                nodeStyles={nodeStyles}
+                type="effect"
+              /> :
+              <ul className="section-items">
+                {
+                  effectItems.map((effectStyle, index) =>
+                    <li className="item-block" key={index}>
+                      <EffectItem flag={flag} style={effectStyle} nodeType={node.type}/>
+                    </li>
+                  )
+                }
+              </ul>
+            }
           </div>
         }
         {

@@ -9,6 +9,7 @@ import StyleReference from './StyleReference'
 import { WithCopy } from 'components/utilities'
 import { getTextStyle } from 'utils/style'
 import { getTextTable } from 'utils/text'
+import StyleMeta from './StyleMeta'
 import './font-panel.scss'
 
 import multipleStylesImage from './multi-styles.gif'
@@ -45,7 +46,7 @@ class FontPanel extends React.Component {
     }
   }
   render() {
-    const { node, styles, propsSider, onShowStyleDetail, t } = this.props
+    const { node, styles, nodeStyles, stylePropertiesVisible, propsSider, onShowStyleDetail, t } = this.props
     const { textTable, selected, style } = this.state
     return (
       <div className="props-section props-text">
@@ -105,9 +106,16 @@ class FontPanel extends React.Component {
             </Tooltip>
           }
         </div>
-        <div className="section-items">
-          <TextItems flag={selected} items={style}/>
-        </div>
+        {
+          stylePropertiesVisible ?
+          <StyleMeta
+            nodeStyles={nodeStyles}
+            type="text"
+          /> :
+          <div className="section-items">
+            <TextItems flag={selected} items={style}/>
+          </div>
+        }
       </div>
     )
   }

@@ -6,7 +6,7 @@ import './style-reference.scss'
 
 const StyleReference = ({styleItems, styles, nodeStyles, type, onShowStyleDetail}) => {
   const styleReference = getStyleById(styles, nodeStyles, type)
-  const styleType = type==='stoke' ? 'FILL' : type.toUpperCase()
+  const styleType = type==='stroke' ? 'FILL' : type.toUpperCase()
 
   function handleReferenceClick () {
     if (styleReference.remote) {
@@ -15,7 +15,7 @@ const StyleReference = ({styleItems, styles, nodeStyles, type, onShowStyleDetail
     onShowStyleDetail && onShowStyleDetail(styleType, nodeStyles[type])
   }
 
-  return  styleReference &&
+  return styleReference &&
     <span
       className="title-reference"
       onClick={handleReferenceClick}
@@ -23,7 +23,7 @@ const StyleReference = ({styleItems, styles, nodeStyles, type, onShowStyleDetail
       <StyleItem
         styles={styleItems}
         styleName={styleReference.name}
-        styleType={type.toUpperCase()}
+        styleType={styleType.toUpperCase()}
         isHoverable={false}
       />
       {

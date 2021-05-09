@@ -32,7 +32,8 @@
     "show all exports when selecting outer": "Show all exports while outer frame selected",
     "exports inner selecting not allowed": "Don't allow to inspect in exports' inner",
     "disable inspect in component": "Disable inspecting in component",
-    "refresh to make it work tip": "You need to change Frame or refresh to make it work after changing."
+    "refresh to make it work tip": "You need to change Frame or refresh to make it work after changing.",
+    "do not show style properties": "Don't show style properties"
   },
   "zh": {
     "dealing with": "开始处理 {{name}} ……",
@@ -67,6 +68,7 @@
     "show all exports when selecting outer": "在选择最外层时显示所有切图",
     "exports inner selecting not allowed": "不允许选中切图（Export）内部图层",
     "disable inspect in component": "不允许选中组件内部图层",
-    "refresh to make it work tip": "更改此设置后需要切换 Frame 或刷新才生效。"
+    "refresh to make it work tip": "更改此设置后需要切换 Frame 或刷新才生效。",
+    "do not show style properties": "不展示样式详细属性"
   }
 }

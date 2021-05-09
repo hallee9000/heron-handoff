@@ -6,6 +6,7 @@ import FillPreview from './Preview'
 import './style-item.scss'
 
 const StyleItem = ({styles, styleName, styleType, isHoverable=true, ...props}) => {
+
   switch (styleType) {
     case 'FILL':
       const { styles: fillItems } = getFillsStyle(styles)

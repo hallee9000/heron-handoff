@@ -54,6 +54,7 @@
       color: rgba($color: #FFF, $alpha: 0.36);
       >span,
       >svg{
+        display: inline-block;
         vertical-align: middle;
       }
     }

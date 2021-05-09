@@ -24,7 +24,7 @@ class Settings extends Component {
   }
   render () {
     const { t, globalSettings, onSettingsChange } = this.props
-    const { language, showAllExports, disableInspectExportInner, disableInspectInComponent } = this.state
+    const { language, showAllExports, disableInspectExportInner, disableInspectInComponent, notShowStyleProperties } = this.state
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
       <Mark
@@ -76,6 +76,17 @@ class Settings extends Component {
             {t('disable inspect in component')}
           </label>
           <div className="help-block">{t('refresh to make it work tip')}</div>
+        </div>
+        <div className="form-item form-item-checkbox">
+          <label>
+            <input
+              name="notShowStyleProperties"
+              type="checkbox"
+              checked={notShowStyleProperties}
+              onChange={this.changeOtherSetting}
+            />
+            {t('do not show style properties')}
+          </label>
         </div>
       </div>
     </div>
