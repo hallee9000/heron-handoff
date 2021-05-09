@@ -11,7 +11,7 @@ const Changelog = ({mode, t}) => {
   useEffect(() => {
     if (!isModule) {
       const changelogURL = mode==='local' ?
-        'https://handoff.juuust.com' + changelog.replace('.', '') :
+        'https://figma-hanoff-1255718578.cos.ap-guangzhou.myqcloud.com' + changelog.replace('.', '') :
         process.env.PUBLIC_URL + changelog
       fetch(changelogURL)
         .then(response => response.text())
