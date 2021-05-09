@@ -77,7 +77,7 @@ class RightStyles extends React.Component {
         <ul className={cn('styles-list', {'hide': tabIndex!==0})}>
           {
             Object.keys(styles).map(key =>
-              key!=='GRID' &&
+              key!=='GRID' && styles[key] &&
               <Fragment key={key}>
                 <li className="list-title">{ t(STYLE_TYPES[key]) }</li>
                 {
