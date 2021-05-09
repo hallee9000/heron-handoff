@@ -10,8 +10,10 @@ const Changelog = ({mode, t}) => {
 
   useEffect(() => {
     if (!isModule) {
-      const baseURL = mode==='local' ? 'https://handoff.juuust.com' : process.env.PUBLIC_URL
-      fetch(baseURL + changelog)
+      const changelogURL = mode==='local' ?
+        'https://handoff.juuust.com' + changelog.replace('.', '') :
+        process.env.PUBLIC_URL + changelog
+      fetch(changelogURL)
         .then(response => response.text())
         .then(md => setChangelogMD(md))
     }
