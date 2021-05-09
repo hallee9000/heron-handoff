@@ -5,6 +5,7 @@ import external from 'rollup-plugin-peer-deps-external';
 import scss from 'rollup-plugin-scss';
 import resolve from '@rollup/plugin-node-resolve';
 import image from '@rollup/plugin-image'
+import markdown from '@jackfranklin/rollup-plugin-markdown'
 import visualizer from 'rollup-plugin-visualizer';
 import alias from '@rollup/plugin-alias';
 import json from '@rollup/plugin-json';
@@ -61,9 +62,11 @@ const config = {
     }),
     commonjs(),
     image(),
+    markdown(),
     replace({
       preventAssignment: true,
       values: {
+        'process.env.IS_MODULE': JSON.stringify(true),
         'process.env.NODE_ENV': JSON.stringify(mode)
       }
     }),
