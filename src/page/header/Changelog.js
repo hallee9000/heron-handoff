@@ -5,16 +5,17 @@ import changelog from './changelog.md';
 
 const isModule = process.env.IS_MODULE
 
-const Changelog = ({t}) => {
+const Changelog = ({mode, t}) => {
   const [changelogMD, setChangelogMD] = useState('')
 
   useEffect(() => {
     if (!isModule) {
-      fetch(process.env.PUBLIC_URL + changelog)
+      const baseURL = mode==='local' ? 'https://handoff.juuust.com' : process.env.PUBLIC_URL
+      fetch(baseURL + changelog)
         .then(response => response.text())
         .then(md => setChangelogMD(md))
     }
-  }, [])
+  }, [mode])
 
   return (
     <Fragment>

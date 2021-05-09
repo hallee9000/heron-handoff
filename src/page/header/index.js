@@ -67,7 +67,7 @@ class Header extends React.Component {
           }
           <Overlay
             trigger={['click']}
-            overlay={<Changelog/>}
+            overlay={<Changelog mode={mode}/>}
             align={{
               offset: [30, -10]
             }}
