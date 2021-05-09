@@ -1,6 +1,5 @@
 import React from 'react'
 import SettingsContext from 'contexts/SettingsContext'
-import { withGlobalContextProvider } from 'contexts/GlobalContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
@@ -89,7 +88,6 @@ class App extends React.Component {
     }
   }
   render () {
-    const { onFrameChange } = this.props
     const {
       entryVisible, mode, isMock, includeComponents, data, components, styles,
       exportSettings, pagedFrames, names, globalSettings, backFromDemo
@@ -123,7 +121,6 @@ class App extends React.Component {
               exportSettings={exportSettings}
               pagedFrames={pagedFrames}
               onNamesChange={this.getNames}
-              onFrameChange={onFrameChange}
               {...names}
             />
           </SettingsContext.Provider>
@@ -133,4 +130,4 @@ class App extends React.Component {
   }
 }
 
-export default withGlobalContextProvider(App)
+export default App

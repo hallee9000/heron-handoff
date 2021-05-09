@@ -1,15 +1,30 @@
 import React, { useEffect } from 'react'
 import { I18nextProvider } from 'react-i18next'
+import { withGlobalContextProvider } from 'contexts/GlobalContext'
 import i18n from '../i18n'
 import App from '../App'
 
-function Canvas ({pagedFrames, fileData, exportSettings, settings, onHeaderBack, onFrameChange}) {
+function Canvas ({
+  pagedFrames,
+  fileData,
+  exportSettings,
+  settings,
+  onHeaderBack,
+  currentFrameId,
+  changeGlobalData
+}) {
+
   useEffect(() => {
     document.body.classList.add('heron-handoff')
     return () => {
       document.body.classList.remove('heron-handoff')
     }
   })
+
+  useEffect(() => {
+    changeGlobalData('currentFrameId', currentFrameId)
+  }, [currentFrameId])
+
   return (
     <I18nextProvider i18n={i18n}>
       <App
@@ -19,10 +34,9 @@ function Canvas ({pagedFrames, fileData, exportSettings, settings, onHeaderBack,
         exportSettings={exportSettings}
         settings={settings}
         onHeaderBack={onHeaderBack}
-        onFrameChange={onFrameChange}
       />
     </I18nextProvider>
   )
 }
 
-export default Canvas
+export default withGlobalContextProvider(Canvas)

@@ -80,19 +80,19 @@ export const filterFrameOptions = (frameOptions, value) => {
   .filter(p => !!p)
 }
 
-export const getFlattedFrames = (pagedFrames, needCheck=true) => {
-  let flattedFrames = []
+export const getFlattenedFrames = (pagedFrames, needCheck=true) => {
+  let flattenedFrames = []
   Object.keys(pagedFrames)
     // eslint-disable-next-line
     .map(pageId => {
-      flattedFrames = flattedFrames
+      flattenedFrames = flattenedFrames
         .concat(
           pagedFrames[pageId].frames
             .filter(({checked}) => needCheck ? checked : true)
-            .map(({id, name}) => ({id, name}))
+            .map(({id, name}) => ({id, name, pageId}))
         )
     })
-  return flattedFrames
+  return flattenedFrames
 }
 
 export const getStyleItems = (node, key) =>

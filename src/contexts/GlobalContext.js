@@ -2,7 +2,8 @@ import React, { createContext, useState } from 'react'
 
 const GlobalContext = createContext({
   globalData: {
-    percentageMode: false
+    percentageMode: false,
+    currentFrameId: ''
   },
   changeGlobalData: () => {}
 })
@@ -15,14 +16,16 @@ export const withGlobalContextConsumer = (Component) =>
 
 export const withGlobalContextProvider = (Component) => {
   return props => {
-    const [globalData, setGlobalData] = useState({ percentageMode: false })
+    const [globalData, setGlobalData] = useState({ percentageMode: false, currentFrameId: '' })
+  
     const handleChangeGlobalData = (property, value) => {
       const newGlobalData = {...globalData, [property]: value}
       setGlobalData(newGlobalData)
     }
+  
     return (
       <GlobalContext.Provider value={{globalData, changeGlobalData: handleChangeGlobalData}}>
-        <Component {...props}/>
+        <Component {...props} globalData={globalData} changeGlobalData={handleChangeGlobalData}/>
       </GlobalContext.Provider>
     )
   }

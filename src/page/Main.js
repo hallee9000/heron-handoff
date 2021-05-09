@@ -5,7 +5,7 @@ import RightPanels from './right'
 import Canvas from './canvas'
 import './main.scss'
 
-export default class Main extends React.Component {
+class Main extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -23,7 +23,7 @@ export default class Main extends React.Component {
     }
   }
   handleSelectFrameOrComponent = (currentId, currentImageUrl, pageId) => {
-    const { data, components, onNamesChange, onFrameChange } = this.props
+    const { data, components, onNamesChange } = this.props
     const { id } = this.state
     if (id===currentId) return
     const currentPage = pageId ? data.document.children.find(({id}) => id===pageId) : {}
@@ -33,9 +33,7 @@ export default class Main extends React.Component {
       currentImageUrl,
       canvasData
     })
-    
     onNamesChange && onNamesChange(canvasData.name, currentPage.name)
-    onFrameChange && onFrameChange(currentId)
     this.handleDeselect()
   }
   handleSelectElement = (elementData, index, closestComponent) => {
@@ -132,3 +130,5 @@ export default class Main extends React.Component {
     )
   }
 }
+
+export default Main

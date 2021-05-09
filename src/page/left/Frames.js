@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import FrameSelector from './FrameSelector'
-import { getImageUrl, getBackgroundImageUrl } from 'utils/helper'
+import { getImageUrl, getBackgroundImageUrl, getFlattenedFrames } from 'utils/helper'
 
 class Frames extends React.Component {
   constructor (props) {
@@ -14,7 +15,8 @@ class Frames extends React.Component {
       pageId,
       frames,
       frameId,
-      frameImageUrl
+      frameImageUrl,
+      flattenedFrames: getFlattenedFrames(props.pagedFrames, false)
     }
     onFrameChange(frameId, frameImageUrl, pageId)
   }
@@ -48,13 +50,35 @@ class Frames extends React.Component {
     this.setState({ frameId, frameImageUrl })
     onFrameChange(frameId, frameImageUrl, pageId)
   }
-  componentDidUpdate(prevProps) {
+  gotoInitialFrame = prevProps => {
+    const { globalData, onFrameChange } = this.props
+    const { currentFrameId } = globalData
+    const { flattenedFrames } = this.state
+    const currentFrame = flattenedFrames.find(({id}) => id===currentFrameId)
+    if (
+      currentFrameId &&
+      currentFrameId!==prevProps.globalData.currentFrameId &&
+      currentFrame
+    ) {
+      const { frameId, frameImageUrl, frames } = this.getFrameMeta(currentFrame.pageId, currentFrameId)
+      this.setState({
+        pageId: currentFrame.pageId,
+        frameId,
+        frames,
+        frameImageUrl
+      }, () => {
+        onFrameChange(frameId, frameImageUrl, currentFrame.pageId)
+      })
+    }
+  }
+  componentDidUpdate (prevProps) {
     const { onFrameChange } = this.props
     const { pageId, frameId, frameImageUrl } = this.state
     // when tab changing
     if (this.props.visible && (this.props.visible !== prevProps.visible)) {
       onFrameChange(frameId, frameImageUrl, pageId)
     }
+    this.gotoInitialFrame(prevProps)
   }
   render () {
     const { pagedFrames, visible, mode, isMock } = this.props
@@ -95,4 +119,4 @@ class Frames extends React.Component {
   }
 }
 
-export default withTranslation('left')(Frames)
+export default withGlobalContextConsumer(withTranslation('left')(Frames))

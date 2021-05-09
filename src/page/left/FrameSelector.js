@@ -91,11 +91,11 @@ class FrameSelector extends React.Component {
     return `${page.label} / ${frame.label}`
   }
   componentDidUpdate(prevProps) {
-    const { frameId } = this.props
+    const { frameId, pageId: upcomingPageId } = this.props
     const { selectedValue } = this.state
     // when frame changing by sider click
     if (frameId !== prevProps.frameId && frameId !== selectedValue[1]) {
-      const pageId = selectedValue[0]
+      const pageId = upcomingPageId!==selectedValue[0] ? upcomingPageId : selectedValue[0]
       this.setState({
         selectedValue: [pageId, frameId],
         selectedText: this.getSelectedTextByValue(pageId, frameId)
