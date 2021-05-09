@@ -24,7 +24,7 @@ const config = {
   input: './src/lib/index.js',
   output: [
     {
-      sourcemap: isProduction ? 'inline' : false,
+      sourcemap: isProduction ? false : 'inline',
       file: pkg.main,
       format: 'cjs',
       exports: 'named'
