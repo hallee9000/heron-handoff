@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { withTranslation } from 'react-i18next'
 import marked from 'marked'
-import changelog from './changelog.mdx';
+import changelog from './changelog.md';
 
 const isModule = process.env.IS_MODULE
 
