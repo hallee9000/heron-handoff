@@ -1,6 +1,8 @@
 import React from 'react'
 import cn from 'classnames'
 import { withGlobalSettings } from 'contexts/SettingsContext'
+import { Copy } from 'react-feather'
+import { WithCopy } from 'components/utilities'
 import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
 import canvasWrapper from './canvasWrapper'
 import Distance from './Distance'
@@ -263,7 +265,12 @@ class Canvas extends React.Component {
                 >
                   {
                     isComponent && closestComponentIndex===index &&
-                    <div className="layer-component">{ closestComponent.name }</div>
+                    <div className="layer-component">
+                      <WithCopy text={closestComponent.name} className="component-copy">
+                        { closestComponent.name }
+                        <Copy size={12}/>
+                      </WithCopy>
+                    </div>
                   }
                   {
                     ['width', 'height'].map(whichSide =>

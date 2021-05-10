@@ -64,9 +64,16 @@
         top: -19px;
         left: -1px;
         width: max-content;
-        padding: 0 6px;
         color: $white-85;
         background-color: $component-color;
+        .component-copy {
+          padding: 0 6px;
+          cursor: pointer;
+          >svg {
+            vertical-align: middle;
+            margin-left: 4px;
+          }
+        }
       }
       &-sizing{
         display: none;
@@ -75,6 +82,7 @@
         border-radius: 2px;
         background: $mark-selected;
         font-size: 12px;
+        pointer-events: none;
       }
       &-width{
         top: -22px;
