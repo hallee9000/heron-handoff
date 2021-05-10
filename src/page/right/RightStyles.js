@@ -90,6 +90,7 @@ class RightStyles extends React.Component {
                           styles={style.items}
                           styleName={style.name}
                           styleType={style.styleType}
+                          isSelectable
                           onClick={() => onShowDetail(style)}
                         />
                       </li>

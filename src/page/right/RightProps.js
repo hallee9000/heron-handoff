@@ -90,6 +90,10 @@ class RightProps extends React.Component {
     const { styles: effectItems } = getEffectsStyle(effects)
     const code = getCode(node, fillItems, strokeItems, effectItems, textStyle, globalSettings)
     const styledCode = Prism.highlight(code, Prism.languages.css, 'css')
+    const fillMetaViaible = this.styleMetaVisible(nodeStyles, 'fill')
+    const strokeMetaViaible = this.styleMetaVisible(nodeStyles, 'stroke')
+    const textMetaViaible = this.styleMetaVisible(nodeStyles, 'text')
+    const effectMetaViaible = this.styleMetaVisible(nodeStyles, 'effect')
 
     return (
       <div
@@ -164,7 +168,7 @@ class RightProps extends React.Component {
             node={node}
             styles={styles}
             nodeStyles={nodeStyles}
-            stylePropertiesVisible={this.styleMetaVisible(nodeStyles, 'text')}
+            stylePropertiesVisible={textMetaViaible}
             propsSider={this.propsSider.current}
             onSwitch={this.handleTextChange}
             onGetStyle={this.handleStyleGot}
@@ -178,7 +182,7 @@ class RightProps extends React.Component {
             <h5 className="section-title">
               <span className="title-name">{t('fill')}</span>
               {
-                !isPieceSelected &&
+                !isPieceSelected && !fillMetaViaible &&
                 <StyleReference
                   styleItems={fills}
                   styles={styles}
@@ -189,7 +193,7 @@ class RightProps extends React.Component {
               }
             </h5>
             {
-              this.styleMetaVisible(nodeStyles, 'fill') ?
+              fillMetaViaible ?
               <StyleMeta
                 nodeStyles={nodeStyles}
                 type="fill"
@@ -212,16 +216,19 @@ class RightProps extends React.Component {
           <div className="props-section props-strokes">
             <h5 className="section-title">
               <span className="title-name">{t('stroke')}</span>
-              <StyleReference
-                styleItems={strokes}
-                styles={styles}
-                nodeStyles={nodeStyles}
-                type="stroke"
-                onShowStyleDetail={this.handleStyleDetailShow}
-              />
+              {
+                !strokeMetaViaible &&
+                <StyleReference
+                  styleItems={strokes}
+                  styles={styles}
+                  nodeStyles={nodeStyles}
+                  type="stroke"
+                  onShowStyleDetail={this.handleStyleDetailShow}
+                />
+              }
             </h5>
             {
-              this.styleMetaVisible(nodeStyles, 'stroke') ?
+              strokeMetaViaible ?
               <StyleMeta
                 nodeStyles={nodeStyles}
                 type="stroke"
@@ -257,16 +264,19 @@ class RightProps extends React.Component {
           <div className="props-section props-effects">
             <h5 className="section-title">
               <span className="title-name">{t('effect')}</span>
-              <StyleReference
-                styleItems={effects}
-                styles={styles}
-                nodeStyles={nodeStyles}
-                type="effect"
-                onShowStyleDetail={this.handleStyleDetailShow}
-              />
+              {
+                !effectMetaViaible &&
+                <StyleReference
+                  styleItems={effects}
+                  styles={styles}
+                  nodeStyles={nodeStyles}
+                  type="effect"
+                  onShowStyleDetail={this.handleStyleDetailShow}
+                />
+              }
             </h5>
             {
-              this.styleMetaVisible(nodeStyles, 'effect') ?
+              effectMetaViaible ?
               <StyleMeta
                 nodeStyles={nodeStyles}
                 type="effect"

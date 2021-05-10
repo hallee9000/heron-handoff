@@ -53,7 +53,7 @@ class FontPanel extends React.Component {
         <h5 className="section-title">
           <span className="title-name">{t('text')}</span>
           {
-            selected===null &&
+            selected===null && !stylePropertiesVisible &&
             <StyleReference
               styleItems={style}
               styles={styles}

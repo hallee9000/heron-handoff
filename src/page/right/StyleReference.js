@@ -24,7 +24,7 @@ const StyleReference = ({styleItems, styles, nodeStyles, type, onShowStyleDetail
         styles={styleItems}
         styleName={styleReference.name}
         styleType={styleType.toUpperCase()}
-        isHoverable={false}
+        isHoverable={!styleReference.remote}
       />
       {
         !styleReference.remote &&
