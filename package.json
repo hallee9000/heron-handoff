@@ -14,7 +14,7 @@
   "homepage": "https://github.com/leadream/figma-handoff#readme",
   "author": "leadream",
   "repository": "https://github.com/leadream/figma-handoff.git",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "license": "AGPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,8 +38,8 @@
     "react-i18next": "^11.3.1"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
