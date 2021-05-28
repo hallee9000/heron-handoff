@@ -59,13 +59,24 @@
         border-color: rgba($color: $primary-color, $alpha: 0.12);
         background-color: rgba($color: $primary-color, $alpha: 0.12);
       }
-      &-component{
+      &-artboard {
+        position: absolute;
+        top: -20px;
+        left: -1px;
+        width: max-content;
+        padding: 0 6px;
+        color: $white-85;
+        border-radius: 4px 4px 0 0;
+        background-color: $black-4;
+      }
+      &-component {
         position: absolute;
         top: -19px;
         left: -1px;
         width: max-content;
         color: $white-85;
         background-color: $component-color;
+        z-index: 1;
         .component-copy {
           padding: 0 6px;
           cursor: pointer;
@@ -84,6 +95,7 @@
         background: $mark-selected;
         font-size: 12px;
         pointer-events: none;
+        z-index: 1;
       }
       &-width{
         top: -22px;

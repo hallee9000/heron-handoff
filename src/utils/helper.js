@@ -89,7 +89,7 @@ export const getFlattenedFrames = (pagedFrames, needCheck=true) => {
         .concat(
           pagedFrames[pageId].frames
             .filter(({checked}) => needCheck ? checked : true)
-            .map(({id, name}) => ({id, name, pageId}))
+            .map(frame => ({...frame, pageId}))
         )
     })
   return flattenedFrames

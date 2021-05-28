@@ -30,7 +30,7 @@
       display: flex;
       justify-content: space-around;
       padding: 0 12px;
-      border-bottom: 1px solid #383941;
+      border-bottom: 1px solid $black-4;
       li{
         padding: 8px 0;
         font-size: 12px;
@@ -51,6 +51,7 @@
       .list-filter{
         position: relative;
         padding: 12px;
+        border-bottom: 1px solid $black-4;
         >.filter-clear{
           position: absolute;
           right: 16px;
@@ -63,10 +64,10 @@
           }
         }
       }
-      .list-items{
+      .list-container{
         height: calc(100% - 50px);
         overflow: auto;
-        li{
+        .list-item {
           display: flex;
           align-items: center;
           padding: 12px;
@@ -77,44 +78,67 @@
           &:hover{
             background: #141723;
           }
-          &.list-item-hidden{
+          &-hidden{
             display: none;
           }
           &.selected{
             background: #303446;
           }
           .item-thumbnail{
+            flex-shrink: 0;
             width: 46px;
             height: 46px;
-            margin-right: 6px;
+            margin-right: 8px;
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
             background-color: #111421;
           }
-        }
-        &.list-frames{
-          li{
-            span{
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-            .item-thumbnail{
-              flex: 0 0 46px;
-            }
+          span {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
         }
-        &.list-components{
-          li{
-            span{
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+        &.frames {
+          .frames-page {
+            border-bottom: 1px solid $black-4;
+            &:last-child {
+              border-bottom: none;
             }
-            .item-thumbnail{
-              flex: 0 0 46px;
-              border: 1px solid #8d77fc;
+            h4 {
+              position: sticky;
+              top: 0;
+              display: flex;
+              align-items: center;
+              margin: 0;
+              padding: 6px 12px;
+              font-size: 12px;
+              color: $white-65;
+              background-color: $black-3;
+              cursor: pointer;
+              z-index: 1;
+              span {
+                flex: 1;
+              }
+              svg {
+                transition: transform 0.2s;
+              }
+              &:hover{
+                background: $black-2;
+              }
+            }
+            >ul {
+              transition: height 0.2s;
+              overflow: hidden;
+            }
+            &-collapsed {
+              h4 svg {
+                transform: rotate(180deg);
+              }
+              >ul {
+                height: 0!important;
+              }
             }
           }
         }

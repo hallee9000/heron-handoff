@@ -1,75 +1,84 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
+import { ChevronDown } from 'react-feather'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
-import FrameSelector from './FrameSelector'
+import Search from './Search'
 import { getImageUrl, getBackgroundImageUrl, getFlattenedFrames } from 'utils/helper'
 
 class Frames extends React.Component {
   constructor (props) {
     super(props)
-    const { onFrameChange } = props
-    const pageId = Object.keys(props.pagedFrames)[0]
-    const { frames, frameId, frameImageUrl } = this.getFrameMeta(pageId)
+    // show first page first frame initially
+    const { pageId, frameId, frameImageUrl } = this.getFirstFrameMeta()
     this.state = {
+      searchValue: '',
+      collapsedPages: [],
       pageId,
-      frames,
       frameId,
-      frameImageUrl,
-      flattenedFrames: getFlattenedFrames(props.pagedFrames, false)
-    }
-    onFrameChange(frameId, frameImageUrl, pageId)
-  }
-  getFrameMeta = (pageId, frameId) => {
-    const { pagedFrames, mode, isMock } = this.props
-    const { frames } = pagedFrames[pageId]
-    const currentFrame = frameId ? frames.find(({id}) => id===frameId) : frames[0]
-    const frameImageUrl = getImageUrl(currentFrame, mode, isMock)
-    return {
-      frames,
-      frameId: currentFrame.id,
       frameImageUrl
     }
   }
-  handlePageChange = (pageId, frameId) => {
-    const { onFrameChange } = this.props
-    const { frameImageUrl, frames } = this.getFrameMeta(pageId, frameId)
-    this.setState({
-      pageId,
-      frameId,
-      frames,
-      frameImageUrl
-    }, () => {
-      onFrameChange(frameId, frameImageUrl, pageId)
-    })
-  }
-  handleFrameSelect = frameId => {
-    const { onFrameChange } = this.props
-    const { pageId } = this.state
-    const { frameImageUrl } = this.getFrameMeta(pageId, frameId)
-    this.setState({ frameId, frameImageUrl })
+  getFirstFrameMeta = () => {
+    const { pagedFrames, mode, isMock, onFrameChange } = this.props
+    const pageId = Object.keys(pagedFrames)[0]
+    const firstFrame = pagedFrames[pageId].frames[0]
+    const frameId = firstFrame.id
+    const frameImageUrl = getImageUrl(firstFrame, mode, isMock)
     onFrameChange(frameId, frameImageUrl, pageId)
+    return { pageId, frameId, frameImageUrl }
   }
-  gotoInitialFrame = prevProps => {
-    const { globalData, onFrameChange } = this.props
+  changeFrameByIdProperty = prevProps => {
+    const { pagedFrames, onFrameChange, globalData, mode, isMock } = this.props
     const { currentFrameId } = globalData
-    const { flattenedFrames } = this.state
+    const flattenedFrames = getFlattenedFrames(pagedFrames, false)
     const currentFrame = flattenedFrames.find(({id}) => id===currentFrameId)
     if (
       currentFrameId &&
       currentFrameId!==prevProps.globalData.currentFrameId &&
       currentFrame
     ) {
-      const { frameId, frameImageUrl, frames } = this.getFrameMeta(currentFrame.pageId, currentFrameId)
+      const pageId = currentFrame.pageId
+      const frameId = currentFrame.id
+      const frameImageUrl = getImageUrl(currentFrame, mode, isMock)
       this.setState({
-        pageId: currentFrame.pageId,
+        pageId,
         frameId,
-        frames,
         frameImageUrl
       }, () => {
-        onFrameChange(frameId, frameImageUrl, currentFrame.pageId)
+        onFrameChange(frameId, frameImageUrl, pageId)
       })
     }
+  }
+  handleFrameSelect = (frame, pageId) => {
+    const { onFrameChange, mode, isMock } = this.props
+    const frameImageUrl = getImageUrl(frame, mode, isMock)
+    this.setState({
+      pageId,
+      frameId: frame.id,
+      frameImageUrl
+    })
+    onFrameChange(frame.id, frameImageUrl, pageId)
+  }
+  togglePage = key => {
+    const { collapsedPages } = this.state
+    const index = collapsedPages.indexOf(key)
+    const newExpandedPages = [...collapsedPages]
+    index>=0 ? newExpandedPages.splice(index, 1) : newExpandedPages.push(key)
+    this.setState({
+      collapsedPages: newExpandedPages
+    })
+  }
+  clearSearch = () => {
+    this.setState({
+      searchValue: ''
+    })
+  }
+  handleSearchChange = e => {
+    const searchValue = e.target.value
+    this.setState({
+      searchValue
+    })
   }
   componentDidUpdate (prevProps) {
     const { onFrameChange } = this.props
@@ -78,40 +87,54 @@ class Frames extends React.Component {
     if (this.props.visible && (this.props.visible !== prevProps.visible)) {
       onFrameChange(frameId, frameImageUrl, pageId)
     }
-    this.gotoInitialFrame(prevProps)
+    this.changeFrameByIdProperty(prevProps)
   }
   render () {
     const { pagedFrames, visible, mode, isMock } = this.props
-    const { frames, pageId, frameId } = this.state
+    const { frameId, searchValue, collapsedPages } = this.state
     return (
       <Fragment>
-        <div className={cn('list-filter', {hide: !visible})}>
-          <FrameSelector
-            pageId={pageId}
-            frameId={frameId}
-            pagedFrames={pagedFrames}
-            onSelected={this.handlePageChange}
-          />
-        </div>
-        <ul className={cn('list-items list-frames', {hide: !visible})}>
+        <Search
+          visible={visible}
+          value={searchValue}
+          onChange={this.handleSearchChange}
+          onClear={this.clearSearch}
+        />
+        <ul className={cn('list-container frames', {hide: !visible})}>
           {
-            frames.map(
-              frame =>
-                <li
-                  key={frame.id}
-                  title={frame.name}
-                  className={cn({selected: frameId===frame.id})}
-                  onClick={() => this.handleFrameSelect(frame.id)}
-                >
-                  <div
-                    className="item-thumbnail"
-                    style={{
-                      backgroundImage: getBackgroundImageUrl(frame, mode, isMock)
-                    }}
-                  />
-                  <span>{frame.name}</span>
+            Object.keys(pagedFrames).map(key => {
+              const frames = pagedFrames[key].frames.filter(({name}) => name.toLowerCase().includes(searchValue))
+              return (
+                <li key={key} className={cn('frames-page', {'frames-page-collapsed': collapsedPages.includes(key)})}>
+                  <h4 onClick={() => this.togglePage(key)}>
+                    <span>{pagedFrames[key].name}</span>
+                    <ChevronDown size={16}/>
+                  </h4>
+                  <ul className="frames-items" style={{height: `${frames.length*70}px`}}>
+                    {
+                      frames
+                        .map(
+                          frame =>
+                            <li
+                              key={frame.id}
+                              title={frame.name}
+                              className={cn('list-item', {selected: frameId===frame.id})}
+                              onClick={() => this.handleFrameSelect(frame, key)}
+                            >
+                              <div
+                                className="item-thumbnail"
+                                style={{
+                                  backgroundImage: getBackgroundImageUrl(frame, mode, isMock)
+                                }}
+                              />
+                              <span>{frame.name}</span>
+                            </li>
+                        )
+                    }
+                  </ul>
                 </li>
-            )
+              )
+            })
           }
         </ul>
       </Fragment>

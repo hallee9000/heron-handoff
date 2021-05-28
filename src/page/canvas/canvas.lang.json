@@ -1,5 +1,6 @@
 {
   "en": {
+    "artboard": "Artboard",
     "tips": "Tips",
     "zoom": "Pinch or scroll to zoom",
     "drag": "Press space or middle key of mouse to drag",
@@ -10,6 +11,7 @@
     "exports": "Select outer frame to show all exports"
   },
   "zh": {
+    "artboard": "画板",
     "tips": "小提示",
     "zoom": "两指捏放或滚动鼠标滚轮进行缩放",
     "drag": "按住鼠标中键或空格键可以拖拽画布",

@@ -52,6 +52,8 @@
     }
   }
   .header-operates{
+    display: flex;
+    align-items: center;
     span, a{
       display: inline-block;
       height: 40px;

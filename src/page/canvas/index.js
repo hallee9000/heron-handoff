@@ -215,7 +215,7 @@ class Canvas extends React.Component {
     }
   }
   render () {
-    const { currentImageUrl, size, percentageMode, globalSettings } = this.props
+    const { currentImageUrl, size, percentageMode, globalSettings, t } = this.props
     const {
       rects,
       closestComponentIndex,
@@ -263,6 +263,9 @@ class Canvas extends React.Component {
                   onDoubleClick={() => this.selectMask(rect)}
                   onMouseOver={() => this.onHover(rect, index)}
                 >
+                  {
+                    index===0 && <div className="layer-artboard">{t('artboard')} {rect.node.name}</div>
+                  }
                   {
                     isComponent && closestComponentIndex===index &&
                     <div className="layer-component">

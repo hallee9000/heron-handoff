@@ -29,7 +29,6 @@
     "jszip": "^3.2.2",
     "marked": "^0.8.0",
     "prismjs": "^1.23.0",
-    "rc-cascader": "^1.0.1",
     "rc-input-number": "^4.5.3",
     "rc-tooltip": "^4.0.0-alpha.3",
     "react": "^17.0.2",
