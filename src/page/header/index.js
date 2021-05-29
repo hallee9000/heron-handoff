@@ -13,7 +13,8 @@ class Header extends React.Component {
     return !!(pageName && frameName)
   }
   render () {
-    const { mode, documentName, pageName, frameName, isComponent, onBack, t } = this.props
+    const { mode, documentName, pageName, frameName, isComponent, onBack, links, t } = this.props
+    const { docs, feedback } = links
     const logoVisible = mode==='local' ? true : !this.hasNames()
     return (
       <header className="app-header">
@@ -77,10 +78,10 @@ class Header extends React.Component {
               <FileText size={14}/>
             </span>
           </Overlay>
-          <a title={t('help')} href={t('help link')} target="_blank" rel="noopener noreferrer">
+          <a title={t('help')} href={docs || t('help link')} target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
-          <a title={t('feedback')} href="https://github.com/leadream/figma-handoff/issues" target="_blank" rel="noopener noreferrer">
+          <a title={t('feedback')} href={feedback || 'https://github.com/leadream/figma-handoff/issues'} target="_blank" rel="noopener noreferrer">
             <MessageCircle size={14}/>
           </a>
         </div>

@@ -88,6 +88,7 @@ class App extends React.Component {
     }
   }
   render () {
+    const { links } = this.props
     const {
       entryVisible, mode, isMock, includeComponents, data, components, styles,
       exportSettings, pagedFrames, names, globalSettings, backFromDemo
@@ -98,6 +99,7 @@ class App extends React.Component {
           <Header
             mode={mode}
             onBack={this.handleBack}
+            links={links||{}}
             {...names}
           />
         </SettingsContext.Provider>

@@ -10,6 +10,7 @@ function Canvas ({
   exportSettings,
   settings,
   onHeaderBack,
+  links,
   currentFrameId,
   changeGlobalData
 }) {
@@ -34,6 +35,7 @@ function Canvas ({
         exportSettings={exportSettings}
         settings={settings}
         onHeaderBack={onHeaderBack}
+        links={links}
       />
     </I18nextProvider>
   )
