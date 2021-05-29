@@ -1,18 +1,13 @@
 # Figma Heron Handoff
 
-**Plugin is available now! Click [here](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) to install.**
-
 [中文说明](./README-CN.md)
 
-## Introduction
+[Heron Handoff](https://heron.design) can help you export developer-handoff files with design specs. This project is the template you generate from, to generate handoff file You need to install [Heron Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) first.
+
+- Demo: https://figmacn.com/handoff?demo=true
+- Plugin code: https://github.com/leadream/figma-juuust-handoff-plugin
 
 <img alt="Overview" src="./imgs/overview.png"/>
-
-Heron Handoff can help you generate offline file with design specs. It's useful for developers handoff. This project is the template you generate from, to generate handoff file You need to install [Heron Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) first.
-
-For more information please visit https://figmacn.com/handoff/.
-
-Click [here](https://figmacn.com/handoff?demo=1) to see a demo.
 
 ## Usage
 
