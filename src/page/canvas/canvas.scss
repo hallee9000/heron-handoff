@@ -6,6 +6,17 @@
     display: block;
     width: 100%;
   }
+  .mark-artboard-name {
+    position: absolute;
+    top: -18px;
+    left: 0;
+    width: max-content;
+    padding: 0 6px;
+    font-size: 12px;
+    color: $white-85;
+    border-radius: 4px 4px 0 0;
+    background-color: $black-4;
+  }
   .mark-layers{
     position: absolute;
     width: 100%;
@@ -58,16 +69,6 @@
         opacity: 1;
         border-color: rgba($color: $primary-color, $alpha: 0.12);
         background-color: rgba($color: $primary-color, $alpha: 0.12);
-      }
-      &-artboard {
-        position: absolute;
-        top: -20px;
-        left: -1px;
-        width: max-content;
-        padding: 0 6px;
-        color: $white-85;
-        border-radius: 4px 4px 0 0;
-        background-color: $black-4;
       }
       &-component {
         position: absolute;

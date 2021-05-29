@@ -215,7 +215,7 @@ class Canvas extends React.Component {
     }
   }
   render () {
-    const { currentImageUrl, size, percentageMode, globalSettings, t } = this.props
+    const { currentImageUrl, size, percentageMode, globalSettings } = this.props
     const {
       rects,
       closestComponentIndex,
@@ -233,6 +233,10 @@ class Canvas extends React.Component {
     return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
         <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
+          {
+            rects[0] && !rects[0].isComponent &&
+            <div className="mark-artboard-name" onClick={() => this.onSelect(rects[0], 0)}>{rects[0].title}</div>
+          }
           {
             selectedIndex!==null && (selectedIndex!==hoveredIndex) &&
             <Ruler rulerData={markData.rulerData}/>
@@ -263,9 +267,6 @@ class Canvas extends React.Component {
                   onDoubleClick={() => this.selectMask(rect)}
                   onMouseOver={() => this.onHover(rect, index)}
                 >
-                  {
-                    index===0 && <div className="layer-artboard">{t('artboard')} {rect.node.name}</div>
-                  }
                   {
                     isComponent && closestComponentIndex===index &&
                     <div className="layer-component">

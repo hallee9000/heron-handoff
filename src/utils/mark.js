@@ -83,7 +83,8 @@ export const generateRects = (nodes, docRect, globalSettings) => {
       const clazz = []
       isComponent && clazz.push('component')
       isGroup && clazz.push('group')
-      hasExports && clazz.push('has-exports')
+      // don't add on artboard
+      hasExports && index && clazz.push('has-exports')
 
       const currentPaths = !parentPaths ? [innerIndex] : [...parentPaths, innerIndex]
       if (hasExports) {
