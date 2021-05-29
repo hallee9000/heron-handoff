@@ -14,7 +14,7 @@
   "homepage": "https://github.com/leadream/figma-handoff#readme",
   "author": "leadream",
   "repository": "https://github.com/leadream/figma-handoff.git",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "license": "AGPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
