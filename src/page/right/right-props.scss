@@ -66,6 +66,38 @@
         }
       }
     }
+    &.props-component {
+      .component-variants {
+        margin-top: 4px;
+        >li {
+          margin-bottom: 4px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+          >span {
+            display: flex;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 12px;
+            transition: background 0.2s;
+            overflow: hidden;
+            cursor: pointer;
+            &:hover {
+              background-color: #1C1F2A;
+            }
+            .property-label {
+              flex-shrink: 0;
+              width: 60px;
+              margin-right: 6px;
+              color: $white-36;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+          }
+        }
+      }
+    }
     &.props-basic{
       .section-items{
         display: flex;

@@ -153,11 +153,31 @@ class RightProps extends React.Component {
         }
         {
           closestComponent &&
-          <div className="props-section">
+          <div className="props-section props-component">
             <h5 className="section-title section-name">{t('component')}: { closestComponent.name }</h5>
             {
               closestComponent.description &&
               <p className="section-helper">{ closestComponent.description }</p>
+            }
+            {
+              closestComponent.variantProperties &&
+              <ul className="component-variants">
+                {
+                  closestComponent.variantProperties.map((p, i) =>
+                    <li key={i}>
+                      <WithCopy
+                        text={ Array.isArray(p) ? `${p[0]} = ${p[1]}` : p }
+                      >
+                        {
+                          Array.isArray(p) ?
+                          <><span className="property-label">{p[0]}</span>{p[1]}</> :
+                          p
+                        }
+                      </WithCopy>
+                    </li>
+                  )
+                }
+              </ul>
             }
           </div>
         }

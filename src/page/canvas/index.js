@@ -144,10 +144,13 @@ class Canvas extends React.Component {
     let closestComponent
     if (hasIndex) {
       const { node } = rects[closestComponentIndex]
+      const { variantProperties } = node
       if (node.type==='COMPONENT') {
-        closestComponent = { name: node.name, description: node.description }
+        const { name, description } = node
+        closestComponent = { name, description, variantProperties }
       } else {
-        closestComponent = { name: node.mainComponent.name, description: node.mainComponent.description }
+        const { name, description } = node.mainComponent
+        closestComponent = { name, description, variantProperties }
       }
     } else {
       closestComponent = null
