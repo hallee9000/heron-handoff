@@ -57,7 +57,6 @@ export const DEFAULT_SETTINGS = {
   numberFormat: 0,
   colorFormat: 0,
   language: 'zh',
-  showAllExports: true,
   disableInspectExportInner: false,
   disableInspectInComponent: false,
   notShowStyleProperties: false,

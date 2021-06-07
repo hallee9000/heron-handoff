@@ -210,9 +210,17 @@ class Canvas extends React.Component {
     if (!elementData && (elementData !== prevProps.elementData)) {
       this.resetMark()
     }
-    const { id, currentImageUrl } = this.props
+    const { id, currentImageUrl, globalSettings } = this.props
     if (id !== prevProps.id && currentImageUrl!==prevProps.currentImageUrl) {
       this.setState({ isChanging: true })
+      this.resetMark()
+      this.generateMark()
+    }
+    if (
+      prevProps.globalSettings.disableInspectInComponent !== globalSettings.disableInspectInComponent ||
+      prevProps.globalSettings.disableInspectExportInner !== globalSettings.disableInspectExportInner
+    ) {
+      console.log(1)
       this.resetMark()
       this.generateMark()
     }
@@ -230,12 +238,11 @@ class Canvas extends React.Component {
       pageRect,
       closedCommonParent
     } = this.state
-    const { showAllExports, disableInspectInComponent } = globalSettings
-    const exportsVisible = selectedIndex===0 && showAllExports
+    const { disableInspectInComponent } = globalSettings
     const frameStyle = this.getBound()
     return (
       <div className="container-mark" onMouseLeave={this.onLeave}>
-        <div className={cn('mark-layers', {'mark-layers-exports-visible': exportsVisible})} style={frameStyle}>
+        <div className={cn('mark-layers', {'mark-layers-exports-visible': selectedIndex===0})} style={frameStyle}>
           {
             rects[0] && !rects[0].isComponent &&
             <div className="mark-artboard-name" onClick={() => this.onSelect(rects[0], 0)}>{rects[0].title}</div>

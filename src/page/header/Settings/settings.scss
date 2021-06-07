@@ -11,21 +11,23 @@
     .form-item{
       &-checkbox{
         label{
-          display: block;
+          display: flex;
+          align-items: center;
           padding: 2px 0;
-          color: $white-85;
+          color: $white-100;
           transition: color 0.2s;
           cursor: pointer;
           &:hover{
-            color: $white-100;
+            color: $white-85;
           }
           input {
-            vertical-align: middle;
             margin-right: 4px;
           }
         }
         .help-block{
-          margin-left: 16px;
+          margin-left: 24px;
+          padding: 0;
+          font-size: 12px;
         }
       }
     }

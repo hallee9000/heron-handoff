@@ -29,11 +29,12 @@
     "floored integer": "floored integer",
     "ceiled integer": "ceiled integer",
     "language": "Language",
-    "show all exports when selecting outer": "Show all exports while outer frame selected",
     "exports inner selecting not allowed": "Don't allow to inspect in exports' inner",
+    "exports inner selecting not allowed tip": "You can't inspect inner if layer has sliced images.",
     "disable inspect in component": "Disable inspecting in component",
-    "refresh to make it work tip": "You need to change Frame or refresh to make it work after changing.",
-    "do not show style properties": "Don't show style properties"
+    "disable inspect in component tip": "You can't inspect inner if layer is a component.",
+    "do not show style properties": "Don't show style properties",
+    "do not show style properties tip": "Only show style name and description."
   },
   "zh": {
     "dealing with": "开始处理 {{name}} ……",
@@ -65,10 +66,11 @@
     "floored integer": "整数，向下取整",
     "ceiled integer": "整数，向上取整",
     "language": "语言",
-    "show all exports when selecting outer": "在选择最外层时显示所有切图",
     "exports inner selecting not allowed": "不允许选中切图（Export）内部图层",
+    "exports inner selecting not allowed tip": "勾选后，选择图层时选不到包含切图的图层内部。",
     "disable inspect in component": "不允许选中组件内部图层",
-    "refresh to make it work tip": "更改此设置后需要切换 Frame 或刷新才生效。",
-    "do not show style properties": "不展示样式详细属性"
+    "disable inspect in component tip": "勾选后，选择图层时选不到组件的内部。",
+    "do not show style properties": "不展示样式详细属性",
+    "do not show style properties tip": "勾选后，在右边仅展示样式名和样式描述。"
   }
 }

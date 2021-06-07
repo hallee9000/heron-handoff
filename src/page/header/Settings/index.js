@@ -24,7 +24,7 @@ class Settings extends Component {
   }
   render () {
     const { t, globalSettings, onSettingsChange } = this.props
-    const { language, showAllExports, disableInspectExportInner, disableInspectInComponent, notShowStyleProperties } = this.state
+    const { language, disableInspectExportInner, disableInspectInComponent, notShowStyleProperties } = this.state
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
       <Mark
@@ -45,17 +45,6 @@ class Settings extends Component {
         <div className="form-item form-item-checkbox">
           <label>
             <input
-              name="showAllExports"
-              type="checkbox"
-              checked={showAllExports}
-              onChange={this.changeOtherSetting}
-            />
-            {t('show all exports when selecting outer')}
-          </label>
-        </div>
-        <div className="form-item form-item-checkbox">
-          <label>
-            <input
               name="disableInspectExportInner"
               type="checkbox"
               checked={disableInspectExportInner}
@@ -63,7 +52,7 @@ class Settings extends Component {
             />
             {t('exports inner selecting not allowed')}
           </label>
-          <div className="help-block">{t('refresh to make it work tip')}</div>
+          <div className="help-block">{t('exports inner selecting not allowed tip')}</div>
         </div>
         <div className="form-item form-item-checkbox">
           <label>
@@ -75,7 +64,7 @@ class Settings extends Component {
             />
             {t('disable inspect in component')}
           </label>
-          <div className="help-block">{t('refresh to make it work tip')}</div>
+          <div className="help-block">{t('disable inspect in component tip')}</div>
         </div>
         <div className="form-item form-item-checkbox">
           <label>
@@ -87,6 +76,7 @@ class Settings extends Component {
             />
             {t('do not show style properties')}
           </label>
+          <div className="help-block">{t('do not show style properties tip')}</div>
         </div>
       </div>
     </div>
