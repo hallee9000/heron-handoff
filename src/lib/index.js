@@ -12,6 +12,7 @@ function Canvas ({
   onHeaderBack,
   links,
   currentFrameId,
+  otherDisableInspectFunction,
   changeGlobalData
 }) {
 
@@ -20,11 +21,12 @@ function Canvas ({
     return () => {
       document.body.classList.remove('heron-handoff')
     }
-  })
+  }, [])
 
   useEffect(() => {
     changeGlobalData('currentFrameId', currentFrameId)
-  }, [currentFrameId])
+    changeGlobalData('otherDisableInspectFunction', otherDisableInspectFunction)
+  }, [currentFrameId, otherDisableInspectFunction])
 
   return (
     <I18nextProvider i18n={i18n}>

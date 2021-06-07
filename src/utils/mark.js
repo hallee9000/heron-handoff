@@ -34,7 +34,8 @@ export const toFixed = (num, numberFormat=0) => {
 
 // generate box data
 export const generateRects = (nodes, docRect, globalSettings) => {
-  const { disableInspectExportInner, disableInspectInComponent } = globalSettings
+  const { disableInspectExportInner, disableInspectInComponent, otherDisableInspectFunction } = globalSettings
+  console.log(otherDisableInspectFunction)
   let index = 0
   const rects = []
   let exportIds = []
@@ -129,7 +130,8 @@ export const generateRects = (nodes, docRect, globalSettings) => {
         !node.children ||
         node.type==='BOOLEAN_OPERATION' ||
         node.isMask ||
-        (isComponent && disableInspectInComponent)
+        (isComponent && disableInspectInComponent) ||
+        (otherDisableInspectFunction ? otherDisableInspectFunction(node) : false)
       ) {
         // eslint-disable-next-line
         return

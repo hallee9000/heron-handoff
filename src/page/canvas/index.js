@@ -220,7 +220,6 @@ class Canvas extends React.Component {
       prevProps.globalSettings.disableInspectInComponent !== globalSettings.disableInspectInComponent ||
       prevProps.globalSettings.disableInspectExportInner !== globalSettings.disableInspectExportInner
     ) {
-      console.log(1)
       this.resetMark()
       this.generateMark()
     }

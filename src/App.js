@@ -39,6 +39,7 @@ class App extends React.Component {
   initializeGlobalSettings = (settings) => {
     const localSettings = getGlobalSettings()
     const combinedSettings = {...DEFAULT_SETTINGS, ...settings}
+    // TODO: language not recognize local
     if (!localSettings) {
       setGlobalSettings(combinedSettings)
     }
