@@ -36,15 +36,13 @@ class App extends React.Component {
       backFromDemo: false
     }
   }
-  initializeGlobalSettings = (SETTINGS) => {
+  initializeGlobalSettings = (settings) => {
     const localSettings = getGlobalSettings()
-    if (localSettings) {
-      return {...DEFAULT_SETTINGS, ...localSettings}
-    } else {
-      const globalSettings = {...DEFAULT_SETTINGS, ...SETTINGS}
-      setGlobalSettings(globalSettings)
-      return globalSettings
+    const combinedSettings = {...DEFAULT_SETTINGS, ...settings}
+    if (!localSettings) {
+      setGlobalSettings(combinedSettings)
     }
+    return combinedSettings
   }
   setSettings = (name, value) => {
     setGlobalSettings(name, value, globalSettings => {
