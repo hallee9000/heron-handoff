@@ -12,7 +12,6 @@ function Canvas ({
   onHeaderBack,
   links,
   currentFrameId,
-  otherDisableInspectFunction,
   changeGlobalData
 }) {
 
@@ -25,8 +24,7 @@ function Canvas ({
 
   useEffect(() => {
     changeGlobalData('currentFrameId', currentFrameId)
-    changeGlobalData('otherDisableInspectFunction', otherDisableInspectFunction)
-  }, [currentFrameId, otherDisableInspectFunction])
+  }, [currentFrameId])
 
   return (
     <I18nextProvider i18n={i18n}>

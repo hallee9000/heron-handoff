@@ -3,6 +3,7 @@ import { withTranslation } from 'react-i18next'
 import Mark from './Mark'
 import './settings.scss'
 
+// TODO: get language from local
 class Settings extends Component {
   constructor (props) {
     super(props)

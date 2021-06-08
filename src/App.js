@@ -3,7 +3,6 @@ import SettingsContext from 'contexts/SettingsContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
-import { getGlobalSettings, setGlobalSettings } from 'utils/helper'
 import { DEFAULT_SETTINGS } from 'utils/const'
 import 'assets/base.scss'
 import './app.scss'
@@ -37,18 +36,12 @@ class App extends React.Component {
     }
   }
   initializeGlobalSettings = (settings) => {
-    const localSettings = getGlobalSettings()
     const combinedSettings = {...DEFAULT_SETTINGS, ...settings}
-    // TODO: language not recognize local
-    if (!localSettings) {
-      setGlobalSettings(combinedSettings)
-    }
     return combinedSettings
   }
   setSettings = (name, value) => {
-    setGlobalSettings(name, value, globalSettings => {
-      this.setState({ globalSettings })
-    })
+    const { globalSettings } = this.state
+    this.setState({ globalSettings: {...globalSettings, [name]: value} })
   }
   handleDataGot = (fileData, components, styles, exportSettings, pagedFrames) => {
     this.setState({

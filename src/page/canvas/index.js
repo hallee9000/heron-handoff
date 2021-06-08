@@ -201,6 +201,11 @@ class Canvas extends React.Component {
   handleImgLoaded = () => {
     this.setState({ isChanging: false })
   }
+  customInspectDisabledClass = node => {
+    const { globalSettings } = this.props
+    const { disableInspectFunction } = globalSettings
+    return disableInspectFunction && disableInspectFunction(node)
+  }
   componentDidMount () {
     this.generateMark()
   }
@@ -268,6 +273,7 @@ class Canvas extends React.Component {
                       'hovered': hoveredIndex===index,
                       'closest-component': closestComponentIndex===index,
                       'component-inspect-disabled': disableInspectInComponent && isComponent,
+                      'custom-inspect-disabled': this.customInspectDisabledClass(rect.node),
                       'percentage-highlight': this.isPercentageHighlight(rect, index)
                     }
                   )}

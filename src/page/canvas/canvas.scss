@@ -39,6 +39,9 @@
       &.component-inspect-disabled {
         background-color: rgba($color: $component-color, $alpha: 0.16);
       }
+      &.custom-inspect-disabled {
+        background-color: rgba($color: $primary-color, $alpha: 0.16);
+      }
       &.group{
         border-style: dotted;
       }
