@@ -19,9 +19,8 @@ class Settings extends Component {
       [name]: value - 0
     }, () => {
       onSettingsChange(name, value - 0)
-      this.changeResolution(name)
       this.changeUnit(name, value)
-      this.changeResolutionWhenRemOrEm(name, value)
+      this.changeResolution(name, value)
     })
   }
   handleRemBaseChange = value => {
@@ -31,17 +30,18 @@ class Settings extends Component {
       remBase: value
     })
   }
-  changeResolution = name => {
+  changeResolution = (name, value) => {
+    console.log(name, value)
     const { onSettingsChange } = this.props
-    if (name==='platform') {
+    // 当用户选择了 (R)em 时，倍数需要切换到 1
+    if (name==='unit' && (value==='3' || value==='4')) {
       onSettingsChange('resolution', 0)
       this.setState({resolution: 0})
     }
-  }
-  changeResolutionWhenRemOrEm = (name, value) => {
-    // rem selected
-    if (name==='unit' && (value==='3' || value==='4')) {
-      this.changeResolution('platform')
+    if (name==='platform') {
+      // 如果用户选了 Android，要变为第二个，否则是第一个
+      onSettingsChange('resolution', value==='2' ? 1 : 0)
+      this.setState({resolution: value==='2' ? 1 : 0})
     }
   }
   changeUnit = (name, value) => {
@@ -130,6 +130,7 @@ class Settings extends Component {
             />
           </div>
         }
+        <div className="form-item settings-title">{t('format')}</div>
         <div className="form-item form-item-horizontal">
           <label htmlFor="rem-base" className="item-label">{t('number format')}</label>
           <select

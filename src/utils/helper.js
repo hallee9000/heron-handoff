@@ -1,3 +1,5 @@
+import { LOCALIZED_SETTING_KEYS } from "./const"
+
 export const throttle = (fn, delay) => {
  	var timer = null
  	return function(){
@@ -172,21 +174,36 @@ export const copySomething = (text, callback) => {
 export const trimFilePath = filePath =>
   filePath.replace(/\//g, '-').replace(/:/g, '-')
 
-export const getGlobalSettings = () =>
+export const filterLocalizedSettings = (settings) => {
+  const filteredSettings = {}
+  // eslint-disable-next-line
+  Object.keys(settings).map(key => {
+    if (LOCALIZED_SETTING_KEYS.includes(key)) {
+      filteredSettings[key] = settings[key]
+    }
+  })
+  return filteredSettings
+}
+
+export const getLocalGlobalSettings = () =>
   JSON.parse(window.localStorage.getItem('heronHandoff.settings'))
 
-export const setGlobalSettings = (...args) => {
-  let globalSettings
-  const argsLength = args.length
-  if (argsLength===1) {
-    const [ settings ] = args
-    globalSettings = JSON.stringify(settings)
-    window.localStorage.setItem('heronHandoff.settings', globalSettings)
+export const initLocalGlobalSettings = (settings) => {
+  const localSettings = getLocalGlobalSettings()
+  if (localSettings) {
+    // 有本地设置，需要把本地设置和用户设置合并
+    // 本地合并更优先
+    return {...settings, ...filterLocalizedSettings(localSettings)}
   } else {
-    const [ name, value, callback ] = args
-    const localSettings = getGlobalSettings()
-    globalSettings = {...localSettings, [name]: value}
-    window.localStorage.setItem('heronHandoff.settings', JSON.stringify(globalSettings))
-    callback && callback(globalSettings)
+    // 没有，则需要把这个设置存储于本地
+    window.localStorage.setItem('heronHandoff.settings', JSON.stringify(filterLocalizedSettings(settings)))
+    return settings
   }
+}
+
+export const changeOneGlobalSetting = (name, value, callback) => {
+  const localSettings = getLocalGlobalSettings()
+  const globalSettings = {...(localSettings || {}), [name]: value}
+  window.localStorage.setItem('heronHandoff.settings', JSON.stringify(globalSettings))
+  callback && callback(globalSettings)
 }

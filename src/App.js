@@ -3,7 +3,8 @@ import SettingsContext from 'contexts/SettingsContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
-import { DEFAULT_SETTINGS } from 'utils/const'
+import { DEFAULT_SETTINGS, LOCALIZED_SETTING_KEYS } from 'utils/const'
+import { initLocalGlobalSettings, changeOneGlobalSetting } from 'utils/helper'
 import 'assets/base.scss'
 import './app.scss'
 
@@ -36,11 +37,16 @@ class App extends React.Component {
     }
   }
   initializeGlobalSettings = (settings) => {
-    const combinedSettings = {...DEFAULT_SETTINGS, ...settings}
+    const userSettings = {...DEFAULT_SETTINGS, ...settings}
+    const combinedSettings = initLocalGlobalSettings(userSettings)
     return combinedSettings
   }
   setSettings = (name, value) => {
     const { globalSettings } = this.state
+    // 更新本地存储的设置项
+    if (LOCALIZED_SETTING_KEYS.includes(name)) {
+      changeOneGlobalSetting(name, value)
+    }
     this.setState({ globalSettings: {...globalSettings, [name]: value} })
   }
   handleDataGot = (fileData, components, styles, exportSettings, pagedFrames) => {

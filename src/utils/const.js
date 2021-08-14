@@ -122,3 +122,12 @@ export const NUMBER_FORMATS = [ 'retain 2', 'rounded integer', 'floored integer'
 export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx' ]
 
 export const COLOR_FORMATS = [ 'HEX', 'HEXA', 'RGBA', 'HSLA' ]
+
+export const LOCALIZED_SETTING_KEYS = [
+  'disableInspectExportInner',
+  'disableInspectInComponent',
+  'colorFormat',
+  'language',
+  'notShowStyleProperties',
+  'numberFormat'
+]
