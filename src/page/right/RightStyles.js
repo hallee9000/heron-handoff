@@ -4,7 +4,6 @@ import { withTranslation } from 'react-i18next'
 import { Droplet, Image, DownloadCloud } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import { withGlobalSettings } from 'contexts/SettingsContext'
 import { getBufferData } from 'api'
 import { asyncForEach, isAllImageFill, getImageUrl } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
@@ -132,4 +131,4 @@ class RightStyles extends React.Component {
   }
 }
 
-export default withTranslation('right')(withGlobalSettings(RightStyles))
+export default withTranslation('right')(RightStyles)

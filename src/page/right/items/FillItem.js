@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
 import { ChevronDown } from 'react-feather'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
 import { Degree, Opacity } from 'components/icons/style'
 import { getFillCSSCode } from 'utils/style'
@@ -68,4 +68,4 @@ const FillItem = ({flag, style, globalSettings, t}) => {
   </ul>
 }
 
-export default withTranslation('right.items')(withGlobalSettings(FillItem))
+export default withTranslation('right.items')(withGlobalContextConsumer(FillItem))

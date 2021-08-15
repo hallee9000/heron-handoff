@@ -393,7 +393,7 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
 
 export const formattedNumber = (number, { platform, unit, resolution, remBase, numberFormat }, withoutUnit=false) => {
   const scaledNumber = number*resolutions[platform][resolution].value
-  const finalNumber = unit===4 ? number/remBase : scaledNumber
+  const finalNumber = (unit===3 || unit===4) ? number/remBase : scaledNumber
   return toFixed(finalNumber, numberFormat) + (withoutUnit ? '' : UNITS[unit])
 }
 

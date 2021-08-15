@@ -1,5 +1,4 @@
 import React from 'react'
-import SettingsContext from 'contexts/SettingsContext'
 import LeftPanel from './left'
 import RightPanels from './right'
 import Canvas from './canvas'
@@ -18,7 +17,6 @@ class Main extends React.Component {
       hasElementSelected: false,
       closestComponent: null,
       siderCollapseFlag: false,
-      siderCollapsePlacement: '',
       exportIds: []
     }
   }
@@ -95,22 +93,16 @@ class Main extends React.Component {
         />
         {
           canvasData &&
-          <SettingsContext.Consumer>
-            {({globalSettings, changeGlobalSettings}) => (
-              <Canvas
-                currentImageUrl={currentImageUrl}
-                canvasData={canvasData}
-                id={id}
-                elementData={elementData}
-                onSelect={this.handleSelectElement}
-                onDeselect={this.handleDeselect}
-                onGetExports={this.handleGetExports}
-                siderCollapseFlag={siderCollapseFlag}
-                globalSettings={globalSettings}
-                changeGlobalSettings={changeGlobalSettings}
-              />
-            )}
-          </SettingsContext.Consumer>
+          <Canvas
+            currentImageUrl={currentImageUrl}
+            canvasData={canvasData}
+            id={id}
+            elementData={elementData}
+            onSelect={this.handleSelectElement}
+            onDeselect={this.handleDeselect}
+            onGetExports={this.handleGetExports}
+            siderCollapseFlag={siderCollapseFlag}
+          />
         }
         <RightPanels
           mode={mode}

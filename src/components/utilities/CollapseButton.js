@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { withTranslation } from 'react-i18next'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { ChevronsLeft, ChevronsRight } from 'react-feather'
 import cn from 'classnames'
 import './collapse-button.scss'
 
-const CollapseButton = ({placement='left', globalSettings, changeGlobalSettings, t}) => {
+const CollapseButton = ({placement='left', globalSettings, changeGlobalSetting, t}) => {
   const isLeft = placement==='left'
   const {leftCollapse, rightCollapse} = globalSettings
-  const [collapsed, setCollapsed] = useState(isLeft ? leftCollapse : rightCollapse)
-  // changed by outside actions, like shortcuts
-  useEffect(() => {
-    setCollapsed(isLeft ? leftCollapse : rightCollapse)
-  }, [isLeft, leftCollapse, rightCollapse])
+  const collapsed = isLeft ? leftCollapse : rightCollapse
 
   const toggleCollapse = () => {
-    setCollapsed(!collapsed)
-    changeGlobalSettings(isLeft ? 'leftCollapse' : 'rightCollapse', !collapsed)
+    changeGlobalSetting(isLeft ? 'leftCollapse' : 'rightCollapse', !collapsed)
   }
+
   return (
     <button
       className={cn('collapse-button', `collapse-button-${placement}`)}
@@ -32,4 +29,4 @@ const CollapseButton = ({placement='left', globalSettings, changeGlobalSettings,
   )
 }
 
-export default withTranslation('common')(CollapseButton)
+export default withGlobalContextConsumer(withTranslation('common')(CollapseButton))

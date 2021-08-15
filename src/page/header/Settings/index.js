@@ -1,40 +1,30 @@
 import React, { Component } from 'react'
 import { withTranslation } from 'react-i18next'
-import Mark from './Mark'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
+import MarkSettings from './Mark'
 import './settings.scss'
 
 class Settings extends Component {
-  constructor (props) {
-    super(props)
-    const { globalSettings } = props
-    this.state ={ ...globalSettings }
-  }
   changeLanguage = e => {
-    const { onSettingsChange, i18n } = this.props
+    const { changeGlobalSetting, i18n } = this.props
     const { value } = e.target
-    this.setState({language: value})
     i18n.changeLanguage(value)
-    onSettingsChange('language', value)
+    changeGlobalSetting('language', value)
   }
   changeOtherSetting = e => {
-    const { onSettingsChange } = this.props
+    const { changeGlobalSetting } = this.props
     const { checked, name } = e.target
-    this.setState({[name]: checked})
-    onSettingsChange(name, checked)
+    changeGlobalSetting(name, checked)
   }
   render () {
-    const { t, globalSettings, onSettingsChange } = this.props
-    const { language, disableInspectExportInner, disableInspectInComponent, notShowStyleProperties } = this.state
+    const { t, globalSettings } = this.props
     return <div className="settings">
       <h3><span role="img" aria-label="Congratulations">⚙️</span> {t('settings title')}</h3>
-      <Mark
-        globalSettings={globalSettings}
-        onSettingsChange={onSettingsChange}
-      />
+      <MarkSettings/>
       <div className="form">
         <div className="form-item settings-title">{t('language')}</div>
         <div className="form-item">
-          <select name="language" className="input" value={language} onChange={this.changeLanguage}>
+          <select name="language" className="input" value={globalSettings.language} onChange={this.changeLanguage}>
             <option value="en">English</option>
             <option value="zh">中文</option>
           </select>
@@ -47,7 +37,7 @@ class Settings extends Component {
             <input
               name="disableInspectExportInner"
               type="checkbox"
-              checked={disableInspectExportInner}
+              checked={globalSettings.disableInspectExportInner}
               onChange={this.changeOtherSetting}
             />
             {t('exports inner selecting not allowed')}
@@ -59,7 +49,7 @@ class Settings extends Component {
             <input
               name="disableInspectInComponent"
               type="checkbox"
-              checked={disableInspectInComponent}
+              checked={globalSettings.disableInspectInComponent}
               onChange={this.changeOtherSetting}
             />
             {t('disable inspect in component')}
@@ -71,7 +61,7 @@ class Settings extends Component {
             <input
               name="notShowStyleProperties"
               type="checkbox"
-              checked={notShowStyleProperties}
+              checked={globalSettings.notShowStyleProperties}
               onChange={this.changeOtherSetting}
             />
             {t('do not show style properties')}
@@ -83,4 +73,4 @@ class Settings extends Component {
   }
 }
 
-export default withTranslation('header')(Settings)
+export default withGlobalContextConsumer(withTranslation('header')(Settings))

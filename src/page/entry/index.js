@@ -3,7 +3,6 @@ import { withTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { GitHub, Coffee, DollarSign, Package, Mail, Link2, X } from 'react-feather'
 import Tooltip from 'rc-tooltip'
-import SettingsContext from 'contexts/SettingsContext'
 import { WithCopy } from 'components/utilities'
 import ProductHunt from './ProductHunt'
 import LangSetting from './LangSetting'
@@ -90,14 +89,7 @@ class Entry extends React.Component {
             <a href="https://paypal.me/leadream" target="_blank" rel="noopener noreferrer"><DollarSign size={12}/> {t('paypal')}</a>
           </div>
           <div className="entry-footer">
-            <SettingsContext.Consumer>
-              {({globalSettings, changeGlobalSettings}) => (
-                <LangSetting
-                  globalSettings={globalSettings}
-                  onSettingsChange={changeGlobalSettings}
-                />
-              )}
-            </SettingsContext.Consumer>
+            <LangSetting/>
             <span className="footer-stretch"/>
             <Tooltip overlay={t('github')} placement="top" align={{offset: [0, 3]}}>
               <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer">

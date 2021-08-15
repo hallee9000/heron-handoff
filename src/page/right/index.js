@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import SettingsContext, { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CollapseButton } from 'components/utilities'
 import RightStyles from './RightStyles'
 import RightProps from './RightProps'
@@ -73,15 +73,7 @@ class Right extends React.Component {
         className={cn('main-right', { collapsed: rightCollapse })}
         onTransitionEnd={onSiderTransitionEnd}
       >
-        <SettingsContext.Consumer>
-          {({globalSettings, changeGlobalSettings}) => (
-            <CollapseButton
-              placement="right"
-              globalSettings={globalSettings}
-              changeGlobalSettings={changeGlobalSettings}
-            />
-          )}
-        </SettingsContext.Consumer>
+        <CollapseButton placement="right"/>
         <div className={cn('right-pannels', {'right-pannels-out': detailVisible})}>
           <RightStyles
             mode={mode}
@@ -121,4 +113,4 @@ class Right extends React.Component {
   }
 }
 
-export default withGlobalSettings(Right)
+export default withGlobalContextConsumer(Right)

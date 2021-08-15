@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
 import { ChevronDown } from 'react-feather'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CopiableInput, InputGroup } from 'components/utilities'
 import { MixEffect } from 'components/icons/style'
 import { formattedNumber, getEffectCSSCode } from 'utils/style'
@@ -59,4 +59,4 @@ const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
   </ul>
 }
 
-export default withTranslation('right.items')(withGlobalSettings(EffectItem))
+export default withTranslation('right.items')(withGlobalContextConsumer(EffectItem))

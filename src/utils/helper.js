@@ -185,25 +185,10 @@ export const filterLocalizedSettings = (settings) => {
   return filteredSettings
 }
 
-export const getLocalGlobalSettings = () =>
-  JSON.parse(window.localStorage.getItem('heronHandoff.settings'))
-
-export const initLocalGlobalSettings = (settings) => {
-  const localSettings = getLocalGlobalSettings()
-  if (localSettings) {
-    // 有本地设置，需要把本地设置和用户设置合并
-    // 本地合并更优先
-    return {...settings, ...filterLocalizedSettings(localSettings)}
-  } else {
-    // 没有，则需要把这个设置存储于本地
-    window.localStorage.setItem('heronHandoff.settings', JSON.stringify(filterLocalizedSettings(settings)))
-    return settings
-  }
+export const getLocalGlobalSettings = () => {
+  return JSON.parse(window.localStorage.getItem('heronHandoff.settings'))
 }
 
-export const changeOneGlobalSetting = (name, value, callback) => {
-  const localSettings = getLocalGlobalSettings()
-  const globalSettings = {...(localSettings || {}), [name]: value}
-  window.localStorage.setItem('heronHandoff.settings', JSON.stringify(globalSettings))
-  callback && callback(globalSettings)
+export const setLocalGlobalSettings = (settings) => {
+  window.localStorage.setItem('heronHandoff.settings', JSON.stringify(filterLocalizedSettings(settings)))
 }

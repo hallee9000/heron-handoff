@@ -48,22 +48,6 @@ export const TEXTS = {
   'large-bold': <LargeBold size={16} className="text-thumbnail"/>
 }
 
-export const DEFAULT_SETTINGS = {
-  convention: 1,
-  platform: 0,
-  resolution: 0,
-  unit: 2,
-  remBase: 14,
-  numberFormat: 0,
-  colorFormat: 0,
-  language: 'zh',
-  disableInspectExportInner: false,
-  disableInspectInComponent: false,
-  notShowStyleProperties: false,
-  leftCollapse: false,
-  rightCollapse: false
-}
-
 export const PLATFORMS = [ 'Web', 'iOS', 'Android' ]
 
 export const WEB_MULTIPLE = [
@@ -122,6 +106,22 @@ export const NUMBER_FORMATS = [ 'retain 2', 'rounded integer', 'floored integer'
 export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx' ]
 
 export const COLOR_FORMATS = [ 'HEX', 'HEXA', 'RGBA', 'HSLA' ]
+
+export const DEFAULT_SETTINGS = {
+  convention: 1,
+  platform: 0,
+  resolution: 0,
+  unit: 2,
+  remBase: 14,
+  numberFormat: 0,
+  colorFormat: 0,
+  language: 'zh',
+  disableInspectExportInner: false,
+  disableInspectInComponent: false,
+  notShowStyleProperties: false,
+  leftCollapse: false,
+  rightCollapse: false
+}
 
 export const LOCALIZED_SETTING_KEYS = [
   'disableInspectExportInner',

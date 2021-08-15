@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
-import SettingsContext, { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CollapseButton } from 'components/utilities'
 import Frames from './Frames'
 import Components from './Components'
@@ -36,15 +36,7 @@ class LeftPanel extends React.Component {
         className={cn('main-left', {collapsed: leftCollapse})}
         onTransitionEnd={onSiderTransitionEnd}
       >
-        <SettingsContext.Consumer>
-          {({globalSettings, changeGlobalSettings}) => (
-            <CollapseButton
-              placement="left"
-              globalSettings={globalSettings}
-              changeGlobalSettings={changeGlobalSettings}
-            />
-          )}
-        </SettingsContext.Consumer>
+        <CollapseButton placement="left" />
         <div className="left-sider">
           {
             !!includeComponents &&
@@ -84,4 +76,4 @@ class LeftPanel extends React.Component {
   }
 }
 
-export default withTranslation('left')(withGlobalSettings(LeftPanel))
+export default withTranslation('left')(withGlobalContextConsumer(LeftPanel))
