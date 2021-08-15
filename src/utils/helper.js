@@ -1,3 +1,5 @@
+import { LOCALIZED_SETTING_KEYS } from "./const"
+
 export const throttle = (fn, delay) => {
  	var timer = null
  	return function(){
@@ -172,21 +174,21 @@ export const copySomething = (text, callback) => {
 export const trimFilePath = filePath =>
   filePath.replace(/\//g, '-').replace(/:/g, '-')
 
-export const getGlobalSettings = () =>
-  JSON.parse(window.localStorage.getItem('heronHandoff.settings'))
+export const filterLocalizedSettings = (settings) => {
+  const filteredSettings = {}
+  // eslint-disable-next-line
+  Object.keys(settings).map(key => {
+    if (LOCALIZED_SETTING_KEYS.includes(key)) {
+      filteredSettings[key] = settings[key]
+    }
+  })
+  return filteredSettings
+}
 
-export const setGlobalSettings = (...args) => {
-  let globalSettings
-  const argsLength = args.length
-  if (argsLength===1) {
-    const [ settings ] = args
-    globalSettings = JSON.stringify(settings)
-    window.localStorage.setItem('heronHandoff.settings', globalSettings)
-  } else {
-    const [ name, value, callback ] = args
-    const localSettings = getGlobalSettings()
-    globalSettings = {...localSettings, [name]: value}
-    window.localStorage.setItem('heronHandoff.settings', JSON.stringify(globalSettings))
-    callback && callback(globalSettings)
-  }
+export const getLocalGlobalSettings = () => {
+  return JSON.parse(window.localStorage.getItem('heronHandoff.settings'))
+}
+
+export const setLocalGlobalSettings = (settings) => {
+  window.localStorage.setItem('heronHandoff.settings', JSON.stringify(filterLocalizedSettings(settings)))
 }

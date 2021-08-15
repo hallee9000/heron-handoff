@@ -29,13 +29,13 @@ class Frames extends React.Component {
     return { pageId, frameId, frameImageUrl }
   }
   changeFrameByIdProperty = prevProps => {
-    const { pagedFrames, onFrameChange, globalData, mode, isMock } = this.props
-    const { currentFrameId } = globalData
+    const { pagedFrames, onFrameChange, globalSettings, mode, isMock } = this.props
+    const { currentFrameId } = globalSettings
     const flattenedFrames = getFlattenedFrames(pagedFrames, false)
     const currentFrame = flattenedFrames.find(({id}) => id===currentFrameId)
     if (
       currentFrameId &&
-      currentFrameId!==prevProps.globalData.currentFrameId &&
+      currentFrameId!==prevProps.globalSettings.currentFrameId &&
       currentFrame
     ) {
       const pageId = currentFrame.pageId

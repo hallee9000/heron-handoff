@@ -2,7 +2,7 @@ import React, { createRef }  from 'react'
 import Tooltip from 'rc-tooltip'
 import { withTranslation } from 'react-i18next'
 import { Plus, Minus, HelpCircle } from 'react-feather'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { isCmdOrCtrl } from 'utils/helper'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
@@ -125,14 +125,12 @@ function canvasWrapper (Canvas) {
         // when (Cmd/Ctrl \) pressed, siders collapsed
         if ((e.keyCode === 220) && isCmdOrCtrl(e)) {
           e.preventDefault()
-          const { globalSettings, changeGlobalSettings } = this.props
+          const { globalSettings, changeGlobalSetting } = this.props
           const { leftCollapse, rightCollapse } = globalSettings
-          if (leftCollapse || rightCollapse) {
-            changeGlobalSettings('leftCollapse', false)
-            changeGlobalSettings('rightCollapse', false)
+          if (leftCollapse && rightCollapse) {
+            changeGlobalSetting({leftCollapse: false, rightCollapse: false})
           } else {
-            changeGlobalSettings('leftCollapse', true)
-            changeGlobalSettings('rightCollapse', true)
+            changeGlobalSetting({leftCollapse: true, rightCollapse: true})
           }
         }
         // space key pressed
@@ -282,6 +280,7 @@ function canvasWrapper (Canvas) {
         width: this.getSize(scale, initialWidth),
         height: this.getSize(scale, initialHeight)
       }
+
       return (
         <div ref={this.container} className="main-canvas">
           <div className="canvas-steper">
@@ -347,7 +346,7 @@ function canvasWrapper (Canvas) {
       )
     }
   }
-  return withTranslation('canvas')(withGlobalSettings(CanvasWrapper))
+  return withTranslation('canvas')(withGlobalContextConsumer(CanvasWrapper))
 }
 
 export default canvasWrapper

@@ -1,6 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CopiableInput } from 'components/utilities'
 import { formattedNumber } from 'utils/style'
 import './text-items.scss'
@@ -47,4 +47,4 @@ const TextItems = ({flag, items, globalSettings, t, i18n}) => {
   </ul>
 }
 
-export default withTranslation('right.items')(withGlobalSettings(TextItems))
+export default withTranslation('right.items')(withGlobalContextConsumer(TextItems))

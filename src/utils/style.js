@@ -1,6 +1,6 @@
 import Color from "color"
 import { toFixed } from 'utils/mark'
-import { DEFAULT_SETTINGS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, COLOR_FORMATS } from 'utils/const'
+import { DEFAULT_SETTINGS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, COLOR_FORMATS, ANDROID_COLOR_FORMATS } from 'utils/const'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
@@ -40,7 +40,11 @@ export const getCSSHEXA = (color, opacity) => {
     .toString(16))
     .slice(-2)
     .toUpperCase()
-  return  getCSSHEX(color) + hexAlpha
+  return getCSSHEX(color) + hexAlpha
+}
+
+export const getCSSAHEX = (hexa) => {
+  return '#' + hexa.slice(-2) + hexa.slice(1, 7)
 }
 
 export const getCSSHSLA = (color, opacity) => {
@@ -57,8 +61,10 @@ export const getCSSHSLA = (color, opacity) => {
 export const getCSSAlpha = color =>
   getColor(color).alpha()
 
-export const formattedColor = (colorFormat, color) => {
-  const key = COLOR_FORMATS[colorFormat].toLowerCase()
+export const formattedColor = (color, globalSettings) => {
+  const { platform, colorFormat } = globalSettings
+  const formats = platform===2 ? ANDROID_COLOR_FORMATS : COLOR_FORMATS
+  const key = formats[colorFormat].toLowerCase()
   return color[key]
 }
 
@@ -73,16 +79,23 @@ export const getStops = stops =>
     position: getPercentage(stop.position),
     hex: getCSSHEX(stop.color),
     hexa: getCSSHEXA(stop.color),
+    ahex: getCSSAHEX(getCSSHEXA(stop.color)),
     rgba: getCSSRGBA(stop.color),
     hsla: getCSSHSLA(stop.color),
     alpha: toFixed(polyfillAlpha(stop.color.a))
   }))
 
-// default RGBA
-export const stopsToBackground = (stops, colorFormat=2, separator=', ') =>
+// default RGBA, use as inline css
+export const stopsToBackground = (stops) =>
   stops.map(stop =>
-    formattedColor(colorFormat, stop) + ' ' + stop.position
-  ).join(separator)
+    formattedColor(stop, { colorFormat: 2 }) + ' ' + stop.position
+  ).join(', ')
+
+// use as dynamic template
+export const stopsToBackgroundWithFormat = (stops, globalSettings) =>
+  stops.map(stop =>
+    formattedColor(stop, globalSettings) + ' ' + stop.position
+  ).join(', ')
 
 export const getGradientDegreeFromMatrix = gradientTransform => {
   const angle = Math.atan2(-gradientTransform[1][0], gradientTransform[0][0]) * (180 / Math.PI)
@@ -119,6 +132,7 @@ export const getSolidColor = fill => ({
   alpha: toFixed(polyfillAlpha(fill.color.a)),
   hex: getCSSHEX(fill.color),
   hexa: getCSSHEXA(fill.color, fill.opacity),
+  ahex: getCSSAHEX(getCSSHEXA(fill.color, fill.opacity)),
   rgba: getCSSRGBA(fill.color, fill.opacity),
   hsla: getCSSHSLA(fill.color, fill.opacity),
   type: 'Solid'
@@ -195,9 +209,9 @@ export const getFillsStyle = fills => {
   return { type, styles }
 }
 
-export const getFillCSSCode = (fillStyle, colorFormat=0) => {
+export const getFillCSSCode = (fillStyle, globalSettings) => {
   const { codeTemplate, angle } = fillStyle
-  const color = formattedColor(colorFormat, fillStyle)
+  const color = formattedColor(fillStyle, globalSettings)
   let code = codeTemplate
   if (codeTemplate.indexOf('{{degree}}') > -1) {
     code = code.replace(/{{degree}}/g, `${angle.replace('°', '')}deg`)
@@ -206,7 +220,7 @@ export const getFillCSSCode = (fillStyle, colorFormat=0) => {
     code = code.replace(/{{color}}/g, color)
   }
   if (codeTemplate.indexOf('{{stops}}') > -1) {
-    code = code.replace(/{{stops}}/g, stopsToBackground(fillStyle.stops, colorFormat, ', '))
+    code = code.replace(/{{stops}}/g, stopsToBackgroundWithFormat(fillStyle.stops, globalSettings))
   }
   return code
 }
@@ -218,6 +232,7 @@ export const getShadowEffect = effect => ({
     spread: effect.spread||0,
     hex: getCSSHEX(effect.color),
     hexa: getCSSHEXA(effect.color),
+    ahex: getCSSAHEX(getCSSHEXA(effect.color)),
     rgba: getCSSRGBA(effect.color),
     hsla: getCSSHSLA(effect.color),
     alpha: toFixed(polyfillAlpha(effect.color.a))
@@ -278,7 +293,7 @@ export const getEffectsStyle = effects => {
   return { type, styles }
 }
 
-export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=2) => {
+export const getEffectCSSCode = (effectStyle, globalSettings) => {
   const { category, codeTemplate, blur, spread, x, y } = effectStyle
   let code = codeTemplate
   code = code.replace('{{radius}}', formattedNumber(blur, globalSettings))
@@ -286,7 +301,7 @@ export const getEffectCSSCode = (effectStyle, globalSettings, colorFormat=2) => 
     code = code.replace('{{x}}', formattedNumber(x, globalSettings))
     code = code.replace('{{y}}', formattedNumber(y, globalSettings))
     code = code.replace('{{spread}}', formattedNumber(spread, globalSettings))
-    code = code.replace('{{color}}', formattedColor(colorFormat, effectStyle))
+    code = code.replace('{{color}}', formattedColor(effectStyle, globalSettings))
   }
   return code
 }
@@ -393,7 +408,7 @@ export const getStyleById = (styles, nodeStyles, type='fill') => {
 
 export const formattedNumber = (number, { platform, unit, resolution, remBase, numberFormat }, withoutUnit=false) => {
   const scaledNumber = number*resolutions[platform][resolution].value
-  const finalNumber = unit===4 ? number/remBase : scaledNumber
+  const finalNumber = (unit===3 || unit===4) ? number/remBase : scaledNumber
   return toFixed(finalNumber, numberFormat) + (withoutUnit ? '' : UNITS[unit])
 }
 
@@ -421,11 +436,11 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
         .filter(({type}) => type==='Solid')
         // eslint-disable-next-line
         .map(fill => {
-          code += `color: ${getFillCSSCode(fill, colorFormat)};\n`
+          code += `color: ${getFillCSSCode(fill, globalSettings)};\n`
         })
     } else {
       code += 'background: ' + fillItems
-        .map(fill => getFillCSSCode(fill, colorFormat))
+        .map(fill => getFillCSSCode(fill, globalSettings))
         .join()
         +';\n'
     }
@@ -438,7 +453,7 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
       .filter(({type}) => type==='Solid')
       // eslint-disable-next-line
       .map(stroke => {
-        const strokeColor = getFillCSSCode(stroke, colorFormat)
+        const strokeColor = getFillCSSCode(stroke, globalSettings)
         code += `border: ${formattedNumber(strokeWeight, globalSettings)} ${borderStyle} ${strokeColor};\n`
       })
   }

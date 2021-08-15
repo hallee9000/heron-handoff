@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { Copy } from 'react-feather'
 import { WithCopy } from 'components/utilities'
 import { toPercentage, generateRects, calculateMarkData } from 'utils/mark'
@@ -333,4 +333,4 @@ class Canvas extends React.Component {
   }
 }
 
-export default canvasWrapper(withGlobalSettings(Canvas))
+export default canvasWrapper(withGlobalContextConsumer(Canvas))

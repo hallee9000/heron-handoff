@@ -1,9 +1,10 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { getGlobalSettings } from 'utils/helper'
+import { getLocalGlobalSettings } from 'utils/helper'
 import { common, entry, left, right, rightItems, utilities, canvas, header } from './lang'
 
-const { language } = getGlobalSettings() || {}
+// 默认先从本地获取语言
+const { language } = getLocalGlobalSettings() || {}
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {

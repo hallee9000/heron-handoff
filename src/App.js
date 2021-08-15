@@ -1,9 +1,8 @@
 import React from 'react'
-import SettingsContext from 'contexts/SettingsContext'
+import { withGlobalContextProvider } from 'contexts/GlobalContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
-import { DEFAULT_SETTINGS } from 'utils/const'
 import 'assets/base.scss'
 import './app.scss'
 
@@ -31,17 +30,10 @@ class App extends React.Component {
       // if local not show entry, if online depends on if mock
       entryVisible: mode==='local' ? false : isMock,
       names: {},
-      globalSettings: this.initializeGlobalSettings(settings),
       backFromDemo: false
     }
-  }
-  initializeGlobalSettings = (settings) => {
-    const combinedSettings = {...DEFAULT_SETTINGS, ...settings}
-    return combinedSettings
-  }
-  setSettings = (name, value) => {
-    const { globalSettings } = this.state
-    this.setState({ globalSettings: {...globalSettings, [name]: value} })
+    // 初始化全局 context
+    props.initGlobalSettings(settings)
   }
   handleDataGot = (fileData, components, styles, exportSettings, pagedFrames) => {
     this.setState({
@@ -83,45 +75,39 @@ class App extends React.Component {
     const { links } = this.props
     const {
       entryVisible, mode, isMock, includeComponents, data, components, styles,
-      exportSettings, pagedFrames, names, globalSettings, backFromDemo
+      exportSettings, pagedFrames, names, backFromDemo
     } = this.state
     return (
       <div className="app-container">
-        <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
-          <Header
-            mode={mode}
-            onBack={this.handleBack}
-            links={links||{}}
-            {...names}
-          />
-        </SettingsContext.Provider>
+        <Header
+          mode={mode}
+          onBack={this.handleBack}
+          links={links||{}}
+          {...names}
+        />
         {
           entryVisible ?
-          <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
-            <Entry
-              onDataGot={this.handleDataGot}
-              onComponentsOptionChange={this.handleComponentsOptionChange}
-              backFromDemo={backFromDemo}
-            />
-          </SettingsContext.Provider> :
-          <SettingsContext.Provider value={{globalSettings, changeGlobalSettings: this.setSettings}}>
-            <Main
-              mode={mode}
-              isMock={isMock}
-              includeComponents={includeComponents}
-              data={data}
-              components={components}
-              styles={styles}
-              exportSettings={exportSettings}
-              pagedFrames={pagedFrames}
-              onNamesChange={this.getNames}
-              {...names}
-            />
-          </SettingsContext.Provider>
+          <Entry
+            onDataGot={this.handleDataGot}
+            onComponentsOptionChange={this.handleComponentsOptionChange}
+            backFromDemo={backFromDemo}
+          /> :
+          <Main
+            mode={mode}
+            isMock={isMock}
+            includeComponents={includeComponents}
+            data={data}
+            components={components}
+            styles={styles}
+            exportSettings={exportSettings}
+            pagedFrames={pagedFrames}
+            onNamesChange={this.getNames}
+            {...names}
+          />
         }
       </div>
     )
   }
 }
 
-export default App
+export default withGlobalContextProvider(App)

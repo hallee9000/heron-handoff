@@ -3,7 +3,7 @@ import cn from 'classnames'
 import Prism from 'prismjs'
 import { withTranslation } from 'react-i18next'
 import { Copy } from 'react-feather'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CopiableInput, InputGroup, WithCopy } from 'components/utilities'
 import { getFillsStyle, getEffectsStyle, formattedNumber, getCode } from 'utils/style'
 import { toFixed } from 'utils/mark'
@@ -355,4 +355,4 @@ class RightProps extends React.Component {
   }
 }
 
-export default withTranslation('right')(withGlobalSettings(RightProps))
+export default withTranslation('right')(withGlobalContextConsumer(RightProps))

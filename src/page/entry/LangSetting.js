@@ -1,25 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Tooltip from 'rc-tooltip'
 import { Globe } from 'react-feather'
 import { withTranslation } from 'react-i18next'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 
 const languages = {
   en: 'English',
   zh: '中文'
 }
 
-const LangSetting = ({i18n, globalSettings, onSettingsChange}) => {
-  const { language: lang } = globalSettings
-  if (!lang) {
-    onSettingsChange('language', 'zh')
-  }
-  const [language, setLanguage] = useState(lang || 'zh')
+const LangSetting = ({i18n, globalSettings, changeGlobalSetting}) => {
+  const { language } = globalSettings
+
   const changeLanguage = e => {
     const { value } = e.target
-    setLanguage(value)
     i18n.changeLanguage(value)
-    onSettingsChange('language', value)
+    changeGlobalSetting('language', value)
   }
+
   return (
     <Tooltip overlay="Change Language" placement="top" align={{offset: [0, 3]}}>
       <a className="footer-language" onClick={e => e.preventDefault()} href="/">
@@ -34,4 +32,4 @@ const LangSetting = ({i18n, globalSettings, onSettingsChange}) => {
   )
 }
 
-export default withTranslation('entry')(LangSetting)
+export default withGlobalContextConsumer(withTranslation('entry')(LangSetting))

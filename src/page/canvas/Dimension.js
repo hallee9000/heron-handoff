@@ -1,5 +1,5 @@
 import React from 'react'
-import { withGlobalSettings } from 'contexts/SettingsContext'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { toMarkPercentage } from 'utils/mark'
 import { formattedNumber } from 'utils/style'
 
@@ -15,4 +15,4 @@ const Dimension = ({whichSide, actualSize, percentageMode, closedCommonParent, p
     }
   </div>
 
-export default withGlobalSettings(Dimension)
+export default withGlobalContextConsumer(Dimension)

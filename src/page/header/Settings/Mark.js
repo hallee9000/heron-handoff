@@ -1,64 +1,60 @@
 import React, { Component } from 'react'
 import { withTranslation } from 'react-i18next'
+import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import InputNumber from "rc-input-number"
 import { PLATFORMS, WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY, UNITS, NUMBER_FORMATS } from 'utils/const'
 import './settings.scss'
 
 const resolutions = [ WEB_MULTIPLE, IOS_DENSITY, ANDROID_DENSITY ]
 
-class Settings extends Component {
-  constructor (props) {
-    super(props)
-    const { globalSettings } = props
-    this.state ={ ...globalSettings }
-  }
+class MarkSettings extends Component {
   handleChange = e => {
     const { name, value } = e.target
-    const { onSettingsChange } = this.props
-    this.setState({
-      [name]: value - 0
-    }, () => {
-      onSettingsChange(name, value - 0)
-      this.changeResolution(name)
-      this.changeUnit(name, value)
-      this.changeResolutionWhenRemOrEm(name, value)
-    })
-  }
-  handleRemBaseChange = value => {
-    const { onSettingsChange } = this.props
-    onSettingsChange('remBase', value)
-    this.setState({
-      remBase: value
-    })
-  }
-  changeResolution = name => {
-    const { onSettingsChange } = this.props
-    if (name==='platform') {
-      onSettingsChange('resolution', 0)
-      this.setState({resolution: 0})
+    const { changeGlobalSetting } = this.props
+    const changedSettings = {
+      [name]: +value
     }
-  }
-  changeResolutionWhenRemOrEm = (name, value) => {
-    // rem selected
-    if (name==='unit' && (value==='3' || value==='4')) {
-      this.changeResolution('platform')
+    if (name!=='resolution') {
+      changedSettings.resolution = this.calculateResolution(name, +value)
     }
+    if (name!=='unit') {
+      changedSettings.unit = this.calculateUnit(name, +value)
+    }
+    changeGlobalSetting(changedSettings)
   }
-  changeUnit = (name, value) => {
-    const { onSettingsChange } = this.props
+  calculateResolution = (name, value) => {
+    const { globalSettings } = this.props
+    const { resolution } = globalSettings
+    // 如果用户选了 Android，要变为第二个，否则是第一个
     if (name==='platform') {
-      if (value==='0') {
-        this.setState({unit: 2})
-        onSettingsChange('unit', 2)
+      return value===2 ? 1 : 0
+    }
+    // 当用户选择了 (R)em 时，倍数需要切换到 1
+    if (name==='unit' && (value===3 || value===4)) {
+      return 0
+    }
+    return resolution
+  }
+  calculateUnit = (name, value) => {
+    const { globalSettings } = this.props
+    const { unit } = globalSettings
+    // 用户切换平台时需要切换单位
+    if (name==='platform') {
+      if (value===0) {
+        return 2
       } else {
-        this.setState({unit: value - 1})
-        onSettingsChange('unit', value - 1)
+        return value - 1
       }
     }
+    return unit
+  }
+  handleRemBaseChange = value => {
+    const { changeGlobalSetting } = this.props
+    changeGlobalSetting('remBase', value)
   }
   render () {
-    const { t } = this.props
-    const { platform, resolution, unit, remBase, numberFormat } = this.state
+    const { globalSettings, t } = this.props
+    const { platform, resolution, unit, remBase, numberFormat } = globalSettings
     const baseVisible = platform===0 && (unit===3 || unit===4)
     const unitMaps = [[2, 3, 4, 5], [0, 2], [1, 2]] // [Web, iOS, Android]
     return (
@@ -130,6 +126,7 @@ class Settings extends Component {
             />
           </div>
         }
+        <div className="form-item settings-title">{t('format')}</div>
         <div className="form-item form-item-horizontal">
           <label htmlFor="rem-base" className="item-label">{t('number format')}</label>
           <select
@@ -152,4 +149,4 @@ class Settings extends Component {
   }
 }
 
-export default withTranslation('header')(Settings)
+export default withTranslation('header')(withGlobalContextConsumer(MarkSettings))
