@@ -10,7 +10,6 @@ import Color from './Color'
 import './fill-item.scss'
 
 const FillItem = ({flag, style, globalSettings, t}) => {
-  const colorFormat = globalSettings.colorFormat || 0
   const isSolid = style.type==='Solid'
   const [isExpanded, setExpanded] = useState(false)
   return <ul key={flag} className={cn('fill-item', { 'fill-item-expanded': isExpanded })}>
@@ -25,7 +24,7 @@ const FillItem = ({flag, style, globalSettings, t}) => {
       <InputGroup isQuiet onWrapperClick={e => e.stopPropagation()}>
         {
           isSolid ?
-          <Color color={style} colorFormat={colorFormat}/> :
+          <Color color={style}/> :
           <CopiableInput
             label={<Degree size={12}/>}
             inputClass="summary-degree"
@@ -55,7 +54,7 @@ const FillItem = ({flag, style, globalSettings, t}) => {
               <div className="stops-dot"/>
               <InputGroup isQuiet>
                 <CopiableInput inputClass="stops-position" value={ stop.position } title={t('stop position')}/>
-                <Color color={stop} colorFormat={colorFormat}/>
+                <Color color={stop}/>
               </InputGroup>
             </div>
           )
@@ -63,7 +62,7 @@ const FillItem = ({flag, style, globalSettings, t}) => {
       </li>
     }
     <li className="fill-code fill-collapse">
-      <CopiableInput type="textarea" value={ getFillCSSCode(style, colorFormat) }/>
+      <CopiableInput type="textarea" value={ getFillCSSCode(style, globalSettings) }/>
     </li>
   </ul>
 }

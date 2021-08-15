@@ -47,7 +47,7 @@ const EffectItem = ({flag, style, nodeType, globalSettings, t}) => {
           <CopiableInput label="Spread" value={ formattedNumber(spread, globalSettings) } title="Spread"/>
         </InputGroup>
         <InputGroup isQuiet>
-          <Color color={style} colorFormat={colorFormat}/>
+          <Color color={style}/>
         </InputGroup>
       </li>
     }

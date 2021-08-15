@@ -106,13 +106,14 @@ export const NUMBER_FORMATS = [ 'retain 2', 'rounded integer', 'floored integer'
 export const UNITS = [ 'pt', 'dp', 'px', 'em', 'rem', 'rpx' ]
 
 export const COLOR_FORMATS = [ 'HEX', 'HEXA', 'RGBA', 'HSLA' ]
+export const ANDROID_COLOR_FORMATS = [ 'HEX', 'AHEX', 'RGBA', 'HSLA' ]
 
 export const DEFAULT_SETTINGS = {
   convention: 1,
   platform: 0,
   resolution: 0,
   unit: 2,
-  remBase: 14,
+  remBase: 16,
   numberFormat: 0,
   colorFormat: 0,
   language: 'zh',
