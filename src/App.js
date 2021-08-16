@@ -1,5 +1,4 @@
 import React from 'react'
-import { withGlobalContextProvider } from 'contexts/GlobalContext'
 import Entry from 'page/entry'
 import Main from 'page/Main'
 import Header from 'page/header'
@@ -110,4 +109,4 @@ class App extends React.Component {
   }
 }
 
-export default withGlobalContextProvider(App)
+export default App

@@ -4,6 +4,8 @@ import { withGlobalContextProvider } from 'contexts/GlobalContext'
 import i18n from '../i18n'
 import App from '../App'
 
+const ContextedApp = withGlobalContextProvider(App)
+
 function Canvas ({
   pagedFrames,
   fileData,
@@ -11,8 +13,7 @@ function Canvas ({
   settings,
   onHeaderBack,
   links,
-  currentFrameId,
-  changeGlobalData
+  currentFrameId
 }) {
 
   useEffect(() => {
@@ -22,18 +23,14 @@ function Canvas ({
     }
   }, [])
 
-  useEffect(() => {
-    changeGlobalData('currentFrameId', currentFrameId)
-  }, [currentFrameId])
-
   return (
     <I18nextProvider i18n={i18n}>
-      <App
+      <ContextedApp
         isModule
         pagedFrames={pagedFrames}
         fileData={fileData}
         exportSettings={exportSettings}
-        settings={settings}
+        settings={{...settings, currentFrameId}}
         onHeaderBack={onHeaderBack}
         links={links}
       />
@@ -41,4 +38,4 @@ function Canvas ({
   )
 }
 
-export default withGlobalContextProvider(Canvas)
+export default Canvas
