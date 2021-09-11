@@ -3,7 +3,7 @@ import Tooltip from 'rc-tooltip'
 import { withTranslation } from 'react-i18next'
 import { Plus, Minus, HelpCircle } from 'react-feather'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
-import { isCmdOrCtrl } from 'utils/helper'
+import { isCmdOrCtrl, copySomething } from 'utils/helper'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
 import { throttle } from 'utils/helper'
 import './canvas-wrapper.scss'
@@ -134,7 +134,7 @@ function canvasWrapper (Canvas) {
           }
         }
         // space key pressed
-        if(e.keyCode === 32) {
+        if (e.keyCode === 32) {
           e.preventDefault()
           this.setState({ spacePressed: true })
         }
@@ -144,8 +144,18 @@ function canvasWrapper (Canvas) {
           this.onStep(e.keyCode === 187 ? 1 : -1)
         }
         // when ESC pressed
-        if(e.keyCode === 27) {
+        if (e.keyCode === 27) {
           onDeselect && onDeselect()
+        }
+        // when Cmd/Ctrl + C pressed
+        if ((e.keyCode === 67) && isCmdOrCtrl(e)) {
+          const { elementData } = this.props
+          if (elementData) {
+            const { node } = elementData
+            if (node.type==='TEXT') {
+              copySomething(node.characters)()
+            }
+          }
         }
       }
       window.onkeyup = e => {
