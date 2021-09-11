@@ -33,13 +33,17 @@ export const getCSSRGBA = (color, opacity) => {
 export const getCSSHEX = color =>
   getColor(color).hex()
 
-export const getCSSHEXA = (color, opacity) => {
-  (typeof opacity === 'number') && (color.a = opacity)
-  const alpha = getColor(color).valpha
-  const hexAlpha = ("0" + parseInt(alpha*256,10)
-    .toString(16))
+export const getHEXAlpha = alpha =>
+  ("0" + parseInt(alpha*255, 10).toString(16))
     .slice(-2)
     .toUpperCase()
+
+export const getCSSHEXA = (color, opacity) => {
+  if (typeof opacity === 'number') {
+    color.a = opacity
+  }
+  const alpha = getColor(color).valpha
+  const hexAlpha = getHEXAlpha(alpha)
   return getCSSHEX(color) + hexAlpha
 }
 
@@ -92,10 +96,14 @@ export const stopsToBackground = (stops) =>
   ).join(', ')
 
 // use as dynamic template
-export const stopsToBackgroundWithFormat = (stops, globalSettings) =>
-  stops.map(stop =>
-    formattedColor(stop, globalSettings) + ' ' + stop.position
+export const stopsToBackgroundWithFormat = (stops, globalSettings) => {
+  // 如果是 HEX，代码里仍需使用 HEXA
+  const { colorFormat } = globalSettings
+  const overridedSettings = { ...globalSettings, colorFormat: colorFormat || 1 }
+  return stops.map(stop =>
+    formattedColor(stop, overridedSettings) + ' ' + stop.position
   ).join(', ')
+}
 
 export const getGradientDegreeFromMatrix = gradientTransform => {
   const angle = Math.atan2(-gradientTransform[1][0], gradientTransform[0][0]) * (180 / Math.PI)
@@ -211,7 +219,10 @@ export const getFillsStyle = fills => {
 
 export const getFillCSSCode = (fillStyle, globalSettings) => {
   const { codeTemplate, angle } = fillStyle
-  const color = formattedColor(fillStyle, globalSettings)
+  // 如果是 HEX，代码里仍需使用 HEXA
+  const { colorFormat } = globalSettings
+  const overridedSettings = { ...globalSettings, colorFormat: colorFormat || 1 }
+  const color = formattedColor(fillStyle, overridedSettings)
   let code = codeTemplate
   if (codeTemplate.indexOf('{{degree}}') > -1) {
     code = code.replace(/{{degree}}/g, `${angle.replace('°', '')}deg`)
@@ -295,13 +306,16 @@ export const getEffectsStyle = effects => {
 
 export const getEffectCSSCode = (effectStyle, globalSettings) => {
   const { category, codeTemplate, blur, spread, x, y } = effectStyle
+  // 如果是 HEX，代码里仍需使用 HEXA
+  const { colorFormat } = globalSettings
+  const overridedSettings = { ...globalSettings, colorFormat: colorFormat || 1 }
   let code = codeTemplate
-  code = code.replace('{{radius}}', formattedNumber(blur, globalSettings))
+  code = code.replace('{{radius}}', formattedNumber(blur, overridedSettings))
   if (category==='shadow') {
-    code = code.replace('{{x}}', formattedNumber(x, globalSettings))
-    code = code.replace('{{y}}', formattedNumber(y, globalSettings))
-    code = code.replace('{{spread}}', formattedNumber(spread, globalSettings))
-    code = code.replace('{{color}}', formattedColor(effectStyle, globalSettings))
+    code = code.replace('{{x}}', formattedNumber(x, overridedSettings))
+    code = code.replace('{{y}}', formattedNumber(y, overridedSettings))
+    code = code.replace('{{spread}}', formattedNumber(spread, overridedSettings))
+    code = code.replace('{{color}}', formattedColor(effectStyle, overridedSettings))
   }
   return code
 }
