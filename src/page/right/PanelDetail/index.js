@@ -2,10 +2,10 @@ import React from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
 import { ChevronLeft } from 'react-feather'
-import { ColorFormatSelect, FillItem, EffectItem, TextItems, Preview } from './items'
+import { ColorFormatSelect, FillItem, EffectItem, TextItems, Preview } from '../items'
 import { CopiableInput } from 'components/utilities'
 import { getStyle } from 'utils/style'
-import './style-detail.scss'
+import './style.scss'
 
 const itemsMap = {
   'FILL': FillItem,

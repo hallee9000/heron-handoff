@@ -2,9 +2,9 @@ import React from 'react'
 import cn from 'classnames'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CollapseButton } from 'components/utilities'
-import RightStyles from './RightStyles'
-import RightProps from './RightProps'
-import StyleDetail from './StyleDetail'
+import RightPanel from './Panel'
+import RightProps from './PanelProperties'
+import StyleDetail from './PanelDetail'
 import './index.scss'
 
 class Right extends React.Component {
@@ -63,6 +63,7 @@ class Right extends React.Component {
       currentExportIds,
       currentIndex,
       onSiderTransitionEnd,
+      versionData,
       globalSettings
     } = this.props
     const { rightCollapse } = globalSettings
@@ -75,7 +76,7 @@ class Right extends React.Component {
       >
         <CollapseButton placement="right"/>
         <div className={cn('right-pannels', {'right-pannels-out': detailVisible})}>
-          <RightStyles
+          <RightPanel
             mode={mode}
             isMock={isMock}
             styles={styles}
@@ -83,6 +84,7 @@ class Right extends React.Component {
             documentName={documentName}
             propsPanelState={propsPanelState}
             onShowDetail={this.openStyleDetail}
+            versionData={versionData}
           />
           {
             elementData &&

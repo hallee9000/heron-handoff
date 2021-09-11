@@ -1,7 +1,7 @@
 import React from 'react'
 import { ArrowRight } from 'react-feather'
 import { getStyleById } from 'utils/style'
-import StyleItem from './items/StyleItem'
+import StyleItem from '../items/StyleItem'
 import './style-reference.scss'
 
 const StyleReference = ({styleItems, styles, nodeStyles, type, onShowStyleDetail}) => {

@@ -7,11 +7,11 @@ import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CopiableInput, InputGroup, WithCopy } from 'components/utilities'
 import { getFillsStyle, getEffectsStyle, formattedNumber, getCode } from 'utils/style'
 import { toFixed } from 'utils/mark'
-import { ColorFormatSelect, FillItem, EffectItem, ExportItem } from './items'
+import { ColorFormatSelect, FillItem, EffectItem, ExportItem } from '../items'
 import StyleReference from './StyleReference'
 import StyleMeta from './StyleMeta'
 import FontPanel from './FontPanel'
-import './right-props.scss'
+import './index.scss'
 
 class RightProps extends React.Component {
   propsSider = createRef()

@@ -1,10 +1,10 @@
 @import 'assets/tokens.scss';
 
-.right-styles{
+.right-panel{
   height: 100%;
   background: #222531;
   transition: transform 0.2s;
-  .styles-mask{
+  .panel-mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -30,7 +30,7 @@
       display: none;
     }
   }
-  .styles-tabs{
+  .panel-tabs {
     display: flex;
     border-bottom: 1px solid #383941;
     li{
@@ -42,6 +42,7 @@
       font-size: 12px;
       opacity: 0.65;
       border-bottom: 2px solid transparent;
+      transition: all 0.2s;
       cursor: pointer;
       &:hover, &.selected{
         opacity: 1;
@@ -52,7 +53,7 @@
       }
     }
   }
-  .styles-list{
+  .panel-list {
     height: calc(100% - 36px);
     overflow: auto;
     padding-bottom: 12px;
@@ -61,7 +62,7 @@
       color: $white-85;
     }
   }
-  .styles-exports{
+  .panel-exports {
     height: calc(100% - 36px);
     overflow: auto;
     .exports-download-all{
@@ -99,6 +100,64 @@
     .exports-empty{
       padding: 12px;
       color: $white-36;
+    }
+  }
+  .panel-versions {
+    >li {
+      position: relative;
+      padding: 12px;
+      padding-left: 24px;
+      cursor: pointer;
+      transition: background 0.2s;
+      &:hover {
+        background: #141723;
+      }
+      &:first-child {
+        .version-timeline {
+          &::before {
+            top: 20px;
+          }
+        }
+      }
+      &.version-selected {
+        background-color: #2f3446;
+      }
+      h3 {
+        font-weight: 500;
+        font-size: 12px;
+      }
+      .version-note {
+        font-size: 11px;
+      }
+      .version-date {
+        font-size: 11px;
+        color: $white-36;
+      }
+      .version-timeline {
+        position: absolute;
+        top: 0;
+        left: 12px;
+        height: 100%;
+        &::before {
+          content: '';
+          position: absolute;
+          display: block;
+          top: 0;
+          bottom: 0;
+          left: 1.5px;
+          width: 1px;
+          background-color: #3f424c;
+        }
+        &::after {
+          content: '';
+          display: block;
+          width: 5px;
+          height: 5px;
+          margin-top: 18px;
+          border-radius: 2.5px;
+          background-color: #3f424c;
+        }
+      }
     }
   }
 }

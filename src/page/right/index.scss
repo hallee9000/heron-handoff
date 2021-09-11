@@ -27,7 +27,7 @@
     transition: transform 0.2s;
     overflow: hidden;
     &-out {
-      .right-styles,
+      .right-panel,
       .right-props {
         transform: translateX(-260px);
       }

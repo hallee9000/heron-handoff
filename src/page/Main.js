@@ -66,7 +66,7 @@ class Main extends React.Component {
   }
   render () {
     const {
-      documentName, components, styles, exportSettings,
+      documentName, components, styles, exportSettings, versionData,
       pagedFrames, mode, isMock, includeComponents
     } = this.props
     const {
@@ -114,6 +114,7 @@ class Main extends React.Component {
           closestComponent={closestComponent}
           currentExportIds={exportIds}
           currentIndex={currentIndex}
+          versionData={versionData}
           hasElementSelected={hasElementSelected}
           onPropsPanelLeave={this.handlePropsPanelLeave}
           onSiderTransitionEnd={this.handleSiderTransitionEnd}

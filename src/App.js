@@ -71,7 +71,7 @@ class App extends React.Component {
     }
   }
   render () {
-    const { links } = this.props
+    const { links, versionData } = this.props
     const {
       entryVisible, mode, isMock, includeComponents, data, components, styles,
       exportSettings, pagedFrames, names, backFromDemo
@@ -101,6 +101,7 @@ class App extends React.Component {
             exportSettings={exportSettings}
             pagedFrames={pagedFrames}
             onNamesChange={this.getNames}
+            versionData={versionData}
             {...names}
           />
         }

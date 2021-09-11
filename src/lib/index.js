@@ -13,7 +13,10 @@ function Canvas ({
   settings,
   onHeaderBack,
   links,
-  currentFrameId
+  currentFrameId,
+  versions,
+  currentVersion,
+  onVersionChange
 }) {
 
   useEffect(() => {
@@ -33,6 +36,11 @@ function Canvas ({
         settings={{...settings, currentFrameId}}
         onHeaderBack={onHeaderBack}
         links={links}
+        versionData={{
+          versions,
+          currentVersion,
+          onVersionChange
+        }}
       />
     </I18nextProvider>
   )

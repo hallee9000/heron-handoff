@@ -1,16 +1,17 @@
 import React, { Fragment } from 'react'
 import cn from 'classnames'
 import { withTranslation } from 'react-i18next'
-import { Droplet, Image, DownloadCloud } from 'react-feather'
+import { Droplet, Image, DownloadCloud, Clock } from 'react-feather'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
+import Versions from './Versions'
+import { StyleItem, ExportItem } from '../items'
 import { getBufferData } from 'api'
 import { asyncForEach, isAllImageFill, getImageUrl } from 'utils/helper'
 import { STYLE_TYPES } from 'utils/const'
-import { StyleItem, ExportItem } from './items'
-import './right-styles.scss'
+import './style.scss'
 
-class RightStyles extends React.Component {
+class RightPanel extends React.Component {
   state = {
     tabIndex: 0,
     percentage: 0,
@@ -61,19 +62,23 @@ class RightStyles extends React.Component {
     // const { styles } = this.props
   }
   render () {
-    const { mode, isMock, styles, exportSettings, propsPanelState, onShowDetail, t } = this.props
+    const { mode, isMock, styles, exportSettings, propsPanelState, onShowDetail, versionData, t } = this.props
     const { tabIndex, percentage, progressText } = this.state
     const { protocol } = window.location
     return (
-      <div className="right-styles">
+      <div className="right-panel">
         <div
-          className={cn('styles-mask', `mask-${propsPanelState}`)}
+          className={cn('panel-mask', `mask-${propsPanelState}`)}
         />
-        <ul className="styles-tabs">
+        <ul className="panel-tabs">
           <li className={cn({'selected': tabIndex===0})} onClick={() => this.changeTab(0)}><Droplet size={14}/>{t('tab style')}</li>
           <li className={cn({'selected': tabIndex===1})} onClick={() => this.changeTab(1)}><Image size={14}/>{t('tab slice')}</li>
+          {
+            versionData &&
+            <li className={cn({'selected': tabIndex===2})} onClick={() => this.changeTab(2)}><Clock size={14}/>{t('tab version')}</li>
+          }
         </ul>
-        <ul className={cn('styles-list', {'hide': tabIndex!==0})}>
+        <ul className={cn('panel-list', {'hide': tabIndex!==0})}>
           {
             Object.keys(styles).map(key =>
               key!=='GRID' && styles[key] &&
@@ -99,7 +104,7 @@ class RightStyles extends React.Component {
             )
           }
         </ul>
-        <ul className={cn('styles-exports', {'hide': tabIndex!==1})}>
+        <ul className={cn('panel-exports', {'hide': tabIndex!==1})}>
             {
               /^http/.test(protocol) && !!exportSettings.length &&
               <li
@@ -126,9 +131,13 @@ class RightStyles extends React.Component {
               <li className="exports-empty">{t('no exports')}</li>
             }
           </ul>
+        {
+          versionData &&
+          <Versions visible={tabIndex!==2} versionData={versionData}/>
+        }
       </div>
     )
   }
 }
 
-export default withTranslation('right')(RightStyles)
+export default withTranslation('right')(RightPanel)
