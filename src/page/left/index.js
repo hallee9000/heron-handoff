@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { CollapseButton } from 'components/utilities'
 import Frames from './Frames'
+import NestedFrames from './NestedFrames'
 import Components from './Components'
 import './index.scss'
 
@@ -29,7 +30,7 @@ class LeftPanel extends React.Component {
       onFrameOrComponentChange,
       t
     } = this.props
-    const { leftCollapse } = globalSettings
+    const { leftCollapse, useNestedPages } = globalSettings
     const { tabIndex } = this.state
     return (
       <div
@@ -52,13 +53,23 @@ class LeftPanel extends React.Component {
             </ul>
           }
           <div className={cn('left-sider-list', {'without-tab': !includeComponents})}>
-            <Frames
-              visible={tabIndex===0}
-              pagedFrames={pagedFrames}
-              mode={mode}
-              isMock={isMock}
-              onFrameChange={onFrameOrComponentChange}
-            />
+            {
+              useNestedPages ?
+              <NestedFrames
+                visible={tabIndex===0}
+                pagedFrames={pagedFrames}
+                mode={mode}
+                isMock={isMock}
+                onSelect={onFrameOrComponentChange}
+              /> :
+              <Frames
+                visible={tabIndex===0}
+                pagedFrames={pagedFrames}
+                mode={mode}
+                isMock={isMock}
+                onFrameChange={onFrameOrComponentChange}
+              />
+            }
             {
               !!includeComponents &&
               <Components

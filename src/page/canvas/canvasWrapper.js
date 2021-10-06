@@ -3,9 +3,8 @@ import Tooltip from 'rc-tooltip'
 import { withTranslation } from 'react-i18next'
 import { Plus, Minus, HelpCircle } from 'react-feather'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
-import { isCmdOrCtrl, copySomething } from 'utils/helper'
+import { throttle, isCmdOrCtrl, copySomething } from 'utils/helper'
 import { px2number, toFixed, getFrameBound } from 'utils/mark'
-import { throttle } from 'utils/helper'
 import './canvas-wrapper.scss'
 
 function canvasWrapper (Canvas) {

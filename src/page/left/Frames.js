@@ -4,7 +4,8 @@ import { withTranslation } from 'react-i18next'
 import { ChevronDown } from 'react-feather'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import Search from './Search'
-import { getImageUrl, getBackgroundImageUrl, getFlattenedFrames } from 'utils/helper'
+import { getFlattenedFrames } from 'utils/frame'
+import { getImageUrl, getBackgroundImageUrl } from 'utils/helper'
 
 class Frames extends React.Component {
   constructor (props) {

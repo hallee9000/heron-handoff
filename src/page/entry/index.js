@@ -7,7 +7,7 @@ import { WithCopy } from 'components/utilities'
 import ProductHunt from './ProductHunt'
 import LangSetting from './LangSetting'
 import { getMockFile } from 'api'
-import { getPagedFrames, getSelectedPagedFrames } from 'utils/helper'
+import { getPagedFrames, getSelectedPagedFrames } from 'utils/frame'
 import { reportEvent } from 'utils/gtag'
 import './entry.scss'
 

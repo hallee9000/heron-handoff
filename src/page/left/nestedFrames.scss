@@ -1,0 +1,61 @@
+@import 'assets/tokens.scss';
+
+.frame-item {
+  >h4 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 6px 8px;
+    font-size: 12px;
+    color: $white-85;
+    cursor: pointer;
+    transition: background 0.2s;
+    &.item-selected {
+      background: #303446;
+    }
+    &:hover{
+      background: #2b2f40;
+    }
+    >svg {
+      color: $black-5;
+    }
+    >span {
+      flex: 1;
+      margin: 0 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .item-chevron {
+      width: 20px;
+      height: 20px;
+      padding: 2px;
+      transition: transform 0.2s;
+      &-collapsed {
+        transform: rotate(180deg);
+      }
+      >svg {
+        color: $black-5;
+      }
+    }
+  }
+  &-page {
+    border-bottom: 1px solid $black-4;
+    >h4 {
+      position: sticky;
+      top: 0;
+      background-color: $black-3;
+      z-index: 1;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  .item-children {
+    transition: height 0.2s;
+    &-collapsed {
+      height: 0;
+      overflow: hidden;
+    }
+  }
+}

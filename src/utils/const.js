@@ -130,5 +130,7 @@ export const LOCALIZED_SETTING_KEYS = [
   'colorFormat',
   'language',
   'notShowStyleProperties',
-  'numberFormat'
+  'numberFormat',
+  'leftCollapse',
+  'rightCollapse'
 ]
