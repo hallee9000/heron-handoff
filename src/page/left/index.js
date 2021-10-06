@@ -30,7 +30,7 @@ class LeftPanel extends React.Component {
       onFrameOrComponentChange,
       t
     } = this.props
-    const { leftCollapse, useNestedPages } = globalSettings
+    const { leftCollapse } = globalSettings
     const { tabIndex } = this.state
     return (
       <div
@@ -54,7 +54,8 @@ class LeftPanel extends React.Component {
           }
           <div className={cn('left-sider-list', {'without-tab': !includeComponents})}>
             {
-              useNestedPages ?
+              // 此处不能使用 useNestedPages 判断，因为默认为 undefined 会进入后一个，导致出错中断
+              Array.isArray(pagedFrames) ?
               <NestedFrames
                 visible={tabIndex===0}
                 pagedFrames={pagedFrames}

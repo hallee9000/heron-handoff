@@ -32,6 +32,7 @@ export const withGlobalContextProvider = (Component) => {
     const handleInitGlobalSettings = (settings) => {
       const localSettings = getLocalGlobalSettings()
       const filteredLocalSettings = filterLocalizedSettings(localSettings || {})
+      
       // 全局 context = 默认+用户设置+本地
       const combinedSettings = {...DEFAULT_SETTINGS, ...settings, ...filteredLocalSettings}
       // 如果本地没有，需要把这个存到本地
