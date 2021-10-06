@@ -5,7 +5,7 @@
 [Heron Handoff](https://heron.design) can help you export developer-handoff files with design specs. This project is the template you generate from, to generate handoff file You need to install [Heron Handoff Plugin](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff) first.
 
 - Demo: https://figmacn.com/handoff?demo=true
-- Plugin code: https://github.com/leadream/figma-juuust-handoff-plugin
+- Plugin code: https://github.com/leadream/heron-handoff-figma-plugin
 
 <img alt="Overview" src="./imgs/overview.png"/>
 
@@ -118,7 +118,7 @@ export default function () {
 }
 ```
 
-The props is exported from [heron-handoff-plugin](https://github.com/leadream/figma-juuust-handoff-plugin).
+The props is exported from [heron-handoff-plugin](https://github.com/leadream/heron-handoff-figma-plugin).
 
 ## FAQ
 
