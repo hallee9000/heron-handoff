@@ -44,11 +44,15 @@ export const getCSSHEXA = (color, opacity) => {
   }
   const alpha = getColor(color).valpha
   const hexAlpha = getHEXAlpha(alpha)
-  return getCSSHEX(color) + hexAlpha
+  return getCSSHEX(color) + (alpha===1 ? '' : hexAlpha)
 }
 
 export const getCSSAHEX = (hexa) => {
-  return '#' + hexa.slice(-2) + hexa.slice(1, 7)
+  if (hexa.length===9) {
+    return '#' + hexa.slice(-2) + hexa.slice(1, 7)
+  } else {
+    return '#FF' + hexa.slice(1, 7)
+  }
 }
 
 export const getCSSHSLA = (color, opacity) => {
