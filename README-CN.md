@@ -4,7 +4,7 @@
 
 Heron Handoff 可以帮助你生成带有设计标注的文件，方便交付给开发。这个项目是设计标注模板，你需要先去[这里](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff)安装插件使用。
 
-- 在线体验: https://figmacn.com/handoff?demo=true
+- 在线体验: https://leadream.github.io/heron-handoff?demo=true
 - 插件代码: https://github.com/leadream/figma-juuust-handoff-plugin
 
 <img alt="Overview" src="./imgs/overview.png"/>

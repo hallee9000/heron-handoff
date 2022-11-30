@@ -92,7 +92,7 @@ class Entry extends React.Component {
             <LangSetting/>
             <span className="footer-stretch"/>
             <Tooltip overlay={t('github')} placement="top" align={{offset: [0, 3]}}>
-              <a className="footer-item" href="https://github.com/leadream/figma-handoff" target="_blank" rel="noopener noreferrer">
+              <a className="footer-item" href="https://github.com/leadream/heron-handoff" target="_blank" rel="noopener noreferrer">
                 <GitHub size={14}/>
               </a>
             </Tooltip>

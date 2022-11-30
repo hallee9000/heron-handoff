@@ -194,24 +194,43 @@ export const getBound = (nodeBound, docRect) => {
   }
 }
 
+function getStrokeIncrement (strokeAlign, strokeWeight) {
+  let strokeIncrement = 0
+  switch (strokeAlign) {
+    case 'OUTSIDE':
+      strokeIncrement += strokeWeight
+      break
+    case 'CENTER':
+      strokeIncrement += strokeWeight/2
+      break
+    default:
+      strokeIncrement += 0
+  }
+  return strokeIncrement
+}
+
 // get Bound of Frame
-export const getFrameBound = (strokes, strokeWeight, strokeAlign, effects) => {
-  let strokeBase = 0
+export const getFrameBounds = (strokes, strokeWeights, strokeAlign, effects) => {
+  let strokeBases = { top: 0, bottom: 0, left: 0, right: 0 }
   const visibleStrokes = strokes.filter(({visible}) => visible!==false)
+  
   if (visibleStrokes.length > 0) {
-    switch (strokeAlign) {
-      case 'OUTSIDE':
-        strokeBase += strokeWeight
-        break
-      case 'CENTER':
-        strokeBase += strokeWeight/2
-        break
-      default:
-        strokeBase += 0
+    if (typeof strokeWeights==='number') {
+      Object.keys(strokeBases)
+        // eslint-disable-next-line
+        .map((position) => {
+          strokeBases[position]+=getStrokeIncrement(strokeAlign, strokeWeights)
+        })
+    } else {
+      Object.keys(strokeWeights)
+        // eslint-disable-next-line
+        .map((position) => {
+          strokeBases[position]+=getStrokeIncrement(strokeAlign, strokeWeights[position])
+        })
     }
   }
 
-  const bound = { top: 0, bottom: 0, left: 0, right: 0 }
+  const bounds = { top: 0, bottom: 0, left: 0, right: 0 }
   effects
     .filter(({type, visible}) => (type==='DROP_SHADOW' || type==='LAYER_BLUR') && visible!==false)
     // eslint-disable-next-line
@@ -220,14 +239,14 @@ export const getFrameBound = (strokes, strokeWeight, strokeAlign, effects) => {
       const fallbackSpread = spread || 0
       const x = offset ? offset.x : 0
       const y = offset ? offset.y : 0
-      bound.top = Math.max(radius+fallbackSpread-y, bound.top, 0)
-      bound.bottom = Math.max(radius+fallbackSpread+y, bound.bottom, 0)
-      bound.left = Math.max(radius+fallbackSpread-x, bound.left, 0)
-      bound.right = Math.max(radius+fallbackSpread+x, bound.right, 0)
+      bounds.top = Math.max(radius+fallbackSpread-y, bounds.top, 0)
+      bounds.bottom = Math.max(radius+fallbackSpread+y, bounds.bottom, 0)
+      bounds.left = Math.max(radius+fallbackSpread-x, bounds.left, 0)
+      bounds.right = Math.max(radius+fallbackSpread+x, bounds.right, 0)
     })
-  Object.keys(bound)
-    .map(key => bound[key] += strokeBase)
-  return bound
+  Object.keys(strokeBases)
+    .map(position => bounds[position] += strokeBases[position])
+  return bounds
 }
 
 // return: selected position, not intersect direction

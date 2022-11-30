@@ -264,7 +264,14 @@ class RightProps extends React.Component {
                   }
                 </ul>
                 <InputGroup>
-                  <CopiableInput label={t('stroke weight')} value={ formattedNumber(node.strokeWeight, globalSettings) }/>
+                  <CopiableInput
+                    label={t('stroke weight')}
+                    value={
+                      !!node.strokeWeight ?
+                      formattedNumber(node.strokeWeight, globalSettings) :
+                      'Mixed'
+                    }
+                  />
                   {
                     node.strokeDashes &&
                     <CopiableInput
@@ -274,6 +281,15 @@ class RightProps extends React.Component {
                   }
                   <CopiableInput label={t('stroke position')} value={ node.strokeAlign.toLowerCase() }/>
                 </InputGroup>
+                {
+                  !node.strokeWeight &&
+                  <InputGroup className="mixed-strokes">
+                    <CopiableInput label={t('stroke top')} value={ formattedNumber(node.strokeTopWeight, globalSettings) }/>
+                    <CopiableInput label={t('stroke right')} value={ formattedNumber(node.strokeRightWeight, globalSettings) }/>
+                    <CopiableInput label={t('stroke bottom')} value={ formattedNumber(node.strokeBottomWeight, globalSettings) }/>
+                    <CopiableInput label={t('stroke left')} value={ formattedNumber(node.strokeLeftWeight, globalSettings) }/>
+                  </InputGroup>
+                }
               </>
             }
           </div>

@@ -9,11 +9,11 @@
     "specs"
   ],
   "bugs": {
-    "url": "https://github.com/leadream/figma-handoff/issues"
+    "url": "https://github.com/leadream/heron-handoff/issues"
   },
-  "homepage": "https://github.com/leadream/figma-handoff#readme",
+  "homepage": "https://github.com/leadream/heron-handoff#readme",
   "author": "leadream",
-  "repository": "https://github.com/leadream/figma-handoff.git",
+  "repository": "https://github.com/leadream/heron-handoff.git",
   "version": "1.2.1",
   "license": "AGPL-3.0",
   "main": "dist/index.js",
@@ -76,7 +76,6 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@rollup/plugin-replace": "^2.4.2",
-    "node-sass": "^5.0.0",
     "react-scripts": "4.0.3",
     "rollup": "^2.45.2",
     "rollup-plugin-babel": "^4.4.0",
@@ -84,6 +83,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-scss": "^2.6.1",
     "rollup-plugin-uglify": "^6.0.4",
-    "rollup-plugin-visualizer": "^5.3.6"
+    "rollup-plugin-visualizer": "^5.3.6",
+    "sass": "^1.56.1"
   }
 }

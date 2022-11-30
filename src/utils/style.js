@@ -430,9 +430,23 @@ export const formattedNumber = (number, { platform, unit, resolution, remBase, n
   return toFixed(finalNumber, numberFormat) + (withoutUnit ? '' : UNITS[unit])
 }
 
+function getBorderCSS (node, globalSettings, borderStyle, strokeColor) {
+  if (node.strokeWeight) {
+    return `border: ${formattedNumber(node.strokeWeight, globalSettings)} ${borderStyle} ${strokeColor};\n`
+  } else {
+    const { strokeTopWeight, strokeRightWeight, strokeBottomWeight, strokeLeftWeight } = node
+    const positions = ['top', 'right', 'bottom', 'left']
+    return [strokeTopWeight, strokeRightWeight, strokeBottomWeight, strokeLeftWeight]
+      .filter(weight => weight!==0)
+      .map((weight, index) =>
+        `border-${positions[index]}: ${formattedNumber(weight, globalSettings)} ${borderStyle} ${strokeColor};\n`
+      )
+  }
+}
+
 export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, globalSettings) => {
   const colorFormat = globalSettings.colorFormat || 0
-  const { opacity, cornerRadius, rectangleCornerRadii, strokeWeight, strokeDashes } = node
+  const { opacity, cornerRadius, rectangleCornerRadii, strokeDashes } = node
   let code = ''
 
   // opacity
@@ -472,7 +486,7 @@ export const getCode = (node, fillItems, strokeItems, effectItems, textStyle, gl
       // eslint-disable-next-line
       .map(stroke => {
         const strokeColor = getFillCSSCode(stroke, globalSettings)
-        code += `border: ${formattedNumber(strokeWeight, globalSettings)} ${borderStyle} ${strokeColor};\n`
+        code += getBorderCSS(node, globalSettings, borderStyle, strokeColor)
       })
   }
 

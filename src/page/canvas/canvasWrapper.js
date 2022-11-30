@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next'
 import { Plus, Minus, HelpCircle } from 'react-feather'
 import { withGlobalContextConsumer } from 'contexts/GlobalContext'
 import { throttle, isCmdOrCtrl, copySomething } from 'utils/helper'
-import { px2number, toFixed, getFrameBound } from 'utils/mark'
+import { px2number, toFixed, getFrameBounds } from 'utils/mark'
 import './canvas-wrapper.scss'
 
 function canvasWrapper (Canvas) {
@@ -73,8 +73,14 @@ function canvasWrapper (Canvas) {
     }
     getOffsetSize = () => {
       const { canvasData } = this.props
-      const { strokes, strokeWeight, strokeAlign, effects, absoluteBoundingBox: pageRect } = canvasData
-      const frameBound = getFrameBound(strokes, strokeWeight, strokeAlign, effects)
+      const { strokes, strokeWeight, strokeTopWeight, strokeRightWeight, strokeBottomWeight, strokeLeftWeight, strokeAlign, effects, absoluteBoundingBox: pageRect } = canvasData
+      const strokeWeights = strokeWeight || {
+        top: strokeTopWeight,
+        right: strokeRightWeight,
+        bottom: strokeBottomWeight,
+        left: strokeLeftWeight
+      }
+      const frameBound = getFrameBounds(strokes, strokeWeights, strokeAlign, effects)
       const { width, height } = pageRect
       return {
         frameBound,

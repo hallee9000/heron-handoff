@@ -73,7 +73,7 @@ class Header extends React.Component {
           <a title={t('help')} href={docs || t('help link')} target="_blank" rel="noopener noreferrer">
             <HelpCircle size={14}/>
           </a>
-          <a title={t('feedback')} href={feedback || 'https://github.com/leadream/figma-handoff/issues'} target="_blank" rel="noopener noreferrer">
+          <a title={t('feedback')} href={feedback || 'https://github.com/leadream/heron-handoff/issues'} target="_blank" rel="noopener noreferrer">
             <MessageCircle size={14}/>
           </a>
         </div>
