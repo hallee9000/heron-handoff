@@ -441,6 +441,7 @@ function getBorderCSS (node, globalSettings, borderStyle, strokeColor) {
       .map((weight, index) =>
         `border-${positions[index]}: ${formattedNumber(weight, globalSettings)} ${borderStyle} ${strokeColor};\n`
       )
+      .join('')
   }
 }
 
