@@ -435,11 +435,16 @@ function getBorderCSS (node, globalSettings, borderStyle, strokeColor) {
     return `border: ${formattedNumber(node.strokeWeight, globalSettings)} ${borderStyle} ${strokeColor};\n`
   } else {
     const { strokeTopWeight, strokeRightWeight, strokeBottomWeight, strokeLeftWeight } = node
-    const positions = ['top', 'right', 'bottom', 'left']
-    return [strokeTopWeight, strokeRightWeight, strokeBottomWeight, strokeLeftWeight]
-      .filter(weight => weight!==0)
-      .map((weight, index) =>
-        `border-${positions[index]}: ${formattedNumber(weight, globalSettings)} ${borderStyle} ${strokeColor};\n`
+    const strokeWeights = {
+      top: strokeTopWeight,
+      right: strokeRightWeight,
+      bottom: strokeBottomWeight,
+      left: strokeLeftWeight
+    }
+    return Object.keys(strokeWeights)
+      .filter(position => strokeWeights[position]!==0)
+      .map(position =>
+        `border-${position}: ${formattedNumber(strokeWeights[position], globalSettings)} ${borderStyle} ${strokeColor};\n`
       )
       .join('')
   }
