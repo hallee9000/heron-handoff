@@ -1,11 +1,12 @@
 # Figma Heron Handoff
 
-**我正在紧锣密鼓地开发在线版 Heron Handoff，点[这里](https://heron.design)订阅最新消息**
+> [!WARNING]  
+> 该插件目前处于维护状态，不再更新，如有更多需求可以考虑使用[月维](https://moonvy.com/?homepage)
 
 Heron Handoff 可以帮助你生成带有设计标注的文件，方便交付给开发。这个项目是设计标注模板，你需要先去[这里](https://www.figma.com/community/plugin/830051293378016221/Heron-Handoff)安装插件使用。
 
-- 在线体验: https://leadream.github.io/heron-handoff?demo=true
-- 插件代码: https://github.com/leadream/figma-juuust-handoff-plugin
+- 在线体验: https://hallee9000.github.io/heron-handoff?demo=true
+- 插件代码: https://github.com/hallee9000/heron-handoff-figma-plugin
 
 <img alt="Overview" src="./imgs/overview.png"/>
 
@@ -118,7 +119,7 @@ export default function () {
 }
 ```
 
-这些属性的数据是从 [heron-handoff-plugin](https://github.com/leadream/figma-juuust-handoff-plugin) 导入的，你可以参考其源码来配置你的属性。
+这些属性的数据是从 [heron-handoff-plugin](https://github.com/hallee9000/heron-handoff-figma-plugin) 导入的，你可以参考其源码来配置你的属性。
 
 ## 常见问题
 
