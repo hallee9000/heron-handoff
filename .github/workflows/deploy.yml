@@ -32,15 +32,24 @@ jobs:
         # personal-access-token secret, which can lack access to this fork.
         GITHUB_TOKEN: ${{ github.token }}
     - name: Deploy static to Tencent COS
-      uses: sylingd/tencent-cos-and-cdn-action@v1
-      with:
-        secret_id: ${{ secrets.SECRET_ID }}
-        secret_key: ${{ secrets.SECRET_KEY }}
-        cos_bucket: ${{ secrets.COS_BUCKET }}
-        cos_region: ${{ secrets.COS_REGION }}
-        local_path: build
-        remote_path: /
-        clean: true
+      env:
+        COSCLI_VERSION: v1.0.8
+        COS_SECRET_ID: ${{ secrets.SECRET_ID }}
+        COS_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        COS_BUCKET: ${{ secrets.COS_BUCKET }}
+        COS_REGION: ${{ secrets.COS_REGION }}
+      run: |
+        curl --fail --location --retry 3 \
+          --output coscli \
+          "https://github.com/tencentyun/coscli/releases/download/${COSCLI_VERSION}/coscli-linux-amd64"
+        chmod +x coscli
+        ./coscli --version
+        ./coscli sync build/ "cos://${COS_BUCKET}/" \
+          --recursive --delete --force \
+          --init-skip=true \
+          --secret-id "${COS_SECRET_ID}" \
+          --secret-key "${COS_SECRET_KEY}" \
+          --endpoint "cos.${COS_REGION}.myqcloud.com"
     - name: Deploy static to Tencent CloudBase
       id: deployStatic
       uses: TencentCloudBase/cloudbase-action@v1.1.1
