@@ -35,6 +35,9 @@ const StyleItem = ({styles, styleName, styleType, isHoverable, isSelectable, ...
       )
     case 'EFFECT':
       const { type } = getEffectsStyle(styles)
+      if (!EFFECTS[type]) {
+        return ''
+      }
       return (
         <a className={className('effect')} {...props}>
           <div className="item-preview">
