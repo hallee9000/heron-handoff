@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.x'
+        node-version: '15.x'
     - run: npm install
     - run: echo PUBLIC_URL=. > ./.env
     - run: echo IMAGE_INLINE_SIZE_LIMIT=100000 >> ./.env
