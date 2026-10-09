@@ -27,7 +27,7 @@
     "file-saver": "^2.0.2",
     "i18next": "^19.1.0",
     "jszip": "^3.2.2",
-    "marked": "^0.8.0",
+    "marked": "^4.0.10",
     "prismjs": "^1.23.0",
     "rc-input-number": "^4.5.3",
     "rc-tooltip": "^4.0.0-alpha.3",
