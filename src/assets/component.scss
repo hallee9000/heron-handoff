@@ -3,7 +3,7 @@
 @use 'sass:color';
 
 .rc-tooltip{
-  opacity: 1;
+  opacity: 1!important;
   .rc-tooltip-inner{
     padding: 6px 12px;
     min-height: 30px;
@@ -243,7 +243,7 @@
       }
       &-up-inner,
       &-down-inner{
-        
+
         color: $white-36;
       }
     }

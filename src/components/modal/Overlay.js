@@ -6,7 +6,7 @@ import './overlay.scss'
 
 const triggerRef = createRef()
 
-export default ({ children, overlay, visible, onClose }) => {
+const Overlay = ({ children, overlay, visible, onClose }) => {
   const trigger = cloneElement(Children.only(children), {ref: triggerRef})
   const { right, width } = triggerRef.current ? triggerRef.current.getBoundingClientRect() : {}
   return <Fragment>
@@ -30,3 +30,5 @@ export default ({ children, overlay, visible, onClose }) => {
     }
   </Fragment>
 }
+
+export default Overlay
