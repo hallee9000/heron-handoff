@@ -32,7 +32,7 @@ jobs:
         # personal-access-token secret, which can lack access to this fork.
         GITHUB_TOKEN: ${{ github.token }}
     - name: Deploy static to Tencent COS
-      uses: TencentCloud/cos-action@v1
+      uses: sylingd/tencent-cos-and-cdn-action@v1
       with:
         secret_id: ${{ secrets.SECRET_ID }}
         secret_key: ${{ secrets.SECRET_KEY }}
