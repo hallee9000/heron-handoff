@@ -5,6 +5,12 @@ on:
     branches:
       - master
 
+# The Pages action pushes the generated site to the gh-pages branch.  Grant the
+# workflow token write access explicitly; repository/org defaults may be
+# read-only.
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,7 +28,9 @@ jobs:
       with:
         build_dir:  build
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        # Use the installation token scoped to this repository instead of a
+        # personal-access-token secret, which can lack access to this fork.
+        GITHUB_TOKEN: ${{ github.token }}
     - name: Deploy static to Tencent COS
       uses: TencentCloud/cos-action@v1
       with:
