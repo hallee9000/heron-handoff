@@ -1,4 +1,4 @@
-@import "assets/tokens.scss";
+@use "assets/tokens" as *;
 
 .modal-overlay{
   position: absolute;

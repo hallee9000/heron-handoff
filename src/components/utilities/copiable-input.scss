@@ -1,5 +1,5 @@
-@import "assets/tokens.scss";
-@import 'assets/mixin.scss';
+@use "assets/tokens" as *;
+@use 'assets/mixin' as *;
 
 .copiable-input{
   display: flex;

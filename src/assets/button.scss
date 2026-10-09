@@ -1,4 +1,5 @@
-@import './tokens.scss';
+@use './tokens' as *;
+@use 'sass:color';
 
 // 基类
 .btn{
@@ -37,7 +38,7 @@
     color: #FFF;
     background: $primary-color;
     &:hover{
-      background: darken($primary-color, 6%);
+      background: color.adjust($primary-color, $lightness: -6%);
     }
   }
 

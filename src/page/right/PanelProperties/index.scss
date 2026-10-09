@@ -1,5 +1,5 @@
-@import 'assets/tokens.scss';
-@import '~prismjs/themes/prism-tomorrow.css';
+@use 'assets/tokens' as *;
+@use 'prismjs/themes/prism-tomorrow';
 
 .right-props{
   position: absolute;

@@ -2,7 +2,7 @@ import path from 'path'
 import babel from 'rollup-plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import external from 'rollup-plugin-peer-deps-external';
-import scss from 'rollup-plugin-scss';
+import sass from './scripts/rollup-sass-plugin';
 import resolve from '@rollup/plugin-node-resolve';
 import image from '@rollup/plugin-image'
 import markdown from '@jackfranklin/rollup-plugin-markdown'
@@ -10,7 +10,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import alias from '@rollup/plugin-alias';
 import json from '@rollup/plugin-json';
 import copy from 'rollup-plugin-copy';
-import { uglify } from 'rollup-plugin-uglify';
+import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import pkg from './package.json';
 
@@ -50,9 +50,7 @@ const config = {
         { src: resolveFile('src/lib/index.d.ts'), dest: resolveFile('dist') }
       ]
     }),
-    scss({
-      outputStyle: isProduction ? 'compressed' : 'compact'
-    }),
+    sass({ production: isProduction }),
     babel({
       exclude: 'node_modules/**'
     }),
@@ -75,7 +73,7 @@ const config = {
 };
 
 if (isProduction) {
-  config.plugins.push(uglify())
+  config.plugins.push(terser())
 }
 
 export default config

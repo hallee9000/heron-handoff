@@ -1,4 +1,4 @@
-@import "./tokens.scss";
+@use "./tokens" as *;
 
 @mixin input-base {
   outline: none;

@@ -1,14 +1,14 @@
-@import './tokens.scss';
-@import './typo.scss';
-@import './utils.scss';
-@import './component.scss';
-@import './input.scss';
-@import './form.scss';
-@import './button.scss';
-@import './motion.scss';
+@use './tokens' as *;
+@use './typo';
+@use './utils';
+@use './component';
+@use './input';
+@use './form';
+@use './button';
+@use './motion';
 
-@import '~rc-tooltip/assets/bootstrap.css';
-@import '~rc-input-number/assets/index.css';
+@use 'rc-tooltip/assets/bootstrap';
+@use 'rc-input-number/assets/index';
 
 html, body, #root {
   width: 100%;

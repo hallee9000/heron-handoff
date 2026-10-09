@@ -1,5 +1,6 @@
-@import './tokens.scss';
-@import './mixin.scss';
+@use './tokens' as *;
+@use './mixin' as *;
+@use 'sass:color';
 
 .rc-tooltip{
   opacity: 1;
@@ -205,7 +206,7 @@
   padding: 0;
   padding-left: 10px;
   &:hover{
-    border: 1px solid fade-out($primary-color, 0.36);
+    border: 1px solid color.adjust($primary-color, $alpha: -0.36);
     .rc-input-number-handler-wrap {
       border-color: $white-16;
     }
