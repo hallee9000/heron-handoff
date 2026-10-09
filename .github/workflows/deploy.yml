@@ -41,7 +41,7 @@ jobs:
       run: |
         curl --fail --location --retry 3 \
           --output coscli \
-          "https://github.com/tencentyun/coscli/releases/download/${COSCLI_VERSION}/coscli-linux-amd64"
+          "https://github.com/tencentyun/coscli/releases/download/${COSCLI_VERSION}/coscli-v${COSCLI_VERSION#v}-linux-amd64"
         chmod +x coscli
         ./coscli --version
         ./coscli sync build/ "cos://${COS_BUCKET}/" \
